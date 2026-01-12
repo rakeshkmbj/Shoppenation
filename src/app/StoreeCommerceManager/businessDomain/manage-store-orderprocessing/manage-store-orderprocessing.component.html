@@ -1,0 +1,183 @@
+<div class="content">
+    <h1 class="heading-title">Manage Store Order Processing Consoles</h1>
+
+    <div class="card">
+      <form [formGroup]="storeUserForm">   
+      <div class="row">
+       
+        <div class="col-md-5">
+          <div class="form-group">
+            <label>Store</label>
+            <div class="form-control form-level no-border">
+              {{storeName}}
+            </div>
+            <!-- <select class="form-control" formControlName="STORE_ID" (change)="onStoreChange($event)">
+               [ngClass]="{ 'is-invalid': submitted1 && f1.SUBACCT_OFFICE_ID.errors }">
+              <option value="">Select</option>
+              <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">
+                {{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+            </select> -->
+            <!-- <div *ngIf="submitted1 && f1.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
+              <div *ngIf="f1.SUBACCT_OFFICE_ID.errors.required">Store is required</div>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="col-md-5 pl-0">
+          <div class="form-group">
+            <label class="block">&nbsp;</label>
+              <button class="btn custom-btn" (click)="openModal(template)">Add New Console for Store</button>
+             
+            </div>
+      </div>
+
+
+        </div>
+      </form>
+      </div>
+      <div class="card p-2" *ngIf="consoleList?.length > 0">
+       <h5 class="p-2 card-title">Already Available Consoles</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Serial No.</th>
+              <th scope="col">Console ID</th>
+              <th scope="col">Console Name</th>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let console of consoleList let i = index" [class.active]="i == selectedRow">
+              <td>{{i + 1}}</td>
+              <td>{{console.Id}}</td>
+              <td>{{console.Value}}</td>
+              <td><button (click)="displayAvailableProductLine(console.Id, console.Value)" class="btn black-btn">For Adding/Removing Product line(s) to Console</button></td>
+              <td><button  class="btn black-btn">View Associated Product Lines</button></td>
+              <td (click)="setClickedRow(i)">
+                <i class="icofont-ui-edit" (click)="editRow(console.Id, console.Value, template)"></i>
+               
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+         
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card" *ngIf="hideProductLineFlag">
+              <div class="row head-level">
+                <div class="col-md-2">
+                  <h4>Console ID: {{consoleID}}</h4>
+                  <!-- <button class="btn custom-btn">Add Product Line</button> -->
+                </div>
+                <div class="col-md-6">
+                  <h4>Console Name: {{consolename}}</h4>
+                  <!-- <button class="btn custom-btn">Delete Product Line</button> -->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="card-body p-0 mb-0 left-box">
+                    <h6>Add Product Line to Consoles</h6>
+                    <table class="table mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">S No.</th>
+                          <th scope="col">Product ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Available</th>
+                          <th scope="col">Add to Console</th>
+                          <th scope="col">&nbsp;</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngFor="let productLine of availableProductLineList let i = index">
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{productLine.ProductId}}</td>
+                          <td>{{productLine.ProductName}}</td>
+                          <td>Yes</td>
+                          <td><input class="form-check-input" type="radio" name="exampleRadios" value="{{productLine.ProductName}}" (change)="onItemChange($event.target.value)"></td>
+                          <td>
+                            <button (click)="ADDProductlinetoConsole(productLine.ProductId)" class="add-btn"><i class="icofont-ui-add"></i> Add</button>
+                           </td>
+                        </tr>
+                      </ng-container>
+                      <tr *ngIf="availableProductLineList?.length==0">
+                        <td colspan="6">No Records Found.</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                 </div>
+                
+             
+                 <div class="col-md-5 pl-0">
+                  <div class="card-body p-0 mb-0 left-box">
+                    <h6>Delete Associated Product Lines with Console</h6>
+                    <table class="table mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col">S No.</th>
+                          <th scope="col">Product ID</th>
+                          <th scope="col">Name</th>
+                         
+                          <th scope="col">&nbsp;</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                        <ng-container *ngFor="let productLine of viewProductLineAddedList let i = index">
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{productLine.RETAIL_D2C_PRODUCT_ID}}</td>
+                          <td>{{productLine.RETAIL_D2C_PRODUCT_NAME}}</td>
+                          <td><i (click)="DeleteProductlinetoConsole(productLine.RETAIL_D2C_PRODUCT_ID)" class="icofont-trash"></i></td>
+                        </tr>
+                      </ng-container>
+                       <tr *ngIf="viewProductLineAddedList?.length==0">
+                        <td colspan="4">No Records Found.</td>
+                      </tr> 
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                </div>
+          </div>
+
+</div>
+<ng-template #template>
+  <form [formGroup]="addConsoleForm">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{modalTitle}}</h4>
+   
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="sub-list">
+      <span class="list-item">Store: {{storeName}}</span>
+      <span class="list-item">Account ID: {{accountid}}</span>
+      <span class="list-item">Sub Account ID: {{subaccountid}}</span>
+      <span class="list-item">Store ID: {{storeid}}</span>
+    </div>
+    <div class="form-group">
+      <label>Enter Console Name</label>
+      <input type="text" formControlName="RETAIL_CONSOLE_NAME" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RETAIL_CONSOLE_NAME.errors }" />
+      <div *ngIf="submitted && f.RETAIL_CONSOLE_NAME.errors" class="invalid-feedback">
+          <div *ngIf="f.RETAIL_CONSOLE_NAME.errors.required">Console Name is required</div>
+      </div>
+    </div>
+
+    <div class="form-group mt-3">
+     <button *ngIf="!update" type="submit" class="btn custom-btn" (click)="AddConsolesofStores()">Add Store Console</button>
+     <button *ngIf="update" class="btn black-btn" (click)="updateConsole()">Update</button>
+    </div>
+  </div>
+  </form>
+</ng-template>

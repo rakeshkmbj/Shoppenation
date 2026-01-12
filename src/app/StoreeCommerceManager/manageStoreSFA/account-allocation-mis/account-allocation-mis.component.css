@@ -1,0 +1,11 @@
+i.fa.fa-edit {
+    font-size: 25px;
+    color: #bd2130;
+}
+
+.action-btn {
+    font-size: 0.775rem; /* Equivalent to text-sm */
+    background-color: #10b981; /* Equivalent to bg-green-500 */
+    color: #ffffff; /* Equivalent to text-white */
+    border: none;
+}

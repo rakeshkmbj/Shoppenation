@@ -1,0 +1,140 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Manage Last mile Delivery Support by Store</h1>
+        </div>
+    </div>
+    <form>
+<div class="topLevel">
+        <div class="row">
+   <div class="col-md-6">
+    <div class="form-group">
+        <label>Store</label>
+          <select class="form-control">
+          <option selected value="">Select</option>
+          <option selected value="">Select</option>
+        </select>
+      </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label>Delivery Centre</label>
+              <select class="form-control">
+              <option selected value="">Select</option>
+              <option selected value="">Select</option>
+            </select>
+          </div>
+          </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label>Delivery Type</label>
+              <select class="form-control">
+              <option selected value="">Select</option>
+              <option value="">Hyper Local Next Day Delivery</option>
+              <option value="">Hyper Local Same Day Standard Delivery</option>
+              <option value="">Hyper Local Same Day Express Delivery</option>
+              <option value="">Courier Delivery</option>
+              <option value="">B2B Logistic Delivery</option>
+            </select>
+          </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+                <label>Delivery Sub-Category</label>
+                  <select class="form-control">
+                  <option selected value="">Select</option>
+                  <option selected value="">Select</option>
+                </select>
+              </div>
+              </div>
+    </div>
+      <div class="row">
+ 
+    <div class="col-md-12 pull-right mt-1">
+    <button (click)="openModal(template)" class="btn custom-btn float-right">Add new PIN for Delivery</button>
+    <button type="button" class="btn btn-secondary float-right mr-2">Display PIN Suported</button>
+</div>
+    </div>
+    </div>
+  </form>
+
+  <div class="card exiting-office-table mt-2 pb-0">
+    <div class="row">
+      <div class="col-md-2">Store: <strong>Kukreja</strong></div>
+      <div class="col-md-3">Delivery Centre: <strong>Abc Logistic</strong></div>
+      <div class="col-md-4">Delivery Type: <strong>Hyper Local Same Day Standard Delivery</strong></div>
+      <div class="col-md-3">Sub Sub-Category: <strong>Standard 2 hours</strong></div>
+    </div>
+    
+    <div class="card-body pt-3 pa-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>PIN Supported</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>234565</td>
+                <td class="status_icon"> <span><img src="assets/images/active_icon1.png"></span></td>
+                <td class="action_icon">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <span class="icon"><i class="fa fa fa-trash"></i></span>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>334565</td>
+                <td class="status_icon"> <span><img src="assets/images/active_icon1.png"></span></td>
+                <td class="action_icon">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <span class="icon"><i class="fa fa fa-trash"></i></span>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>034565</td>
+                <td class="status_icon"> <span><img src="assets/images/deactive_icon1.png"></span></td>
+                <td class="action_icon">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <span class="icon"><i class="fa fa fa-trash"></i></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+       
+    </div>
+   
+  </div>
+
+  </div>
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Add New PIN</h4>
+     
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body pt-3">
+        <div class="head_list pb-2">
+            <span class="small">Store Country: India</span>
+            <span class="small">State: New Delhi</span>
+            <span class="small">City: New Delhi</span>
+          </div>
+        <div class="form-group">
+            <label>PIN</label>
+            <select class="form-control">
+              <option selected>Select</option>
+              <option>234566</option>
+            </select>
+          </div>
+          <button class="btn mt-1 custom-btn float-right">Add PIN</button>
+
+    </div>
+  </ng-template>

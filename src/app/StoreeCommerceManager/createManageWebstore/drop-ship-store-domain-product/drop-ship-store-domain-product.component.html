@@ -1,0 +1,370 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Manage my Webstore</h1>
+
+        </div>
+    </div>
+    <form [formGroup]="webStoreForm">
+        <div class="row topLevel">
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    <label>Store</label>
+                    <div class="form-control form-level no-border">
+                        {{storeName}}
+                    </div>
+                    <!-- <select class="form-control" (change)="onStoreChange($event)" formControlName="SUBACCT_OFFICE_ID">
+              <option value="">Select</option>
+              <option *ngFor="let store of retailStoreList" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+              </select> -->
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Select my Store Product-Line(Category)</label>
+                    <select class="form-control" (change)="onretailDropshipStoreChange($event)" formControlName="RETAIL_D2C_PRODUCT_ID">
+            <option value="">Select</option>
+            <option *ngFor="let productline of productLineList" [value]="productline.RETAIL_D2C_PRODUCT_ID">{{productline.RETAIL_D2C_PRODUCT_NAME}}
+            </option>
+
+          </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Select my Store Item(Sub-Category)</label>
+
+                    <select formControlName="itemId" class="form-control" (change)="onPItemChange($event)">
+            <option selected value="">Select</option>
+            <option *ngFor="let productItem of brandOrgList" [ngValue]="productItem.RETAIL_D2C_ITEM_ID">{{productItem.RETAIL_D2C_ITEM_NAME}}
+            </option>
+          </select>
+
+                </div>
+            </div>
+            <div class="col-md-12 text-right">
+                <button type="button" (click)="showWebTags()" class="btn mt-1 ml-2 col-md-3 custom-btn">Manage my
+                    Webstore(Tags)</button>
+                <button type="button" (click)="showWebStore('Reserved')" class="btn mt-1 ml-2 col-md-3 custom-btn">Manage my
+                    Webstore(Reserved)</button>
+                <button type="button" (click)="showWebStore('Generic')" class="btn mt-1 ml-2 col-md-3 custom-btn">Manage my
+          Webstore(Generic)</button>
+            </div>
+        </div>
+    </form>
+    <div class="box tag-store" *ngIf="webtagshow">
+        <div class="row">
+            <div class="col-md-12 d-flex">
+                <h4 class="pt-2">Tag my Store</h4>
+                <!-- <button class="filter-btn btn ml-auto"><i class="ti-filter"></i>Filter</button> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h6>Demographic Based</h6>
+                <div class="btn-group btn-group-sm mt-1 mb-3" role="group">
+                    <button type="button" class="btn btn-outline-primary">Get Tags</button>
+                    <button type="button" class="btn btn-outline-primary">Add Tags</button>
+                    <button type="button" class="btn btn-outline-primary">Edit Tags</button>
+                </div>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic1">
+                            <label class="form-check-label" for="demographic1">
+                              Domain
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic2">
+                            <label class="form-check-label" for="demographic2">
+                              Country
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic3">
+                            <label class="form-check-label" for="demographic3">
+                              State
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic3">
+                            <label class="form-check-label" for="demographic3">
+                              State
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic4">
+                            <label class="form-check-label" for="demographic4">
+                              City
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic5">
+                            <label class="form-check-label" for="demographic5">
+                              Pin Code
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic6">
+                            <label class="form-check-label" for="demographic6">
+                              Near Me
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic7">
+                            <label class="form-check-label" for="demographic7">
+                              Categories
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="demographic8">
+                            <label class="form-check-label" for="demographic8">
+                              Sub-Categories
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h6>Industry Based</h6>
+                <div class="btn-group btn-group-sm mt-1 mb-3" role="group">
+                    <button type="button" class="btn btn-outline-primary">Get Tags</button>
+                    <button type="button" class="btn btn-outline-primary">Add Tags</button>
+                    <button type="button" class="btn btn-outline-primary">Edit Tags</button>
+                </div>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="industry1">
+                            <label class="form-check-label" for="industry1">
+                              Multi-Designer
+                            </label>
+                        </div>
+                        <a>Add/Edit Designers</a>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="industry2">
+                            <label class="form-check-label" for="industry2">
+                              Brands
+                            </label>
+                        </div>
+                        <a>Add/Edit Brands</a>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="industry3">
+                            <label class="form-check-label" for="industry3">
+                              New on Racks
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="industry4">
+                            <label class="form-check-label" for="industry4">
+                              Popular Items
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="industry5">
+                            <label class="form-check-label" for="industry5">
+                              By Occasion
+                            </label>
+                        </div>
+                        <a>Add/Edit Occasion</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h6>Value Economic Based</h6>
+                <div class="btn-group btn-group-sm mt-1 mb-3" role="group">
+                    <button type="button" class="btn btn-outline-primary">Get Tags</button>
+                    <button type="button" class="btn btn-outline-primary">Add Tags</button>
+                    <button type="button" class="btn btn-outline-primary">Edit Tags</button>
+                </div>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="prange1">
+                            <label class="form-check-label" for="prange1">
+                              Price Range
+                            </label>
+                        </div>
+                        <a>Add/Edit Price Range</a>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="prange2">
+                            <label class="form-check-label" for="prange2">
+                              Bargain Deals
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="prange3">
+                            <label class="form-check-label" for="prange3">
+                              Discounts
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="prange4">
+                            <label class="form-check-label" for="prange4">
+                              Store Rating
+                            </label>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="box productLevel" *ngIf="showWebstore">
+        <div class="row text-level">
+            <div class="col-md-12">
+                <h5>Webstore {{txt}}</h5>
+                <div class="search-field-list">
+                    <div class="search-list-label">Store: <span>{{showStoreName}}</span>
+                    </div>
+                    <div class="search-list-label">Product Line: <span>{{showProductName}}</span>
+                    </div>
+                    <div class="search-list-label">State: <span>xxxxx</span>
+                    </div>
+                    <div class="search-list-label">City: <span>xxxxx</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="item-subitem-list">
+            <ul>
+                <li *ngFor="let storeitem of storeItemList">
+                    <div class="pro-box storeitem item-box">
+
+                        <img src="{{imgURL}}{{storeitem.RETAIl_D2C_ITEM_IMAGE | slice:1:-4}}jpeg" />
+                        <div class="p-details">
+                            <p class="p-name">{{storeitem.RETAIL_D2C_ITEM_NAME}}</p>
+                            <!-- <p class="instock">
+            <span *ngIf="storeitem.IsAvailable == false; else elseBlock">
+             <img src="../assets/images/active_icon.png" />
+            </span>
+           <ng-template #elseBlock></ng-template>
+          </p> -->
+                            <p class="item-id">Item ID: <b>{{storeitem.RETAIL_D2C_ITEM_ID}}</b></p>
+                        </div>
+                        <!-- <div class="add_to_cart">
+            <button type="button" class="btn remove-btn"><i class="fa fa-trash"></i></button>
+            <button type="button" class="btn">Add to Store</button>
+          </div> -->
+
+                    </div>
+
+                    <div class="middle-arrow"><i class="fa fa-angle-double-right"></i></div>
+
+                    <div *ngFor="let storesubitem of storesubItemList | paginate: { itemsPerPage: 3, currentPage: p }; let i = index" class="sub-item-box">
+                        <div *ngIf="storeitem.RETAIL_D2C_ITEM_ID == storesubitem.RETAIL_D2C_ITEM_ID">
+                            <div class="pro-box" [ngClass]="{'active': storesubitem.isSelected === true}">
+
+                                <img src="{{imgURL}}{{storesubitem.RETAIL_D2C_SUBITEM_IMAGE | slice:1:-4}}jpeg" />
+                                <div class="p-details">
+                                    <p class="p-name">{{storesubitem.RETAIL_D2C_SUBITEM_NAME}}</p>
+
+                                    <span *ngIf="storesubitem.IsAvailable == true; else elseBlock">
+                    <span class="instock">
+                      <img src="../assets/images/active_icon1.png" />
+                    </span>
+                                    </span>
+                                    <ng-template #elseBlock></ng-template>
+                                    <span *ngIf="newSelectedArray.isSelectet == true">
+                    <span class="instock">
+                      <img src="../assets/images/active_icon1.png" />
+                    </span>
+                                    </span>
+                                    <p class="item-id">Sub Item ID: <b>{{storesubitem.RETAIL_D2C_SUBITEM_ID}}</b></p>
+                                </div>
+                                <div class="price-details" *ngIf="domainid == 1">
+                                    <div class="unit-price"><span>Unit
+                      MRP</span> {{storesubitem.RETAIL_D2C_SUBITEM_MRP[0].RETAIL_D2C_SUBITEM_RETAIL_BOTTLE_MRP}}&#8377;
+                                    </div>
+                                    <div class="whole-sale-price"><span>Whole Sale
+                      MRP</span> {{storesubitem.RETAIL_D2C_SUBITEM_MRP[0].RETAIL_D2C_SUBITEM_RETAIL_CASE_WHOLESALE_MRP}}&#8377;
+                                    </div>
+                                </div>
+                                <div class="add_to_cart">
+                                    <button type="button" class="btn remove-btn"><i class="fa fa-trash"></i></button>
+                                    <!-- <input type="radio" (change)="checked($event)"> -->
+
+                                    <button *ngIf="storesubitem.IsAvailable != true; else disableButton" type="button" class="btn">
+                    <div class="form-check custom-checkbox">
+                      <input [(ngModel)]="storesubitem.isSelected" value="{{storesubitem.isSelected}}"
+                        (change)="isAllSelected()" class="form-check-input custom-control-input" type="checkbox"
+                        id="flexCheckDefault{{i}}">
+                      <label class="custom-control-label" for="flexCheckDefault{{i}}">
+                        Add to Store
+                      </label>
+                    </div>
+                  </button>
+                                    <ng-template #disableButton>
+                                        <button disabled type="button" class="btn">Add to Store</button>
+                                    </ng-template>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-md-12">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row" *ngIf="showWebstore">
+        <div class="col-md-12">
+            <button (click)="cnfAlert()" type="button" [disabled]="isitemChecked" class="btn col-md-4 custom-btn float-right"><i class="fa fa-check-circle"></i>
+        Update my Store Product Line</button>
+        </div>
+    </div>
+
+
+</div>
+
+<ngx-spinner template="<img src='assets/images/icons/please_wait.gif' />">
+</ngx-spinner>

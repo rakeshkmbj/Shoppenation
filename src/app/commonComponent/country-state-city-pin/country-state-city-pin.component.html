@@ -1,0 +1,49 @@
+<form [formGroup]="parentForm">
+    <div class="row">
+        <!-- <div class="col-md-6">
+            <div class="form-group">
+                <label>Domain</label>
+                <select class="form-control" formControlName="DomainId">
+                    <option selected value="">Select</option>
+                    <option *ngFor="let domain of domainList" [ngValue]="domain.id">{{domain.name}}</option>
+                    </select>
+            </div>
+        </div> -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Country</label>
+                <select class="form-control" formControlName="Country" (change)="changeCountry($event)">
+                    <option value="">Select</option>
+                    <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">{{country.CNTRY_NM}}</option>
+                    </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>State</label>
+                <select formControlName="State" class="form-control" (change)="changeState($event)">
+                    <option value="">Select</option>
+                    <option *ngFor="let state of stateList" [value]="state.STATE_ID">{{state.STATE_NM}}</option>
+                    </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>City</label>
+                <select formControlName="City" class="form-control" (change)="changeCity($event)">
+                    <option selected value="">Select</option>
+                    <option *ngFor="let city of cityList" [value]="city.CITY_ID">{{city.CITY_NM}}</option>
+                    </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Pin Code</label>
+                <select formControlName="PinCode" class="form-control" (change)="changePin($event)">
+                <option selected value="">Select</option>
+                <option *ngFor="let zip of zipList" [value]="zip.Id">{{zip.Value}}</option>
+              </select>
+            </div>
+        </div>
+    </div>
+</form>

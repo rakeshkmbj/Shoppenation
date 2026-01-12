@@ -1,0 +1,208 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Publish my Webstore on Cloud</h1>
+        </div>
+    </div>
+    <form [formGroup]="storeUserForm">
+    <div class="topLevel">
+    <div class="row">
+   <div class="col-md-6">
+    <div class="form-group">
+        <label>Store</label>
+        <div class="form-control form-level no-border">
+          {{storeName}}
+        </div>
+        <!-- <select class="form-control" formControlName="SUBACCT_OFFICE_ID" (change)="onStoreChange($event)" [ngClass]="{ 'is-invalid': submitted && f.SUBACCT_OFFICE_ID.errors }">
+          <option value="">Select</option>
+          <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+        </select>
+        <div *ngIf="submitted && f.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
+          <div *ngIf="f.SUBACCT_OFFICE_ID.errors.required">Store is required</div>
+      </div> -->
+      </div>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6 mt-1">
+    <button (click)="validateResponseForCloud()" type="button" class="btn custom-btn float-right">Validate my Account for Cloud Publishing</button>
+</div>
+    </div>
+    </div>
+  </form>
+<br>
+  <div class="card" *ngIf="show">
+    <div class="card-body p-0">
+      <h5 class="card-title">Platform Validate Response for Cloud Publishing
+        <span *ngIf="responseForCloudList.PLATFORM_VALIDATE_RESPONSE_CLOUD_PUBLISHING; else elseBlock">
+            <img src="assets/images/active_icon.png">
+            </span>
+            <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+      </h5>
+     <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+                <h6>Delivery Services Validations</h6>
+                 <div class="card-body p-0">
+                    <ul class="list-group">
+                        <li class="list-group-item">Basic Delivery Services Mapped with Store
+                        <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_BASIC_DELIVERY_MAPPED; else elseBlock">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                        </li>
+                        <li class="list-group-item">Express Delivery Service Mapped with Store 
+                        <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_EXPRESS_DELIVERY_MAPPED; else elseBlock1">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock1><img src="assets/images/deactive_icon.png"></ng-template>
+                        </li>
+                        <li class="list-group-item">Walk-in Delivery POS Mapped with Store
+                        <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_WALKIN_POS_MAPPED; else elseBlock2">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock2><img src="assets/images/deactive_icon.png"></ng-template>
+                        </li>
+                       
+                      </ul>
+                 </div>
+               </div>
+              </div>
+              <div class="col-md-6">
+         <div class="card">
+         <h6>Delivery Centre Validations</h6>
+         <div class="card-body p-0">
+            <ul class="list-group">
+                <li class="list-group-item">Basic Delivery Centre Mapped with Store
+                    <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_BASIC_DLVRY_CNTR_MAPPED; else elseBlock">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                </li>
+                <li class="list-group-item">Express Delivery Centre Mapped with Store
+                    <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_EXPRESS_DLVRY_CNTR_MAPPED; else elseBlock">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                </li>
+                <li class="list-group-item">Basic Delivery Centre Vahans Mapped with Store
+                    <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_BASIC_DLVRY_CNTR_VAHAN_MAPPED; else elseBlock">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                </li>
+                <li class="list-group-item">Express Delivery Centre Vahans Mapped with Store
+                    <span *ngIf="responseForCloudList.CLOUD_PUBLISH_STORE_EXPRESS_DLVRY_CNTR_VAHAN_MAPPED; else elseBlock">
+                        <img src="assets/images/active_icon.png">
+                        </span>
+                        <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                </li>
+              </ul>
+         </div>
+         </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+              <h6>Store Creation for Item-SubItems</h6>
+               <div class="card-body p-0">
+                  <ul class="list-group">
+                      <li class="list-group-item">Store is Created with Product Items SubItems
+                        <span *ngIf="responseForCloudList.RETAIL_STORE_CREATED_FOR_ITEM_SUBITEM; else elseBlock">
+                          <img src="assets/images/active_icon.png">
+                          </span>
+                          <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+
+                      </li>
+                     </ul>
+               </div>
+             </div>
+            </div>
+            <div class="col-md-6">
+       <div class="card">
+       <h6>Store Inventory Moudle first time executed on Items SubItems</h6>
+       <div class="card-body p-0">
+          <ul class="list-group">
+              <li class="list-group-item">All saved Items undergone Inventory Updation
+
+                <span *ngIf="responseForCloudList.ALL_SAVED_ITEMS_UNDERGONE_INVENTORY_MODULE; else elseBlock">
+                  <img src="assets/images/active_icon.png">
+                  </span>
+                  <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+              </li>
+              <li class="list-group-item"><strong>Need Inventory Updation for</strong><br>
+              <table>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Sub Item Name</th>
+                </tr>
+                <tr *ngFor="let itmsitm of responseForCloudList.PRODUCT_ITEM_SUBITEMS_PENDING_INVENTORY_MODULE">
+                  <td>{{itmsitm.RETAIL_D2C_ITEM_NAME}}</td>
+                  <td>{{itmsitm.RETAIL_D2C_SUBITEM_NAME}}</td>
+                </tr>
+              </table>
+              </li>
+          </ul>
+       </div>
+       </div>
+      </div>
+  </div>
+
+  <div class="row">
+   
+    <div class="col-md-6">
+   <div class="card">
+   <h6>Edit MRP Module Executed on Items SubItems</h6>
+   <div class="card-body p-0">
+      <ul class="list-group">
+          <li class="list-group-item">All saved Items undergone MRP Updation
+            <span *ngIf="responseForCloudList.ALL_SAVED_ITEMS_UNDERGONE_MRP_MODULE; else elseBlock">
+              <img src="assets/images/active_icon.png">
+              </span>
+              <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+          </li>
+          <li class="list-group-item"><strong>Need MRP Updation for</strong><br>
+          
+            <table>
+              <tr>
+                <th>Item Name</th>
+                <th>Sub Item Name</th>
+              </tr>
+              <tr *ngFor="let mrpitmsitm of responseForCloudList.PRODUCT_ITEM_SUBITEMS_PENDING_MRP_MODULE">
+                <td>{{mrpitmsitm.RETAIL_D2C_ITEM_NAME}}</td>
+                <td>{{mrpitmsitm.RETAIL_D2C_SUBITEM_NAME}}</td>
+              </tr>
+            </table>
+          </li>
+      </ul>
+   </div>
+   </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+    <h6>Bank attached with Store</h6>
+    <div class="card-body p-0">
+       <ul class="list-group">
+           <li class="list-group-item"><strong>Bank KYC done & Mapped with Store</strong></li>
+           <li class="list-group-item">Bank Name <strong>{{responseForCloudList.BankDetail}}</strong></li>
+           <li class="list-group-item">Bank IFSC Code <strong>{{responseForCloudList.BankDetail}}</strong></li>
+           <li class="list-group-item">Bank Account Number <strong>{{responseForCloudList.BankDetail}}</strong></li>
+       </ul>
+    </div>
+    </div>
+   </div>
+</div>
+
+<div class="row">
+   
+    <div class="col-md-12">
+        <button (click)="publishMyStoreOnCloud()" type="button" class="btn custom-btn float-right mr-2">Publish my Store on Cloud</button>
+    </div>
+    </div>
+    </div>
+  </div>
+
+</div>

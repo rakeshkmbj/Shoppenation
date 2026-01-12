@@ -1,0 +1,97 @@
+.heading-title small {
+    font-size: 13px;
+    vertical-align: text-bottom;
+    margin-left: 10px;
+}
+
+.ordNumber {
+    padding: 5px 10px;
+}
+
+.list-group {
+    flex-direction: inherit;
+}
+
+.left-arrow-icon i {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.list-inline li.list-group-item {
+    width: 31.5%;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 0;
+}
+
+.box-field .card {
+    min-height: 230px;
+}
+
+.card-title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #495057;
+}
+
+.card img {
+    max-width: 22px;
+}
+
+.card-link.pull-right {
+    color: #17a2b8;
+    text-decoration: underline;
+    font-size: 12px;
+    margin-top: 5px;
+    padding: 0;
+    cursor: pointer;
+    border: 0;
+    background: none;
+}
+
+.card-link[disabled] {
+    cursor: default !important;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.list-inline img {
+    max-width: 22px;
+}
+
+.date-text {
+    line-height: 16px;
+    font-size: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+p.d-flex.justify-content-between.align-items-center {
+    border: 1px solid #e9edf0;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+i.ti-close {
+    border: 1px solid red;
+    padding: 5px;
+    border-radius: 50%;
+    color: red;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+i.ti-check {
+    color: #10b9b9;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.modal-header i.ti-close {
+    border: 0;
+    color: #495057;
+    font-size: 20px;
+}

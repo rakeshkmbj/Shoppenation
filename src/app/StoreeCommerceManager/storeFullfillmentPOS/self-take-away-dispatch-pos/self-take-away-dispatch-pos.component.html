@@ -1,0 +1,141 @@
+<div class="content">
+    <h1 class="heading-title">Self Take-Away Dispatch POS</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label>Enter Order Number</label>
+                        <input formControlName="RETAIL_ORDER_NUMBR" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RETAIL_ORDER_NUMBR.errors }">
+                        <div *ngIf="submitted && f.RETAIL_ORDER_NUMBR.errors" class="invalid-feedback">
+                            <div *ngIf="f.RETAIL_ORDER_NUMBR.errors.required">Order number is required</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Happy Code for Take-Away</label>
+                        <input formControlName="RETAIL_HAPPY_CODE" type="text" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RETAIL_HAPPY_CODE.errors }">
+                        <div *ngIf="submitted && f.RETAIL_HAPPY_CODE.errors" class="invalid-feedback">
+                            <div *ngIf="f.RETAIL_HAPPY_CODE.errors.required">Happy code is required</div>
+                        </div>
+                    </div>
+
+                    <p *ngIf="happycodematch" class="happycodematch">Happy Code matched <i class="icofont-check-circled"></i></p>
+                    <div class="form-group pull-right">
+
+                        <button [disabled]="happycodematch" type="submit" class="btn custom-btn">Check</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="detailsFound">
+            <div class="card customer-details">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>Customer ID: <span>{{customerID}}</span></p>
+                        <p>Customer Name: <span>{{customerName}}</span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <img class="p_image" src="{{imgURL}}{{profileImage | slice:1:-4}}jpeg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Payment Type: COD</h4>
+                        <h6>Amount: RS. 2375.00</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <button (click)="openQRModal(qrtemplate)" class="btn custom-btn pull-right">Scan All-Day QR Code</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Payment Confirmation By</label>
+                            <select class="form-control" (change)="pcChange($event.target.value)">
+              <option value="Invoice">Invoice No.</option>
+              <option value="Mobile">Mobile No.</option>
+            </select>
+                        </div>
+                        <div class="form-group" *ngIf="pcInvoiceFlag">
+                            <label>Transaction Invoice Number</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                        <div class="form-group" *ngIf="!pcInvoiceFlag">
+                            <label>Mobile Number</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmed full amount payment</label>
+                            <select class="form-control">
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn custom-btn pull-right">Payment Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card exiting-office-table orderStatus" *ngIf="detailsFound">
+        <div class="card-header">Order Selected & Dispatched to Customer #{{customerID}}</div>
+        <div class="card-body pa-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order No.</th>
+                                <th>Order Inventory Rack</th>
+                                <th>Packets In Orders</th>
+                                <th>Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{orderNumber}}</td>
+                                <td>Rack #{{rackID}}</td>
+                                <td>{{packetOrder}}</td>
+                                <td>xxxxxxxx</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bottom-btn">
+            <button type="button" (click)="StorePOSOrderDeliveryDispatch()" class="btn custom-btn btn-primary">Dispatch Order for Delivery</button>
+        </div>
+
+    </div>
+
+
+    <br>
+</div>
+
+<ng-template #qrtemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Modal</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <img class="w-100" src="{{imgURL}}{{qrcode | slice:1:-4}}jpeg" />
+    </div>
+</ng-template>

@@ -1,0 +1,175 @@
+<div class="content">
+  <h1 class="heading-title">Operate Console<br>
+    <small>Store: Daizy Wines & Liquors</small><small>Console ID: 1458899</small>
+    <span class="refresh-icon"><i class="icofont-refresh"></i></span>
+</h1>
+   <div class="card exiting-office-table orderStatus p-0">
+     <div class="card-header">
+      <span>Product ID: 1234</span>
+      <span>Vodka</span>
+      </div>
+      <div class="card-body pa-0">
+  
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="8%">Sr. No.</th>
+                  <th>Order #</th>
+                  <th>Order Status</th>
+                  <th>Allocated Date & Time</th>
+                  <th>&nbsp;</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>01</td>
+                  <td>3456734</td>
+                  <td>Pending</td>
+                  <td>06/11/2020 10:30 AM</td>
+                  <td><button (click)="openModal(template)" class="btn view-ord-btn">Order Detail & Delivery from Console</button></td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>3456735</td>
+                    <td>Pending</td>
+                    <td>06/11/2020 10:30 AM</td>
+                    <td><button class="btn view-ord-btn">Order Detail & Delivery from Console</button></td>
+                  </tr>
+
+                  <tr>
+                    <td>03</td>
+                    <td>3456736</td>
+                    <td>Pending</td>
+                    <td>06/11/2020 10:30 AM</td>
+                    <td><button class="btn view-ord-btn">Order Detail & Delivery from Console</button></td>
+                  </tr>
+  
+              </tbody>
+            </table>
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+    <div class="card exiting-office-table orderStatus p-0">
+        <div class="card-header">
+         <span>Product ID: 1235</span>
+         <span>Wine</span>
+         </div>
+         <div class="card-body pa-0">
+     
+           <div class="row">
+             <div class="col-md-12">
+               <table class="table">
+                 <thead>
+                   <tr>
+                     <th width="8%">Sr. No.</th>
+                     <th>Order #</th>
+                     <th>Order Status</th>
+                     <th>Allocated Date & Time</th>
+                     <th>&nbsp;</th>
+                     
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr>
+                     <td>01</td>
+                     <td>3456734</td>
+                     <td>Pending</td>
+                     <td>06/11/2020 10:30 AM</td>
+                     <td><button class="btn view-ord-btn">Order Detail & Delivery from Console</button></td>
+                   </tr>
+                   <tr>
+                       <td>02</td>
+                       <td>3456735</td>
+                       <td>Pending</td>
+                       <td>06/11/2020 10:30 AM</td>
+                       <td><button class="btn view-ord-btn">Order Detail & Delivery from Console</button></td>
+                     </tr>
+   
+                     <tr>
+                       <td>03</td>
+                       <td>3456736</td>
+                       <td>Pending</td>
+                       <td>06/11/2020 10:30 AM</td>
+                       <td><button class="btn view-ord-btn">Order Detail & Delivery from Console</button></td>
+                     </tr>
+     
+                 </tbody>
+               </table>
+             </div>
+     
+           </div>
+         </div>
+     
+       </div>
+  
+    <br><br>
+  </div>
+
+  <ng-template #template>
+    <form>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Pending order detail & order delivery for next Workflow</h4>
+     
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="sub-list">
+        <span class="list-item">Product ID: 1234</span>
+        <span class="list-item">Product Name: Vodka</span>
+        <span class="list-item">Order #: 889900</span>
+        <span class="list-item">Status: Pending</span>
+      </div>
+     
+        <table class="table orderStatus">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Item Name</th>
+              <th>Sub-Item Name</th>
+              <th>Order Quantity</th>
+              <th>Quantity Delivered</th>
+              <th>&nbsp;</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>ABS Vodka</td>
+              <td>ABS Vodka_1L</td>
+              <td>02</td>
+              <td> <input type="text" class="form-control" /></td>
+              <td><button class="btn view-ord-btn">Delivery Update</button></td>
+            </tr>
+            <tr>
+                <td>02</td>
+                <td>ABS Vodka</td>
+                <td>ABS Vodka_1L</td>
+                <td>02</td>
+                <td> <input type="text" class="form-control" /></td>
+                <td><button class="btn view-ord-btn">Delivery Update</button></td>
+              </tr>
+              <tr>
+                <td>03</td>
+                <td>ABS Vodka</td>
+                <td>ABS Vodka_1L</td>
+                <td>02</td>
+                <td> <input type="text" class="form-control" /></td>
+                <td><button class="btn view-ord-btn">Delivery Update</button></td>
+              </tr>
+
+          </tbody>
+        </table>
+    
+    
+    </div>
+    </form>
+  </ng-template>

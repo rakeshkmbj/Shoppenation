@@ -1,0 +1,350 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="heading-title">Manage My Store Bank KYC</h1>
+  </div>
+</div>
+<!-- <div class="card">
+    <div class="card-body">
+        <div class="form-field">
+            <div class="col-md-12 reg_address">
+                <div class="custom-radio form-check-inline">
+                    <input type="radio" class="custom-control-input" name="optradio">
+                    <label class="custom-control-label">GST Certificate</label>
+                  </div>  
+
+                  <div class="custom-radio form-check-inline">
+                    <input type="radio" class="custom-control-input" name="optradio">
+                    <label class="custom-control-label">Trade Certificate/License</label>
+                  </div>  
+                  <div class="custom-radio form-check-inline">
+                    <input type="radio" class="custom-control-input" name="optradio">
+                    <label class="custom-control-label">Shop & Establishment License</label>
+                  </div> 
+                  <div class="custom-radio form-check-inline">
+                    <input type="radio" class="custom-control-input" name="optradio">
+                    <label class="custom-control-label">Udhyog Aadhar</label>
+                  </div>
+                 
+                  <div class="custom-radio form-check-inline">
+                    <input type="radio" class="custom-control-input" name="optradio">
+                    <label class="custom-control-label">FSSAI Registration</label>
+                  </div>
+                  <div class="custom-radio form-check-inline">
+                    <input type="radio" class="custom-control-input" name="optradio">
+                    <label class="custom-control-label">Store/Godown</label>
+                  </div>
+            </div>
+            <div class="row Upload-file">
+         <div class="col-md-12">
+            <div class="form-group">
+                <label>Upload your Selected Document</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
+                    <label class="custom-file-label" for="myInput">Choose file</label>
+                </div>
+              </div>
+         </div> 
+        </div>
+        </div>
+    </div>
+   
+  </div> -->
+
+
+<form [formGroup]="storeUserForm">
+  <div class="topLevel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Store</label>
+          <div class="form-control form-level no-border">
+            {{storeName}}
+          </div>
+          <!-- <select class="form-control" formControlName="SUBACCT_OFFICE_ID" (change)="onStoreChange($event)"
+            [ngClass]="{ 'is-invalid': submitted1 && f1.SUBACCT_OFFICE_ID.errors }">
+            <option value="">Select</option>
+            <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">
+              {{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+          </select>
+          <div *ngIf="submitted1 && f1.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
+            <div *ngIf="f1.SUBACCT_OFFICE_ID.errors.required">Store is required</div>
+          </div> -->
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label class="clear">&nbsp;</label>
+        <button (click)="getDisplayApprovedBank()" class="btn width-100 custom-btn">Display my Store Bank</button>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<div class="card exiting-office-table mt-2 pb-0" *ngIf="showApprovedBank">
+  <div class="card-header">
+    Back Office Approved Bank
+    <button (click)="openModal(addStoreBankFormModal)" class="btn custom-btn pull-right">Add Store Bank</button>
+  </div>
+  <div class="card-body pa-0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Bank Name</th>
+          <th>Bank Account No.</th>
+          <th>IFSC Code</th>
+          <th>Type of Account</th>
+          <th>Active Status</th>
+          <th>Locked</th>
+          <!-- <th colspan="2">Action</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{approvedBankList.RETAIL_D2C_BANK_NAME}}</td>
+          <td>{{approvedBankList.RETAIL_D2C_BANK_ACCOUNT_NUMBER}}</td>
+          <td>{{approvedBankList.RETAIL_D2C_BANK_IFSC_CODE}}</td>
+          <td>{{approvedBankList.RETAIL_D2C_TYP_OF_BANK_ACCOUNT}}</td>
+
+
+          <td class="actdct_icon">
+            <span *ngIf="approvedBankList.RETAIL_STORE_BANK_BACKOFFICE_WRKFLOW_APPROVAL; else elseBlock">
+              <img src="assets/images/active_icon.png">
+            </span>
+            <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+          </td>
+
+          <td class="actdct_icon">
+            <span *ngIf="approvedBankList.RETAIL_STORE_BANK_BACKOFFICE_APPROVED_LOCKED_FLG; else elseBlock1">
+              <img src="assets/images/active_icon.png">
+            </span>
+            <ng-template #elseBlock1><img src="assets/images/deactive_icon.png"></ng-template>
+          </td>
+
+          <!-- <td class="delete-icon">
+            <span class="icon"><i class="fa fa-edit"></i></span>
+          </td>
+          <td class="delete-icon">
+            <span class="icon"><i class="fa fa fa-trash"></i></span>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="exiting-office-table mt-2 pb-0" *ngIf="showApprovedBank">
+    <div class="card-header">
+      Back Office Work flow Approvals
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <p class="txt-icon">Bank added & need Work flow Approvals
+          <span *ngIf="approvedBankList.RETAIL_STORE_BANK_BACKOFFICE_WRKFLOW_APPROVAL; else elseBlock2">
+            <img src="assets/images/active_icon.png">
+          </span>
+          <ng-template #elseBlock2><img src="assets/images/deactive_icon.png"></ng-template>
+        </p>
+      </div>
+      <div class="col-md-5">
+        <p class="txt-icon">Edit/Update Allowed
+          <!-- <span *ngIf="approvedBankList.RETAIL_STORE_BANK_BACKOFFICE_WRKFLOW_APPROVAL; else elseBlock3">
+            <img src="assets/images/active_icon.png">
+          </span> -->
+         <img src="assets/images/deactive_icon.png">
+        </p>
+      </div>
+    </div>
+  <div class="card-body pa-0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Bank Name</th>
+          <th>Bank Account No.</th>
+          <th>IFSC Code</th>
+          <th>Type of Account</th>
+          <th>Branch Address</th>
+          <th colspan="2">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{approvedBankList.RETAIL_D2C_BANK_NAME}}</td>
+          <td>{{approvedBankList.RETAIL_D2C_BANK_ACCOUNT_NUMBER}}</td>
+          <td>{{approvedBankList.RETAIL_D2C_BANK_IFSC_CODE}}</td>
+          <td>{{approvedBankList.RETAIL_D2C_TYP_OF_BANK_ACCOUNT}}</td>
+          <td>{{approvedBankList.RETAIL_BRANCH_ADDRESS_DETAIL}}</td>
+          <td class="delete-icon">
+            <span class="icon"><i class="fa fa-edit"></i></span>
+          </td>
+          <td class="delete-icon">
+            <span class="icon"><i class="fa fa fa-trash"></i></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+<button (click)="sendToBackOfficeForApproval()" class="btn mb-3 custom-btn pull-right">Send to back office for Approval</button>
+  </div>
+
+</div>
+
+
+<ng-template #addStoreBankFormModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add my Store Bank <span class="small">Store Id: {{storeid}}</span></h4>
+     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+     <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<form [formGroup]="addStoreBankForm">
+  <div class="topLevel">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Enter Bank Name</label>
+          <select class="form-control" formControlName="RETAIL_D2C_BANK_NAME"
+            [ngClass]="{ 'is-invalid': submitted && f.RETAIL_D2C_BANK_NAME.errors }">
+            <option value="">Select</option>
+            <option value="ICICI Bank">ICICI Bank</option>
+            <option value="State Bank of India">State Bank of India</option>
+            <option value="Axis Bank">Axis Bank</option>
+            <option value="Bank of India">Bank of India</option>
+            <option value="Kotak Bank">Kotak Bank</option>
+            <option value="HDFC">HDFC</option>
+            <option value="Central Bank of India">Central Bank of India</option>
+          </select>
+          <div *ngIf="submitted && f.RETAIL_D2C_BANK_NAME.errors" class="invalid-feedback">
+            <div *ngIf="f.RETAIL_D2C_BANK_NAME.errors.required">Field is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Type of Account</label>
+          <select class="form-control" formControlName="RETAIL_D2C_TYP_OF_BANK_ACCOUNT"
+            [ngClass]="{ 'is-invalid': submitted && f.RETAIL_D2C_TYP_OF_BANK_ACCOUNT.errors }">
+            <option value="">Select</option>
+            <option value="Current">Current</option>
+            <option value="Saving">Saving</option>
+          </select>
+          <div *ngIf="submitted && f.RETAIL_D2C_TYP_OF_BANK_ACCOUNT.errors" class="invalid-feedback">
+            <div *ngIf="f.RETAIL_D2C_TYP_OF_BANK_ACCOUNT.errors.required">Field is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Enter Bank Account Number</label>
+          <input type="text" class="form-control" formControlName="RETAIL_D2C_BANK_ACCOUNT_NUMBER"
+            [ngClass]="{ 'is-invalid': submitted && f.RETAIL_D2C_BANK_ACCOUNT_NUMBER.errors }" />
+          <div *ngIf="submitted && f.RETAIL_D2C_BANK_ACCOUNT_NUMBER.errors" class="invalid-feedback">
+            <div *ngIf="f.RETAIL_D2C_BANK_ACCOUNT_NUMBER.errors.required">Field is required</div>
+            <div *ngIf="f.RETAIL_D2C_BANK_ACCOUNT_NUMBER.errors.minlength">Field must be at least 9 characters</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Enter Bank IFSC Code</label>
+          <input type="text" class="form-control" formControlName="RETAIL_D2C_BANK_IFSC_CODE"
+            [ngClass]="{ 'is-invalid': submitted && f.RETAIL_D2C_BANK_IFSC_CODE.errors }" />
+          <div *ngIf="submitted && f.RETAIL_D2C_BANK_IFSC_CODE.errors" class="invalid-feedback">
+            <div *ngIf="f.RETAIL_D2C_BANK_IFSC_CODE.errors.required">Field is required</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Bank Branch Address</label>
+          <input type="text" class="form-control" formControlName="RETAIL_BRANCH_ADDRESS_DETAIL"
+            [ngClass]="{ 'is-invalid': submitted && f.RETAIL_BRANCH_ADDRESS_DETAIL.errors }" />
+          <div *ngIf="submitted && f.RETAIL_BRANCH_ADDRESS_DETAIL.errors" class="invalid-feedback">
+            <div *ngIf="f.RETAIL_BRANCH_ADDRESS_DETAIL.errors.required">Field is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <fieldset class="form-group">
+            <label>Attach Bank Canceled Cheque</label>
+            <div class="custom-file fileInputProfileWrap">
+              <input name="file" type="file" class="custom-file-input" (change)="onSelectedFile($event)"
+                formControlName="RETAIL_BANK_ACCOUNT_CANCLD_CHEQUE_IMG"
+                [ngClass]="{ 'is-invalid': submitted && f.RETAIL_BANK_ACCOUNT_CANCLD_CHEQUE_IMG.errors }">
+              <div *ngIf="submitted && f.RETAIL_BANK_ACCOUNT_CANCLD_CHEQUE_IMG.errors" class="invalid-feedback">
+                <div *ngIf="f.RETAIL_BANK_ACCOUNT_CANCLD_CHEQUE_IMG.errors.required">Account is required</div>
+
+              </div>
+              <label class="custom-file-label">{{uploadLabel}}</label>
+              <div class="img-space" *ngIf="isImageSaved">
+                <ng-container>
+                  <img [src]="'data:image/jpeg;base64,' + base64textString">
+                </ng-container>
+              </div>
+
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-12 mt-1">
+        <button (click)="addStoreBank()" type="button" class="btn col-md-3 custom-btn float-right">Save Store
+          Bank</button>
+      </div>
+    </div>
+  </div>
+</form>
+</ng-template>
+<!-- <div class="card">
+  <div class="card-header">Add Primary Bank/Document</div>
+  <div class="card-body"><br>
+    <div class="form-field">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Primary Bank Name</label>
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Branch Name</label>
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Account Number</label>
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>IFSC Code</label>
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="Upload-file">
+            <div class="form-group">
+              <label>Upload Cancelled Cheque Image</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="myInput" aria-describedby="myInput">
+                <label class="custom-file-label" for="myInput">Choose file</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div> -->

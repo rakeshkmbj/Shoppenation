@@ -1,0 +1,388 @@
+.header {
+    padding: 0 20px 5px;
+    border-bottom: 5px solid #FF7900;
+    background: #fff;
+    box-shadow: 0px 1px 5px 1px #00000045;
+    position: fixed;
+    z-index: 9999;
+}
+.logo {
+    text-align: left;
+    max-width: 20%;
+}
+.logo span {
+    line-height: 12px;
+    font-weight: 600;
+    font-size: 11px;
+    text-align: left;
+    display: block;
+}
+
+.logo .left {
+    width: 170px;
+    float: left;
+}
+
+
+.logo img {
+    max-width: 60px;
+    margin: 5px 20px 2px;
+}
+
+.middle-field {
+    flex: 0 0 55% !important;
+    max-width: 55% !important;
+    padding: 0;
+}
+
+.menu-options {
+    color: #afafaf;
+    cursor: pointer;
+    float: right;
+    font-size: 22px;
+    height: 38px;
+    left: 0;
+    line-height: 25px;
+    margin-top: 15px;
+    position: relative;
+    text-align: center;
+    width: 41px;
+}
+
+.menu-action {
+    height: 13px;
+    left: 0;
+    margin-left: 5px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 20px;
+}
+
+.menu-action::before {
+    background: #aaa9a9;
+    border-radius: 1px;
+    content: "";
+    height: 3px;
+    left: 0;
+    position: absolute;
+    top: -2px;
+    width: 100%;
+}
+
+.menu-action > i {
+    height: 3px;
+    left: 0;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 20px;
+}
+
+.menu-action > i::before {
+    background: #aaa9a9;
+    border-radius: 1px;
+    content: "";
+    height: 3px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.menu-action::after {
+    background: #aaa9a9;
+    border-radius: 1px;
+    bottom: -2px;
+    content: "";
+    height: 3px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+
+form.form-inline.search-field {
+    position: relative;
+    margin-top: 24px;
+    max-width: 350px;
+    display: inline-block;
+    width: 100%;
+}
+.search-field input {
+    width: 100%;
+    height: 37px;
+}
+
+.search-field button.btn {
+    width: 35px;
+    padding: 0;
+    height: 36px;
+    position: absolute;
+    right: 1px;
+    border: 0;
+    background: #FF7900;
+    border-left: 1px solid #ddd;
+    border-radius: 0 4px 4px 0;
+}
+
+.search-field .btn img {
+    max-width: 20px;
+}
+
+small.user-roll {
+    line-height: 0;
+    display: block;
+    color: #ff7900;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.name-area {
+    min-width: 160px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.name-area > a > img {
+    float: left;
+    margin-left: 10px;
+    margin-top: 12px;
+    width: 38px;
+    border-radius: 50%;
+}
+
+.name-area > a {
+    color: #94979f;
+    float: right;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.name-area > a strong {
+    float: left;
+    font-weight: 500;
+    margin: 20px 0;
+    font-size: 14px;
+}
+.name-area > ul {
+    background: #fff;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    margin: 5px 0 0 0;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 99;
+    transition: all 0.2s linear 0s;
+    border-radius: 0 0 4px 4px;
+    border: 5px solid #ff7900;
+    list-style: none;
+    padding: 0;
+}
+
+.name-area > ul::before {
+    border-bottom: 8px solid #ff7900;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    content: "";
+    left: 82%;
+    position: absolute;
+    top: -8px;
+    transform: translate(-50%, -50%);
+}
+
+.name-area > ul li {
+    position: relative;
+}
+
+.name-area > ul li > a {
+    display: inline-block;
+    -webkit-transition: all 0.2s linear 0s;
+    -o-transition: all 0.2s linear 0s;
+    transition: all 0.2s linear 0s;
+    width: 100%;
+}
+
+.name-area:hover > ul {
+    opacity: 1;
+    visibility: visible;
+}
+
+li.company-name {
+    border-bottom: 2px solid #ddd;
+    padding: 10px;
+    font-size: 10px;
+    line-height: 13px;
+    float: left;
+    font-weight: 700;
+}
+
+.name-area li a {
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+.company-name img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 5px;
+    float: left;
+}
+
+ul.quick-notify-section {
+    float: right;
+    list-style: none;
+    padding: 0;
+    margin: 28px 15px 10px;
+}
+
+.quick-notify-section li {
+    float: left;
+    margin-right: 20px;
+}
+
+.quick-notify-section span {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    position: relative;
+    text-align: center;
+}
+
+.quick-notify-section li strong {
+    position: absolute;
+    font-size: 10px;
+    top: -7px;
+    right: -5px;
+    background: #ddd;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.store_manager .fa {
+    padding: 1px 2px 0 0 !important;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    line-height: 25px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+.cart-img img {
+    max-width: 100px;
+}
+
+td.product-name {
+    font-size: 13px;
+}
+
+.sub, .add {
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.quantity input {
+    border: 0;
+    text-align: center;
+    font-size: 13px;
+    width: 75px;
+}
+
+.price {
+    color: #ff7900;
+}
+
+.free-shipping {
+    float: left;
+}
+
+.fs {
+    font-size: 13px;
+    color: #117a8b;
+    float: left;
+    margin-right: 10px;
+    border-right: 1px solid #ddd;
+    padding-right: 10px;
+}
+
+.db {
+    font-size: 13px;
+    float: left;
+    font-weight: 600;
+}
+.add-remove {
+    float: left;
+    clear: both;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.remove {
+    float: left;
+    font-size: 13px;
+    color: #f70a20;
+    border-right: 1px solid #ddd;
+    margin-right: 10px;
+    padding-right: 10px;
+}
+
+.save-later {
+    font-size: 13px;
+    float: left;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table td, .table th {
+     border-top: 0;
+}
+
+.cart-modal table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-modal table tr:last-child {
+    border-bottom: 0;
+}
+
+.modal-footer .btn {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+.cart-modal td.cart-img {
+    width: 15%;
+}
+
+.cart-modal td.product-name {
+    width: 35%;
+}
+
+.cart-modal td.quantity {
+    width: 20%;
+}
+
+.cart-modal td.price-add-remove {
+    width: 30%;
+}
+

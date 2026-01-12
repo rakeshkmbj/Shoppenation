@@ -1,0 +1,97 @@
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav#main-nav {
+    background: #63030c;
+    height: 100%;
+    overflow: auto;
+}
+
+#main-nav li a {
+    display: block;
+    padding: 10px 25px 10px 12px;
+    line-height: 17px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 12px;
+    float: left;
+    width: 100%;
+    position: relative;
+}
+
+
+nav label {
+    margin-bottom: 0;
+    margin-right: 10px;
+    vertical-align: middle;
+    float: left;
+    margin-top: 0;
+}
+
+.nav-item a label i {
+    font-size: 20px;
+}
+
+nav label img {
+    max-width: 25px;
+    margin-right: 8px;
+}
+
+li.active>a {
+    background: #330408;
+    border-left: 2px solid #fff;
+}
+
+.dropdown li a.active {
+    border-left: 2px solid #fff;
+    color: #ffc107 !important;
+}
+
+#main-nav .dropdown {
+    background: #343a4038;
+    display: none;
+}
+
+#main-nav li.active .dropdown {
+    display: block;
+    background: #8a0f1b;
+}
+
+#main-nav li.active .dropdown a {
+    border-bottom: 1px solid #8e2a2a;
+    padding: 10px 15px 10px 20px;
+}
+
+span.icon {
+    background: url(/assets/images/icons/chevron-right.svg) 4px 0 no-repeat;
+    width: 20px;
+    height: 25px;
+    color: #fff;
+    top: 28%;
+    position: absolute;
+    float: right;
+    transition: all 0.3s;
+    right: 5px;
+}
+
+.active span.icon {
+    background: url(/assets/images/icons/chevron-right.svg) 0 7px no-repeat;
+    transform: rotate(90deg);
+    margin-top: 0;
+}
+
+nav label .fa {
+    font-size: 18px;
+    margin-right: 10px;
+    border: 1px solid #fff;
+    line-height: 20px;
+    width: 35px;
+    height: 35px;
+    padding: 6px;
+    border-radius: 50%;
+    display: block;
+}

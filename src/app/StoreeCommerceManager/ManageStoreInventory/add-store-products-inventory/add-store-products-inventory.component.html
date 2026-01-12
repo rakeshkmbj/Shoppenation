@@ -1,0 +1,256 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Adding my Product Inventory</h1>
+        </div>
+    </div>
+    <form [formGroup]="webStoreForm">
+        <div class="row topLevel">
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    <label>Store</label>
+                    <div class="form-control form-level no-border">
+                        {{storeName}}
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Select my Store Product-Line</label>
+                    <select class="form-control" (change)="onretailDropshipStoreChange($event)" formControlName="RETAIL_D2C_PRODUCT_ID">
+            <option value="">Select</option>
+            <option *ngFor="let productline of productLineList" [value]="productline.RETAIL_D2C_PRODUCT_ID">{{productline.RETAIL_D2C_PRODUCT_NAME}}
+            </option>
+          </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Select Store Item</label>
+
+                    <select formControlName="itemId" class="form-control" (change)="onPItemChange($event)">
+                        <option selected value="">Select</option>
+                        <option *ngFor="let productItem of itemLists" [ngValue]="productItem.RETAIL_D2C_ITEM_ID">{{productItem.RETAIL_D2C_ITEM_NAME}}
+                       </option>
+          </select>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button [disabled]="btnDisabled" type="button" (click)="getAllItemSubItemAvailableForInventory()" class="btn custom-btn float-right">Display Store Product Line Item Sub-Item</button>
+            </div>
+        </div>
+    </form>
+    <div class="box productLevel" *ngIf="showWebstore">
+        <div class="row text-level">
+            <div class="col-md-12">
+
+                <div class="search-field-list">
+                    <div class="search-list-label">Store: <span>{{storeName}}</span>
+                    </div>
+                    <div class="search-list-label">Product Line: <span>{{productName}}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="item-subitem-list">
+            <ul>
+                <li *ngFor="let storeitem of filterItemList">
+
+                    <div class="pro-box storeitem item-box">
+
+                        <img src="{{imgURL}}{{storeitem.ItemImagePath | slice:1:-4}}jpeg" />
+                        <div class="p-details">
+                            <p class="p-name">{{storeitem.ItemName}}</p>
+                            <p class="item-id">Item ID: <b>{{storeitem.ItemId}}</b></p>
+                        </div>
+
+                    </div>
+
+                    <div class="middle-arrow"><i class="fa fa-angle-double-right"></i></div>
+
+                    <div *ngFor="let storesubitem of productLineInventoryList | paginate: { itemsPerPage: 3, currentPage: p }; let i = index" class="sub-item-box">
+
+                        <div class="pro-box" [ngClass]="{'active': storesubitem.isSelected === true}">
+
+                            <img src="{{imgURL}}{{storesubitem.SubItemImagePath | slice:1:-4}}jpeg" />
+                            <div class="p-details">
+                                <p class="p-name">{{storesubitem.SubItemName}}</p>
+                                <p class="p-name"><small>{{storesubitem.SubItemSize}}</small></p>
+
+
+
+
+                                <p class="d-flex inStock"><span>In-Stock:</span>
+                                    <span *ngIf="storesubitem.RETAIL_D2C_STOCK_HOLDER_SUBITEM_IN_STOCK_FLG == true; else elseStock"><i class="ti-check-box"></i></span>
+                                    <ng-template #elseStock><span><i class="ti-close"></i></span></ng-template>
+                                </p>
+                                <p class="d-flex"><span>SKU#:</span> <span>{{storesubitem.RETAIL_D2C_STOCK_SUBITEM_SKU_CODE}}</span></p>
+                                <p class="d-flex"><span>Minimum Inventory Alet:</span>
+                                    <span *ngIf="storesubitem.RETAIL_D2C_STOCK_HOLDER_SUBITEM_STOCK_MIN_ALERT_FLG == true; else elseMIA">Yes</span>
+                                    <ng-template #elseMIA><span>No</span></ng-template>
+                                </p>
+                                <p class="d-flex"><span>Current Stock in Webstore:</span> <span>{{storesubitem.RETAIL_D2C_STOCK_HOLDR_INVENTRY_ON_HAND}} Units</span></p>
+                                <p class="d-flex"><span>All-Day WMS:</span> <span>No</span></p>
+                                <p class="add-stock d-flex"><span>Add Stock in Store:</span>
+                                    <span><input type="number" name="stockinStore{{i}}" (keyup)="onKeyInput($event)" class="form-control" /></span></p>
+                                <p class="min-alert-count d-flex"><span>Min Alert Count:</span>
+                                    <span><input disabled type="number" value="{{storesubitem.RETAIL_D2C_STOCK_HOLDR_MIN_INVNTRY_OFFICE_ALRT_SET_COUNT}}" class="form-control" />
+                                    <i (click)="openModal(alertCountTemplate, storesubitem.SubItemId)" class="ti-pencil-alt"></i></span></p>
+                            </div>
+                            <div class="links">
+                                <a (click)="publicViewModal(publicViewTemplate, storesubitem.SubItemId)">Check Public View</a>
+                                <a>Add Size Matrix & Store SKU#</a>
+                                <a>Add other Details</a>
+                                <a (click)="openActModal(storesubitem.SubItemId)">De-activation & Re-activation</a>
+                                <a (click)="openModalTopPick(topPickTemplate, storesubitem.SubItemId)">Add/Edit to Top-Pick</a>
+                                <a (click)="openModalNewSelf(newSelfTemplate, storesubitem.SubItemId)">Add/Edit to New on-Self</a>
+                            </div>
+                            <div class="add_to_cart">
+                                <button (click)="SaveDropShipItemSubItemSaveInventory(storesubitem.ItemId, storesubitem.SubItemId)" type="button" class="btn">
+                                    Add Inventory to Store
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+
+
+
+
+        </div>
+        <div class="row pull-right">
+            <div class="col-md-12">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<ng-template #alertCountTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Alert Count</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="form-label">Min. Alert Count</label>
+            <input type="number" name="minalertCount" [(ngModel)]="minalertCount" class="form-control" />
+        </div>
+        <button (click)="minAlertCount()" class="btn custom-btn">Save</button>
+    </div>
+</ng-template>
+
+<ng-template #publicViewTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Public View</h4> <i class="ti-pencil-alt"></i>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="publicViewForm">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    SubItem ID
+                    <span>{{subItemId}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Publicaly Available
+                    <select class="form-select" formControlName="RETAIL_D2C_STORE_ITEM_SUBITEM_MARKETPLACE_PUBLISH_APPROVAL_GRANTED_FLG">
+                <option value=true>Yes</option>
+                <option value=false>No</option>
+              </select>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Set Restricted view time
+                    <select class="form-select" formControlName="RETAIL_D2C_STORE_ITEM_SUBITEM_PUBLISH_APPROVAL_TIME_LIMIT_MINUTE">
+                <option value="5">5 mins</option>
+                <option value="10">10 mins</option>
+                <option value="15">15 mins</option>
+                <option value="20">20 mins</option>
+                <option value="30">30 mins</option>
+                <option value="40">40 mins</option>
+                <option value="50">50 mins</option>
+                <option value="60">60 mins</option>
+              </select>
+                </li>
+            </ul>
+        </form>
+        <button (click)="EditSubitemPublicViewStatus()" class="btn custom-btn pull-right mt-3 w-100">Update</button>
+    </div>
+</ng-template>
+
+<ng-template #topPickTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">SubItem on top Pick List</h4>
+        <button type="button" class="btn-close close pull-right" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="showError" class="alert alert-danger" role="alert">
+            {{noTopPick}}
+        </div>
+        <div class="topListData" *ngFor="let data of topPickList">
+            <p>Subitem ID: {{data.RETAIL_TOPPICK_SUBITEM_ID}}</p>
+            <form [formGroup]="topPickForm">
+                <div class="field d-flex">
+                    <p>Available on Top Pick List</p>
+                    <select class="form-select" formControlName="Active_Flg" (change)="onTopPickChange($event)">
+                        <option value='true'>Yes</option>
+                        <option value='false'>No</option>
+                    </select>
+
+
+                </div>
+                <button (click)="updateSubitemTopPick(data.RETAIL_STORE_TOPPICKS_ID, data.RETAIL_TOPPICK_SUBITEM_ID)" class="btn custom-btn float-right">Update TopPick</button>
+
+            </form>
+
+        </div>
+
+        <button *ngIf="showError" (click)="addSubitemTopPick(subItemId)" class="btn custom-btn float-right">Add TopPick</button>
+    </div>
+</ng-template>
+
+<ng-template #newSelfTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">SubItem on New on Self</h4>
+        <button type="button" class="btn-close close pull-right" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="showError1" class="alert alert-danger" role="alert">
+            {{newSelftxt}}
+        </div>
+        <div class="topListData" *ngFor="let data of newSelfData">
+            <p>Subitem ID: {{data.RETAIL_NEW_ON_SHELF_SUBITEM_ID}}</p>
+            <form [formGroup]="newSelfForm">
+                <div class="field d-flex">
+                    <p>Available on New on Self</p>
+                    <select class="form-select" formControlName="Active_Flg" (change)="onnewSelfChange($event)">
+                    <option value='true'>Yes</option>
+                    <option value='false'>No</option>
+                </select>
+                </div>
+                <button (click)="updateSubitemNewonShelf(data.RETAIl_STORE_NEW_ON_SHELF_ID, data.RETAIL_NEW_ON_SHELF_SUBITEM_ID)" class="btn custom-btn float-right">Update NewSelf</button>
+
+            </form>
+        </div>
+
+        <button *ngIf="showError1" (click)="addSubitemNewonShelf(subItemId)" class="btn custom-btn float-right">Add NewSelf</button>
+    </div>
+</ng-template>

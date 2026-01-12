@@ -1,0 +1,106 @@
+<div class="content">
+    <h1 class="heading-title">Home Delivery POS/Self Takeaway POS/Walk-in-POS</h1>
+    <div class="toplevel">
+        <div class="row">
+
+            <div class="col-md-4 order-number-field">
+                <div class="form-group">
+                    <label>Enter Order Number</label>
+                    <input type="text" (keyup)="getOrderNumberValue($event)" class="form-control" />
+                    <div *ngIf="notMatch" class="error">Please enter 11 digit value</div>
+
+                    <button [disabled]="disabled" (click)="getOrderDetails()" style="min-width: 100px" class="btn custom-btn mt-2 pull-right">Send</button>
+                </div>
+            </div>
+            <div class="col-md-8" *ngIf="isStoreDeliveryData">
+                <h5 class="vahan-detail-title">Delivery Center Vahan Details</h5>
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="details">
+                                <p>Delivery Center ID: {{lastMileStoreDPOSData.RETAIL_D2C_DELIVERY_CENTRE_ID}}</p>
+                                <p>Trip ID: {{lastMileStoreDPOSData.RETAIL_D2C_TRIP_ID}}</p>
+                                <p>Vahan ID: {{lastMileStoreDPOSData.HOME_DELIVERY_TRIP_ALLOCATED_TO_VAHAN_ID}}</p>
+                                <p>Vehicle No: {{lastMileStoreDPOSData.RETAIl_DELIVERY_PLATFORM_VEHICLE_NUMBR}}</p>
+                                <p>Mobile No: {{lastMileStoreDPOSData.RETAIL_DELIVERY_PLATFORM_ACCESS_MOBL_NUMBR}}</p>
+                                <p>{{lastMileStoreDPOSData.RETAIL_DELIVERY_PERSON_FIRST_NAME}} {{lastMileStoreDPOSData.RETAIL_DELIVERY_PERSON_MIDDLE_NAME}} {{lastMileStoreDPOSData.RETAIL_DELIVERY_PERSON_LAST_NAME}} <br> Licence #: {{lastMileStoreDPOSData.RETAIL_DELIVERY_PERSON_VEHICLE_LICENSE_NUMBR}}<br>                                    Vehicle Type: {{lastMileStoreDPOSData.RETAIL_DELIVERY_VEHICLE_TYPE}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 pl-0">
+                            <img class="card-img-top" src="{{imgURL}}{{lastMileStoreDPOSData.RETAIl_DELIVERY_PERSON_PHOTO_IMAGE | slice:1:-4}}jpeg" />
+                        </div>
+                        <div class="col-md-5">
+                            <img class="card-img-top" src="{{imgURL}}{{lastMileStoreDPOSData.RETAIL_DELIVERY_PERSON_PHOTO_ID_CARD_IMAGE | slice:1:-4}}jpeg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card exiting-office-table orderStatus" *ngIf="isStoreDeliveryData">
+        <div class="card-header">Order Selected & Dispatched to Ravi Kumar</div>
+        <div class="card-body pa-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order No.</th>
+                                <th>Packets on Rack</th>
+                                <th>Total Packets in Order</th>
+                                <th>Allocated Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{lastMileStoreDPOSData.OrderNumber}}</td>
+                                <td>Rack #{{lastMileStoreDPOSData.RETAIL_D2C_STORAGE_RACK_ID}}</td>
+                                <td>{{lastMileStoreDPOSData.RETAIL_PACKETS_IN_ORDERS}}</td>
+                                <td>{{lastMileStoreDPOSData.HOME_DELIVERY_TRIP_ALLOCATED_TO_VAHAN_DATETIME | date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="text-right">
+            <button type="button" (click)="storePOSOrderDeliveryDispatch(orderDispatchModal)" class="btn custom-btn">Dispatch Order for Delivery</button>
+        </div>
+    </div>
+
+</div>
+<ng-template #orderDispatchModal>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Store Delivery Details</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12"><img src="assets/images/active_icon1.png"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Order Number</div>
+                <div class="col-md-6">{{dispatchedList.RETAIL_ORDER_NUMBR}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Packet Count(s)</div>
+                <div class="col-md-6">{{dispatchedList.RETAIL_D2C_ORDER_PACKET_COUNTS}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Store Id</div>
+                <div class="col-md-6">{{dispatchedList.RETAIL_D2C_ORDER_FROM_STORE_ID}}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>

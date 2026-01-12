@@ -1,0 +1,205 @@
+
+  
+.register-field {
+    max-width: 500px;
+    background: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px #ddd;
+}
+
+  .login-field {
+    padding: 30px 25px;
+}
+
+.top-title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+label.form-forget {
+    float: right;
+    color: #007bff;
+    font-size: 12px;
+    padding: 3px;
+}
+
+.form-control input[type="text"],
+form-control input[type="password"] {
+    height: 40px;
+}
+
+button.close {
+    margin: 10px;
+    font-size: 30px;
+}
+
+.login-field .form-group label {
+    font-weight: 600;
+}
+
+small {
+    line-height: 15px;
+    display: block;
+    padding: 4px 0 0;
+    color: #e56f0b;
+}
+
+.form-group p {
+    font-size: 14px;
+}
+
+.form-group.label-icon img {
+    width: 16px;
+    float: right;
+    margin-top: -8px;
+}
+
+label.form-performa-invoice {
+    display: block;
+    text-align: right;
+    margin-top: 0px;
+    padding: 10px 0;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+label.form-performa-invoice a {
+    display: block;
+    color: #f57921;
+    text-decoration: underline;
+}
+
+label.form-performa-invoice img {
+    width: 20px;
+    margin-right: 5px;
+}
+
+.form-check-inline {
+    width: 100px;
+}
+
+label.block {
+    display: block;
+}
+
+.form-group.input-group label {
+    display: block;
+    width: 100%;
+}
+
+.subs_plan .btn {
+    font-size: 13px;
+    border: 0;
+    padding: 7px 12px 8px;
+    background: #f57921;
+    color: #fff;
+    margin-left: 5px;
+}
+
+.login-field p {
+    line-height: 20px;
+}
+
+.gst-field input {
+    height: 34px;
+    border-radius: 4px 0 0 4px !important;
+}
+
+.gst-field .input-group-text {
+    padding: 5px 15px;
+    margin-bottom: 0;
+    font-size: 13px;
+    line-height: 15px;
+}
+
+.input-group-append {
+    margin-left: -1px;
+    cursor: pointer;
+}
+
+.form-group.otp-fields {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #e9ecef;
+}
+
+.otp-btns .btn {
+    width: 48%;
+    margin: 0 3% 0 0;
+    font-size: 13px;
+    height: 38px;
+}
+
+.otp-fields .otp-btns {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.otp-btns .btn + .btn {
+    margin: 0;
+}
+
+.gst-field button {
+    border: 1px solid #ddd;
+    border-radius: 0 3px 3px;
+    font-size: 13px;
+    padding: 6px 10px;
+}
+
+.success-msg {
+    font-size: 12px;
+    clear: both;
+    width: 100%;
+    color: #28a745;
+    padding: 0px 2px;
+}
+
+.success-msg img {
+    max-width: 14px;
+}
+
+.reg_below_msg p {
+    font-size: 13px !important;
+    line-height: 15px !important;
+}
+
+.order-summary-plan .table td {
+    font-size: 13px;
+    border: 0;
+    padding: 5px;
+}
+
+.order-summary-plan .table td + td {
+    text-align: right;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
+
+.btns .btn {
+    width: 100%;
+    margin-top: 10px;
+  
+}
+
+tr.total {
+    border-top: 1px solid #ddd;
+}
+
+
+
+.step3 .btn.custom-btn {
+    padding: 6px 8px;
+}
+
+.form-control:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

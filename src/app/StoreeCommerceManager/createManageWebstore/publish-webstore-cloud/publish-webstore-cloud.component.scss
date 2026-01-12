@@ -1,0 +1,98 @@
+
+.heading h2 {
+    padding: 10px 5px 10px;
+    font-size: 20px;
+}
+
+.topLevel {
+    background: #fff;
+    padding: 20px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.custom-file {
+     height: 100%;
+}
+
+h1.heading-title {
+
+
+    span {
+        font-size: 10px;
+        text-transform: inherit;
+        background: #495057;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 25px;
+    }
+}
+
+h1.heading-title img {
+    max-width: 65px;
+    margin-right: 5px;
+}
+
+h1.heading-title small {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 13px;
+    position: absolute;
+    left: 80px;
+    bottom: 4px;
+    color: grey;
+}
+
+
+
+.table th, .table td {
+    padding: 5px;
+    line-height: 18px;
+}
+
+td.actdct_icon img {
+    max-width: 25px;
+}
+
+.search-list-label {
+    margin-bottom: 5px;
+}
+
+.btn {
+    font-size: 14px;
+    min-height: 36px;
+}
+
+.list-group-item + .list-group-item {
+    border-top-width: thin;
+}
+
+h6 {
+    font-weight: 600;
+}
+
+.card {
+    min-height: 245px;
+}
+
+h5.card-title img {
+    max-width: 50px;
+    margin-left: 5px;
+}
+
+li.list-group-item span {
+    float: right;
+}
+
+li.list-group-item img {
+    max-width: 50px;
+    float: right;
+}
+
+.list-group-item table {
+    width: 100%;
+}
+
+.list-group-item table td, .list-group-item table th {
+    padding: 5px 10px;
+}

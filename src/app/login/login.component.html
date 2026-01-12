@@ -1,0 +1,98 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Login</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="login-field">
+        <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+
+            <div class="form-group">
+                <label for="domain">Patform</label>
+                <select formControlName="platform" class="form-control" (change)="platformChange($event)" id="platform"
+                    [ngClass]="{ 'is-invalid': submitted && f.platform.errors }">
+                    <option value="">Select</option>
+                    <option value="1">All Day Shop</option>
+                    <option value="2">All Day Distribution</option>
+                    <option value="3">All Day MDR-Connect</option>
+                </select>
+                <div *ngIf="submitted && f.platform.errors" class="invalid-feedback">
+                    <div *ngIf="f.platform.errors.required">Platform is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="domain">Application</label>
+                <select formControlName="domain" class="form-control" (change)="domainChange($event)" id="domain"
+                    [ngClass]="{ 'is-invalid': submitted && f.domain.errors }">
+                    <option value="">Select</option>
+                    <option value="1">Admediaworld</option>
+                    <option value="2">All-Day Kitchen</option>
+                    <option value="3">All-Day Kirana</option>
+                    <option value="4">All-Day Fashion</option>
+                    <option value="5">All-Day Electronics & Large Appliances</option>
+                    <option value="6">All-Day Home & Office Furnitures</option>
+                    <option value="7">All-Day Pharma & Medicos</option>
+                    <option value="8">All-Day Home Décor & Furnishings</option>
+                    <option value="9">All-Day Pet Shoppe & Pet Care</option>
+                    <option value="10">All-Day Garden & Outdoor</option>
+                    <option value="11">All-Day Food & Agro Care</option>
+                    <option value="12">All-Day New & Used Automobile</option>
+                    <option value="13">All-Day Health & Medical Equipments </option>
+                    <option value="14">All-Day Home Office & Automobile Services</option>
+                    <option value="15">All-Day Automobile Spare Parts </option>
+                    <option value="16">All-Day Kitchen & Dining </option>
+                    <option value="17">All-Day Electrical & Lighting</option>
+                    <option value="18">All-Day Mobile & Entertainment Gadgets </option>
+                    <option value="19">All-Day Sanitary Paints & Furnishing</option>
+                    <option value="20">All-Day De-Evento </option>
+                </select>
+                <div *ngIf="submitted && f.domain.errors" class="invalid-feedback">
+                    <div *ngIf="f.domain.errors.required">Domain is required</div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input formControlName="mobile" type="text" class="form-control" placeholder="Mobile Number"
+                    [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }">
+                <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+                    <div *ngIf="f.mobile.errors.required">Mobile Number is required</div>
+                    <div *ngIf="f.mobile.errors.pattern">Please, Enter 10 digit Mobile Number</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input formControlName="password" type="password" class="form-control" placeholder="Enter password"
+                    id="pwd" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                    <div *ngIf="f.password.errors.pattern">Please, Enter 10 digit Mobile Number</div>
+                </div>
+            </div>
+            <!-- routerLink="/dashboard" -->
+
+            <label class="form-forget">
+                <a>Forgot your password?</a>
+            </label>
+            <br>
+            <div class="bottom-btn">
+                <button type="submit" class="btn custom-btn" *ngIf="loadingBtn">Sign In</button>
+                <button class="btn btn-success" type="button" disabled *ngIf="!loadingBtn">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+                <button type="button" class="btn custom-btn" (click)="gotoRegister()">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- <ng-template #registerModal>
+  <button type="button" class="close reg-close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <app-register></app-register>
+
+</ng-template> -->

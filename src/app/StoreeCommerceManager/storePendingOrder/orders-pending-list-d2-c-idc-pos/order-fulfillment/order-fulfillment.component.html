@@ -1,0 +1,148 @@
+<div class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="heading-title">
+                <span class="left-arrow-icon" (click)="back()"><i class="ti-arrow-left"></i></span> Customer Order Details <small><span class="badge badge-primary badge-pill ordNumber">Order: {{orderNumber}}</span></small></h1>
+        </div>
+        <div class="col-md-4">
+            <h1 class="heading-title">Payment Recieved in System&nbsp;&nbsp;&nbsp;
+                <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_RECIEVED_IN_SYSTEM_FLG == true"><i class="ti-check"></i></span>
+                <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_RECIEVED_IN_SYSTEM_FLG == false"><i class="ti-close"></i></span>
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="list-group list-inline">
+                <li class="list-group-item d-flex justify-content-between align-items-center ml-0">Invoice made Date & Time
+                    <span class="badge badge-primary badge-pill date-text">{{getOrderDetailData.RETAIL_D2C_INVOICED_DATETIME | date:'medium'}}</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Invoice made on Holiday
+                    <span *ngIf="getOrderDetailData.RETAIL_D2C_INVOICED_ON_HOLIDAY_FLAG == true"><i class="ti-check"></i></span>
+                    <span *ngIf="getOrderDetailData.RETAIL_D2C_INVOICED_ON_HOLIDAY_FLAG == false"><i class="ti-close"></i></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Invoice made on Regular Day
+                    <span *ngIf="getOrderDetailData.RETAIL_D2C_INVOICED_ON_REGULAR_DAY_FLAG == true"><i class="ti-check"></i></span>
+                    <span *ngIf="getOrderDetailData.RETAIL_D2C_INVOICED_ON_REGULAR_DAY_FLAG == false"><i class="ti-close"></i></span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="row box-field">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body p-0">
+                    <h6 class="card-title">Delivery Type</h6>
+                    <p class="d-flex justify-content-between align-items-center">Self Take Away
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_DELIVERY_TYPE_SELF_TAKEAWAY_FLG == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_DELIVERY_TYPE_SELF_TAKEAWAY_FLG == false"><i class="ti-close"></i></span>
+                    </p>
+                    <p class="d-flex justify-content-between align-items-center">Home Delivery
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_DELIVERY_TYPE_HOME_DELIVERY_FLG == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_DELIVERY_TYPE_HOME_DELIVERY_FLG == false"><i class="ti-close"></i></span>
+                    </p>
+                    <p class="d-flex justify-content-between align-items-center">Order Delivered to Customer
+                        <span *ngIf="getOrderDetailData.Order_Delivery_Done_to_Customer_Flag == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.Order_Delivery_Done_to_Customer_Flag == false"><i class="ti-close"></i></span>
+                    </p>
+                    <button [disabled]="getOrderDetailData.RETAIL_D2C_DELIVERY_TYPE_HOME_DELIVERY_FLG == false" (click)="homeDeliveryDetailModal()" class="card-link btn pull-right">View Home Delivery Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body p-0">
+                    <h6 class="card-title">Payment Mode</h6>
+                    <p class="d-flex justify-content-between align-items-center">Online Payment
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_ONLINE_FLG == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_ONLINE_FLG == false || getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_ONLINE_FLG == null"><i class="ti-close"></i></span>
+                    </p>
+                    <p class="d-flex justify-content-between align-items-center">COD Payment
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_COD_FLG == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_COD_FLG == false || getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_COD_FLG == null"><i class="ti-close"></i></span>
+                    </p>
+                    <p class="d-flex justify-content-between align-items-center">Payment Recieved in System
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_RECIEVED_IN_SYSTEM_FLG == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_PAYMENT_RECIEVED_IN_SYSTEM_FLG == false"><i class="ti-close"></i></span>
+                    </p>
+                    <button [disabled]="getOrderDetailData.RETAIL_D2C_PAYMENT_MODE_COD_FLG != true" (click)="openModal(template)" class="card-link btn pull-right">View COD Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body p-0">
+                    <h6 class="card-title">Store Order Processing</h6>
+                    <p class="d-flex justify-content-between align-items-center">Order Processed by Dashboard
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG == true"><i class="ti-check"></i></span>
+                        <span *ngIf="getOrderDetailData.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG == false || getOrderDetailData.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG == null"><i class="ti-close"></i></span>
+                    </p>
+                    <p class="d-flex justify-content-between align-items-center">Order Processed by Dashboard Date & Time
+                        <span class="text-right">{{getOrderDetailData.Order_Process_by_Store_Date_Time | date:'medium'}}</span>
+                    </p>
+
+                    <p class="d-flex justify-content-between align-items-center">Order Ready Intimation by Store Date & Time
+                        <span class="text-right">{{getOrderDetailData.Order_Ready_Intimation_From_Store_Date_Time | date:'medium'}}</span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">COD Details</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="hideModal()">
+          <i class="ti-close"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ul class="list-group inline-list">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                COD Payment Confirmed
+                <span *ngIf="getOrderDetailData.COD_Payment_Confirm_Flag == true"><i class="ti-check"></i></span>
+                <span *ngIf="getOrderDetailData.COD_Payment_Confirm_Flag == false"><i class="ti-close"></i></span>
+
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                COD Payment Date Time
+                <span class="badge badge-primary badge-pill">{{getOrderDetailData.COD_Payment_Confirm_DATETIME | date:'medium'}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Payment(Vahan)
+                <span *ngIf="getOrderDetailData.COD_Payment_Confirm_From_Vahan_Flag == true"><i class="ti-check"></i></span>
+                <span *ngIf="getOrderDetailData.COD_Payment_Confirm_From_Vahan_Flag == false"><i class="ti-close"></i></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Payment(EPOS)
+                <span *ngIf="getOrderDetailData.COD_Payment_Confirm_From_EPOS_Flag == true"><i class="ti-check"></i></span>
+                <span *ngIf="getOrderDetailData.COD_Payment_Confirm_From_EPOS_Flag == false"><i class="ti-close"></i></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Payment(Cash)
+                <span *ngIf="getOrderDetailData.COD_payment_Done_By_Cash_Flag == true"><i class="ti-check"></i></span>
+                <span *ngIf="getOrderDetailData.COD_payment_Done_By_Cash_Flag == false"><i class="ti-close"></i></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Payment(QR)
+                <span *ngIf="getOrderDetailData.COD_Payment_Done_By_QRCODE_Flag == true"><i class="ti-check"></i></span>
+                <span *ngIf="getOrderDetailData.COD_Payment_Done_By_QRCODE_Flag == false"><i class="ti-close"></i></span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Smart Hub Invoice Id
+                <span class="badge badge-primary badge-pill">{{getOrderDetailData.COD_Payment_Smart_Hub_Payment_invoice}}</span>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Mobile
+                <span class="badge badge-primary badge-pill">{{getOrderDetailData.COD_Payment_Made_By_Mobile_Numbr}}</span>
+            </li>
+
+        </ul>
+
+    </div>
+</ng-template>

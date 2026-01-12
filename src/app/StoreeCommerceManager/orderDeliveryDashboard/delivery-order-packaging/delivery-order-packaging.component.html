@@ -1,0 +1,233 @@
+<div class="content">
+  <h1 class="heading-title">Delivery Order Packaging Workflow Kiosk</h1>
+  <!-- <h6>Store: <strong>Daizy Wines Alpha Road Hazaribagh</strong></h6> 
+  *ngIf="!datalist; else elseBlock
+  -->
+  <div *ngIf="datalist" class="toplevel card">
+<h6 class="no-data"><i class="icofont-exclamation-tringle"></i> No Store Delivery Order Packaging Found</h6>
+  </div>
+  <div *ngIf="!datalist">
+   <div class="toplevel card">
+    <div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="default-img">
+            <img src="assets/images/default-img.jpg" />
+          </div>
+          <button (click)="storeDeliveryOrderPackagingWF()" class="btn new_package_btn">Click here for new packaging</button>
+        </div>
+        <div class="col-md-9" *ngIf="orderPackagingData">
+          <h4>Current Customer Order due for Packaging as FIRST IN FIRST OUT basis</h4>
+          <table class="table table-bordered customer-order-table">
+            <thead>
+              <tr>
+                <th scope="col">Customer ID</th>
+                <th scope="col">Order No.</th>
+                <th scope="col">Order Date & Time</th>
+                <th scope="col">on Package Job</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{customerID}}</td>
+                <td>{{orderNumber}}</td>
+                <td>xxxxxxx</td>
+                <td> <img src="assets/images/active_icon.png" /></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="alert alert-warning" role="alert">
+            <div class="row">
+              <div class="col-md-8">
+                <i class="fa fa-exclamation-triangle"></i> Total Pending Order for Packaging ==
+                <strong>{{NoOfRecords}}</strong>
+              </div>
+              <div class="col-md-4">
+                Delivery Type: {{deliveryType}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+
+   <div class="card exiting-office-table orderStatus" *ngIf="orderPackagingData">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card-header">Cart - {{cartNo}}</div>
+      </div>
+
+    </div>
+
+    <div class="card-body order-item-list pa-0">
+
+      <div class="row">
+        <div class="col-md-9">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>S. No.</th>
+                <th>Product Name</th>
+                <th>Item Brand</th>
+                <th>Sub-Item Name</th>
+                <th>Order Quantity</th>
+                <th>Inventory Out</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subitem of subItemsData; let i = index">
+                <td style="min-width: 50px;">{{i+1}}</td>
+                <td>{{subitem.RETAIL_D2C_PRODUCT_NAME}}<br><small>ID: {{subitem.RETAIL_D2C_PRODUCT_ID}}</small></td>
+                <td>{{subitem.RETAIL_D2C_ITEM_NAME}}<br><small>ID: {{subitem.RETAIL_D2C_ITEM_ID}}</small></td>
+                <td>{{subitem.RETAIL_D2C_SUBITEM_NAME}}<br><small>ID: {{subitem.RETAIL_D2C_SUBITEM_ID}}</small></td>
+                <td>{{subitem.RETAIL_D2C_SUBITEM_QUANTITY_COUNT}}</td>
+                <td>
+                  <button type="button" class="btn grey-btn btn-dark">Scan BarCode for Outsale</button>
+                  <br><small>Out Quantity: {{subitem.RETAIL_D2C_SUBITEM_QUANTITY_COUNT}}</small>
+                  <p class="cbq">Confirm Brand/SubItem Quantity
+                    <input (ngModel)="subItemQuantity" (change)="onChangeEvent($event)"
+                      value="{{subitem.RETAIL_D2C_SUBITEM_QUANTITY_COUNT}}" class="form-control" type="text" />
+                  </p>
+                  <div class="error" *ngIf='subitem.RETAIL_D2C_SUBITEM_QUANTITY_COUNT != subItemQuantity'>
+                    Please match value to order quantity
+                  </div>
+                </td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-3">
+          <div class="vipDiv">
+            <table class="table table-bordered">
+              <tr>
+                <td colspan="2"><strong>Item ID BarCode sale</strong></td>
+              </tr>
+              <tr>
+                <td>01</td>
+                <td>5679009988</td>
+              </tr>
+              <tr>
+                <td>02</td>
+                <td>5679009966</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   </div>
+
+   <div class="card inventory-out-order" *ngIf="orderPackagingData">
+    <div class="t_package">Total Package(s): {{totalPackage}}</div>
+    <div class="form-group form-inline mb-0">
+      <label>Inventory Out & Order Quantity Matched</label>
+      <select (change)="onChangeInventory($event.target.value)" class="form-control">
+        <option selected value="Select">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <button type="button" [disabled]="isInventoryYes" data-toggle="modal" (click)="openModal(template)"
+        class="btn custom-btn">Physical Check out
+        from Inventory & Print Sticker</button>
+    </div>
+   </div>
+  </div>
+  <!-- <ng-template #elseBlock>
+    <div class="toplevel no-data card">
+     <p><img src="assets/images/deactive_icon1.png" /> No Store Delivery Order Packaging Found</p>
+    </div>
+  </ng-template> -->
+
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Inventory Details</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Inventory auto done flag
+          <span class="badge badge-primary badge-pill">{{inventoryFlag}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Print sticker flag
+          <span class="badge badge-primary badge-pill">{{printingFlag}}</span>
+        </li>
+
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <button type="button" class="btn custom-btn">Print Order Sticker</button>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Sticker Printed and patched on Order Packets
+          <span class="width-100"><select class="form-control">
+              <option>Yes</option>
+              <option>No</option>
+            </select></span>
+        </li>
+      </ul>
+      <br>
+      <button type="button" (click)="packaingDoneOrderDeliveryReady(templateNested)" class="btn custom-btn">Proceed for
+        packaging done & order ready for Delivery</button>
+    </div>
+
+
+  </ng-template>
+
+</div>
+
+
+
+
+
+
+
+
+
+<ng-template #templateNested>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Order Details</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef2?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <ng-container *ngIf="orderPlace else resultNA;">
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-body pa-0">
+          <p style="color: #ff5722;">{{orderPlace.Message}}</p>
+          <h5 class="card-title">Order Number: <strong>{{orderPlace.RETAIL_ORDER_NUMBR}}</strong></h5>
+          <div class="row">
+            <div class="col-md-6">Storage Rack-ID:</div>
+            <div class="col-md-6">{{orderPlace.RETAIL_D2C_SORAGE_RACK_ID}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">Allocated Storage Rack Name</div>
+            <div class="col-md-6">{{orderPlace.RETAIL_D2C_STORAGE_RACK_NAME}}</div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">Total Packets in Orders</div>
+            <div class="col-md-6">{{orderPlace.TOTAL_PACKETS_IN_ORDER}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef2?.hide()">Close</button>
+    </div>
+  </ng-container>
+  <ng-template #resultNA>
+    <p class="p-3 info-text"><i class="icofont-close-line-circled"></i> No Store Delivery Order Packaging Found</p>
+  </ng-template>
+</ng-template>

@@ -1,0 +1,288 @@
+.our-services {
+    padding: 50px 20px;
+}
+
+.our-services section {
+    text-align: center;
+    height: 250px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 0 5px #eee;
+    position: relative;
+}
+
+.our-services h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.our-services span {
+    font-size: 16px;
+}
+
+.digital-transformation {
+    padding: 40px;
+    background: #dd7022;
+}
+
+.digital-transformation h2 {
+    padding-top: 25px;
+    color: #fff;
+    font-size: 22px;
+}
+
+.dtps-provider {
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dtps-provider h5 {
+    font-size: 16px;
+    font-weight: 700;
+    padding: 32px 0;
+    margin: 0;
+    text-align: left;
+}
+
+.dtps-provider p {
+    font-size: 13px;
+    margin: 0;
+}
+
+.dtps-provider span {
+    line-height: 16px;
+    display: inline-block;
+    font-weight: 600;
+    margin-top: 5px;
+    color: #fff;
+}
+
+.learnmore {
+    text-align: right;
+    padding-top: 30px;
+}
+
+.learn-more-btn {
+    padding: 12px 35px;
+    font-size: 18px;
+    font-weight: 600;
+    background: #f57921;
+    border-color: #f57921;
+}
+
+
+
+section.star-performers {
+    padding: 30px 15px;
+}
+
+.padding {
+    padding: 30px 15px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+h1.title {
+    font-size: 25px;
+    margin-bottom: 0px;
+    position: relative;
+    display: inline-block;
+}
+
+h1.title:after {
+    position: absolute;
+    content: "";
+    background: #f57921;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    bottom: -16px;
+    z-index: 999;
+}
+
+.product-items .col-sm-3 {
+    margin-bottom: 20px;
+}
+
+section.partner-store {
+    background: #ff960a;
+}
+
+.partner-store h2 {
+    font-size: 25px;
+    color: #fff;
+    font-weight: bold;
+    padding: 40px 10px;
+    margin: 0;
+}
+
+.partner-store h3 {
+    font-size: 16px;
+    color: #fff;
+    padding: 15px;
+}
+
+.store-details {
+    background: #fff;
+    padding-left: 0;
+    padding-right: 0;
+    height: 110px;
+}
+
+.store-name {
+    float: left;
+    font-size: 18px;
+    background: #f3053c;
+    padding: 15px 5px;
+    height: 90px;
+    width: 148px;
+    line-height: 60px;
+    margin: 10px;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+}
+
+.store-details .img {
+    float: left;
+    margin: 0 5px;
+}
+
+.store-details img {
+    max-width: 110px;
+}
+
+.store-items {
+    float: left;
+    margin: 10px 0;
+}
+
+span.dis-coupon {
+    display: block;
+    font-size: 13px;
+    padding: 10px 0;
+}
+.dis-coupon label {
+    text-decoration: underline;
+}
+
+.carousel-caption {
+    left: 28%;
+}
+
+.carousel-caption p {
+    position: absolute;
+    top: -100%;
+    right: -20%;
+    font-size: 25px;
+    line-height: 28px;
+    background: rgba(0,0,0,.2);
+    padding: 20px 30px;
+    border-radius: 4px;
+    font-family: serif;
+}
+
+button.btn.btn-primary.custom-btn.shop-btn {
+    display: inline-block;
+    width: 350px;
+    font-size: 18px;
+}
+/* 
+.border-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid transparent;
+    transition: .5s ease;
+    height: 100%;
+}
+
+.our-services section:hover .border-box {
+    border: 3px solid #ddd;
+    transform: translate(-15px, -15px);
+    border-radius: 4px;
+}
+
+.gray-scale-frame:hover {
+    filter: grayscale(0%);
+}
+.gray-scale-frame {
+    filter: grayscale(100%);
+} */
+
+section.offer-day {
+    background: #607d8b1a;
+    padding-bottom: 40px;
+    padding-top: 40px;
+}
+
+span.img {
+    padding: 5px;
+    display: block;
+}
+
+.img img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.offer-day h1 {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+.offer-day h1 img {
+    max-width: 60px;
+    margin-right: 10px;
+}
+
+span.free-delivery {
+    font-size: 14px;
+    position: absolute;
+    left: 70px;
+    top: 55px;
+}
+
+button.btn.shop-today-btn {
+    float: right;
+    background: #ff9600;
+    padding: 10px 50px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.carousel-caption h3 {
+    font-size: 55px;
+    font-weight: 900;
+    font-family: serif;
+    text-align: left;
+}
+
+.carousel-caption span {
+    padding-left: 150px;
+}
+
+.offer-day img {
+    width: 100%;
+}
+
+.product-items img {
+    width: 100%;
+}
+
+.mobile-msg.alert-info {
+    font-size: 12px;
+    padding: 10px;
+    margin: 4px 0;
+    border-radius: 3px;
+}
+

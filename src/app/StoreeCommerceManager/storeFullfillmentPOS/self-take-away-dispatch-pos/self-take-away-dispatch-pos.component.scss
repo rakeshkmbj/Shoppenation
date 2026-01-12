@@ -1,0 +1,100 @@
+.toplevel {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.orderStatus td img {
+    max-width: 80px;
+}
+
+.vipDiv {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 3px;
+    min-height: 210px;
+}
+
+.orderStatus td {
+    vertical-align: middle;
+}
+
+.orderStatus td .btn {
+    font-size: 13px;
+}
+.orderStatus small {
+    color: #c50f20;
+    font-size: 90%;
+    font-weight: 600;
+}
+
+.bottom-btn {
+    float: right;
+}
+
+.alert.alert-success {
+    padding: 5px 10px;
+}
+
+.alert .fa {
+    font-size: 25px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.orderStatus {
+.card-header {
+    border: 0;
+}
+.card-body {
+    padding: 0;
+}
+}
+
+.card.customer-details {
+    min-height: 175px;
+    margin: 10px 0;
+    p {
+        font-size: 15px;
+        line-height: 20px;
+        margin-bottom: 10px;
+    }
+
+     span {
+        font-weight: 600;
+    }
+
+}
+
+button.btn.custom-btn {
+    min-width: 100px;
+    font-weight: 600;
+    min-height: 40px;
+}
+
+.invalid-feedback {
+    margin: 0;
+    font-size: 11px;
+}
+
+.p_image {
+        width: 120px;
+        height: 120px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px #ddd;
+}
+
+p.happycodematch {
+    float: left;
+    color: #17a2b8;
+    font-size: 14px;
+
+    i.icofont-check-circled {
+        font-size: 20px;
+        vertical-align: text-top;
+        line-height: 18px;
+    }
+}

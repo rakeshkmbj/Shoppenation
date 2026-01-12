@@ -1,0 +1,46 @@
+i.fa.fa-edit {
+    font-size: 25px;
+    color: #bd2130;
+}
+
+.action-btn {
+    font-size: 0.6rem; /* Equivalent to text-sm */
+    background-color: #10b981; /* Equivalent to bg-green-500 */
+    color: #ffffff; /* Equivalent to text-white */
+    border: none;
+}
+
+.custom-btn,
+button.custom-btn {
+    background: #ba080b !important;
+    color: #fff;
+    border: 0;
+    transition: 1s all;
+    font-size: 12px;
+    min-height: 28px;
+}
+
+.flex-col label {
+    font-size: 1.1rem; /* Adjust label size as needed */
+    font-weight: 500;
+}
+
+.tabset-bg-white {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.card-body.no_data_available {
+    text-align: center;
+    color: #bd2130;
+    img {
+        display: block;
+        text-align: center;
+        margin: 0 auto 5px;
+        max-width: 30px;
+    }
+}
+.card {
+    padding: 0 20px 0;
+}

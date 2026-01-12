@@ -1,0 +1,830 @@
+<div class="content">
+    <h1 class="heading-title">Business Account Allocation Component</h1>
+
+    <div class="card">
+        <div class="card-body pl-0 pr-0">
+            <div>
+                <tabset>
+                    <!-- Primary Seller Flag: Show only "GET SFA for Secondary Account" tab -->
+                    <ng-container *ngIf="PRIMARY_SELLER_FLG">
+                        <tab (selectTab)="onTabChange('Secondary Account')" heading="GET SFA for Secondary Account"
+                            id="tab-secondary">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class=" pb-0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>User ID</th>
+                                                    <th>User First Name</th>
+                                                    <th>User Last Name</th>
+                                                    <th>Details</th>
+                                                    <th>Actions</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="!sfaAccountArr || sfaAccountArr.length === 0">
+                                                    <td colspan="9" class="text-center">No data available</td>
+                                                </tr>
+                                                <tr *ngFor="let user of sfaAccountArr; let i = index">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td>{{ user.UserId }}</td>
+                                                    <td>{{ user.FirstName }}</td>
+                                                    <td>{{ user.LastName }}</td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showDetails(user.Photo, user.MobileNumber, user.RoleId, user.RoleName, showExtraDetails)"
+                                                            class="btn custom-btn float-right">Deatils</button>
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showCredentials(showCredentialsModal, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Credentials</button>
+                                                        <button
+                                                            (click)="sfaEcomReg(sfaRegistration, user.RoleId, user.MobileNumber)"
+                                                            class="btn custom-btn float-right mr-2">SFA Ecomm
+                                                            Registration</button>
+                                                        <button
+                                                            (click)="viewUserAllocated(viewusertemplate, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">View User
+                                                            Acc</button>
+                                                        <button
+                                                            (click)="allocateNewUser(alloacteusertemplate, user.RoleId, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Allocate New
+                                                            Acc</button>
+                                                    </td>
+                                                    <td>
+                                                        <span (click)="deleteUser(deleteUserModal)" class="icon"
+                                                            style="font-size: 1.5em; color: #ba080b;"><i
+                                                                class="fa fa-trash"></i></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </ng-container>
+
+                    <!-- Secondary Seller Flag: Show "GET SFA for Primary Account" and "GET SFA for Teritiary Account" tabs -->
+                    <ng-container *ngIf="SECONDRY_SELLER_FLG">
+                        <tab (selectTab)="onTabChange('Primary Account')" heading="GET SFA for Primary Account"
+                            id="tab-primary">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class=" pb-0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>User ID</th>
+                                                    <th>User First Name</th>
+                                                    <th>User Last Name</th>
+                                                    <th>Details</th>
+                                                    <th>Actions</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="!sfaAccountArr || sfaAccountArr.length === 0">
+                                                    <td colspan="9" class="text-center">No data available</td>
+                                                </tr>
+                                                <tr *ngFor="let user of sfaAccountArr; let i = index">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td>{{ user.UserId }}</td>
+                                                    <td>{{ user.FirstName }}</td>
+                                                    <td>{{ user.LastName }}</td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showDetails(user.Photo, user.MobileNumber, user.RoleId, user.RoleName, showExtraDetails)"
+                                                            class="btn custom-btn float-right">Deatils</button>
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showCredentials(showCredentialsModal, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Credentials</button>
+                                                        <button
+                                                            (click)="sfaEcomReg(sfaRegistration, user.RoleId, user.MobileNumber)"
+                                                            class="btn custom-btn float-right mr-2">SFA Ecomm
+                                                            Registration</button>
+                                                        <button
+                                                            (click)="viewUserAllocated(viewusertemplate, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">View User
+                                                            Acc</button>
+                                                        <button
+                                                            (click)="allocateNewUser(alloacteusertemplate, user.RoleId, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Allocate New
+                                                            Acc</button>
+                                                    </td>
+                                                    <td>
+                                                        <span (click)="deleteUser(deleteUserModal)" class="icon"
+                                                            style="font-size: 1.5em; color: #ba080b;"><i
+                                                                class="fa fa-trash"></i></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab (selectTab)="onTabChange('Teritiary Account')" heading="GET SFA for Teritiary Account"
+                            id="tab-tertiary">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class=" pb-0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>User ID</th>
+                                                    <th>User First Name</th>
+                                                    <th>User Last Name</th>
+                                                    <th>Details</th>
+                                                    <th>Actions</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="!sfaAccountArr || sfaAccountArr.length === 0">
+                                                    <td colspan="9" class="text-center">No data available</td>
+                                                </tr>
+                                                <tr *ngFor="let user of sfaAccountArr; let i = index">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td>{{ user.UserId }}</td>
+                                                    <td>{{ user.FirstName }}</td>
+                                                    <td>{{ user.LastName }}</td>
+                                                    <td>
+                                                        <img *ngIf="user.Photo"
+                                                            [src]="imgURL + (user.Photo.replace('~', ''))"
+                                                            alt="KYC Image" width="40" />
+                                                    </td>
+                                                    <td>{{ user.MobileNumber }}</td>
+                                                    <td>{{ user.RoleId }}</td>
+                                                    <td>{{ user.RoleName }}</td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showCredentials(showCredentialsModal, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Credentials</button>
+                                                        <button
+                                                            (click)="sfaEcomReg(sfaRegistration, user.RoleId, user.MobileNumber)"
+                                                            class="btn custom-btn float-right mr-2">SFA Ecomm
+                                                            Registration</button>
+                                                        <button
+                                                            (click)="viewUserAllocated(viewusertemplate, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">View User
+                                                            Acc</button>
+                                                        <button
+                                                            (click)="allocateNewUser(alloacteusertemplate, user.RoleId, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Allocate New
+                                                            Acc</button>
+                                                    </td>
+                                                    <td>
+                                                        <span (click)="deleteUser(deleteUserModal)" class="icon"
+                                                            style="font-size: 1.5em; color: #ba080b;"><i
+                                                                class="fa fa-trash"></i></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </ng-container>
+
+                    <!-- Tertiary Seller Flag: Show only "GET SFA for Primary Account" tab -->
+                    <ng-container *ngIf="TERITIARY_SELLER_FLG">
+                        <tab (selectTab)="onTabChange('Primary Account')" heading="GET SFA for Primary Account"
+                            id="tab-primary">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pb-0">
+                                        <ng-container
+                                            *ngIf="sfaAccountArr && sfaAccountArr.length > 0; else noAccessTertiary">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr. No.</th>
+                                                        <th>User ID</th>
+                                                        <th>User First Name</th>
+                                                        <th>User Last Name</th>
+                                                        <th>Details</th>
+                                                        <th>Actions</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let user of sfaAccountArr; let i = index">
+                                                        <td>{{ i + 1 }}</td>
+                                                        <td>{{ user.UserId }}</td>
+                                                        <td>{{ user.FirstName }}</td>
+                                                        <td>{{ user.LastName }}</td>
+                                                        <td>
+                                                            <button
+                                                                (click)="showDetails(user.Photo, user.MobileNumber, user.RoleId, user.RoleName, showExtraDetails)"
+                                                                class="px-2 py-1 action-btn">Deatils</button>
+                                                        </td>
+                                                        <td>
+                                                            <button
+                                                                (click)="showCredentials(showCredentialsModal, user.UserId)"
+                                                                class="btn custom-btn float-right mr-2">Credentials</button>
+                                                            <button
+                                                                (click)="sfaEcomReg(sfaRegistration, user.RoleId, user.MobileNumber)"
+                                                                class="px-2 py-1 action-btn">SFA Ecomm
+                                                                Registration</button>
+                                                            <button
+                                                                (click)="viewUserAllocated(viewusertemplate, user.UserId)"
+                                                                class="ml-2 px-2 py-1 action-btn">View User Acc</button>
+                                                            <button
+                                                                (click)="allocateNewUser(alloacteusertemplate, user.RoleId, user.UserId)"
+                                                                class="ml-2 px-2 py-1 action-btn">Allocate New
+                                                                Acc</button>
+                                                        </td>
+                                                        <td>
+                                                            <span (click)="deleteUser(deleteUserModal)" class="icon"
+                                                                style="font-size: 1.5em; color: #ba080b;"><i
+                                                                    class="fa fa-trash"></i></span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </ng-container>
+                                        <ng-template #noAccessTertiary>
+                                            <div class="alert alert-warning text-center my-4">
+                                                The current account does not have access to this data.
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab (selectTab)="onTabChange('Secondary Account')" heading="GET SFA for Secondary Account"
+                            id="tab-secondary">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pb-0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr. No.</th>
+                                                    <th>User ID</th>
+                                                    <th>User First Name</th>
+                                                    <th>User Last Name</th>
+                                                    <th>Details</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="!sfaAccountArr || sfaAccountArr.length === 0">
+                                                    <td colspan="9" class="text-center">No data available</td>
+                                                </tr>
+                                                <tr *ngFor="let user of sfaAccountArr; let i = index">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td>{{ user.UserId }}</td>
+                                                    <td>{{ user.FirstName }}</td>
+                                                    <td>{{ user.LastName }}</td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showCredentials(showCredentialsModal, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Credentials</button>
+                                                        <button
+                                                            (click)="sfaEcomReg(sfaRegistration, user.RoleId, user.MobileNumber)"
+                                                            class="px-2 py-1 action-btn">SFA Ecomm
+                                                            Registration</button>
+                                                        <button
+                                                            (click)="viewUserAllocated(viewusertemplate, user.UserId)"
+                                                            class="ml-2 px-2 py-1 action-btn">View User Acc</button>
+                                                        <button
+                                                            (click)="allocateNewUser(alloacteusertemplate, user.RoleId, user.UserId)"
+                                                            class="ml-2 px-2 py-1 action-btn">Allocate New
+                                                            Acc</button>
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            (click)="showCredentials(showCredentialsModal, user.UserId)"
+                                                            class="btn custom-btn float-right mr-2">Credentials</button>
+                                                        <button
+                                                            (click)="sfaEcomReg(sfaRegistration, user.RoleId, user.MobileNumber)"
+                                                            class="px-2 py-1 action-btn">SFA Ecomm Registration</button>
+                                                        <button
+                                                            (click)="viewUserAllocated(viewusertemplate, user.UserId)"
+                                                            class="ml-2 px-2 py-1 action-btn">View User Acc</button>
+                                                        <button
+                                                            (click)="allocateNewUser(alloacteusertemplate, user.RoleId, user.UserId)"
+                                                            class="ml-2 px-2 py-1 action-btn">Allocate New Acc</button>
+                                                    </td>
+                                                    <td>
+                                                        <span (click)="deleteUser(deleteUserModal)" class="icon"
+                                                            style="font-size: 1.5em; color: #ba080b;"><i
+                                                                class="fa fa-trash"></i></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </ng-container>
+
+                </tabset>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #viewusertemplate>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">View User Allocated Acc.</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <ng-container *ngIf="sfaRelationList && sfaRelationList.length > 0; else noDataAvailable">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Relant Id</th>
+                            <th>B2B Id</th>
+                            <th>Ecom Store Address</th>
+                            <th>Seller Org. Address</th>
+                            <th>Buyer Org. Address</th>
+                            <th>Active status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rel of sfaRelationList; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ rel.RelationId }}</td>
+                            <td>{{ rel.B2BLinkSeqId }}</td>
+                            <td>
+                                <button (click)="showAddress(address, rel.EcomStoreName, rel.EcomStoreAddress)"
+                                    class="btn btn-outline-info btn-sm px-3" style="font-size: 10px;"
+                                    [title]="rel.EcomStoreAddress || rel.EcomStoreName">
+                                    {{ rel.EcomStoreName }}
+                                </button>
+                            </td>
+                            <td>
+                                <button (click)="showAddress(address, rel.SellerStoreName , rel.SellerStoreAddress)"
+                                    class="btn btn-outline-info btn-sm px-3" style="font-size: 10px;"
+                                    [title]="rel.SellerStoreAddress || rel.SellerStoreName">
+                                    {{ rel.SellerStoreName }}
+                                </button>
+                            </td>
+                            <td>
+                                <button (click)="showAddress(address, rel.BuyerStoreName, rel.BuyerStoreAddress)"
+                                    class="btn btn-outline-info btn-sm px-3" style="font-size: 10px;"
+                                    [title]="rel.BuyerStoreAddress || rel.BuyerStoreName">
+                                    {{ rel.BuyerStoreName }}
+                                </button>
+                            </td>
+                            <td class="icon">
+                                <img *ngIf="rel.IsActive; else inactiveIcon" src="../assets/images/active_icon.png" />
+                                <ng-template #inactiveIcon>
+                                    <img src="../assets/images/inactive_icon.png" />
+                                </ng-template>
+                            </td>
+                            <td (click)="editStatus(edit)" class="icon">
+                                <i class="fa fa-edit"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+            <ng-template #noDataAvailable>
+                <div class="text-center my-4">No data available</div>
+            </ng-template>
+        </div>
+
+
+        <div class="modal-footer">
+            <button (click)="modalRef.hide()" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #address>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Store Address</h4>
+            <button type="button" class="close pull-right" aria-label="Close"
+                (click)="closeSmallModal(viewusertemplate)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Store Name</p>
+                </div>
+                <div class="col-md-6">
+                    {{selectedStoreName}}
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Store Address</p>
+                </div>
+                <div class="col-md-6">
+                    {{selectedStoreAddress}}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button (click)="closeSmallModal(viewusertemplate)" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #edit>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Update Active Status</h4>
+            <button type="button" class="close pull-right" aria-label="Close"
+                (click)="closeSmallModal(viewusertemplate)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="activeStatus">Active Status</label>
+                <select id="activeStatus" class="form-control">
+                    <option value="" selected disabled>Select status</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button (click)="closeSmallModal(viewusertemplate)" type="button" class="btn btn-secondary">Save</button>
+            <button (click)="closeSmallModal(viewusertemplate)" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #alloacteusertemplate>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Allocate New Account</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="dropdown1">Account Category For</label>
+                        <select (click)="setAccCategory($event)" id="dropdown1" class="form-control">
+                            <option value="" selected disabled>Select option</option>
+
+                            <option *ngIf="PRIMARY_SELLER_FLG" value="secondary">Secondary</option>
+
+                            <option *ngIf="SECONDRY_SELLER_FLG" value="primary">Primary</option>
+                            <option *ngIf="SECONDRY_SELLER_FLG" value="teritiary">Teritiary</option>
+
+                            <option *ngIf="TERITIARY_SELLER_FLG" value="primary">Primary</option>
+                            <option *ngIf="TERITIARY_SELLER_FLG" value="secondary">Secondary</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select class="form-control" (change)="changeCountry($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">{{country.CNTRY_NM}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>State</label>
+                        <select class="form-control" (change)="changeState($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let state of stateList" [value]="state.STATE_ID">{{state.STATE_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>City</label>
+                        <select class="form-control" (change)="changeCity($event)">
+                            <option selected value="">Select</option>
+                            <option *ngFor="let city of cityList" [value]="city.CITY_ID">{{city.CITY_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 bottom-btn mt-1 mb-3">
+                    <button (click)="getAccount()" type="button" class="btn custom-btn float-right">Get Account</button>
+                </div>
+
+            </div>
+
+            <div *ngIf="showAccList && accountForSFA && accountForSFA.length > 0" class="mt-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>B2B Id</th>
+                            <th>Subacc Id</th>
+                            <th>Store Id</th>
+                            <th>Name</th>
+                            <th>Address Detail</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let acc of accountForSFA; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ acc.LinkId }}</td>
+                            <td>{{ acc.SubacctId }}</td>
+                            <td>{{ acc.StoreId }}</td>
+                            <td>{{ acc.OfficeName }}</td>
+                            <td>
+                                <button (click)="openAccAddress(acc.OfficeName, acc.SubacctId, acc.StoreId, bigaddress)"
+                                    class="btn btn-outline-info btn-sm px-3" [title]="acc.Address || 'No address'">
+                                    Address
+                                </button>
+                            </td>
+                            <td>{{ acc.CategoryName }}</td>
+                            <td>
+                                <button (click)="addSfaRelationModel(acc.LinkId, addStore)"
+                                    class="btn btn-outline-info btn-sm px-3">Add</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="accountForSFA.length === 0">
+                            <td colspan="8" class="text-center">No data available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+            <button (click)="modalRef.hide()" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #sfaRegistration>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">SFA Ecomm Registration</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="sfaRegRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="activeStatus">E-Commerce Stores</label>
+                <select (change)="onSelectStore($event)" id="activeStatus" class="form-control">
+                    <option value="" selected disabled>Select store</option>
+                    <option *ngFor="let store of ecomStoreList" [value]="store.StoreId">
+                        {{ store.OfficeName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button (click)="onSfaRegistration()" type="button" class="btn btn-secondary">SFA Registration for
+                Store</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #addStore>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Add Store</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="addStoreRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="activeStatus">E-Commerce Stores</label>
+                <select (change)="onEcomSelectStore($event)" id="activeStatus" class="form-control">
+                    <option value="" selected disabled>Select store</option>
+                    <option *ngFor="let store of ecomStoreList" [value]="store.StoreId">
+                        {{ store.OfficeName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button (click)="addSfaRelation()" type="button" class="btn btn-secondary">Add</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #showExtraDetails>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Details</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="detailsRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Photo</p>
+                </div>
+                <div class="col-md-6">
+                    <img *ngIf="details.Photo" [src]="imgURL + (details.Photo.replace('~', ''))" alt="KYC Image"
+                        width="40" />
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Mobile</p>
+                </div>
+                <div class="col-md-6">
+                    {{ details.mobile }}
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Role Id</p>
+                </div>
+                <div class="col-md-6">
+                    {{ details.roleId }}
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Role Name</p>
+                </div>
+                <div class="col-md-6">
+                    {{ details.roleName }}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button (click)="detailsRef.hide()" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #deleteUserModal>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Delete User</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="deleteUserRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="activeStatus">Delete SFA User Permanently</label>
+                <select (change)="onEcomSelectStore($event)" id="activeStatus" class="form-control">
+                    <option value="" selected disabled>Select option</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary">Delete</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #showCredentialsModal>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Credentials</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="showcredentialsRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Mobile</p>
+                </div>
+                <div class="col-md-6">
+                    {{credentials.Reg_Mobile}}
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Password</p>
+                </div>
+                <div class="col-md-6">
+                    {{credentials.App_Password}}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button (click)="showcredentialsRef.hide()" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #bigaddress>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Store Address</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="addressRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Store Name</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.storeName}}
+                </div>
+            </div>
+
+            <!-- <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Country</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.Country}}
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>State</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.State}}
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>City</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.City}}
+                </div>
+            </div> -->
+
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Pincode</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.Pincode}}
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Store Address</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.Address}}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button (click)="addressRef.hide()" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>

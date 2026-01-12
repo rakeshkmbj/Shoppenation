@@ -1,0 +1,91 @@
+.toplevel {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.orderStatus td img {
+    max-width: 80px;
+}
+
+.vipDiv {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 3px;
+    min-height: 210px;
+}
+
+.orderStatus td {
+    vertical-align: middle;
+}
+
+.orderStatus td .btn {
+    font-size: 13px;
+}
+.orderStatus small {
+    color: #c50f20;
+    font-size: 90%;
+    font-weight: 600;
+}
+
+.bottom-btn {
+    float: right;
+}
+
+.alert.alert-success {
+    padding: 5px 10px;
+}
+
+.alert .fa {
+    font-size: 25px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.orderStatus {
+.card-header {
+    border: 0;
+}
+.card-body {
+    padding: 0;
+}
+}
+
+.table thead th,
+.table tbody td {
+    padding: 8px;
+    text-align: center;
+    line-height: normal;
+
+}
+
+h3.head-title {
+    font-size: 22px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+label.clear {
+    display: block;
+}
+
+.save-pdf.btn {
+    font-size: 13px;
+    float: right;
+    margin-bottom: 10px;
+}
+
+.row.bank-details {
+    margin: 0;
+}
+
+.row.bank-details + .card-body {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+

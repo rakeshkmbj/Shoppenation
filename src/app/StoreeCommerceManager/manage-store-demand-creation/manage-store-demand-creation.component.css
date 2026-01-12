@@ -1,0 +1,31 @@
+.btn-field .btn {
+    margin-left: 15px;
+}
+
+.actions i {
+    font-size: 20px;
+    margin-left: 8px;
+    color: #bd2130;
+}
+
+td.active-notActive {
+    text-align: center;
+}
+
+.active-notActive img {
+    max-width: 25px;
+}
+
+.custom-btn {
+    background: #ba080b;
+}
+
+button.btn.outline-btn {
+    background: none;
+    border: 1px solid #bd2130;
+    font-size: 12px;
+}
+
+.text-label img {
+    max-width: 20px;
+}

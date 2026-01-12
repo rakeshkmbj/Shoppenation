@@ -1,0 +1,501 @@
+<div class="content">
+    <h1 class="heading-title">Communication Desk ( Post Management )</h1>
+    <div class="card">
+        <div class="card-body pl-0 pr-0">
+            <div>
+                <div class="row topcontent mt-3">
+
+                    <tabset class="col-md-12">
+
+                        <tab heading="Post Responce Centre" id="tab11">
+
+                            <div class="col-md-12 mb-3 pl-0">
+                                <span class="sub-desk-title">
+                                    <strong>MDR-Connect Organization:</strong> Post Response Centre
+                                </span>
+                            </div>
+
+                            <tabset>
+                                <tab heading="My Org. Post Responces" id="tab111">
+
+                                    <div class="card exiting-office-table orderStatus p-0 mt-2"
+                                        *ngIf="postList?.length > 0">
+                                        <div class="card-header">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <span>My Org. Post Responces</span>
+                                                <span class="small">
+                                                    <strong>Storecode:</strong> 3254386586
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body pa-0">
+                                            <div class="row m-0">
+                                                <div class="col-md-12 py-2">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="font">S#</th>
+                                                                <th class="font">Post ID</th>
+                                                                <th class="font">Active</th>
+                                                                <th class="font">Category</th>
+                                                                <th class="font">Domain ID</th>
+                                                                <th class="font">Details</th>
+                                                                <th class="font">Originator</th>
+                                                                <th class="font">Public</th>
+                                                                <th class="font">In-Person</th>
+                                                                <th class="font">Post Management</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let post of postList; let i = index">
+                                                                <td class="font">{{ i + 1 }}</td>
+                                                                <td class="font">{{ post.postId }}</td>
+
+                                                                <!-- Active -->
+                                                                <td class="actdct_icon">
+                                                                    <span *ngIf="post.active; else inactiveIcon">
+                                                                        <img src="assets/images/active_icon.png" />
+                                                                    </span>
+                                                                    <ng-template #inactiveIcon>
+                                                                        <img src="assets/images/deactive_icon.png" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <td class="font">{{ post.category }}</td>
+                                                                <td class="font">{{ post.domainId }}</td>
+
+                                                                <!-- Details Button -->
+                                                                <td>
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-info">Details</button>
+                                                                </td>
+
+                                                                <!-- Originator -->
+                                                                <td class="actdct_icon">
+                                                                    <img *ngIf="post.originator; else notOriginator"
+                                                                        src="assets/images/active_icon.png" />
+                                                                    <ng-template #notOriginator>
+                                                                        <img src="assets/images/deactive_icon.png" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <!-- Public -->
+                                                                <td class="font">
+                                                                    <span *ngIf="post.isPublic"
+                                                                        class="text-success">Yes</span>
+                                                                    <span *ngIf="!post.isPublic"
+                                                                        class="text-danger">No</span>
+                                                                </td>
+
+                                                                <!-- In-Person -->
+                                                                <td class="font">
+                                                                    <span *ngIf="post.inPerson"
+                                                                        class="text-success">Yes</span>
+                                                                    <span *ngIf="!post.inPerson"
+                                                                        class="text-danger">No</span>
+                                                                </td>
+
+                                                                <!-- Post Management Button -->
+                                                                <td>
+                                                                    <button (click)="openResponceCentre(post)"
+                                                                        class="btn btn-sm btn-outline-primary">
+                                                                        Response Centre
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card exiting-office-table orderStatus p-0 mt-2"
+                                        *ngIf="showResponceCentre === true">
+                                        <div class="card-header">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <span>Response Centre</span>
+                                                <span class="small">
+                                                    <strong>Post ID:</strong> P7252
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body pa-0">
+                                            <div class="row m-0">
+                                                <div class="col-md-12 py-2">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S#</th>
+                                                                <th>Resp. ID</th>
+                                                                <th>Org. ID</th>
+                                                                <th>Date</th>
+                                                                <th>Time</th>
+                                                                <th>Public</th>
+                                                                <th>In-Person</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let post of postList; index as i">
+                                                                <td>{{ i + 1 }}</td>
+
+                                                                <td>677878</td>
+
+                                                                <td>2345675678</td>
+
+                                                                <td>06/08/2025</td>
+
+                                                                <td>10:15 PM</td>
+
+                                                                <!-- Public -->
+                                                                <td class="actdct_icon">
+                                                                    <span *ngIf="post.sentPublic; else notPublic">
+                                                                        <img src="assets/images/active_icon.png"
+                                                                            alt="Public" />
+                                                                    </span>
+                                                                    <ng-template #notPublic>
+                                                                        <img src="assets/images/deactive_icon.png"
+                                                                            alt="Not Public" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <!-- In-Person -->
+                                                                <td class="actdct_icon">
+                                                                    <span *ngIf="post.sentInPerson; else notInPerson">
+                                                                        <img src="assets/images/active_icon.png"
+                                                                            alt="In-Person" />
+                                                                    </span>
+                                                                    <ng-template #notInPerson>
+                                                                        <img src="assets/images/deactive_icon.png"
+                                                                            alt="Not In-Person" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <!-- Action Icons -->
+                                                                <td class="action_icon">
+                                                                    <span (click)="openModal(profile)"
+                                                                        class="delete-icon" title="Person">
+                                                                        <i class="fa fa-user"></i>
+                                                                    </span>
+                                                                    <span class="delete-icon" title="Message">
+                                                                        <i class="fa fa-envelope"></i>
+                                                                    </span>
+                                                                    <span class="delete-icon" title="Handshake">
+                                                                        <i class="fa fa-handshake-o"></i>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </tab>
+
+                                <tab heading="Responce to other Org. Post" id="tab112">
+
+                                    <div class="card exiting-office-table orderStatus p-0 mt-2"
+                                        *ngIf="postList?.length > 0">
+                                        <div class="card-header">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <span>Responce to other Org. Post</span>
+                                                <span class="small">
+                                                    <strong>Storecode:</strong> 3254386586
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body pa-0">
+                                            <div class="row m-0">
+                                                <div class="col-md-12 py-2">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="font">S#</th>
+                                                                <th class="font">Post ID</th>
+                                                                <th class="font">Active</th>
+                                                                <th class="font">To Originator Org. ID</th>
+                                                                <th class="font">Sent Public</th>
+                                                                <th class="font">Sent In-Person</th>
+                                                                <th class="font">Details</th>
+                                                                <th class="font">Resp. ID</th>
+                                                                <th class="font">Resp. Text</th>
+                                                                <th class="font">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let post of postList; let i = index">
+                                                                <td class="font">{{ i + 1 }}</td>
+                                                                <td class="font">{{ post.postId }}</td>
+
+                                                                <!-- Active -->
+                                                                <td class="actdct_icon">
+                                                                    <span *ngIf="post.active; else inactiveIcon">
+                                                                        <img src="assets/images/active_icon.png"
+                                                                            alt="Active" />
+                                                                    </span>
+                                                                    <ng-template #inactiveIcon>
+                                                                        <img src="assets/images/deactive_icon.png"
+                                                                            alt="Inactive" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <!-- To Originator Org. ID -->
+                                                                <td class="font">2345675678</td>
+
+                                                                <!-- Sent Public -->
+                                                                <td class="actdct_icon">
+                                                                    <span *ngIf="post.sentPublic; else notPublic">
+                                                                        <img src="assets/images/active_icon.png"
+                                                                            alt="Public" />
+                                                                    </span>
+                                                                    <ng-template #notPublic>
+                                                                        <img src="assets/images/deactive_icon.png"
+                                                                            alt="Not Public" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <!-- Sent In-Person -->
+                                                                <td class="actdct_icon">
+                                                                    <span *ngIf="post.sentInPerson; else notInPerson">
+                                                                        <img src="assets/images/active_icon.png"
+                                                                            alt="In-Person" />
+                                                                    </span>
+                                                                    <ng-template #notInPerson>
+                                                                        <img src="assets/images/deactive_icon.png"
+                                                                            alt="Not In-Person" />
+                                                                    </ng-template>
+                                                                </td>
+
+                                                                <!-- Details Button -->
+                                                                <td>
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-info">Details</button>
+                                                                </td>
+
+                                                                <!-- Resp. ID -->
+                                                                <td class="font">677878</td>
+
+                                                                <!-- Resp. Text Button -->
+                                                                <td>
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-secondary">Resp.
+                                                                        Text</button>
+                                                                </td>
+
+                                                                <!-- Action Icons -->
+                                                                <td class="action_icon">
+                                                                    <span class="delete-icon" title="Person">
+                                                                        <i class="fa fa-user"></i>
+                                                                    </span>
+                                                                    <span class="delete-icon" title="Message">
+                                                                        <i class="fa fa-envelope"></i>
+                                                                    </span>
+                                                                    <span class="delete-icon" title="Handshake">
+                                                                        <i class="fa fa-handshake-o"></i>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </tab>
+
+                            </tabset>
+
+                        </tab>
+
+                        <tab heading="Message Centre" id="tab12">
+
+                        </tab>
+
+                        <tab heading="My Post Engagement Effectiveness" id="tab13">
+
+                        </tab>
+
+                        <tab heading="Turbo Push Effectiveness" id="tab14">
+
+                        </tab>
+
+                    </tabset>
+
+                </div>
+                
+            </div>
+            <br><br>
+            <ngx-spinner template="<img src='assets/images/icons/please_wait.gif' />">
+            </ngx-spinner>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #profile>
+
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Profile</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <tabset class="styled-tabs">
+
+            <!-- Main Profile -->
+            <tab heading="Main Profile" id="tab1">
+                <div class="profilesection">
+                    <div class="profile-row">
+                        <div class="profile-image-big">
+                            <img src="../../../assets/images/profileMyConnect.webp" alt="Rakesh Arora">
+                        </div>
+                        <div class="profile-details">
+                            <p class="profile-name">Rakesh Arora</p>
+                            <p class="profile-title">Promoter</p>
+                            <p class="profile-verified"><strong>Verified:</strong> ✅</p>
+                        </div>
+                    </div>
+
+                    <h4>Moon Light Shades Pvt. Ltd</h4>
+
+                    <p><strong>Category: </strong>Manufacturers</p>
+                    <p><strong>Industry: </strong>Consumer Appliances</p>
+                    <p><strong>Store Code: </strong>1100012100</p>
+                    <p><strong>Employees: </strong>200</p>
+                    <p><strong>Available on Market: </strong>✅</p>
+
+                </div>
+            </tab>
+
+            <!-- Management -->
+            <tab heading="Management" id="tab2">
+                <div style="display:flex;gap:20px;">
+                    <div>
+                        <img class="profile" src="../../../assets/images/profileMyConnect.webp" alt="Rakesh Arora"
+                            style="width:80px;border-radius:50%;">
+                        <p>Rakesh Arora</p>
+                        <small>about</small>
+                    </div>
+                    <div>
+                        <img class="profile" src="../../../assets/images/profileMyConnect.webp" alt="Rakesh Arora"
+                            style="width:80px;border-radius:50%;">
+                        <p>Rakesh Arora</p>
+                        <small>about</small>
+                    </div>
+                    <div>
+                        <img class="profile" src="../../../assets/images/profileMyConnect.webp" alt="Rakesh Arora"
+                            style="width:80px;border-radius:50%;">
+                        <p>Rakesh Arora</p>
+                        <small>about</small>
+                    </div>
+                    <div>
+                        <img class="profile" src="../../../assets/images/profileMyConnect.webp" alt="Rakesh Arora"
+                            style="width:80px;border-radius:50%;">
+                        <p>Rakesh Arora</p>
+                        <small>about</small>
+                    </div>
+                </div>
+            </tab>
+
+            <!-- Prod & Services -->
+            <tab heading="Prod & Services" id="tab3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S#</th>
+                            <th>Code</th>
+                            <th>Product / Service</th>
+                            <th>Image</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td>2567</td>
+                            <td>Leather Jacket Manufacturing</td>
+                            <td>
+                                <img src="https://www.saintg.in/cdn/shop/files/Untitled-2.5_c9f0474e-67c2-4774-b290-ba921b70af0e.jpg?v=1745314291&width=1080"
+                                    alt="Leather Jacket" style="width:50px; border-radius:4px;">
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-info">Detail</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>02</td>
+                            <td>790</td>
+                            <td>Leather Bags Manufacturing</td>
+                            <td>
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWIOKt_FpzmStMjbeZqI0iwVWJg3fLzSsF2A&s"
+                                    alt="Leather Bag" style="width:50px; border-radius:4px;">
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-info">Detail</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </tab>
+
+
+            <!-- Media & Cert -->
+            <tab heading="Media & Cert" id="tab4">
+                <div style="display:flex;gap:20px;">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Our Store" style="width:150px;">
+                        <br>
+                        <p>1890 Our Store</p>
+                    </div>
+                    <div>
+                        <img src="https://designdesk.in/wp-content/uploads/2017/01/AECOM-Lobby.jpg"
+                            alt="Back Office Reception" style="width:150px;">
+                        <br>
+                        <p>890 Back office Reception</p>
+                    </div>
+                </div>
+            </tab>
+
+            <!-- Clients -->
+            <tab heading="Clients" id="tab5">
+                <div style="display:flex;gap:20px;">
+                    <div>
+                        <img class="profile" src="../../../assets/images/profileMyConnect.webp" alt="CEO"
+                            style="width:80px;border-radius:50%;">
+                        <p><strong>LML Exports</strong></p>
+                        <p>Excellent Job done<br>Ravi Kumar</p>
+                    </div>
+                    <div>
+                        <img class="profile" src="../../../assets/images/profileMyConnect.webp" alt="CEO"
+                            style="width:80px;border-radius:50%;">
+                        <p><strong>Finolex Industries</strong></p>
+                        <p>I am satisfied with jobwork</p>
+                    </div>
+                </div>
+            </tab>
+
+            <!-- GEO-Ser -->
+            <tab heading="GEO-Ser" id="tab6">
+                <div>
+                    <p><strong>India: </strong>UP</p>
+                    <p><strong>India: </strong>Maharashtra</p>
+                    <p><strong>India: </strong>Punjab</p>
+                </div>
+            </tab>
+
+        </tabset>
+
+    </div>
+
+</ng-template>

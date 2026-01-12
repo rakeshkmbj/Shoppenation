@@ -1,0 +1,289 @@
+<div class="content">
+
+  <h1 class="heading-title">My Accounts Recievables & Payment from Platform Settlements</h1>
+
+  <div class="toplevel">
+
+    <form>
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Country</label>
+            <select class="form-control" (change)="changeCountry($event)">
+              <option value="">Select</option>
+              <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">
+                {{country.CNTRY_NM}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>State</label>
+            <select class="form-control" (change)="changeState($event)">
+              <option value="">Select</option>
+              <option *ngFor="let state of stateList" [value]="state.STATE_ID">
+                {{state.STATE_NM}}</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-right mb-3">
+          <button (click)="onSecondNodeNetwork()" type="submit" class="btn custom-btn">Primary/Secondary
+            Network</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="card p-0" *ngIf="showNetworkList && (!secondryNodeAccArr || secondryNodeAccArr.length === 0)">
+      <div class="card-header">
+        <span>Primary/Secondary Channel List</span>
+      </div>
+      <div class="card-body no_data_available">
+        <img src="assets/images/deactive_icon1.png" />
+        <span>Data Not Available!</span>
+      </div>
+    </div>
+    <div class="card exiting-office-table orderStatus p-0" *ngIf="showNetworkList && secondryNodeAccArr?.length > 0">
+      <div class="card-header">
+        <span>Primary/Secondary Channel List</span>
+      </div>
+      <div class="card-body pa-0">
+        <div class="row m-0">
+          <div class="col-md-12 py-2">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="font">Sr#</th>
+                  <th class="font">PltfrmId</th>
+                  <th class="font">Subacc Id</th>
+                  <th class="font">Store Id</th>
+                  <th class="font">Name</th>
+                  <th class="font">B2B Id</th>
+                  <th class="font">Category</th>
+                  <th class="font">B2B flg</th>
+                  <th class="font">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of secondryNodeAccArr; let i = index">
+                  <td class="font">{{ i + 1 }}</td>
+                  <td class="font">{{ item.ECOMM_PLATFORM_ID }}</td>
+                  <td class="font">{{ item.SECOND_NODE_ACCT_SUBACCT_ID }}</td>
+                  <td class="font">{{ item.SECOND_NODE_ACCT_STORE_ID }}</td>
+                  <td class="font">{{ item.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</td>
+                  <td class="font">{{ item.ACCT_PRIMRY_SECNDRY_B2B_LINK_SEQ_ID }}</td>
+                  <td class="font">{{ item.CategoryName }}</td>
+                  <td class="font">
+                    <img *ngIf="item.PRIMRY_SECNDRY_ACCTS_b2B_ACTIV_FLG; else inactiveB2B"
+                      src="assets/images/active_icon.png" width="20" />
+                    <ng-template #inactiveB2B>
+                      <img src="assets/images/deactive_icon.png" width="20" />
+                    </ng-template>
+                  </td>
+                  <td>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      <span (click)="generateReport('Receivable')" class="badge bg-primary mr-2 text-white"
+                        style="cursor: pointer; font-size: 0.7rem;">Receivable</span>
+                      <span (click)="generateReport('Payable')" class="badge bg-primary mr-2 text-white"
+                        style="cursor: pointer; font-size: 0.7rem;">Payable
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="showReport == true" class="toplevel">
+
+    <h4>Generate Report For {{reportType}}</h4>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>From Date</label>
+          <div class="input-group">
+            <input type="text" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+              placeholder="dd/mm/yyyy">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+            </div>
+            <!-- <div *ngIf="isSubmitted && f.SELECTED_DATE_FROM.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.SELECTED_DATE_FROM.errors.required">From date is required
+                                                </div>
+                                            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>To Date</label>
+          <div class="input-group">
+            <input type="text" class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+              placeholder="dd/mm/yyyy">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+            </div>
+            <!-- <div *ngIf="isSubmitted && f.SELECTED_DATE_TO.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.SELECTED_DATE_TO.errors.required">To date is required
+                                                </div>
+                                            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+
+        <div class="form-group">
+          <label class="clear">&nbsp;</label>
+          <button (click)="generate()" type="button" class="btn custom-btn btn-primary">Generate Report</button>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div *ngIf="showGenerate == true" class="card exiting-office-table orderStatus">
+
+    <div class="card-body pa-0">
+
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Order<br> Date</th>
+                <th>Customer#</th>
+                <th>Order</th>
+                <th>Total<br> Order Amt.(RS)</th>
+                <th>Amt Due to Vend<br> After Platform Exp.(RS)</th>
+                <th>Pending Status</th>
+                <th>Settled<br> Bank Transaction</th>
+                <th>Bank<br> Transaction Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>01</td>
+                <td>12/05/2020</td>
+                <td>2030567898</td>
+                <td>35677</td>
+                <td> 554.00</td>
+                <td> 535.00</td>
+                <td> Paid</td>
+                <td> B3045645656</td>
+                <td> 19/05/2020</td>
+              </tr>
+              <tr>
+                <td>02</td>
+                <td>12/05/2020</td>
+                <td>2030567898</td>
+                <td>35677</td>
+                <td> 554.00</td>
+                <td> 535.00</td>
+                <td> Paid</td>
+                <td> B3045645656</td>
+                <td> 19/05/2020</td>
+              </tr>
+              <tr>
+                <td>03</td>
+                <td>12/05/2020</td>
+                <td>2030567898</td>
+                <td>35677</td>
+                <td> 554.00</td>
+                <td> 535.00</td>
+                <td> Paid</td>
+                <td> B3045645656</td>
+                <td> 19/05/2020</td>
+              </tr>
+              <tr>
+                <td>04</td>
+                <td>12/05/2020</td>
+                <td>2030567898</td>
+                <td>35677</td>
+                <td> 554.00</td>
+                <td> 535.00</td>
+                <td> Paid</td>
+                <td> B3045645656</td>
+                <td> 19/05/2020</td>
+              </tr>
+              <tr>
+                <td>05</td>
+                <td>12/05/2020</td>
+                <td>2030567898</td>
+                <td>35677</td>
+                <td> 554.00</td>
+                <td> 535.00</td>
+                <td> Paid</td>
+                <td> B3045645656</td>
+                <td> 19/05/2020</td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="row bank-details">
+      <div class="col-md-10">
+        <h5>Bank Settled for above Transaction</h5>
+      </div>
+    </div>
+
+    <div class="card-body pa-0">
+
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Bank<br> Name</th>
+                <th>IFSC<br> Code</th>
+                <th>Account<br> Number</th>
+                <th>Bank<br> Transaction#</th>
+                <th>Bank Batch<br> Transaction Amt.(RS)</th>
+                <th>Bank<br> Transaction Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HDFC</td>
+                <td>HDFC1010890</td>
+                <td>20305678988876</td>
+                <td>B3045645656</td>
+                <td> 4792.00</td>
+                <td> 19/05/2020</td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>

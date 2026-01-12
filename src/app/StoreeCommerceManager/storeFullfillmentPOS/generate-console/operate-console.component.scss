@@ -1,0 +1,156 @@
+.toplevel {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.heading-title small {
+    margin-right: 75px;
+}
+
+.vipDiv {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 3px;
+    min-height: 210px;
+}
+
+.orderStatus td {
+    vertical-align: middle;
+}
+
+.orderStatus td .btn {
+    font-size: 13px;
+    padding: 4px 10px;
+}
+.orderStatus small {
+    color: #c50f20;
+    font-size: 90%;
+    font-weight: 600;
+}
+
+.bottom-btn {
+    float: right;
+}
+
+.alert.alert-success {
+    padding: 5px 10px;
+}
+
+.alert .fa {
+    font-size: 25px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.orderStatus {
+.card-header {
+    border: 0;
+}
+.card-body {
+    padding: 0;
+
+}
+}
+
+h3.head-title {
+    font-size: 22px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.icon .fa {
+    font-size: 20px;
+    vertical-align: top;
+    color: #17a2b8;
+}
+
+.orderStatus .icon img {
+    max-width: 25px;
+}
+
+.orderStatus .btn {
+    background: #021422;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 12px !important;
+    border: 1px solid #21333c;
+
+ i {
+        font-size: 18px;
+        vertical-align: middle;
+        padding-right: 5px;
+    }
+}
+
+button.btn.view-del-btn {
+    background: #63030c !important;
+}
+
+.table thead th {
+    border: 0;
+}
+
+.toplevel, .card {
+    padding: 0 20px 0;
+}
+
+.table th{
+    text-align: center;
+    line-height: 13px;
+    font-weight: 600;
+    font-size: 13px;
+    border-top: 0;
+}
+
+.table td {
+    text-align: center;
+}
+
+span.refresh-icon {
+    float: right;
+    color: #021422;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+span.list-item {
+    border: 1px solid #cfd8dc;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 25px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+td.icon {
+    padding: 0 !important;
+}
+
+button.btn.custom-btn {
+    min-width: 100px;
+}
+
+.input-group-prepend + .invalid-feedback {
+    top: 35px;
+}
+
+.card-header {
+    padding: 10px 15px;
+    background: #63030c;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 500;
+
+ span {
+        float: left;
+    }
+    span + span {
+        float: right;
+    }
+}

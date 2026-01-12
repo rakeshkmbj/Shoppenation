@@ -1,0 +1,356 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Manage my Store Users</h1>
+        </div>
+    </div>
+    <form [formGroup]="storeUserForm">
+        <div class="topLevel">
+            <div class="row">
+                <div class="col-md-9">
+
+                    <div class="form-group">
+                        <label>Store</label>
+                        <div class="form-control form-level no-border">
+                            {{storeName}}
+                        </div>
+                        <!-- <select class="form-control" formControlName="SUBACCT_OFFICE_ID" (change)="onStoreChange($event)" [ngClass]="{ 'is-invalid': submitted && f.SUBACCT_OFFICE_ID.errors }">
+          <option selected value="">Select</option>
+          <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+        </select>
+        <div *ngIf="submitted && f.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
+          <div *ngIf="f.SUBACCT_OFFICE_ID.errors.required">Store is required</div>
+      </div>  -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-9 mt-1">
+                    <button (click)="openModal(addStoreUserModal)" class="btn custom-btn float-right">Add new User of
+                        Store</button>
+                    <button (click)="getMRDUserList()" type="button" class="btn btn-secondary float-right mr-2">Display
+                        MDR App Users</button>
+                    <button (click)="getUserStoreList()" type="button"
+                        class="btn btn-secondary float-right mr-2">Display Users of Store</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div *ngIf="showuserStore" class="card exiting-office-table mt-2 pb-0">
+        <div class="card-header">
+            Already Added User(s)
+        </div>
+        <div class="card-body pa-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Role of User</th>
+                        <th>Status</th>
+                        <th>Details</th>
+                        <!-- <th>Password</th>
+                        <th>Address</th> -->
+                        <!-- <th>Photo</th> -->
+                        <th colspan="3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let userStore of userStoreList; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{userStore.RETAIL_USR_ID}}</td>
+                        <td>{{userStore.RETAIL_USR_FIRST_NAME}} {{userStore.RETAIL_USR_LAST_NAME}}</td>
+                        <td>{{userStore.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR}}</td>
+                        <td>{{userStore.RETAIL_USR_ROLE_Name}}
+                            <!-- <span *ngIf="userStore.RETAIL_USR_ROLE == 1">Admin</span>
+                  <span *ngIf="userStore.RETAIL_USR_ROLE == 2">Super Admin</span>
+                  <span *ngIf="userStore.RETAIL_USR_ROLE == 3">Delivery POS Incharge</span>
+                  <span *ngIf="userStore.RETAIL_USR_ROLE == 4">Order Packaging Incharge</span>
+                  <span *ngIf="userStore.RETAIL_USR_ROLE == 5">Store Inventory Incharge</span>
+                  <span *ngIf="userStore.RETAIL_USR_ROLE == 6">FA Incharge</span> -->
+
+
+                        </td>
+                        <td class="actdct_icon">
+                            <span *ngIf="userStore.RETAIL_D2C_ACCT_INTRNL_CSTMR_ISACTIV_FLG; else elseBlock">
+                                <img src="assets/images/active_icon1.png">
+                            </span>
+                            <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                        </td>
+                        <td><button
+                                (click)="openDetails(showDetails, userStore.RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD, userStore.RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS, userStore.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path)"
+                                class="btn btn-sm btn-outline-info">Detail</button></td>
+                        <!-- <td>{{userStore.RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD}}</td>
+                        <td>{{userStore.RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS}}</td> -->
+                        <!-- <td class="icon"><img
+                                src="{{imgURL}}{{userStore.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path | slice:1:-4}}jpeg" />
+                        </td> -->
+                        <td class="delete-icon"
+                            (click)="getRetailStoresById(addStoreUserModal, userStore.RETAIL_USR_ID, userStore.RETAIL_STORE_ID)">
+                            <span class="icon"><i class="fa fa-edit"></i></span>
+                        </td>
+                        <td>
+                            <button (click)="registerOnMdr(registerMDR, userStore)" class="btn custom-btn">Register on
+                                MDR</button>
+                        </td>
+                        <td class="delete-icon">
+                            <span (click)="deleteAcc(userStore)" class="icon"><i class="fa fa fa-trash"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div *ngIf="showMdrRegistedUserList" class="card exiting-office-table mt-2 pb-0">
+        <div class="card-header">
+            MDR Registered User(s)
+        </div>
+        <div class="card-body pa-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Password</th>
+                        <th>PIC</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let user of mdrRegistedUserList; index as i">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ user.RETAIL_D2C_ACCT_INTERNAL_USER_ID }}</td>
+                        <td>{{ user.RETAIL_D2C_ACCT_INTERNAL_FIRST_NAME }} {{ user.RETAIL_D2C_ACCT_INTERNAL_LAST_NAME }}
+                        </td>
+                        <td>{{ user.RETAIL_D2C_ACCT_USR_EMAIL_ID }}</td>
+                        <td>{{ user.RETAIL_D2C_CUSTOMER_REGISTRO_PRIMARY_MOBIL_NUMBER }}</td>
+                        <td>{{ user.RETAIL_D2C_CUSTOMER_REGISTERD_PASS_PASSWORD }}</td>
+
+                        <td class="icon">
+                            <img *ngIf="user.RETAIL_D2C_ACCT_INTERNAL_CUSTMR_PHOTO"
+                                src="{{ imgURL }}{{ user.RETAIL_D2C_ACCT_INTERNAL_CUSTMR_PHOTO | slice:1:-4 }}jpeg"
+                                alt="User Photo" width="60" />
+                        </td>
+
+                        <td class="delete-icon">
+                            <span (click)="deleteAcc(user)" class="icon">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #registerMDR>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Register On MDR App</h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="details-container">
+            <div class="form-group">
+                <label>User Mobile Number:&nbsp;</label>
+                <span>{{ slectedUserStore.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-2">
+                <button (click)="registerToMDR(slectedUserStore)" type="button"
+                    class="btn custom-btn float-right">Register Users On MDR App</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #showDetails>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Shoppenation Detail</h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="details-container">
+            <div class="details-row">
+                <label>Photo:</label>
+                <img [src]="imgURL + (selectedPhoto | slice:1:-4) + 'jpeg'" alt="Profile Photo" class="details-photo" />
+            </div>
+
+            <div class="details-row">
+                <label>Password:</label>
+                <span>{{ selectedPassword }}</span>
+            </div>
+
+            <div class="details-row">
+                <label>Address:</label>
+                <span>{{ selectedAddress }}</span>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #addStoreUserModal>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            {{ editMode != true ? 'Add Store User' : 'Update Store User' }}
+            <span class="small">Store Id: {{storeid}}</span>
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="addStoreUserForm">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_USR_FIRST_NAME">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_USR_LAST_NAME">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="text" maxlength="10" class="form-control"
+                            formControlName="RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR.errors }">
+                        <div *ngIf="submitted1 && f1.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR.errors"
+                            class="invalid-feedback">
+                            <div *ngIf="f1.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR.errors.required">Mobile is required
+                            </div>
+                            <div *ngIf="f1.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR.errors.minlength">Mobile must be 10
+                                characters</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Email Id</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_USR_EMAIL_ID"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.RETAIL_USR_EMAIL_ID.errors }">
+                        <div *ngIf="submitted1 && f1.RETAIL_USR_EMAIL_ID.errors" class="invalid-feedback">
+                            <div *ngIf="f1.RETAIL_USR_EMAIL_ID.errors.required">Email is required</div>
+                            <div *ngIf="f1.RETAIL_USR_EMAIL_ID.errors.email">Email must be a valid email address</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4" *ngIf="ispassword">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Role Allocated</label>
+                        <select class="form-control" formControlName="RETAIL_USR_ROLE" (change)="onRoleChange($event)">
+                            <option value="Select">Select</option>
+                            <option value="1">Super Admin</option>
+                            <option value="2">Admin</option>
+                            <option value="3">Store Delivery POS Incharge</option>
+                            <option value="4">Store Order Packaging Incharge</option>
+                            <option value="5">Store Inventory Incharge</option>
+                            <option value="6">Finncial Accounts Incharge</option>
+
+                            <option *ngIf="SECONDRY_SELLER_FLG == true" value="15">SFA TERITIARY SALES</option>
+                            <option *ngIf="PRIMARY_SELLER_FLG == true" value="16">SFA SECONDARY SALES</option>
+                            <option *ngIf="SECONDRY_SELLER_FLG == true || TERITIARY_SELLER_FLG == true" value="17">SFA
+                                MANUFACTURER PURCHASE</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h4 class="mb-2 pl-3">Other Details</h4>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Resistent Address</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label>Attach User Photo</label>
+                            <div class="custom-file fileInputProfileWrap">
+                                <input formControlName="RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO" name="file"
+                                    id="DomainImage" type="file" (change)="onSelectedFile($event)"
+                                    class="custom-file-input">
+                                <label class="custom-file-label">{{uploadLabel}}</label>
+                                <div class="img-space" *ngIf="isImageSaved">
+                                    <ng-container>
+                                        <img [src]="'data:image/jpeg;base64,' + base64textString">
+                                    </ng-container>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label>Attach Govt. ID Photo Card</label>
+                            <div class="custom-file fileInputProfileWrap">
+                                <input formControlName="RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO_ID" name="file"
+                                    type="file" (change)="onSelectedFile1($event)" class="custom-file-input">
+                                <label class="custom-file-label">{{uploadLabel1}}</label>
+                                <div class="img-space" *ngIf="isImageSaved1">
+                                    <ng-container>
+                                        <img [src]="'data:image/jpeg;base64,' + base64textString1">
+                                    </ng-container>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mt-2">
+                    <button *ngIf="editMode" (click)="EditStoreUsers()" type="button"
+                        class="btn custom-btn float-right">Update User Details</button>
+                    <button *ngIf="!editMode" (click)="addStoreUser()" type="button"
+                        class="btn custom-btn float-right">Save User Details</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ngx-spinner template="<img src='assets/images/icons/please_wait.gif' />">
+</ngx-spinner>

@@ -1,0 +1,28 @@
+.topLevel {
+    background: #fff;
+    padding: 20px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.report-radio-fields .form-check {
+    min-width: 85px;
+}
+
+.or span {
+    background: #e9ecef;
+    padding: 10px;
+    border-radius: 25px;
+    margin-top: 5px;
+}
+
+.relative {
+    position: relative;
+}
+
+i.ti-calendar {
+    position: absolute;
+    top: 30px;
+    font-size: 20px;
+    right: 8px;
+}

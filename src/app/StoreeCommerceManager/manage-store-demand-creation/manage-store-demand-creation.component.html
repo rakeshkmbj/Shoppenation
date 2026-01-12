@@ -1,0 +1,218 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">My Store Purchase Demand Creation<br>
+           </h1>
+          
+        </div>
+    </div>
+    <div class="toplevel">
+        <div class="row">
+          
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Store Product Line</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                      <option>Vodka</option>
+                      
+                    </select>
+                  </div>
+                  </div>
+           
+            <div class="col-md-6"><br>
+              <button type="button" class="btn custom-btn">Show Store Inventory Minimum Alert Report</button>
+              
+            </div>
+        </div>
+    </div>
+
+<div class="card">
+    <div class="row text-cart">
+        <div class="col-md-3">
+            Minimum Alert Report
+        </div>
+        <div class="col-md-3">
+            As on Date: 12/10/2021 10:30 AM
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>S. No.</th>
+            <th>Product Line</th>
+            <th>Items</th>
+            <th>Sub-Items</th>
+            <th>Minimum Stock Alert</th>
+            <th>Date Alert Generated</th>
+        </tr>
+        <tr>
+            <td>01</td>
+            <td>Vodka<br><small>id: 12345</small></td>
+            <td>Absolute Vodka</td>
+            <td>Absolute Vodka 1 Lt.(234)</td>
+            <td class="active-notActive"><img src="assets/images/active_icon1.png" /></td>
+            <td>25/10/2021 6:30 PM</td>
+        </tr>
+
+        <tr>
+            <td>02</td>
+            <td>Vodka<br><small>id: 12335</small></td>
+            <td>Absolute Vodka</td>
+            <td>Absolute Vodka 1 Lt.(234)</td>
+            <td class="active-notActive"><img src="assets/images/active_icon1.png" /></td>
+            <td>25/10/2021 6:30 PM</td>
+        </tr>
+    </table>
+    <div class="bottom-btn">
+        <button class="btn custom-btn">Create Purchase Demand</button>
+    </div>
+</div>
+
+<div class="card">
+    <h4>Display Cart</h4>
+    <div class="row text-cart">
+        <div class="col-md-3">
+            Cart #: 14674857854
+        </div>
+        <div class="col-md-3">
+            Date: 12/10/2021  10:30 AM
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>S. No.</th>
+            <th>Product Line</th>
+            <th>Items</th>
+            <th>Sub-Items</th>
+            <th>L1 Price</th>
+            <th>Added in Cart</th>
+            <th>No. of Units</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <td>01</td>
+            <td>Vodka<br><small>id: 12345</small></td>
+            <td>Absolute Vodka</td>
+            <td>Absolute Vodka 1 Lt.(234)</td>
+            <td>23000/case</td>
+            <td class="active-notActive"><img src="assets/images/active_icon1.png" /></td>
+            <td><input class="form-control" type="number" ></td>
+            <td class="actions"><i class="icofont-ui-edit"></i> <i class="icofont-ui-delete"></i></td>
+        </tr>
+
+        <tr>
+            <td>02</td>
+            <td>Vodka<br><small>id: 14345</small></td>
+            <td>Absolute Vodka</td>
+            <td>Absolute Vodka 1 Lt.(254)</td>
+            <td>23000/case</td>
+            <td class="active-notActive"><img src="assets/images/active_icon1.png" /></td>
+            <td><input class="form-control" type="number" ></td>
+            <td class="actions"><i class="icofont-ui-edit"></i> <i class="icofont-ui-delete"></i></td>
+        </tr>
+    </table>
+    <div class="bottom-btn">
+        <button class="btn custom-btn" (click)="openModal(template)">Add more in Purchase Cart</button>
+    </div>
+</div>
+
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Add more in Purchase Cart</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Store Product Line</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>Vodka</option>
+                  
+                </select>
+              </div>
+              </div>
+              <div class="col-md-6">
+              <div class="form-group">
+                <label for="exampleFormControlSelect2">Items</label>
+                <select class="form-control" id="exampleFormControlSelect2">
+                  <option>Sub Vodka</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              </div>
+              <div class="col-md-12">
+              <div class="bottom-btn">
+                <button class="btn custom-btn">Show Sbuitems</button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th>S. No.</th>
+                    <th>Sub-Items</th>
+                    <th>Quantity in Stock</th>
+                    <th>L1 Price</th>
+                    <th>Quantity</th>
+                    <th>Add to Cart</th>
+                   
+                </tr>
+                <tr>
+                    <td>01</td>
+                    <td>Magic M 1 Ltr 1000ML</td>
+                    <td>379 Units</td>
+                    <td>970</td>
+                    <td> <select class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </td>
+                   <td><button class="btn outline-btn">Add to Cart</button></td>
+                    
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>Magic M 1 Ltr 1000ML</td>
+                    <td>379 Units</td>
+                    <td>970</td>
+                    <td> <select class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </td>
+                   <td><button class="btn outline-btn">Add to Cart</button></td>
+                    
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>Magic M 1 Ltr 1000ML</td>
+                    <td>379 Units</td>
+                    <td>970</td>
+                    <td> <select class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                      </select>
+                    </td>
+                   <td><button class="btn outline-btn">Add to Cart</button></td>
+                    
+                </tr>
+                </table>
+          </div>
+      </div>
+    </div>
+  </ng-template>

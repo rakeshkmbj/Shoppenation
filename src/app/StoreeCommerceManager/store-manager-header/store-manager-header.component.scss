@@ -1,0 +1,299 @@
+.header {
+    padding: 0 20px;
+    border-bottom: 5px solid #bd2130;
+    background: #fff;
+    box-shadow: 0px 1px 5px 1px #00000045;
+    position: fixed;
+    z-index: 9999;
+}
+
+nav.navbar.navbar-expand-lg.navbar-fixed {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    border-bottom: 2px solid #e91e63;
+}
+
+.bg-light {
+    background-color: #fff !important;
+}
+
+li.nav-item a i {
+    font-size: 25px;
+    color: #607d8b;
+}
+
+i.icofont-user-alt-7 {
+    color: #607d8b;
+    font-size: 20px;
+}
+
+a.navbar-brand.logo {
+    max-width: 60px;
+}
+
+.right-links li.nav-item {
+    margin: 0 10px;
+}
+
+.com-name h4 {
+    font-size: 20px;
+    padding-top: 0px;
+    margin: 0;
+    line-height: 18px;
+}
+.middle-field {
+    flex: 0 0 55% !important;
+    max-width: 55% !important;
+    padding: 0;
+}
+
+
+
+
+small.user-roll {
+    line-height: 0;
+    display: block;
+    color: #bd2130;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.name-area > a > img {
+    float: left;
+    margin-left: 10px;
+    margin-top: 12px;
+    width: 38px;
+    border-radius: 50%;
+}
+
+.name-area > a {
+    color: #94979f;
+    float: right;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: absolute;
+    right: 0% !important;
+    left: auto !important;
+    border: 0;
+    top: 40px !important;
+    min-width: 230px;
+    box-shadow: 0 0 5px #ddd9;
+}
+
+li.company-name {
+    border-bottom: 2px solid #ddd;
+    padding: 10px;
+}
+
+.name-area li a {
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+.company-name img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+ul.quick-notify-section {
+    float: right;
+    list-style: none;
+    padding: 0;
+    margin: 28px 15px 10px;
+}
+
+.quick-notify-section li {
+    float: left;
+    margin-right: 30px;
+}
+
+.quick-notify-section span {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    position: relative;
+    text-align: center;
+}
+
+.quick-notify-section li strong {
+    position: absolute;
+    font-size: 10px;
+    top: -7px;
+    right: -5px;
+    background: #ddd;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.store_manager .fa {
+    padding: 1px 2px 0 0 !important;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    line-height: 25px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+.cart-img img {
+    max-width: 100px;
+}
+
+td.product-name {
+    font-size: 13px;
+}
+
+.sub, .add {
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.quantity input {
+    border: 0;
+    text-align: center;
+    font-size: 13px;
+    width: 75px;
+}
+
+.price {
+    color: #ff7900;
+}
+
+.free-shipping {
+    float: left;
+}
+
+.fs {
+    font-size: 13px;
+    color: #117a8b;
+    float: left;
+    margin-right: 10px;
+    border-right: 1px solid #ddd;
+    padding-right: 10px;
+}
+
+.db {
+    font-size: 13px;
+    float: left;
+    font-weight: 600;
+}
+.add-remove {
+    float: left;
+    clear: both;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.remove {
+    float: left;
+    font-size: 13px;
+    color: #f70a20;
+    border-right: 1px solid #ddd;
+    margin-right: 10px;
+    padding-right: 10px;
+}
+
+.save-later {
+    font-size: 13px;
+    float: left;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table td, .table th {
+     border-top: 0;
+}
+
+.cart-modal table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-modal table tr:last-child {
+    border-bottom: 0;
+}
+
+.modal-footer .btn {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+.cart-modal td.cart-img {
+    width: 15%;
+}
+
+.cart-modal td.product-name {
+    width: 35%;
+}
+
+.cart-modal td.quantity {
+    width: 20%;
+}
+
+.cart-modal td.price-add-remove {
+    width: 30%;
+}
+
+li.delivery_icon {
+    margin-top: -15px;
+}
+
+.delivery_icon img {
+    max-width: 80px;
+    display: block;
+    margin: 0 auto;
+}
+
+.delivery_icon i {
+    display: block;
+
+}
+
+.float-left.com-name h4 {
+    margin: 0;
+    padding: 16px;
+    line-height: 22px;
+    font-size: 30px;
+}
+
+.com-name small {
+    font-size: 15px;
+    color: #bd2130;
+    font-weight: bold;
+}
+
+.com-name small img {
+    max-width: 20px;
+}
+
+.StoreeCommerceManagerHeader .logo img {
+    max-width: 60px;
+    margin: 10px 20px 2px;
+}
+
+
+.dropdown-toggle {
+    border: 0;
+    &:hover {
+        background-color: transparent;
+        border: 0;
+    }
+}
+
+

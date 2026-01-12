@@ -1,0 +1,449 @@
+<div class="content">
+    <h1 class="heading-title">Post Management ( Digital Marketing On PLatform )</h1>
+    <div class="card">
+        <div class="card-body pl-0 pr-0">
+            <div>
+                <div class="row topcontent">
+
+                    <div class="col-md-6 mb-3">
+                        <span><strong>Storecode: </strong>3254386586</span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <button (click)="openModal(addPost)" type="button" class="btn custom-btn float-right">Add
+                            Post</button>
+                    </div>
+
+                </div>
+
+                <div class="card exiting-office-table orderStatus p-0 mt-2"
+                    *ngIf="postsPaginator?.paginatedItems?.length > 0">
+
+                    <!-- Card Header -->
+                    <div class="card-header">
+                        <div style="display: flex; flex-direction: column;">
+                            <span>Post Management</span>
+                            <span class="small">
+                                <strong>Total Posts:</strong> {{ postsPaginator.totalItems }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body pa-0">
+                        <div class="row m-0">
+                            <div class="col-md-12 py-2">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font">S#</th>
+                                            <th class="font">Post ID</th>
+                                            <th class="font">Active</th>
+                                            <th class="font">Category</th>
+                                            <th class="font">Domain ID</th>
+                                            <th class="font">Details</th>
+                                            <th class="font">Created Date</th>
+                                            <th class="font">Approved</th>
+                                            <th class="font">Rejected</th>
+                                            <th class="font">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let post of postsPaginator.paginatedItems; let i = index">
+                                            <td class="font">
+                                                {{ (postsPaginator.currentPage - 1) *
+                                                postsPaginator.itemsPerPage + i + 1 }}
+                                            </td>
+                                            <td class="font">{{ post.postId }}</td>
+
+                                            <!-- Active -->
+                                            <td class="actdct_icon">
+                                                <span *ngIf="post.active; else inactiveIcon">
+                                                    <img src="assets/images/active_icon.png" />
+                                                </span>
+                                                <ng-template #inactiveIcon>
+                                                    <img src="assets/images/deactive_icon.png" />
+                                                </ng-template>
+                                            </td>
+
+                                            <td class="font">{{ post.category }}</td>
+                                            <td class="font">{{ post.domainId }}</td>
+
+                                            <!-- Details -->
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-info">Details</button>
+                                            </td>
+
+                                            <td class="font">{{ post.createdDate | date: 'short' }}</td>
+
+                                            <!-- Approved -->
+                                            <td class="font">
+                                                <span *ngIf="post.approved" class="text-success">Yes</span>
+                                                <span *ngIf="!post.approved" class="text-danger">No</span>
+                                            </td>
+
+                                            <!-- Rejected -->
+                                            <td class="font">
+                                                <span *ngIf="post.rejected" class="text-danger">Yes</span>
+                                                <span *ngIf="!post.rejected" class="text-success">No</span>
+                                            </td>
+
+                                            <!-- Actions -->
+                                            <td class="action_icon">
+                                                <span class="delete-icon" title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                                <span class="delete-icon" title="Turbo">
+                                                    <i class="fa fa-bolt"></i>
+                                                </span>
+                                                <span class="delete-icon" title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Pagination -->
+                                <nav class="pull-right mr-2">
+                                    <ul class="pagination">
+                                        <!-- Prev -->
+                                        <li class="page-item" [class.disabled]="postsPaginator.currentPage === 1">
+                                            <a class="page-link" style="cursor: pointer"
+                                                (click)="postsPaginator.changePage(postsPaginator.currentPage - 1)">Prev</a>
+                                        </li>
+
+                                        <!-- First Page -->
+                                        <li class="page-item" [class.active]="postsPaginator.currentPage === 1">
+                                            <a class="page-link" style="cursor: pointer"
+                                                (click)="postsPaginator.changePage(1)">1</a>
+                                        </li>
+
+                                        <!-- Left Ellipsis -->
+                                        <li class="page-item" *ngIf="postsPaginator.pagesToShow[0] > 2">
+                                            <span class="page-link">...</span>
+                                        </li>
+
+                                        <!-- Pages in Between -->
+                                        <ng-container *ngFor="let page of postsPaginator.pagesToShow">
+                                            <li class="page-item"
+                                                *ngIf="page !== 1 && page !== postsPaginator.totalPages"
+                                                [class.active]="page === postsPaginator.currentPage">
+                                                <a class="page-link" style="cursor: pointer"
+                                                    (click)="postsPaginator.changePage(page)">{{ page }}</a>
+                                            </li>
+                                        </ng-container>
+
+                                        <!-- Right Ellipsis -->
+                                        <li class="page-item"
+                                            *ngIf="postsPaginator.pagesToShow[postsPaginator.pagesToShow.length - 1] < postsPaginator.totalPages - 1">
+                                            <span class="page-link">...</span>
+                                        </li>
+
+                                        <!-- Last Page -->
+                                        <li class="page-item"
+                                            [class.active]="postsPaginator.currentPage === postsPaginator.totalPages">
+                                            <a class="page-link" style="cursor: pointer"
+                                                (click)="postsPaginator.changePage(postsPaginator.totalPages)">
+                                                {{ postsPaginator.totalPages }}
+                                            </a>
+                                        </li>
+
+                                        <!-- Next -->
+                                        <li class="page-item"
+                                            [class.disabled]="postsPaginator.currentPage === postsPaginator.totalPages">
+                                            <a class="page-link" style="cursor: pointer"
+                                                (click)="postsPaginator.changePage(postsPaginator.currentPage + 1)">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br><br>
+            <ngx-spinner template="<img src='assets/images/icons/please_wait.gif' />">
+            </ngx-spinner>
+        </div>
+    </div>
+</div>
+
+<ng-template #addPostold>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Post</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <!-- Post Category -->
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <label>Post Category</label>
+                <select class="form-control" [(ngModel)]="newPost.category">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let cat of categoryList" [value]="cat">{{ cat }}</option>
+                </select>
+            </div>
+
+            <!-- Post Listing Title -->
+            <div class="col-md-6">
+                <label>Post Listing Title</label>
+                <input type="text" class="form-control" [(ngModel)]="newPost.title"
+                    placeholder="Enter Post Listing Title" />
+            </div>
+        </div>
+
+        <!-- Post Template -->
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <label>Post Template</label>
+                <select class="form-control" [(ngModel)]="newPost.template">
+                    <option value="Text">Text</option>
+                    <option value="Text & Image">Text & Image</option>
+                    <option value="Text & Video">Text & Video</option>
+                </select>
+            </div>
+
+            <!-- Created Date -->
+            <div class="col-md-6">
+                <label>Created Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newPost.createdDate" />
+            </div>
+        </div>
+
+        <!-- Post Detail -->
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <label>Post Detail</label>
+                <textarea class="form-control" rows="4" [(ngModel)]="newPost.detail"
+                    placeholder="Enter post details"></textarea>
+            </div>
+        </div>
+
+        <!-- Attach Image/Video -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label>Attach Image/Video</label>
+                <input type="file" class="form-control-file border p-2 rounded" (change)="onFileChange($event)">
+                <div *ngIf="filePreviewUrl" class="mt-2 border p-2 rounded">
+                    <img *ngIf="isImageFile" [src]="filePreviewUrl" alt="Preview"
+                        style="max-width: 150px; max-height: 150px;">
+                    <video *ngIf="!isImageFile" [src]="filePreviewUrl" controls
+                        style="max-width: 150px; max-height: 150px;"></video>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button class="btn custom-btn btn-space">Validate</button>
+                <button class="btn custom-btn" (click)="saveAndPublish()">Save & Publish</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #addPost>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add Post</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Tags Section -->
+    <div class="row mb-3">
+
+      <!-- Timezone -->
+      <div class="col-md-6 mb-2">
+        <label>Timezone</label>
+        <select class="form-control" [(ngModel)]="newPost.timezone">
+          <option value="">Select</option>
+          <option value="IST">IST</option>
+        </select>
+      </div>
+
+      <!-- Industry -->
+      <div class="col-md-6 mb-2">
+        <label>Industry</label>
+        <select class="form-control" [(ngModel)]="newPost.industry">
+          <option value="">Select</option>
+          <option value="1">Wine & Liquor</option>
+          <option value="2">Hotel Restaurant & Catering</option>
+          <option value="3">FMCG/Kirana & Grocery</option>
+          <option value="4">Fashion /Beauty Products /Footwear</option>
+          <option value="5">Electronics /Consumer Appliances</option>
+          <option value="6">Furnitures (Office /Hospital/Home)</option>
+          <option value="7">Pharma & Medicos</option>
+          <option value="8">Home Decors & Office Furnishings</option>
+          <option value="9">Medicine (Human/Pets)</option>
+          <option value="10">Facility Management Services</option>
+          <option value="11">Farming / Agro And Agro Care</option>
+          <option value="12">Automobiles & Vehicles</option>
+          <option value="13">Health Care /Clinics /Hospitals</option>
+          <option value="14">Office /Home Infrastructure Services</option>
+          <option value="15">Automobile Spare Parts</option>
+          <option value="16">Kitchen & Dining</option>
+          <option value="17">Electrical & Lighting</option>
+          <option value="18">Entertainment & Mobility</option>
+          <option value="19">Sanitary Paints /Cements and Infra Furnishings</option>
+          <option value="20">Logistic and transportation</option>
+          <option value="21">Banking /Finance and Accounting</option>
+          <option value="22">Business Consulting & Liasoning</option>
+          <option value="23">Travel & Tourism</option>
+          <option value="24">Hardware /Software Providers</option>
+          <option value="25">Real Estate and development</option>
+          <option value="26">Media & Advertisement</option>
+          <option value="27">Event Management</option>
+          <option value="28">Corporate Services /professional services</option>
+          <option value="29">Skill Development /Trainings & recruitments</option>
+        </select>
+      </div>
+
+      <!-- Platform -->
+      <div class="col-md-6 mb-2">
+        <label>Platform</label>
+        <select class="form-control" [(ngModel)]="newPost.platform">
+          <option value="">Select</option>
+          <option value="1">Posts</option>
+        </select>
+      </div>
+
+      <!-- Audience -->
+      <div class="col-md-6 mb-2">
+        <label>Audience</label>
+        <select class="form-control" [(ngModel)]="newPost.audience">
+          <option value="">Select</option>
+          <option value="1">Seller</option>
+          <option value="2">Buyer</option>
+        </select>
+      </div>
+
+      <!-- Category -->
+      <div class="col-md-6 mb-2">
+        <label>Category</label>
+        <select class="form-control" [(ngModel)]="newPost.category">
+          <option value="">Select</option>
+          <option value="0">Product Based</option>
+          <option value="1">Service Based</option>
+        </select>
+      </div>
+
+      <!-- Sub-category -->
+      <div class="col-md-6 mb-2">
+        <label>Sub-category</label>
+        <select class="form-control" [(ngModel)]="newPost.subcategory">
+          <option value="">Select</option>
+          <!-- Product Based -->
+          <option *ngIf="newPost.category === '0'" value="1">Manufacturer/Producer</option>
+          <option *ngIf="newPost.category === '0'" value="2">Distributor/CNF</option>
+          <option *ngIf="newPost.category === '0'" value="3">Retailer/Wholeseller</option>
+          <option *ngIf="newPost.category === '0'" value="4">Pharma & Medicos</option>
+
+          <!-- Service Based -->
+          <option *ngIf="newPost.category === '1'" value="5">HoReCa (Hotel /Restaurant/Caterer)</option>
+          <option *ngIf="newPost.category === '1'" value="7">Exporter/Importer</option>
+          <option *ngIf="newPost.category === '1'" value="8">School/University</option>
+          <option *ngIf="newPost.category === '1'" value="9">Health Care /Hospitals and Medicos</option>
+          <option *ngIf="newPost.category === '1'" value="10">Fitness & Health Organization</option>
+          <option *ngIf="newPost.category === '1'" value="11">Dropship Intermediatory</option>
+          <option *ngIf="newPost.category === '1'" value="12">Productivity Tool provider</option>
+          <option *ngIf="newPost.category === '1'" value="13">Contact Centres</option>
+          <option *ngIf="newPost.category === '1'" value="14">Logistic & 3PL Providers</option>
+          <option *ngIf="newPost.category === '1'" value="15">Automobile Service Provider Org</option>
+          <option *ngIf="newPost.category === '1'" value="16">Recruitment And Skill Development Org</option>
+          <option *ngIf="newPost.category === '1'" value="17">Travel & Tour Operators</option>
+          <option *ngIf="newPost.category === '1'" value="18">Facility Management Service Provider</option>
+          <option *ngIf="newPost.category === '1'" value="19">Real Estate Developers and Services Org</option>
+          <option *ngIf="newPost.category === '1'" value="20">Business Consulting Organization</option>
+          <option *ngIf="newPost.category === '1'" value="21">CA & Auditing Organization</option>
+          <option *ngIf="newPost.category === '1'" value="22">Advertisement & Media Firm</option>
+          <option *ngIf="newPost.category === '1'" value="23">Software Development Organization</option>
+          <option *ngIf="newPost.category === '1'" value="24">Event Management Organization</option>
+          <option *ngIf="newPost.category === '1'" value="25">Banking & Financial Organization</option>
+          <option *ngIf="newPost.category === '1'" value="26">NGO/Trust</option>
+          <option *ngIf="newPost.category === '1'" value="27">Other Corporate Services</option>
+        </select>
+      </div>
+
+      <!-- Post Category -->
+      <div class="col-md-6 mb-2">
+        <label>Post Category</label>
+        <select class="form-control" [(ngModel)]="newPost.postCategory">
+          <option value="">Select</option>
+          <option value="1">Promotional</option>
+          <option value="2">Distribution Network</option>
+          <option value="3">HR & Talent</option>
+          <option value="4">Infrastructure</option>
+          <option value="5">Technology & Support</option>
+          <option value="6">Events & Sponsors</option>
+          <option value="7">Services</option>
+          <option value="8">General</option>
+          <option value="9">Franchisee & Collaborators</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Post Details Section -->
+    <div class="row mb-2">
+      <div class="col-md-6">
+        <label>Post Listing Title</label>
+        <input type="text" class="form-control" [(ngModel)]="newPost.title" placeholder="Enter Post Listing Title" />
+      </div>
+      <div class="col-md-6">
+        <label>Post Template</label>
+        <select class="form-control" [(ngModel)]="newPost.template">
+          <option value="">Select</option>
+          <option value="Text & Image">Text + Image</option>
+          <option value="Text & Video">Text + Video</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Post Detail -->
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <label>Post Detail</label>
+        <textarea class="form-control" rows="4" [(ngModel)]="newPost.detail" placeholder="Enter post details"></textarea>
+      </div>
+    </div>
+
+    <!-- File Upload -->
+    <!-- Image Upload -->
+    <div class="row mb-3" *ngIf="newPost.template === 'Text & Image'">
+        <div class="col-md-12">
+            <label>Upload Image</label>
+            <input type="file" accept="image/*" class="form-control-file border p-2 rounded" (change)="onFileSelect($event, 'image')" style="margin-top: 8px;">
+            <div *ngIf="selectedImageUrl" class="mt-2 border p-2 rounded text-center">
+                <img [src]="selectedImageUrl" alt="Preview" style="max-width:100%; max-height:200px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Upload -->
+    <div class="row mb-3" *ngIf="newPost.template === 'Text & Video'">
+        <div class="col-md-12">
+            <label>Upload Video</label>
+            <input type="file" accept="video/*" class="form-control-file border p-2 rounded" (change)="onFileSelect($event, 'video')" style="margin-top: 8px;">
+            <div *ngIf="selectedVideoUrl" class="mt-2 border p-2 rounded text-center">
+                <video [src]="selectedVideoUrl" controls style="max-width:100%; max-height:200px;"></video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <button class="btn custom-btn" (click)="saveAndPublish()">Save & Publish</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,21 @@
+.form-check-input {
+    margin-top: 3px;
+}
+
+.custom-btn.add-store-btn {
+    margin: 10px 0;
+    float: right;
+    min-width: 120px;
+}
+
+.same-domain-child {
+    background: #e9edf057;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.inner-bg {
+    background: #e9ecef;
+    margin: 0 0 5px;
+    border-radius: 5px;
+}

@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-md-12">
+      <h1 class="heading-title">Manage my stores order processing workflow</h1>
+    </div>
+  </div>
+ 
+  
+  <form [formGroup]="storeUserForm">
+    <div class="topLevel">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Store</label>
+            <div class="form-control form-level no-border">
+              {{storeName}}
+            </div>
+            <!-- <select class="form-control" formControlName="STORE_ID" (change)="onStoreChange($event)">
+               [ngClass]="{ 'is-invalid': submitted1 && f1.SUBACCT_OFFICE_ID.errors }"> 
+              <option value="">Select</option>
+              <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">
+                {{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+            </select> -->
+            <!-- <div *ngIf="submitted1 && f1.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
+              <div *ngIf="f1.SUBACCT_OFFICE_ID.errors.required">Store is required</div>
+            </div> -->
+          </div>
+        </div>
+        <!-- <div class="col-md-3">
+          <label class="clear">&nbsp;</label>
+          <button class="btn width-100 custom-btn">Display my Store Bank</button>
+        </div> -->
+      </div>
+  
+    </div>
+ 
+  
+  <div class="bottom-panel">
+    <div class="card">
+      <div class="card-body p-0">
+        <h5>Select & Save Order Processing Workflow</h5>
+        <div class="form-check">
+          <input class="form-check-input" formControlName="Workflow_type" type="radio" id="Workflow1" value="1">
+          <label class="form-check-label" for="Workflow1">
+            Order Processing Workflow Cycle 1
+          </label>
+        </div>
+        <div class="row">
+          <div class="col-md-5 pr-0">
+            Confirmed Order Dashboard and Packaging Desk(Simultaneously)
+          </div>
+          <div class="col-md-2"><button class="btn send-order-text">Send Order to</button></div>
+          <div class="col-md-3">Store Delivery POS</div>
+        </div>
+<br>
+
+        <div class="form-check">
+          <input formControlName="Workflow_type" class="form-check-input" type="radio" id="Workflow2" value="2">
+          <label class="form-check-label" for="Workflow2">
+            Order Processing Workflow Cycle 2
+          </label>
+        </div>
+        <div class="row">
+          <div class="col-md-12 pr-0">
+            Confirmed Order Dashboard &nbsp;&nbsp;<button class="btn send-order-text">Send Order to</button>
+            <span class="more-space">Product Line Store Console</span>
+            <button class="btn send-order-text">Send Order to</button>
+            <span class="more-space">Packaging Desk</span>
+            <button class="btn send-order-text">Send Order to</button>
+            <span class="more-space">Store Delivery POS</span>
+          </div>
+         
+         
+        </div>
+        <div class="row">
+          <div class="col-md-12 mt-5 text-right">
+            <button (click)="StoreorderProcessingWorkflowCycle()" class="btn custom-btn">Save Order Processing Workflow</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+  
+  
+ 
+ 

@@ -1,0 +1,242 @@
+
+<div class="register-field">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">You need to register your business for Activation of your Account</h4>
+    
+  </div>
+ 
+  <div class="modal-body">
+  <form [formGroup]="registerForm" (ngSubmit)="makePayments()" novalidate>
+    <div *ngIf="step1" class="step1">
+    <div class="form-group">
+      <label for="mn"> Register Mobile Number</label>
+      <input formControlName="MobileNo" type="text" class="form-control" placeholder="Mobile Number" id="mn" [ngClass]="{ 'is-invalid': submittedgst && f.MobileNo.errors }">
+      <div *ngIf="mobileVerifyMessage" class="success-msg">Mobile Number verified successfully <img src="assets/images/active_icon.png" /></div>
+      <div *ngIf="submittedgst && f.MobileNo.errors" class="invalid-feedback">
+        <div *ngIf="f.MobileNo.errors.required">Mobile Number is required</div>
+        <div *ngIf="f.MobileNo.errors.pattern">Please, Enter 10 digit Mobile Number</div>
+    </div>
+     
+      <!-- <div *ngIf="f.MobileNo.touched && f.MobileNo.invalid" class="error-msg">
+        <div *ngIf="f.MobileNo.errors.required">Mobile Number is required.</div>
+        <div *ngIf="f.MobileNo.errors.pattern">Please, Enter 10 digit Mobile Number.</div>
+    </div> -->
+    
+    </div>
+     <div class="form-group with-left-100">
+      <label class="block">Registration of GSTIN Available</label>
+      <div class="form-check-inline pull-left">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" value="Yes" name="gstnchecked" 
+          formControlName="gstnchecked" 
+          (change)="showGSTField($event)">Yes
+        </label>
+      </div>
+      <div class="form-check-inline pull-right">
+        <label class="form-check-label">
+          <input type="radio" class="form-check-input" value="No" name="gstnchecked" 
+          formControlName="gstnchecked" 
+          (change)="showGSTField($event)">No
+        </label>
+      </div>
+    </div>
+    
+    <div *ngIf="showGstInput" class="form-group input-group gst-field">
+      <label>Enter GSTIN No.</label>
+      <input formControlName="GSTNO" type="text" class="form-control" [ngClass]="{ 'is-invalid': submittedgst && f.GSTNO.errors }" />
+      <button type="button" (click)="verifyGST()" class="input-group-append">
+        Verify
+      </button>
+      <div *ngIf="gstVerifyMessage" class="success-msg">GST verified successfully <img src="assets/images/active_icon.png" /></div>
+      <div *ngIf="submittedgst && f.GSTNO.errors" class="invalid-feedback">
+        <div *ngIf="f.GSTNO.errors.required">GST Number is required</div>
+        <div *ngIf="f.GSTNO.errors.pattern">Please, Enter 15 digit GST Number</div>
+    </div>
+     
+      <!-- <div *ngIf="f.GSTNO.touched && f.GSTNO.invalid" class="error-msg">
+        <div *ngIf="f.GSTNO.errors.required">GST Number is required.</div>
+        <div *ngIf="f.GSTNO.errors.pattern">Please, Enter 15 digit GST Number.</div>
+        <div *ngIf="gstnotvalid">Please, Enter 15 digit GST Number.</div> -->
+    </div>
+    
+
+    <div class="form-group otp-fields" *ngIf="showotpDiv">
+      <label for="usr">Please Enter OTP</label>
+      <input formControlName="ConfirmationCode" type="text" class="form-control" id="otp">
+      <div *ngIf="otpNotValid" class="error-msg">OTP is not valid</div>
+     <div class="otp-btns">
+      <button type="button" class="btn btn-dark">Resend</button>
+      <button (click)="getOTPVerify()" type="button" class="btn btn-info">Proceed</button>
+     </div>
+    </div>
+     <div class="form-group">
+      <label for="email">Email ID</label>
+      <input formControlName="USR_EMAIL_ID" type="text" class="form-control" id="email" [ngClass]="{ 'is-invalid': submitted && f.USR_EMAIL_ID.errors }">
+      <!-- <small>(Please provide valid Email ID as your initial access link will be sent on the same mail ID)</small> -->
+      <div *ngIf="submitted && f.USR_EMAIL_ID.errors" class="invalid-feedback">
+        <div *ngIf="f.USR_EMAIL_ID.errors.required">Please provide valid Email ID as your initial access link will be sent on the same mail ID</div>
+        <div *ngIf="f.USR_EMAIL_ID.errors.pattern">Please, Enter valid Email</div>
+      </div>
+    </div>
+
+    <div class="form-group subs_plan">
+      <label for="sel1">Choose Subscription Plan</label>
+      <div class="row">
+        <div class="col-md-9 pr-0">
+          <select formControlName="USER_SELCTD_SUBSCRIBER_PLAN_ID" (change)="changeSubsPlan($event)" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.USER_SELCTD_SUBSCRIBER_PLAN_ID.errors }">
+          <option value="">Choose Subscription Plan</option>
+          <option *ngFor="let plan of SubscriptionPlans" [value]="plan.Id">{{plan.Value}}</option>
+         </select>
+         <div *ngIf="submitted && f.USER_SELCTD_SUBSCRIBER_PLAN_ID.errors" class="invalid-feedback">
+          <div *ngIf="f.USER_SELCTD_SUBSCRIBER_PLAN_ID.errors.required">This field is required</div>
+         </div>
+        </div>
+        <div class="col-md-3 pl-0">
+          <button type="button" class="btn">Plan Details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="sel1">Choose Payment Frequancy</label>
+      <select (change)="changePaymentFrequancy($event)" formControlName="USR_SELECTD_PAYMNT_FREQUENCY_ID" class="form-control" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.USR_SELECTD_PAYMNT_FREQUENCY_ID.errors }">
+        <option value="" disabled>Choose Subscription Plan</option>
+       <option *ngFor="let pf of PaymentFrequancy" [value]="pf.id">{{pf.plan}}</option>
+      </select>
+      <div *ngIf="submitted && f.USR_SELECTD_PAYMNT_FREQUENCY_ID.errors" class="invalid-feedback">
+        <div *ngIf="f.USR_SELECTD_PAYMNT_FREQUENCY_ID.errors.required">This field is required</div>
+       </div>
+    </div>
+    
+    <div class="form-group reg_below_msg label-icon">
+      <!-- <p class="success-msg">Bonus for 30 days Credit on Payment<br> Frequency <img src="../assets/images/active_icon.png" /></p> -->
+      <p>Read and Accept Terms & Condition of Usage <img src="../assets/images/deactive_icon.png" /></p>
+    </div>
+    <button (click)="PreActivation()" type="button" class="btn custom-btn">Proceed for Next Step</button>
+  
+  </div>
+
+  <!-- *ngIf="showOSPlan" -->
+<div  class="step2" *ngIf="showOSPlan">
+  <div  class="order-summary-plan">
+    <div class="modal-header pl-0">
+      <h4 class="modal-title pull-left">View Details</h4>
+      
+    </div>
+   
+     <table class="table">
+     <tr>
+       <td>Subscription Plan </td>
+       <td>{{SubscriptionPlan}}</td>
+     </tr>
+     <tr>
+      <td>Payment frequency  </td>
+      <td>{{Paymentfrequency}}</td>
+    </tr>
+    <tr>
+      <td>Annual Plan cost </td>
+      <td>{{AnnualPlancost}}</td>
+    </tr>
+    <tr>
+      <td>Payment Frequency Cost</td>
+      <td>{{PaymentFrequencyCost}}</td>
+    </tr>
+    <tr>
+      <td>Sub-Total  </td>
+      <td>{{Subtotal}}</td>
+    </tr>
+    <tr>
+      <td>GST  </td>
+      <td>{{GST}}</td>
+    </tr>
+    <tr class="total">
+      <td>Total  </td>
+      <td>{{Total}}</td>
+    </tr>
+    <tr>
+      <td>First Payment Payable Amount</td>
+      <td>{{FirstPaymentPayableAmount}}</td>
+    </tr>
+     </table>
+     <div class="btns row">
+      <div class="col-md-6">
+        <button type="button" class="btn btn-primary">Back</button>
+      </div>
+     <div class="col-md-6">
+        <button (click)="next()" type="button" class="btn btn-success">Next</button>
+      </div>
+      </div>
+    </div>
+        <label class="form-performa-invoice">
+          <a><img src="../assets/images/deactive_icon.png" />View Performa Invoice</a>
+        </label>
+ 
+</div>
+
+<div class="step3" *ngIf="showStep3">
+  <div class="row">
+  <div class="form-group col-md-9 pr-0">
+    <label for="cn">Enter Your Coupon Number</label>
+    <input formControlName="CARRYR_MART_COUPN_NUMBR" #couponNo type="text" class="form-control" id="cn">
+  </div>
+  <div class="form-group col-md-3">
+    <label>&nbsp;</label>
+    <button type="button" class="btn custom-btn" (click)="verifyCouponNumber(couponNo)">Verify</button>
+    </div>
+</div>
+  <div class="form-group">
+    <label for="cn">Enter Your same Mobile Number which was used during Coupen Allocation </label>
+    <input (keyup)="getCardAndCVV($event)" type="text" class="form-control">
+  </div>
+  <div *ngIf="validMobile" class="row">
+  <div class="form-group col-md-8">
+    <label for="cn">Card Number</label>
+    <input formControlName="CARRYR_MART_FREEBIE_CRDT_CARD_NO" disabled  [(ngModel)]="cardNumber"  type="text" class="form-control">
+  </div>
+  <div class="form-group col-md-4">
+    <label for="cn">CVV</label>
+    <input formControlName="CARRYR_MART_FREEBIE_CRDT_CARD_CVV" disabled [(ngModel)]="cvv" type="text" class="form-control">
+  </div>
+</div>
+<div class="btns row">
+  <div class="col-md-6">
+    <button type="button" class="btn btn-primary">Back</button>
+  </div>
+
+  <div class="col-md-6">
+    <button (click)="makePayments()" type="button" class="btn btn-success">Make Payment</button>
+  </div>
+  
+  
+  </div>
+</div>
+</form>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Please Enter your OTP Number</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="otpc">Enter OTP Number</label>
+          <input #otpforCoupon type="text" class="form-control" id="otpc">
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button (click)="getOTPforCoupon(otpforCoupon)" type="button" class="btn custom-btn">Submit</button>
+      </div>
+
+    </div>
+  </div>
+</div>

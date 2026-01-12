@@ -1,0 +1,355 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Add new Physical Store</h4>
+    <button type="button" (click)="bsModalRef.hide()" class="btn-close close pull-right" aria-label="Close">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="addStoreForm">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="store">Office/Store Name</label>
+                    <input type="text" formControlName="RETAIL_STORE_NAME" class="form-control" id="store">
+                    <div class="d-flex pt-1">
+                        <div class="form-check">
+                            <input formControlName="RETAIL_STORE_IN_SAME_PERIMETRIC_AREA_AS_PRIMARY_STORE_FLG" class="form-check-input" type="checkbox" value="" id="samePerimetric">
+                            <label class="form-check-label" for="samePerimetric">
+                            <small>Store on same Perimetric Area as of Primary Store</small>
+                        </label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="store">Office/Store Address</label>
+                    <input type="text" formControlName="RETAIL_STORE_ADDRESS" class="form-control" id="store">
+                </div>
+            </div>
+        </div>
+        <country-state-city-pin (countryEvent)="receiveCountryId($event)" (stateEvent)="receiveStateId($event)" (cityEvent)="receiveCityId($event)" (pincodeEvent)="receivePinId($event)"></country-state-city-pin>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Type of Office</label>
+                    <select formControlName="officeType" (change)="officeType($event)" class="form-control">
+                <option selected>Select</option>
+                <option value="1">Godown</option>
+                <option value="2">Branch Office</option>
+                <option value="3">Franchisee</option>
+                <option value="4">Stockist/Distributor</option>
+                <option value="5">Direct Third Party Retail Store</option>
+                <option value="6">Factory Outlet</option>
+              </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row inner-bg">
+            <div class="col-md-12">
+                <div class="form-group mb-0 mt-2">
+                    <label>GSTN</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" value="0" name="GSTIN" (change)="onChangegst($event)">
+                    <label class="form-check-label">
+                  Operate on Same GSTIN
+                </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" value="1" (change)="onChangegst($event)" name="GSTIN">
+                    <label class="form-check-label">
+                  Operate on Other GSTIN
+                </label>
+                </div>
+                <div *ngIf="gsttype == 1" class="ml-2 pb-2">
+                    <input type="text" formControlName="RETAIL_STORE_GSTIN_NUMBR" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="row inner-bg">
+            <div class="col-md-12">
+                <div class="form-group mb-0 mt-2">
+                    <label>License</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" name="license" value="0" (change)="onChangelicense($event)">
+                    <label class="form-check-label">
+                  Operate on Same License Number
+                </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" name="license" value="1" (change)="onChangelicense($event)">
+                    <label class="form-check-label">
+                  Operate on Other License Number
+                </label>
+                </div>
+                <div *ngIf="licensetype == 1" class="ml-2 pb-2"><input type="text" formControlName="RETAIl_STORE_LICENSE_NO" class="form-control"></div>
+            </div>
+        </div>
+        <div class="row inner-bg">
+            <div class="col-md-12">
+                <div class="form-group mb-0 mt-2">
+                    <label>Domain</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" name="domain" value="1" (change)="onChangeDomain($event)">
+                    <label class="form-check-label">
+                  Store on Same Domain
+                </label>
+                </div>
+                <div class="same-domain-child" *ngIf="domaintype == 1">
+                    <div class="form-group">
+                        <label>Store Replica</label>
+                        <select class="form-control" formControlName="storeReplica" (change)="onChangeReplica($event)">
+                            <option selected>Select</option>
+                            <option value="Required">Required</option>
+                            <option value="Not Required">Not Required</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex" *ngIf="requiredReplica">
+                        <div class="form-check pr-4">
+                            <input class="form-check-input" type="radio" name="control" value="1" (change)="onChangeControl($event)">
+                            <label class="form-check-label">
+                      Centrally Controlled
+                    </label>
+                        </div>
+
+                        <div class="form-check pl-4">
+                            <input class="form-check-input" type="radio" name="control" value="0" (change)="onChangeControl($event)">
+                            <label class="form-check-label">
+                      Solo Controlled
+                    </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="radio" name="domain" value="0" (change)="onChangeDomain($event)">
+                    <label class="form-check-label">
+                    Store on Different Domain
+                </label>
+                </div>
+                <div *ngIf="domaintype == 0" class="ml-2 pb-2">
+                    <select (change)="domainChange($event)" class="form-control" formControlName="RETAIL_STORE_DOMAIN_ID">
+                        <option value="">Select</option>
+          <option value="1">All-Day Liquor</option>
+          <option value="2">All-Day Kitchen</option>
+          <option value="3">All-Day Kirana</option>
+          <option value="4">All-Day Fashion</option>
+          <option value="5">All-Day Electronics & Large Appliances</option>
+          <option value="6">All-Day Home & Office Furnitures</option>
+          <option value="7">All-Day Pharma & Medicos</option>
+          <option value="8">All-Day Home Décor & Furnishings</option>
+          <option value="9">All-Day Pet Shoppe & Pet Care</option>
+          <option value="10">All-Day Garden & Outdoor</option>
+          <option value="11">All-Day Food & Agro Care</option>
+          <option value="12">All-Day New & Used Automobile</option>
+          <option value="13">All-Day Health & Medical Equipments </option>
+          <option value="14">All-Day Home Office & Automobile Services</option>
+          <option value="15">All-Day Automobile Spare Parts </option>
+          <option value="16">All-Day Kitchen & Dining  </option>
+          <option value="17">All-Day Electrical & Lighting</option>
+          <option value="18">All-Day Mobile & Entertainment Gadgets </option>
+          <option value="19">All-Day Sanitary Paints & Furnishing</option>
+          <option value="20">All-Day De-Evento </option>
+                    </select>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row main-conact-form">
+            <div class="col-md-12 mt-3 mb-1">
+                <h6>Main Contact Person</h6>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input formControlName="RETAIL_CONTACT_FIRST_NAME" type="text" id="fname" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input formControlName="RETAIL_CONTACT_LAST_NAME" type="text" id="lname" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="pnumber">Primary Mobile Number</label>
+                    <input formControlName="RETAIL_CONTACT_MOBILE_MUMBR" type="text" id="pnumber" class="form-control">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input formControlName="RETAIL_CONTACT_EMAIL_ID" type="text" id="email" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label>Person Photo</label>
+                    <div class="custom-file">
+                        <input formControlName="RETAIL_CONTACT_PHOTO_IMAGE" type="file" (change)="onSelectedFile($event)" class="custom-file-input" id="personPhoto">
+                        <label class="custom-file-label" for="personPhoto">{{uploadLabel}}</label>
+                        <div class="img-space" *ngIf="isImageSaved">
+                            <ng-container>
+                                <img [src]="'data:image/jpeg;base64,' + base64textString">
+                            </ng-container>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label>Kyc Photo</label>
+                    <div class="custom-file">
+                        <input formControlName="RETAIL_CONTACT_KYC_PHOTO_ID_IMAGE" type="file" (change)="onSelectedFile1($event)" class="custom-file-input" id="kycphoto">
+                        <label class="custom-file-label" for="kycphoto">{{uploadLabel1}}</label>
+                        <div class="img-space" *ngIf="isImageSaved1">
+                            <ng-container>
+                                <img [src]="'data:image/jpeg;base64,' + base64textString1">
+                            </ng-container>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row main-conact-form mt-3">
+            <div class="col-md-12 mb-1">
+                <h5>Bank Account Details</h5>
+            </div>
+            <div class="d-flex col-md-12 mb-3">
+                <div class="form-check pr-4">
+                    <input class="form-check-input" formControlName="accountType" type="radio" name="accountType" [value]="true" (change)="onChangeAccount($event)">
+                    <label class="form-check-label">
+                        Same as Sub-Account
+                    </label>
+                </div>
+                <div class="form-check pl-4">
+                    <input class="form-check-input" formControlName="accountType" type="radio" name="accountType" [value]="false" (change)="onChangeAccount($event)">
+                    <label class="form-check-label">
+                        Different Bank Account
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="bankDetails" *ngIf="accounttype == false">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="bankname">Name of Bank</label>
+                        <input formControlName="RETAIl_STORE_BANK_NAME" type="text" id="bankname" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ifsc">IFSC Code</label>
+                        <input formControlName="RETAIl_STORE_BANK_IFSC_NUMBR" type="text" id="ifsc" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="baddress">Branch Addess</label>
+                        <input formControlName="RETAIL_STORE_BANK_BRANCH_ADDRESS" type="text" id="baddress" class="form-control">
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" class="form-control">
+                    </div>
+                </div> -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ban">Bank Account Number</label>
+                        <input formControlName="RETAIl_STORE_BANK_ACCOUNT_NUMBR" type="text" id="ban" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ran1">Re-enter Account Number</label>
+                        <input formControlName="RETAIl_STORE_BANK_ACCOUNT_NUMBR" type="text" id="ran1" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <select class="form-control" formControlName="RETAIL_STORE_BANK_ACCOUNT_TYPE">
+                            <option selected>Select</option>
+                            <option>Saving Account</option>
+                            <option>Current Account</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <fieldset class="form-group">
+                        <label>Attached Cancel Cheque</label>
+
+                        <div class="custom-file">
+                            <input formControlName="RETAIL_STORE_BANK_CANCELLED_CHEQUE_IMAGE" type="file" (change)="onSelectedFile2($event)" class="custom-file-input" id="kycphoto">
+                            <label class="custom-file-label" for="kycphoto">{{uploadLabel2}}</label>
+                            <div class="img-space" *ngIf="isImageSaved2">
+                                <ng-container>
+                                    <img [src]="'data:image/jpeg;base64,' + base64textString2">
+                                </ng-container>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button (click)="addPhysicalStore()" class="btn custom-btn add-store-btn">Add Store</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+  </div> -->

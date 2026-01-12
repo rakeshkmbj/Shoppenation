@@ -1,0 +1,230 @@
+<!-- <nav id="main-nav" malihu-scrollbar [scrollbarOptions]="scrollbarOptions"> -->
+<nav id="main-nav">
+    <ul>
+        <!-- businessDomainProductLine -->
+        <li [ngClass]="status1 ? 'active' : ''" *ngIf="role == 1" class="nav-item">
+            <a (click)="clickEvent1()" style="cursor:pointer;">
+                <label><i class="lni lni-restaurant"></i></label>
+                Create & Manage my Shop/Store
+                <span class="icon"></span>
+            </a>
+            <ul class="dropdown" *ngIf="status1">
+                <li><a routerLink="manageBusinessOffice" routerLinkActive="active">Add my Physical Stores under same
+                        Account</a></li>
+                <li><a routerLink="dropshipstoredomainproduct" routerLinkActive="active">Manage my Webstore</a></li>
+                <li><a routerLink="manageStoreUser" routerLinkActive="active">Manage my Store Users</a></li>
+                <li><a routerLink="managelstdeliverysbs" routerLinkActive="active">Manage Last mile Delivery Support by
+                        Store</a></li>
+                <li><a routerLink="addBankKYC" routerLinkActive="active">Manage Stores Bank KYC</a></li>
+                <li><a routerLink="manageStoreOrderProcessing" routerLinkActive="active">Manage my Store Product Line
+                        Order Processing Consoles</a></li>
+                <li><a routerLink="storeOrderworkflowcycle" routerLinkActive="active">Manage my stores order processing
+                        workflow</a></li>
+                <li><a routerLink="deliveryracks" routerLinkActive="active">Manage Stores order Fulfillment Delivery
+                        Racks</a></li>
+            </ul>
+        </li>
+
+        <li [ngClass]="status2 ? 'active' : ''" *ngIf="MDR_Connect_App_Flag != 1 && (role == 1)" class="nav-item">
+            <a (click)="clickEvent2()" style="cursor:pointer;">
+            <label><i class="lni lni-home"></i></label>
+            Manage Store SFA
+            <span class="icon"></span>
+            </a>
+            <ul class="dropdown" *ngIf="status2">
+            <li><a routerLink="businessAccountAllocation" routerLinkActive="active">Business Account Allocation</a></li>
+            <li><a routerLink="accountAllocationMis" routerLinkActive="active">Account Allocation MIS</a></li>
+            </ul>
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 3)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 3))" class="nav-item"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="clickEvent3()"  routerLink="addStoreProductInventory" routerLinkActive="active">
+                <label><i class="lni lni-layers"></i></label>Manage my Shop/Store Products Inventory</a>
+            <!--   <div class="dropdown">
+          <li><a routerLink="addBrochureGallery" routerLinkActive="active">Add my Store Brochures & Gallery</a></li>
+          <li><a routerLink="editBrochureGallery" routerLinkActive="active">Edit my Store Brochures & Gallery</a></li>
+          <li><a routerLink="discountStoreProduct" routerLinkActive="active">Add/Edit discounts on my Stores products</a></li> -->
+            <!-- <li><a routerLink="webstoreplatformmarketplace" routerLinkActive="active">Add my Webstore on Platform Market Place</a></li>
+          <li><a routerLink="webstorebusinesswebsite" routerLinkActive="active">Add/Edit my Webstore on Business Website</a></li> 
+           </div>
+      -->
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2))" class="nav-item"
+            [class.disabled]="primarySellerFlag" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="handleItemSubitemDiscountClick($event)" routerLink="itemSubitemDiscount">
+                <label><i class="lni lni-cog"></i></label>
+                Manage my Shop/Store Products Pricing & Discounts
+            </a>
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 8)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 8))" class="nav-item"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="clickEvent4()"><label><i class="lni lni-seo-consulting"></i></label>Manage My Shop-Store Purchases</a>
+        </li>
+
+        <li [ngClass]="status5 ? 'active' : ''" *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 5)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 5))" class="nav-item">
+            <a  (click)="clickEvent5()" style="cursor:pointer;">
+                <label><i class="ti-loop"></i></label>
+                My Shop/Store Order Fulfillment POS
+                <span class="icon"></span>
+            </a>
+            <ul class="dropdown" *ngIf="status5">
+                <li><a routerLink="instantDeliveryDispatchPOS" routerLinkActive="active">Hyper local Delivery POS</a></li>
+                <li><a routerLink="selftakeawaydispatchPOS" routerLinkActive="active">Self Takeaway POS</a></li>
+                <li><a>Onstore Walkin POS</a></li>
+                <li><a>My Product Line Console</a></li>
+                <li><a routerLink="operateConsole" routerLinkActive="active">Operate Console</a></li>
+            </ul>
+        </li>
+
+        <li [ngClass]="status6 ? 'active' : ''" *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 6)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 6))" class="nav-item">
+            <a (click)="clickEvent6()" style="cursor:pointer;">
+            <label><i class="lni lni-investment"></i></label>
+            My Shop Accounts Receivables & Payables
+            <span class="icon"></span>
+            </a>
+            <ul class="dropdown" *ngIf="status6">
+            <li>
+                <a routerLink="recievableBankSettlement" routerLinkActive="active">
+                My Orders & Shop Product Sales Receivables
+                </a>
+            </li>
+            <li>
+                <a routerLink="payablePlatformInvoice" routerLinkActive="active">
+                My Orders & Shop Product Sales Payables
+                </a>
+            </li>
+            </ul>
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2))" class="nav-item" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="clickEvent7()" routerLink="opld2cidcPOS" routerLinkActive="active"><label>
+                    <i class="ti-bag"></i></label>
+                My Shop-Store Orders and Delivery Dashboard</a>
+            <!--
+        <div class="dropdown">         
+           <li><a routerLink="oplstaPOS" routerLinkActive="active">My Store online Orders & Delivery Dashboard</a></li>
+          <li><a routerLink="opld2cidcPOS" routerLinkActive="active">My Store Offline POS Orders & Delivery Dashboard</a></li>
+          <li><a routerLink="pld2ctpdPOS" routerLinkActive="active">My Store Workflow Consoles</a></li>         
+        </div>
+       -->
+        </li>
+
+        <li [ngClass]="status8 ? 'active' : ''" *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 7)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 7))" class="nav-item">
+            <a (click)="clickEvent8()" style="cursor:pointer;">
+                <label><i class="ti-package"></i></label>
+                My Shop-Store Packaging Desk
+                <span class="icon"></span>
+            </a>
+            <ul class="dropdown" *ngIf="status8">
+                <li>
+                    <a routerLink="deliveryOrderPackaging" routerLinkActive="active">
+                        Standard/Express Delivery Packaging Desk
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2))" class="nav-item" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="clickEvent9()" routerLinkActive="active"><label><i class="lni lni-network"></i></label>
+                My Shop-Store Communication Desk</a>
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 4)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 4))" class="nav-item"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="clickEvent10()"><label><i class="lni lni-seo-consulting"></i></label>My Shop Store Customer Management</a>
+            <div class="dropdown">
+        <li><a>View my Primary Customers added online & spending Pattern</a></li>
+        <li><a>Add Primary Customers Offline</a></li>
+        <!-- <li><a>Add/Edit other Delivery POS for My Store</a></li> -->
+        </div>
+        </li>
+
+        <li *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && (role == 1 || role == 2 || role == 4)) || (MDR_Connect_App_Flag != 1 && (role == 1 || role == 2 || role == 4))" class="nav-item"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <a (click)="clickEvent11()"><label><i class="lni lni-briefcase"></i></label>My Shop Store Value Added Services</a>
+        </li>
+
+        <li routerLink="publisherDashboard" *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && role == 9) || (MDR_Connect_App_Flag != 1 && role == 9)" class="nav-item" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <a><label><i class="ti-settings"></i></label>Publisher Dashboard</a>
+        </li>
+        
+        <li routerLink="advertiserDashboard" *ngIf="(MDR_Connect_App_Flag == 1 && MDR_Seller_With_SKU_Flag == true && role == 10) || (MDR_Connect_App_Flag != 1 && role == 10)" class="nav-item" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <a><label><i class="ti-server"></i></label>Advertiser Dashboard</a>
+        </li>
+
+        <li [ngClass]="status12 ? 'active' : ''" *ngIf="MDR_Connect_App_Flag == 1 && (role == 1 || role == 2) " class="nav-item">
+            <a (click)="clickEvent12()" style="cursor:pointer;">
+                <label><img src="../../../assets/images/MdrConnectTransparent.png"/></label>
+                MDR-Connect
+                <span class="icon"></span>
+            </a>
+            <ul class="dropdown" *ngIf="status12">
+                <li>
+                    <a routerLink="profileManagement" routerLinkActive="active">
+                        Profile Management
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="postManagement" routerLinkActive="active">
+                        Post Management
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="communicationDesk" routerLinkActive="active">
+                        Communication Desk
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="sellerstoreskumanagement" routerLinkActive="active">
+                        Seller Store SKU Management
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="buyservice" routerLinkActive="active">
+                        Buy Services
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!--       
+     
+      <li *ngIf="role == 1 || role == 2" id="a8" [attr.disabled]="isDisabled" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a><label><img src="assets/images/icons/nl9.png" /></label>Manage my Shop/Store Products Business Promotions <span class="icon"></span></a>
+        <div class="dropdown">
+          <li><a>My Platform Subscription Alerts</a></li>
+          <li><a>My Confirmed Orders Alerts</a></li>
+          <li><a>My Satisfactory Delivery Alerts</a></li>
+          <li><a>My Store Products Minimum Inventory Alerts</a></li>
+          </div>
+      </li>
+
+     
+      <li *ngIf="role == 1 || role == 2 || role == 8" id="a10" [attr.disabled]="isDisabled" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a><label><img src="assets/images/icons/nl10.png" /></label>Manage my Shop/Store as Physical Delivery Franchisee<span class="icon"></span></a>
+        <div class="dropdown">
+          <li><a>View My Primary Customer on Market Place</a></li>
+          </div>
+      </li>  
+ 
+
+      <li [attr.disabled]="isDisabled" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a><label><img src="assets/images/icons/nl10.png" /></label>My Shop/store Communication Desk</a></li>
+      <li [attr.disabled]="isDisabled" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a><label><img src="assets/images/icons/nl10.png" /></label>My Shop/Store Delivery Centre</a></li>
+      <li [attr.disabled]="isDisabled" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a><label><img src="assets/images/icons/nl10.png" /></label>My Shop/store Primary Customers in  Market Place</a></li>   -->
+
+        <!-- <li *ngIf="role == 1 || role == 2 || role == 8" id="a11" [attr.disabled]="isDisabled" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a routerLink="storedemand" routerLinkActive="active"><label><img src="assets/images/icons/nl9.png" /></label>Manage My Shop/Store Purchase <span class="icon"></span></a>
+        <div class="dropdown">
+          <li><a routerLink="storedemand" routerLinkActive="active">Manage My Store Demand Creation</a></li>
+          <li><a routerLink="opencart" routerLinkActive="active">Display Checked out Cart</a></li>
+         
+          </div>
+      </li> -->
+    </ul>
+</nav>

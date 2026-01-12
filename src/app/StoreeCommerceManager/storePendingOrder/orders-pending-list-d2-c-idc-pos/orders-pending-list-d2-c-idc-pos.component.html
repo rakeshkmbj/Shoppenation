@@ -1,0 +1,2264 @@
+<div class="content">
+    <h1 class="heading-title">My Store Confirmed Orders (FIFO Basis) delivery Dashboard</h1>
+    <div class="card">
+        <div class="card-body pl-0 pr-0">
+            <div>
+                <tabset>
+                    <tab heading="My Store D2C Online Orders" id="tab1">
+                        <form [formGroup]="confirmDashboardForm" (ngSubmit)="confirmDeliveryStatus()">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Store</label>
+                                        <div class="form-control form-level no-border">
+                                            {{storeName}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                [ngClass]="{ 'is-invalid': isSubmitted && f.SELECTED_DATE_FROM.errors }"
+                                                formControlName="SELECTED_DATE_FROM" class="form-control" bsDatepicker
+                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i
+                                                        class="icofont-ui-calendar"></i></span>
+                                            </div>
+                                            <div *ngIf="isSubmitted && f.SELECTED_DATE_FROM.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.SELECTED_DATE_FROM.errors.required">From date is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                [ngClass]="{ 'is-invalid': isSubmitted && f.SELECTED_DATE_TO.errors }"
+                                                formControlName="SELECTED_DATE_TO" class="form-control" bsDatepicker
+                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i
+                                                        class="icofont-ui-calendar"></i></span>
+                                            </div>
+                                            <div *ngIf="isSubmitted && f.SELECTED_DATE_TO.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.SELECTED_DATE_TO.errors.required">To date is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right mb-3">
+                                    <button type="submit" class="btn custom-btn">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="card p-0" *ngIf="homeDeliveryOrderList?.length == 0">
+                            <div class="card-header"><span>Delivery Type: Home Delivery</span>
+                            </div>
+                            <div class="card-body no_data_available"><img
+                                    src="assets/images/deactive_icon1.png" /><span>Data Not Available!</span></div>
+                        </div>
+                        <div class="card exiting-office-table orderStatus p-0"
+                            *ngIf="homeDeliveryOrderList?.length > 0">
+                            <div class="card-header" *ngIf="confirmDashboardData">
+                                <span style="font-size: 1rem;">Delivery Type: Home Delivery</span>
+                                <span style="font-size: 1rem;">Workflow Console Status: <img
+                                        *ngIf="confirmDashboardData.Store_Workflow_Available_Flag == true; else elseBlock"
+                                        src="assets/images/active_icon1.png" />
+                                    <ng-template #elseBlock>N/A</ng-template>
+                                </span>
+                            </div>
+                            <div class="card-body pa-0">
+                                <div class="row m-0">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="8%">Sr. No.</th>
+                                                    <th style="width: 95px;">Date of Transaction</th>
+                                                    <th>Confirmed<br> Order</th>
+                                                    <th>Order Process<br> Workflow</th>
+                                                    <th>Order Processed</th>
+                                                    <th>Order Received</th>
+                                                    <th width="12%">Cart ID</th>
+                                                    <th>View Invoice</th>
+                                                    <th>View Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let homeDelivery of homeDeliveryOrderList; index as i">
+                                                    <td>{{i + 1}}</td>
+                                                    <td>{{homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME
+                                                        | date:'medium'}}</td>
+                                                    <td>{{homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER}}<small
+                                                            (click)="viewCustomerModal(viewcustomer)"
+                                                            class="view-customer">view customer</small></td>
+                                                    <td><button
+                                                            (click)="processOrderWorkflow('homeDelivery', homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-ord-btn">Process Order</button></td>
+
+                                                    <td class="icon">
+                                                        <img *ngIf="homeDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==false"
+                                                            src="assets/images/deactive_icon1.png" />
+                                                        <img *ngIf="homeDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==true"
+                                                            src="assets/images/active_icon1.png" />
+                                                    </td>
+                                                    <td class="icon">
+                                                        <img src="assets/images/active_icon1.png" />
+                                                    </td>
+                                                    <td>{{homeDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID}}<br><small
+                                                            (click)="openCartModal(homeDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID ,cartTemplate)"
+                                                            class="viewCart">View Cart</small></td>
+                                                    <td><button
+                                                            (click)="viewInvoiceDetails(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, invoiceDetailsModal)"
+                                                            class="btn view-ord-btn"><i class="fa fa-eye"></i>Order
+                                                            Invoice</button></td>
+                                                    <!-- <td><button (click)="viewOrderFulfillmentonStoreDashboard(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, orderDetailsModal)" class="btn view-del-btn"><i class="fa fa-eye"></i>Fulfillment Details</button></td> -->
+                                                    <td><button
+                                                            (click)="viewOrderFulfillmentonStoreDashboard(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-del-btn"><i
+                                                                class="fa fa-eye"></i>Fulfillment Details</button></td>
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card p-0" *ngIf="selfDeliveryOrderList?.length == 0">
+                            <div class="card-header"><span>Delivery Type: Self Delivery</span>
+                            </div>
+                            <div class="card-body no_data_available"><img
+                                    src="assets/images/deactive_icon1.png" /><span>Data Not Available!</span></div>
+                        </div>
+                        <div class="card exiting-office-table orderStatus p-0"
+                            *ngIf="selfDeliveryOrderList?.length > 0">
+                            <div class="card-header" *ngIf="confirmDashboardData">
+                                <span style="font-size: 1rem;">Delivery Type: Self Takeaway</span>
+                                <span style="font-size: 1rem;">Workflow Console Status: <img
+                                        *ngIf="confirmDashboardData.Store_Workflow_Available_Flag == true; else elseBlock"
+                                        src="assets/images/active_icon1.png" />
+                                    <ng-template #elseBlock>N/A</ng-template>
+                                </span>
+                            </div>
+                            <div class="card-body pa-0">
+
+                                <div class="row m-0">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="8%">Sr. No.</th>
+                                                    <th style="width: 95px;">Date of Transaction</th>
+                                                    <th>Confirmed<br> Order</th>
+                                                    <th>Order Process<br> Workflow</th>
+                                                    <th>Order Processed</th>
+                                                    <th>Order Received</th>
+                                                    <th>Cart ID</th>
+                                                    <th>View Invoice</th>
+                                                    <th>View Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let selfDelivery of selfDeliveryOrderList; index as i">
+                                                    <td>{{i + 1}}</td>
+                                                    <td>{{selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME
+                                                        | date:'medium'}}</td>
+                                                    <td>{{selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER}}
+                                                        <small class="view-customer">view customer</small>
+                                                    </td>
+                                                    <td><button
+                                                            (click)="processOrderWorkflow('selfDelivery', selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-ord-btn">Process Order</button></td>
+                                                    <td class="icon">
+                                                        <img *ngIf="selfDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==false"
+                                                            src="assets/images/deactive_icon1.png" />
+                                                        <img *ngIf="selfDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==true"
+                                                            src="assets/images/active_icon1.png" />
+                                                    </td>
+
+                                                    <td class="icon">
+                                                        <img src="assets/images/active_icon1.png" />
+                                                    </td>
+                                                    <td>{{selfDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID}}<br><small
+                                                            (click)="openCartModal(selfDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID ,cartTemplate)"
+                                                            class="viewCart">View Cart</small></td>
+
+                                                    <td><button
+                                                            (click)="viewInvoiceDetails(selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, invoiceDetailsModal)"
+                                                            class="btn view-ord-btn"><i class="fa fa-eye"></i>Order
+                                                            Invoice</button></td>
+                                                    <td><button
+                                                            (click)="viewOrderFulfillmentonStoreDashboard(selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-del-btn"><i
+                                                                class="fa fa-eye"></i>Fulfillment Details</button></td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+
+                    <tab heading="My Store B2B Online Orders" id="tab2">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Store</label>
+                                        <div class="form-control form-level no-border">
+                                            {{storeName}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                [ngClass]="{ 'is-invalid': isSubmitted && f.SELECTED_DATE_FROM.errors }"
+                                                class="form-control" bsDatepicker
+                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i
+                                                        class="icofont-ui-calendar"></i></span>
+                                            </div>
+                                            <!-- <div *ngIf="isSubmitted && f.SELECTED_DATE_FROM.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.SELECTED_DATE_FROM.errors.required">From date is required
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <div class="input-group">
+                                            <input type="text"
+                                                [ngClass]="{ 'is-invalid': isSubmitted && f.SELECTED_DATE_TO.errors }"
+                                                class="form-control" bsDatepicker
+                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i
+                                                        class="icofont-ui-calendar"></i></span>
+                                            </div>
+                                            <!-- <div *ngIf="isSubmitted && f.SELECTED_DATE_TO.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.SELECTED_DATE_TO.errors.required">To date is required
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right mb-3">
+                                    <button (click)="B2BOrders()" type="submit" class="btn custom-btn">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="card p-0" *ngIf="showB2B == true">
+                            <div class="card-header"><span>Delivery Type: Home Delivery</span>
+                            </div>
+                            <div class="card-body no_data_available"><img
+                                    src="assets/images/deactive_icon1.png" /><span>Data Not Available!</span></div>
+                        </div>
+                        <div class="card exiting-office-table orderStatus p-0"
+                            *ngIf="homeDeliveryOrderList3?.length > 0">
+                            <div class="card-header" *ngIf="confirmDashboardData">
+                                <span>Delivery Type: Home Delivery</span>
+                                <span>Workflow Console Status: <img
+                                        *ngIf="confirmDashboardData.Store_Workflow_Available_Flag == true; else elseBlock"
+                                        src="assets/images/active_icon1.png" />
+                                    <ng-template #elseBlock>N/A</ng-template>
+                                </span>
+                            </div>
+                            <div class="card-body pa-0">
+                                <div class="row m-0">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="8%">Sr. No.</th>
+                                                    <th style="width: 95px;">Date of Transaction</th>
+                                                    <th>Confirmed<br> Order</th>
+                                                    <th>Order Process<br> Workflow</th>
+                                                    <th>Order Processed</th>
+                                                    <th>Order Received</th>
+                                                    <th width="12%">Cart ID</th>
+                                                    <th>View Invoice</th>
+                                                    <th>View Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let homeDelivery of homeDeliveryOrderList; index as i">
+                                                    <td>{{i + 1}}</td>
+                                                    <td>{{homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME
+                                                        | date:'medium'}}</td>
+                                                    <td>{{homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER}}<small
+                                                            (click)="viewCustomerModal(viewcustomer)"
+                                                            class="view-customer">view customer</small></td>
+                                                    <td><button
+                                                            (click)="processOrderWorkflow('homeDelivery', homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-ord-btn">Process Order</button></td>
+
+                                                    <td class="icon">
+                                                        <img *ngIf="homeDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==false"
+                                                            src="assets/images/deactive_icon1.png" />
+                                                        <img *ngIf="homeDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==true"
+                                                            src="assets/images/active_icon1.png" />
+                                                    </td>
+                                                    <td class="icon">
+                                                        <img src="assets/images/active_icon1.png" />
+                                                    </td>
+                                                    <td>{{homeDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID}}<br><small
+                                                            (click)="openCartModal(homeDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID ,cartTemplate)"
+                                                            class="viewCart">View Cart</small></td>
+                                                    <td><button
+                                                            (click)="viewInvoiceDetails(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, invoiceDetailsModal)"
+                                                            class="btn view-ord-btn"><i class="fa fa-eye"></i>Order
+                                                            Invoice</button></td>
+                                                    <!-- <td><button (click)="viewOrderFulfillmentonStoreDashboard(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, orderDetailsModal)" class="btn view-del-btn"><i class="fa fa-eye"></i>Fulfillment Details</button></td> -->
+                                                    <td><button
+                                                            (click)="viewOrderFulfillmentonStoreDashboard(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-del-btn"><i
+                                                                class="fa fa-eye"></i>Fulfillment Details</button></td>
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card p-0" *ngIf="showB2B == true">
+                            <div class="card-header"><span>Delivery Type: Self Delivery</span>
+                            </div>
+                            <div class="card-body no_data_available"><img
+                                    src="assets/images/deactive_icon1.png" /><span>Data Not Available!</span></div>
+                        </div>
+                        <div class="card exiting-office-table orderStatus p-0"
+                            *ngIf="selfDeliveryOrderList3?.length > 0">
+                            <div class="card-header" *ngIf="confirmDashboardData">
+                                <span>Delivery Type: Self Takeaway</span>
+                                <span>Workflow Console Status: <img
+                                        *ngIf="confirmDashboardData.Store_Workflow_Available_Flag == true; else elseBlock"
+                                        src="assets/images/active_icon1.png" />
+                                    <ng-template #elseBlock>N/A</ng-template>
+                                </span>
+                            </div>
+                            <div class="card-body pa-0">
+
+                                <div class="row m-0">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="8%">Sr. No.</th>
+                                                    <th style="width: 95px;">Date of Transaction</th>
+                                                    <th>Confirmed<br> Order</th>
+                                                    <th>Order Process<br> Workflow</th>
+                                                    <th>Order Processed</th>
+                                                    <th>Order Received</th>
+                                                    <th>Cart ID</th>
+                                                    <th>View Invoice</th>
+                                                    <th>View Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let selfDelivery of selfDeliveryOrderList; index as i">
+                                                    <td>{{i + 1}}</td>
+                                                    <td>{{selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME
+                                                        | date:'medium'}}</td>
+                                                    <td>{{selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER}}
+                                                        <small class="view-customer">view customer</small>
+                                                    </td>
+                                                    <td><button
+                                                            (click)="processOrderWorkflow('selfDelivery', selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-ord-btn">Process Order</button></td>
+                                                    <td class="icon">
+                                                        <img *ngIf="selfDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==false"
+                                                            src="assets/images/deactive_icon1.png" />
+                                                        <img *ngIf="selfDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==true"
+                                                            src="assets/images/active_icon1.png" />
+                                                    </td>
+
+                                                    <td class="icon">
+                                                        <img src="assets/images/active_icon1.png" />
+                                                    </td>
+                                                    <td>{{selfDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID}}<br><small
+                                                            (click)="openCartModal(selfDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID ,cartTemplate)"
+                                                            class="viewCart">View Cart</small></td>
+
+                                                    <td><button
+                                                            (click)="viewInvoiceDetails(selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, invoiceDetailsModal)"
+                                                            class="btn view-ord-btn"><i class="fa fa-eye"></i>Order
+                                                            Invoice</button></td>
+                                                    <td><button
+                                                            (click)="viewOrderFulfillmentonStoreDashboard(selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                            class="btn view-del-btn"><i
+                                                                class="fa fa-eye"></i>Fulfillment Details</button></td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </tab>
+
+                    <!-- Only for Primary Seller flag -->
+                    <tab *ngIf="PRIMARY_SELLER_FLG" heading="My Store Channel Networks" id="tab3">
+                        <form>
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <select class="form-control" (change)="changeCountry($event)">
+                                            <option value="">Select</option>
+                                            <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">
+                                                {{country.CNTRY_NM}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>State</label>
+                                        <select class="form-control" (change)="changeState($event)">
+                                            <option value="">Select</option>
+                                            <option *ngFor="let state of stateList" [value]="state.STATE_ID">
+                                                {{state.STATE_NM}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right mb-3">
+                                    <button (click)="onSecondNodeNetwork()" type="submit"
+                                        class="btn custom-btn">Primary/Secondary Network</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="card p-0"
+                            *ngIf="showNetworkList && (!secondryNodeAccArr || secondryNodeAccArr.length === 0)">
+                            <div class="card-header">
+                                <span>Primary/Secondary Channel List</span>
+                            </div>
+                            <div class="card-body no_data_available">
+                                <img src="assets/images/deactive_icon1.png" />
+                                <span>Data Not Available!</span>
+                            </div>
+                        </div>
+                        <div class="card exiting-office-table orderStatus p-0"
+                            *ngIf="showNetworkList && secondryNodeAccArr?.length > 0">
+                            <div class="card-header">
+                                <span>Primary/Secondary Channel List</span>
+                            </div>
+                            <div class="card-body pa-0">
+                                <div class="row m-0">
+                                    <div class="col-md-12 py-2">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="font">Sr#</th>
+                                                    <th class="font">PltfrmId</th>
+                                                    <th class="font">Subacc Id</th>
+                                                    <th class="font">Store Id</th>
+                                                    <th class="font">Name</th>
+                                                    <th class="font">B2B Id</th>
+                                                    <th class="font">Category</th>
+                                                    <th class="font">B2B flg</th>
+                                                    <th class="font">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of secondryNodeAccArr; let i = index">
+                                                    <td class="font">{{ i + 1 }}</td>
+                                                    <td class="font">{{ item.ECOMM_PLATFORM_ID }}</td>
+                                                    <td class="font">{{ item.SECOND_NODE_ACCT_SUBACCT_ID }}</td>
+                                                    <td class="font">{{ item.SECOND_NODE_ACCT_STORE_ID }}</td>
+                                                    <td class="font">{{ item.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</td>
+                                                    <td class="font">{{ item.ACCT_PRIMRY_SECNDRY_B2B_LINK_SEQ_ID }}</td>
+                                                    <td class="font">{{ item.CategoryName }}</td>
+                                                    <td class="font">
+                                                        <img *ngIf="item.PRIMRY_SECNDRY_ACCTS_b2B_ACTIV_FLG; else inactiveB2B"
+                                                            src="assets/images/active_icon.png" width="20" />
+                                                        <ng-template #inactiveB2B>
+                                                            <img src="assets/images/deactive_icon.png" width="20" />
+                                                        </ng-template>
+                                                    </td>
+                                                    <td>
+                                                        <div
+                                                            style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                                            <span
+                                                                (click)="openSNAddress(item.RETAIL_D2C_SUBACCT_OFFICE_NAME, item.SECOND_NODE_ACCT_SUBACCT_ID, item.SECOND_NODE_ACCT_STORE_ID, address)"
+                                                                class="badge bg-primary mr-2 text-white"
+                                                                style="cursor: pointer; font-size: 0.7rem;">Address</span>
+                                                            <span (click)="openSNThirdNode(item)"
+                                                                class="badge bg-primary mr-2 text-white"
+                                                                style="cursor: pointer; font-size: 0.7rem;">3rd
+                                                                Node</span>
+                                                            <span (click)="openView(item)" class="mr-2">
+                                                                <img src="../../../../assets/images/eye.png"
+                                                                    style="width:25px; height:25px; object-fit:contain;" />
+                                                            </span>
+                                                            <span (click)="openSNEdit(item)"
+                                                                class="delete-icon text-white" style="cursor: pointer;">
+                                                                <i class="fa fa-edit"></i>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-0"
+                            *ngIf="showThirdNodeAcc && (!thirdNodeAccArr || thirdNodeAccArr.length === 0)">
+                            <div class="card-header">
+                                <span>Secondary/Tertiary Channel List</span>
+                            </div>
+                            <div class="card-body no_data_available">
+                                <img src="assets/images/deactive_icon1.png" />
+                                <span>Data Not Available!</span>
+                            </div>
+                        </div>
+
+                        <div class="card exiting-office-table orderStatus p-0"
+                            *ngIf="showThirdNodeAcc && thirdNodeAccArr?.length > 0">
+                            <div class="card-header">
+                                <span>Secondary/Tertiary Channel List</span>
+                            </div>
+                            <div class="card-body pa-0">
+                                <div class="row m-0">
+                                    <div class="col-md-12 py-2">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="font">Sr#</th>
+                                                    <th class="font">Acc Id</th>
+                                                    <th class="font">Store Id</th>
+                                                    <th class="font">Name</th>
+                                                    <th class="font">B2B Id</th>
+                                                    <th class="font">B2B Flg</th>
+                                                    <th class="font">B2B2C Flg</th>
+                                                    <th class="font">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of thirdNodeAccArr; let i = index">
+                                                    <td class="font">{{ i + 1 }}</td>
+                                                    <td class="font">{{ item.THIRD_NODE_ACCT_SUBACCT_ID }}</td>
+                                                    <td class="font">{{ item.THIRD_NODE_ACCT_STORE_ID }}</td>
+                                                    <td class="font">{{ item.RETAIL_D2C_SUBACCT_OFFICE_NAME }}</td>
+                                                    <td class="font">{{ item.ACCTS_SECNDRY_TERITIARY_B2B_LINK_SEQ_ID }}
+                                                    </td>
+                                                    <td class="font">
+                                                        <img *ngIf="item.SECNDRY_TERITIARY_ACCTS_b2B_ACTIV_FLG; else inactiveB2B3"
+                                                            src="assets/images/active_icon.png" width="20" />
+                                                        <ng-template #inactiveB2B3>
+                                                            <img src="assets/images/deactive_icon.png" width="20" />
+                                                        </ng-template>
+                                                    </td>
+                                                    <td class="font">
+                                                        <img *ngIf="item.ACCTS_B2B2C_ACTIV_FLG; else inactiveB2B2C"
+                                                            src="assets/images/active_icon.png" width="20" />
+                                                        <ng-template #inactiveB2B2C>
+                                                            <img src="assets/images/deactive_icon.png" width="20" />
+                                                        </ng-template>
+                                                    </td>
+                                                    <td>
+                                                        <span (click)="openTNAddress(item.RETAIL_D2C_SUBACCT_OFFICE_NAME, item.THIRD_NODE_ACCT_SUBACCT_ID, item.THIRD_NODE_ACCT_STORE_ID, address)"
+                                                            class="badge bg-primary mr-2 text-white"
+                                                            style="cursor: pointer; font-size: 0.7rem;">Address</span>
+                                                        <span (click)="openTNEdit(item)" class="delete-icon text-white"
+                                                            style="cursor: pointer;">
+                                                            <i class="fa fa-edit"></i>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="isShowView == true" s="content"
+                            style="border: 1px solid #ccc; border-radius: 4px; padding: 16px;">
+
+                            <h4>View Dashboard</h4>
+
+                            <div class="row">
+                                <div class="col-md-12 py-2">
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="dashboard">Select Dashboard</label>
+                                            <select (change)="onDashboardSelect($event)" id="dashboard"
+                                                class="form-control">
+                                                <option value="">Select</option>
+                                                <option value="Online Order Dashboard">Online Order Dashboard
+                                                </option>
+                                                <option value="Stocks Inventory Dashboard">Stocks Inventory
+                                                    Dashboard
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 pt-3 text-right">
+                                            <button (click)="showDashboard()" class="btn custom-btn">View</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- stockes inventory dashboard -->
+                            <div *ngIf="showDash === 'Stocks Inventory Dashboard' "
+                                class="card exiting-office-table orderStatus p-0 mt-2">
+                                <div class="card-header">
+                                    <span>Stockes Inventory Dashboard</span>
+                                </div>
+
+                                <div class="card-body pa-0">
+                                    <div class="row m-0">
+                                        <div class="col-md-12 py-2">
+
+                                            <form [formGroup]="webStoreForm">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+
+                                                        <div class="form-group">
+                                                            <label>Store</label>
+                                                            <div class="form-control form-level no-border">
+                                                                {{selectedChannel.RETAIL_D2C_SUBACCT_OFFICE_NAME}}
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Select my Store Product-Line</label>
+                                                            <select class="form-control"
+                                                                (change)="onretailDropshipStoreChange($event)"
+                                                                formControlName="RETAIL_D2C_PRODUCT_ID">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let productline of productLineList"
+                                                                    [value]="productline.RETAIL_D2C_PRODUCT_ID">
+                                                                    {{productline.RETAIL_D2C_PRODUCT_NAME}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Select Store Item</label>
+
+                                                            <select formControlName="itemId" class="form-control"
+                                                                (change)="onPItemChange($event)">
+                                                                <option selected value="">Select</option>
+                                                                <option *ngFor="let productItem of itemLists"
+                                                                    [ngValue]="productItem.RETAIL_D2C_ITEM_ID">
+                                                                    {{productItem.RETAIL_D2C_ITEM_NAME}}
+                                                                </option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2">
+                                                    <div class="col-md-12">
+                                                        <button
+                                                            (click)="getAllItemSubItemAvailableForInventoryForselectedChannel()"
+                                                            type="button" class="btn custom-btn float-right">
+                                                            Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="box productLevel" *ngIf="showWebstore">
+                                                <div class="row text-level">
+                                                    <div class="col-md-12">
+
+                                                        <div class="search-field-list">
+                                                            <div class="search-list-label">Store:
+                                                                <span>{{selectedChannel.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</span>
+                                                            </div>
+                                                            <div class="search-list-label">Product Line:
+                                                                <span>{{productName}}</span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="item-subitem-list">
+                                                    <ul>
+                                                        <li *ngFor="let storeitem of filterItemList">
+
+                                                            <div style="max-width: 180px; min-width: 140px; width: 100%; padding: 10px; font-size: 0.85rem; height: auto;"
+                                                                class="pro-box storeitem item-box">
+
+                                                                <img
+                                                                    src="{{imgURL}}{{storeitem.ItemImagePath | slice:1:-4}}jpeg" />
+                                                                <div class="p-details ">
+                                                                    <p class="p-name">{{storeitem.ItemName}}</p>
+                                                                    <p class="item-id">Item ID:
+                                                                        <b>{{storeitem.ItemId}}</b>
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="middle-arrow"><i
+                                                                    class="fa fa-angle-double-right"></i></div>
+
+                                                            <div *ngFor="let storesubitem of productLineInventoryList | paginate: { itemsPerPage: 3, currentPage: p }; let i = index"
+                                                                class="sub-item-box">
+
+                                                                <div class="pro-box"
+                                                                    [ngClass]="{'active': storesubitem.isSelected === true}"
+                                                                    style="max-width: 180px; min-width: 140px; width: 100%; padding: 10px; font-size: 0.85rem; height: auto;">
+
+                                                                    <img src="{{imgURL}}{{storesubitem.SubItemImagePath | slice:1:-4}}jpeg"
+                                                                        style="max-width: 80px; max-height: 80px; object-fit: contain; margin-bottom: 6px;" />
+                                                                    <div class="p-details">
+                                                                        <p class="p-name" style="font-size: 1em;">
+                                                                            {{storesubitem.SubItemName}}</p>
+                                                                        <p class="p-name" style="font-size: 0.9em;">
+                                                                            <small>{{storesubitem.SubItemSize}}</small>
+                                                                        </p>
+
+                                                                        <p class="d-flex inStock"
+                                                                            style="font-size: 0.9em;">
+                                                                            <span>In-Stock:</span>
+                                                                            <span
+                                                                                *ngIf="storesubitem.RETAIL_D2C_STOCK_HOLDER_SUBITEM_IN_STOCK_FLG == true; else elseStock"><i
+                                                                                    class="ti-check-box"></i></span>
+                                                                            <ng-template #elseStock><span><i
+                                                                                        class="ti-close"></i></span></ng-template>
+                                                                        </p>
+                                                                        <p class="d-flex" style="font-size: 0.9em;">
+                                                                            <span>SKU#:</span>
+                                                                            <span>{{storesubitem.RETAIL_D2C_STOCK_SUBITEM_SKU_CODE}}</span>
+                                                                        </p>
+                                                                        <p class="d-flex"><span>Minimum Inventory
+                                                                                Alet:</span>
+                                                                            <span
+                                                                                *ngIf="storesubitem.RETAIL_D2C_STOCK_HOLDER_SUBITEM_STOCK_MIN_ALERT_FLG == true; else elseMIA">Yes</span>
+                                                                            <ng-template
+                                                                                #elseMIA><span>No</span></ng-template>
+                                                                        </p>
+
+                                                                        <p class="d-flex"><span>Auto ordering
+                                                                                Limit:</span>
+                                                                            <span>N/A</span>
+                                                                        </p>
+
+                                                                        <p class="d-flex" style="font-size: 0.9em;">
+                                                                            <span>Current Stock in
+                                                                                Webstore:</span>
+                                                                            <span>{{storesubitem.RETAIL_D2C_STOCK_HOLDR_INVENTRY_ON_HAND}}
+                                                                                Units</span>
+                                                                        </p>
+                                                                        <span
+                                                                            (click)="stockMovement('inward', viewStocksMovement)"
+                                                                            class="badge bg-primary text-white w-100 mt-2 text-center py-2"
+                                                                            style="cursor: pointer; font-size: 0.65rem;">
+                                                                            Inward Movement of stock
+                                                                        </span>
+
+                                                                        <span
+                                                                            (click)="stockMovement('outward', viewStocksMovement)"
+                                                                            class="badge bg-primary text-white w-100 mt-2 text-center py-2"
+                                                                            style="cursor: pointer; font-size: 0.65rem;">
+                                                                            Outward Movement of stock
+                                                                        </span>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                                <div class="row pull-right mt-3">
+                                                    <div class="col-md-12">
+                                                        <pagination-controls
+                                                            (pageChange)="p = $event"></pagination-controls>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Online order dashboard -->
+                            <div *ngIf="showDash === 'Online Order Dashboard' "
+                                class="card exiting-office-table orderStatus p-0 mt-2">
+                                <div class="card-header">
+                                    <span>Online Order Dashboard</span>
+                                </div>
+
+                                <div class="card-body pa-0">
+                                    <div class="row m-0">
+                                        <div class="col-md-12 py-2">
+
+                                            <form [formGroup]="confirmDashboardForm"
+                                                (ngSubmit)="confirmDeliveryStatus(2)">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Store</label>
+                                                            <div class="form-control form-level no-border">
+                                                                {{selectedChannel.RETAIL_D2C_SUBACCT_OFFICE_NAME}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>From Date</label>
+                                                            <div class="input-group">
+                                                                <input type="text"
+                                                                    [ngClass]="{ 'is-invalid': isSubmitted && f.SELECTED_DATE_FROM.errors }"
+                                                                    formControlName="SELECTED_DATE_FROM"
+                                                                    class="form-control" bsDatepicker
+                                                                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                    placeholder="dd/mm/yyyy">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="icofont-ui-calendar"></i></span>
+                                                                </div>
+                                                                <div *ngIf="isSubmitted && f.SELECTED_DATE_FROM.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div *ngIf="f.SELECTED_DATE_FROM.errors.required">
+                                                                        From date is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>To Date</label>
+                                                            <div class="input-group">
+                                                                <input type="text"
+                                                                    [ngClass]="{ 'is-invalid': isSubmitted && f.SELECTED_DATE_TO.errors }"
+                                                                    formControlName="SELECTED_DATE_TO"
+                                                                    class="form-control" bsDatepicker
+                                                                    [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                    placeholder="dd/mm/yyyy">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="icofont-ui-calendar"></i></span>
+                                                                </div>
+                                                                <div *ngIf="isSubmitted && f.SELECTED_DATE_TO.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div *ngIf="f.SELECTED_DATE_TO.errors.required">To
+                                                                        date is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-right mb-3">
+                                                        <button type="submit" class="btn custom-btn">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="card p-0" *ngIf="homeDeliveryOrderList2?.length == 0">
+                                                <div class="card-header"><span>Delivery Type: Home Delivery</span>
+                                                </div>
+                                                <div class="card-body no_data_available"><img
+                                                        src="assets/images/deactive_icon1.png" /><span>Data Not
+                                                        Available!</span></div>
+                                            </div>
+                                            <div class="card exiting-office-table orderStatus p-0"
+                                                *ngIf="homeDeliveryOrderList2?.length > 0">
+                                                <div class="card-header" *ngIf="confirmDashboardData">
+                                                    <span>Delivery Type: Home Delivery</span>
+                                                    <span>Workflow Console Status: <img
+                                                            *ngIf="confirmDashboardData.Store_Workflow_Available_Flag == true; else elseBlock"
+                                                            src="assets/images/active_icon1.png" />
+                                                        <ng-template #elseBlock>N/A</ng-template>
+                                                    </span>
+                                                </div>
+                                                <div class="card-body pa-0">
+                                                    <div class="row m-0">
+                                                        <div class="col-md-12">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="8%">Sr. No.</th>
+                                                                        <th style="width: 95px;">Date of Transaction
+                                                                        </th>
+                                                                        <th>Confirmed<br> Order</th>
+                                                                        <th>Order Process<br> Workflow</th>
+                                                                        <th>Order Processed</th>
+                                                                        <th>Order Received</th>
+                                                                        <th width="12%">Cart ID</th>
+                                                                        <th>View Invoice</th>
+                                                                        <th>View Details</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr
+                                                                        *ngFor="let homeDelivery of homeDeliveryOrderList; index as i">
+                                                                        <td>{{i + 1}}</td>
+                                                                        <td>{{homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME
+                                                                            | date:'medium'}}</td>
+                                                                        <td>{{homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER}}<small
+                                                                                (click)="viewCustomerModal(viewcustomer)"
+                                                                                class="view-customer">view
+                                                                                customer</small></td>
+                                                                        <td><button
+                                                                                (click)="processOrderWorkflow('homeDelivery', homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                                                class="btn view-ord-btn">Process
+                                                                                Order</button></td>
+
+                                                                        <td class="icon">
+                                                                            <img *ngIf="homeDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==false"
+                                                                                src="assets/images/deactive_icon1.png" />
+                                                                            <img *ngIf="homeDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==true"
+                                                                                src="assets/images/active_icon1.png" />
+                                                                        </td>
+                                                                        <td class="icon">
+                                                                            <img src="assets/images/active_icon1.png" />
+                                                                        </td>
+                                                                        <td>{{homeDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID}}<br><small
+                                                                                (click)="openCartModal(homeDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID ,cartTemplate)"
+                                                                                class="viewCart">View Cart</small></td>
+                                                                        <td><button
+                                                                                (click)="viewInvoiceDetails(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, invoiceDetailsModal)"
+                                                                                class="btn view-ord-btn"><i
+                                                                                    class="fa fa-eye"></i>Order
+                                                                                Invoice</button></td>
+                                                                        <!-- <td><button (click)="viewOrderFulfillmentonStoreDashboard(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, orderDetailsModal)" class="btn view-del-btn"><i class="fa fa-eye"></i>Fulfillment Details</button></td> -->
+                                                                        <td><button
+                                                                                (click)="viewOrderFulfillmentonStoreDashboard(homeDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                                                class="btn view-del-btn"><i
+                                                                                    class="fa fa-eye"></i>Fulfillment
+                                                                                Details</button></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="card p-0" *ngIf="selfDeliveryOrderList2?.length == 0">
+                                                <div class="card-header"><span>Delivery Type: Self Delivery</span>
+                                                </div>
+                                                <div class="card-body no_data_available"><img
+                                                        src="assets/images/deactive_icon1.png" /><span>Data Not
+                                                        Available!</span></div>
+                                            </div>
+                                            <div class="card exiting-office-table orderStatus p-0"
+                                                *ngIf="selfDeliveryOrderList2?.length > 0">
+                                                <div class="card-header" *ngIf="confirmDashboardData">
+                                                    <span style="font-size: 1rem;">Delivery Type: Self Takeaway</span>
+                                                    <span style="font-size: 1rem;">Workflow Console Status: <img
+                                                            *ngIf="confirmDashboardData.Store_Workflow_Available_Flag == true; else elseBlock"
+                                                            src="assets/images/active_icon1.png" />
+                                                        <ng-template #elseBlock>N/A</ng-template>
+                                                    </span>
+                                                </div>
+                                                <div class="card-body pa-0">
+
+                                                    <div class="row m-0">
+                                                        <div class="col-md-12">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="8%">Sr. No.</th>
+                                                                        <th style="width: 95px;">Date of Transaction
+                                                                        </th>
+                                                                        <th>Confirmed<br> Order</th>
+                                                                        <th>Order Process<br> Workflow</th>
+                                                                        <th>Order Processed</th>
+                                                                        <th>Order Received</th>
+                                                                        <th>Cart ID</th>
+                                                                        <th>View Invoice</th>
+                                                                        <th>View Details</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr
+                                                                        *ngFor="let selfDelivery of selfDeliveryOrderList; index as i">
+                                                                        <td>{{i + 1}}</td>
+                                                                        <td>{{selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME
+                                                                            | date:'medium'}}</td>
+                                                                        <td>{{selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER}}
+                                                                            <small class="view-customer">view
+                                                                                customer</small>
+                                                                        </td>
+                                                                        <td><button
+                                                                                (click)="processOrderWorkflow('selfDelivery', selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                                                class="btn view-ord-btn">Process
+                                                                                Order</button></td>
+                                                                        <td class="icon">
+                                                                            <img *ngIf="selfDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==false"
+                                                                                src="assets/images/deactive_icon1.png" />
+                                                                            <img *ngIf="selfDelivery.RETAIL_D2C_ORDER_PROCESSED_BY_STORE_DASHBOARD_FLAG ==true"
+                                                                                src="assets/images/active_icon1.png" />
+                                                                        </td>
+
+                                                                        <td class="icon">
+                                                                            <img src="assets/images/active_icon1.png" />
+                                                                        </td>
+                                                                        <td>{{selfDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID}}<br><small
+                                                                                (click)="openCartModal(selfDelivery.RETAIL_D2C_DELIVERY_ORDER_ASSOCIATED_CART_ID ,cartTemplate)"
+                                                                                class="viewCart">View Cart</small></td>
+
+                                                                        <td><button
+                                                                                (click)="viewInvoiceDetails(selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER, invoiceDetailsModal)"
+                                                                                class="btn view-ord-btn"><i
+                                                                                    class="fa fa-eye"></i>Order
+                                                                                Invoice</button></td>
+                                                                        <td><button
+                                                                                (click)="viewOrderFulfillmentonStoreDashboard(selfDelivery.RETAIL_D2C_DELIVERY_RQSTD_ORDER_NUMBER)"
+                                                                                class="btn view-del-btn"><i
+                                                                                    class="fa fa-eye"></i>Fulfillment
+                                                                                Details</button></td>
+                                                                    </tr>
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </tab>
+
+                    <tab *ngIf="PRIMARY_SELLER_FLG" heading="Sales Analysis" id="tab4">
+
+                        <tabset>
+
+                            <tab (selectTab)="onSATabChange('Geo Based')" heading="Geo Based" id="GB">
+                                <form>
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Based On</label>
+                                                <select class="form-control"
+                                                    (change)="onSelectBasedOn($event, 'Geo Based')">
+                                                    <option value="" selected>Select</option>
+                                                    <option value="country">Based on Country Wide</option>
+                                                    <option value="state">Based on State Wide</option>
+                                                    <option value="city">Based on City Wide</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right mb-3">
+                                            <button (click)="showSaForm('Geo Based')" type="submit"
+                                                class="btn custom-btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <tabset *ngIf="showSAFormGeo == true">
+                                    <tab heading="Sales Figure" id="sf1">
+                                        <form>
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Country</label>
+                                                        <select class="form-control" (change)="changeCountry($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let country of countryList"
+                                                                [value]="country.CNTRY_ID">
+                                                                {{country.CNTRY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionGeo === 'state' || basedOnSelectionGeo === 'city' "
+                                                    class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>State</label>
+                                                        <select class="form-control" (change)="changeState($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let state of stateList"
+                                                                [value]="state.STATE_ID">
+                                                                {{state.STATE_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionGeo === 'city'" class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>City</label>
+                                                        <select class="form-control" (change)="changeCity($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let city of cityList"
+                                                                [value]="city.CITY_ID">
+                                                                {{city.CITY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>From Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>To Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-right mb-3">
+                                                    <button (click)="showAnalysis('Geo Based')" type="submit"
+                                                        class="btn custom-btn">Generate</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div *ngIf="generateResGeoBased == true" class="card p-0">
+                                            <div class="card-header">
+                                                <!-- <span>Primary/Secondary Channel List</span> -->
+                                            </div>
+                                            <div class="card-body no_data_available">
+                                                <img src="assets/images/deactive_icon1.png" />
+                                                <span>Data Not Available!</span>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="Comparitive Analysis" id="ca1"></tab>
+                                </tabset>
+                            </tab>
+
+                            <tab (selectTab)="onSATabChange('Geo Product Based')" heading="Geo Product Based"
+                                id="subtab1">
+                                <form>
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Based On</label>
+                                                <select class="form-control"
+                                                    (change)="onSelectBasedOn($event, 'Geo Product Based')">
+                                                    <option value="" selected>Select</option>
+                                                    <option value="country">Based on Country Wide</option>
+                                                    <option value="state">Based on State Wide</option>
+                                                    <option value="city">Based on City Wide</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right mb-3">
+                                            <button (click)="showSaForm('Geo Product Based')" type="submit"
+                                                class="btn custom-btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <tabset *ngIf="showSAFormGeoProduct == true">
+                                    <tab heading="Sales Figure" id="sf1">
+                                        <form>
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Country</label>
+                                                        <select class="form-control" (change)="changeCountry($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let country of countryList"
+                                                                [value]="country.CNTRY_ID">
+                                                                {{country.CNTRY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionGeoProduct === 'state' || basedOnSelectionGeoProduct === 'city' "
+                                                    class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>State</label>
+                                                        <select class="form-control" (change)="changeState($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let state of stateList"
+                                                                [value]="state.STATE_ID">
+                                                                {{state.STATE_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionGeoProduct === 'city'" class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>City</label>
+                                                        <select class="form-control" (change)="changeCity($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let city of cityList"
+                                                                [value]="city.CITY_ID">
+                                                                {{city.CITY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Product Line</label>
+                                                        <select class="form-control">
+                                                            <option selected value="">Select</option>
+                                                            <option *ngFor="let productline of productLineList"
+                                                                [value]="productline.RETAIL_D2C_PRODUCT_ID">
+                                                                {{productline.RETAIL_D2C_PRODUCT_NAME}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>From Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>To Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-right mb-3">
+                                                    <button (click)="showAnalysis('Geo Product Based')" type="submit"
+                                                        class="btn custom-btn">Generate</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div *ngIf="generateResGeoProductBased == true" class="card p-0">
+                                            <div class="card-header">
+                                                <!-- <span>Primary/Secondary Channel List</span> -->
+                                            </div>
+                                            <div class="card-body no_data_available">
+                                                <img src="assets/images/deactive_icon1.png" />
+                                                <span>Data Not Available!</span>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="Comparitive Analysis" id="ca1"></tab>
+                                </tabset>
+                            </tab>
+
+                            <tab (selectTab)="onSATabChange('Item Based')" heading="Item Based" id="subtab1">
+                                <form>
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Based On</label>
+                                                <select class="form-control"
+                                                    (change)="onSelectBasedOn($event, 'Item Based')">
+                                                    <option value="" selected>Select</option>
+                                                    <option value="country">Based on Country Wide</option>
+                                                    <option value="state">Based on State Wide</option>
+                                                    <option value="city">Based on City Wide</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right mb-3">
+                                            <button (click)="showSaForm('Item Based')" type="submit"
+                                                class="btn custom-btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <tabset *ngIf="showSAFormItem == true">
+                                    <tab heading="Sales Figure" id="sf1">
+                                        <form>
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Country</label>
+                                                        <select class="form-control" (change)="changeCountry($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let country of countryList"
+                                                                [value]="country.CNTRY_ID">
+                                                                {{country.CNTRY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionItem === 'state' || basedOnSelectionItem === 'city' "
+                                                    class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>State</label>
+                                                        <select class="form-control" (change)="changeState($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let state of stateList"
+                                                                [value]="state.STATE_ID">
+                                                                {{state.STATE_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionItem === 'city'" class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>City</label>
+                                                        <select class="form-control" (change)="changeCity($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let city of cityList"
+                                                                [value]="city.CITY_ID">
+                                                                {{city.CITY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Product Line</label>
+                                                        <select (change)="onSelectProductLine($event)"
+                                                            class="form-control">
+                                                            <option selected value="">Select</option>
+                                                            <option *ngFor="let productline of productLineList"
+                                                                [value]="productline.RETAIL_D2C_PRODUCT_ID">
+                                                                {{productline.RETAIL_D2C_PRODUCT_NAME}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Item</label>
+                                                        <select class="form-control">
+                                                            <option selected value="">Select</option>
+                                                            <option *ngFor="let productItem of itemListsforitembased"
+                                                                [ngValue]="productItem.RETAIL_D2C_ITEM_ID">
+                                                                {{productItem.RETAIL_D2C_ITEM_NAME}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>From Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>To Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-right mb-3">
+                                                    <button (click)="showAnalysis('Item Based')" type="submit"
+                                                        class="btn custom-btn">Generate</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div *ngIf="generateResItemBased == true" class="card p-0">
+                                            <div class="card-header">
+                                                <!-- <span>Primary/Secondary Channel List</span> -->
+                                            </div>
+                                            <div class="card-body no_data_available">
+                                                <img src="assets/images/deactive_icon1.png" />
+                                                <span>Data Not Available!</span>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="Comparitive Analysis" id="ca1"></tab>
+                                </tabset>
+                            </tab>
+
+                            <tab (selectTab)="onSATabChange('Channel Based')" heading="Channel Based" id="subtab1">
+                                <form>
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Based On</label>
+                                                <select class="form-control"
+                                                    (change)="onSelectBasedOn($event, 'Channel Based')">
+                                                    <option value="" selected>Select</option>
+                                                    <option value="state">Based on State Wide</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right mb-3">
+                                            <button (click)="showSaForm('Channel Based')" type="submit"
+                                                class="btn custom-btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <tabset *ngIf="showSAFormChannel == true">
+                                    <tab heading="Sales Figure" id="sf1">
+                                        <form>
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Country</label>
+                                                        <select class="form-control" (change)="changeCountry($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let country of countryList"
+                                                                [value]="country.CNTRY_ID">
+                                                                {{country.CNTRY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionChannel === 'state' || basedOnSelectionChannel === 'city' "
+                                                    class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>State</label>
+                                                        <select class="form-control" (change)="getChannel($event, 2)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let state of stateList"
+                                                                [value]="state.STATE_ID">
+                                                                {{state.STATE_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Channel</label>
+                                                        <select class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let item of secondryNodeAccArr2"
+                                                                [value]="item.SECOND_NODE_ACCT_SUBACCT_ID">
+                                                                {{item.RETAIL_D2C_SUBACCT_OFFICE_NAME}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>From Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>To Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-right mb-3">
+                                                    <button (click)="showAnalysis('Channel Based')" type="submit"
+                                                        class="btn custom-btn">Generate</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <div *ngIf="generateResChannelBased == true" class="card p-0">
+                                            <div class="card-header">
+                                                <!-- <span>Primary/Secondary Channel List</span> -->
+                                            </div>
+                                            <div class="card-body no_data_available">
+                                                <img src="assets/images/deactive_icon1.png" />
+                                                <span>Data Not Available!</span>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="Comparitive Analysis" id="ca1"></tab>
+                                </tabset>
+                            </tab>
+
+                            <tab (selectTab)="onSATabChange('SFA Exec Based')" heading="SFA Exec Based" id="subtab1">
+                                <form>
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Based On</label>
+                                                <select class="form-control"
+                                                    (change)="onSelectBasedOn($event, 'SFA Exec Based')">
+                                                    <option value="" selected>Select</option>
+                                                    <option value="state">Based on State Wide</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right mb-3">
+                                            <button (click)="showSaForm('SFA Exec Based')" type="submit"
+                                                class="btn custom-btn">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <tabset *ngIf="showSAFormSFAExec == true">
+                                    <tab heading="Sales Figure" id="sf1">
+                                        <form>
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Country</label>
+                                                        <select class="form-control" (change)="changeCountry($event)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let country of countryList"
+                                                                [value]="country.CNTRY_ID">
+                                                                {{country.CNTRY_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="basedOnSelectionSFAExec === 'state' || basedOnSelectionSFAExec === 'city' "
+                                                    class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>State</label>
+                                                        <select class="form-control" (change)="getChannel($event, 3)">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let state of stateList"
+                                                                [value]="state.STATE_ID">
+                                                                {{state.STATE_NM}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Channel</label>
+                                                        <select (change)="onChannelChange($event)" class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let item of secondryNodeAccArr3"
+                                                                [value]="toChannelValue(item)">
+                                                                {{item.RETAIL_D2C_SUBACCT_OFFICE_NAME}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Account Category For</label>
+                                                        <select (change)="onAccountCategoryChange($event)"
+                                                            class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option value="primary">Primary</option>
+                                                            <option value="secondary">Secondary</option>
+                                                            <option value="tertiary">Tertiary</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>SFA</label>
+                                                        <select class="form-control">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let item of sfaAccountArr"
+                                                                [value]="item.RoleName">
+                                                                {{item.RoleName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>From Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>To Date</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                                                                placeholder="dd/mm/yyyy">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="icofont-ui-calendar"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 text-right mb-3">
+                                                    <button (click)="showAnalysis('SFA Exec Based')" type="submit"
+                                                        class="btn custom-btn">Generate</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div *ngIf="generateResSFAExecBased == true" class="card p-0">
+                                            <div class="card-header">
+                                                <!-- <span>Primary/Secondary Channel List</span> -->
+                                            </div>
+                                            <div class="card-body no_data_available">
+                                                <img src="assets/images/deactive_icon1.png" />
+                                                <span>Data Not Available!</span>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="Comparitive Analysis" id="ca1"></tab>
+                                </tabset>
+                            </tab>
+
+                        </tabset>
+
+                    </tab>
+
+                    <tab *ngIf="PRIMARY_SELLER_FLG" heading="Delivery Analysis" id="tab5"></tab>
+                    <tab *ngIf="PRIMARY_SELLER_FLG" heading="Panaromic view" id="tab6"></tab>
+                </tabset>
+            </div>
+            <br><br>
+            <ngx-spinner template="<img src='assets/images/icons/please_wait.gif' />">
+            </ngx-spinner>
+        </div>
+
+        <ng-template #invoiceDetailsModal>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Order Invoice & Order Details</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-2">
+                <div class="row">
+                    <div class="col-md-7 pr-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>Invoice No.</strong>
+                            </div>
+                            <div class="col-md-6">
+                                {{invoiceData.RETAIL_D2C_INVOICE_NUMBR}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Invoiced Date
+                            </div>
+                            <div class="col-md-6">
+                                {{invoiceData.RETAIL_D2C_INVOICED_DATETIME | date}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Invoiced on regular day
+                            </div>
+                            <div class="col-md-6">
+                                {{regularDayFlag}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Invoiced on holiday
+                            </div>
+                            <div class="col-md-6">
+                                {{holidayFlag}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Self Delivery Type
+                            </div>
+                            <div class="col-md-6">
+                                {{selfTakeAwayFlag}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 pl-2 text-right">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <strong> Order Number</strong>
+                            </div>
+                            <div class="col-md-4">
+                                {{invoiceData.RETAIL_D2C_ORDER_NUMBR}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                Home Delivery Type
+                            </div>
+                            <div class="col-md-4">
+                                {{homeDeliveryFlag}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                Packages in Order Count
+                            </div>
+                            <div class="col-md-4">
+                                {{invoiceData.RETAIL_D2C_ORDER_PACKAGES_COUNT}}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                Total item in Order
+                            </div>
+                            <div class="col-md-4">
+                                {{invoiceData.RETAIL_D2C_STORE_PRODUCTS_ORDER_NO_TOTAL_QUANTITY}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <table class="orderList table table-striped">
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Product Name</th>
+                        <th>Item Name</th>
+                        <th>Sub Item Name</th>
+                        <th>Quantity Ordered</th>
+
+                        <th>Disc. Available</th>
+                        <th>Discount Figure</th>
+                        <th>%</th>
+                        <th>MRP</th>
+                    </tr>
+                    <tr *ngFor="let invoice of invoiceCartData; index as i">
+                        <td>{{1+i}}</td>
+                        <td>{{invoice.RETAIL_D2C_PRODUCT_NAME}}</td>
+                        <td>{{invoice.RETAIL_D2C_ITEM_NAME}}</td>
+                        <td>{{invoice.RETAIL_D2C_SUBITEM_NAME}}</td>
+
+                        <td>{{invoice.RETAIL_D2C_SUBITEM_QUANTITY_COUNT}}</td>
+                        <td>{{invoice.RETAIL_D2C_DISCOUNT_AVAILABLE_FLG ? "Yes":"No"}}</td>
+                        <td>{{invoice.RETAIL_D2C_DISCOUNT_FIGURE}}</td>
+                        <td>{{invoice.RETAIL_D2C_DISCOUNT_PERCENTAGE_FLG ? "Yes":"No"}}</td>
+                        <td>{{invoice.RETAIL_D2C_MRP_PRICE_TAG}}</td>
+                    </tr>
+                    <tr class="no-border">
+                        <td colspan="8">Convienince fee</td>
+                        <td>{{invoiceData.RETAIL_D2C_CONVENIENCE_FEE_INCLUD_GST}}</td>
+                    </tr>
+
+                    <tr class="no-border">
+                        <td colspan="8">Delivery fee</td>
+                        <td>{{invoiceData.RETAIL_D2C_DELIVERY_FEE_INCLUD_GST}}</td>
+                    </tr>
+                    <tr class="no-border">
+                        <td colspan="8">Customer donation of Rs. 1.00</td>
+                        <td> {{donationFlag}}</td>
+                    </tr>
+
+                    <tr class="no-border">
+                        <td colspan="8">Total invoiced Packaging Cost</td>
+                        <td>{{invoiceData.RETAIL_D2C_INVOICED_PACKAGING_COST}}</td>
+                    </tr>
+                    <tr class="no-border">
+                        <td colspan="8">Total Store items Sales(including GST)</td>
+                        <td>{{invoiceData.RETAIL_D2C_STORE_PRODUCTS_SALES_INCLUD_GST_TOTAL}}</td>
+                    </tr>
+
+                    <tr class="no-border">
+                        <td colspan="8">Customer Invoiced Amount
+                        </td>
+                        <td>{{invoiceData.RETAIL_D2C_TOTAL_CUSTMR_INVOICED_AMT}}</td>
+                    </tr>
+                </table>
+            </div>
+        </ng-template>
+
+        <ng-template #viewcustomer>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">View Customer<br><small>Customer ID: XXXXXX</small></h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6"><strong>Name</strong></div>
+                    <div class="col-md-6">Rajesh Handa</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><strong>Primary Customer of Store</strong></div>
+                    <div class="col-md-6">Yes</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><strong>Contact No.</strong></div>
+                    <div class="col-md-6">xxxxxxxxx</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><strong>Address</strong></div>
+                    <div class="col-md-6">xxxxxxxxx</div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12 text-right"><button class="btn custom-btn">Close</button></div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #cartTemplate>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Cart ID: {{cartid}}</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-head mb-1 p-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <strong>Serial No.</strong>
+
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <strong>Product Line Name</strong>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <strong>Item Name</strong>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <strong>Sub Item Name</strong>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <strong>Quantity</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3 p-0" *ngFor="let cartList of cartData; index as i">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                {{1+i}}
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                {{cartList.RETAIL_D2C_PRODUCT_NAME}}
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                {{cartList.RETAIL_D2C_ITEM_NAME}}
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                {{cartList.RETAIL_D2C_SUBITEM_NAME}}
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                {{cartList.RETAIL_D2C_SUBITEM_QUANTITY_COUNT}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #orderDetailsModal>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Delivery Details<br>
+                    <small>Order Number: {{orderNumber}}</small>
+                </h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Order Requested on Vend</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{orderDetailsData.RETAIL_D2C_DELIVERY_RQSTD_ALLOCATD_ON_PLATFORM_DATETIME}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Delivery Taken from Vend</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{yesNoText}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Order Delivered to Customer</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{yesNoText}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong> Order Delivered to Customer Date Time</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{orderDetailsData.RETAIL_RQST_ORDER_DELIVERY_DONE_TO_CUSTMR_DATETIME}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Delivery on Pincode</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{orderDetailsData.RETAIL_D2C_DELIVERY_RQSTD_CUSTMR_PINCODE}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong> Allocated to Vahan</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{yesNoText}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong> Delivery taken from Vend Date Time</strong>
+                    </div>
+                    <div class="col-md-6">
+                        {{orderDetailsData.RETAIL_RQST_ORDER_TAKEN_FROM_VEND_DATETIME}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div (click)="closeModal()" class="col-md-12 pt-3 text-right"><button
+                            class="btn custom-btn">Close</button></div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #viewStocksMovement>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{movementName}} Movement of Stocks</h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="viewStocksModalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="fromDate">From Date</label>
+                        <div class="input-group">
+                            <input type="text" id="fromDate" class="form-control" bsDatepicker
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="toDate">To Date</label>
+                        <div class="input-group">
+                            <input type="text" id="toDate" class="form-control" bsDatepicker
+                                [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 pt-3 text-right"><button class="btn custom-btn">View</button></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Serial</th>
+                                    <th>Order</th>
+                                    <th>Date</th>
+                                    <th>Invoice</th>
+                                    <th>Item ID</th>
+                                    <th>Movement</th>
+                                    <th>Item Counts</th>
+                                    <th>Seller Name</th>
+                                    <th>Buyer Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Replace this row with *ngFor when data is available -->
+                                <tr>
+                                    <td colspan="9" class="text-center">No data available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </ng-template>
+
+        <ng-template #address>
+            <form>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Store Address</h4>
+                <button type="button" class="close pull-right" aria-label="Close"
+                (click)="addressRef.hide()">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                <div class="col-md-6">
+                    <p>Store Name</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.storeName}}
+                </div>
+                </div>
+
+                <!-- <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Country</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.Country}}
+                </div>
+                </div>
+
+                <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>State</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.State}}
+                </div>
+                </div>
+
+                <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>City</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.City}}
+                </div>
+                </div> -->
+
+                <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Pincode</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.Pincode}}
+                </div>
+                </div>
+
+                <div class="row mt-1">
+                <div class="col-md-6">
+                    <p>Store Address</p>
+                </div>
+                <div class="col-md-6">
+                    {{storeAddress?.Address}}
+                </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button (click)="addressRef.hide()" type="button"
+                class="btn btn-secondary">Close</button>
+            </div>
+            </form>
+        </ng-template>

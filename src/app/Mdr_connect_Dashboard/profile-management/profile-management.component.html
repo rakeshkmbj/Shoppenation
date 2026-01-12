@@ -1,0 +1,1549 @@
+<div class="content">
+    <h1 class="heading-title">Profile Management</h1>
+    <div class="card">
+        <div class="card-body pl-0 pr-0">
+            <div>
+                <tabset>
+
+                    <tab (selectTab)="onTabChange('Main Profile')" heading="Main Profile" id="tab1">
+
+                        <form [formGroup]="mainProfileForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="storecode">Store Code</label>
+                                        <input type="text" class="form-control" id="storecode"
+                                            formControlName="Login_Storecode" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" class="form-control" id="firstName"
+                                            placeholder="Enter first name" formControlName="MainProfile_FirstName">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName"
+                                            placeholder="Enter last name" formControlName="MainProfile_LastName">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="respondername">Responder Name</label>
+                                        <input type="text" class="form-control" id="respondername"
+                                            placeholder="Enter responder name" formControlName="Corp_Responder_Name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="phoneNumber">Corporate Phone Number</label>
+                                        <input type="tel" class="form-control" id="phoneNumber"
+                                            formControlName="Corp_PhoneNumber" placeholder="Enter phone number">
+                                        <div *ngIf="mainProfileForm.get('Corp_PhoneNumber')?.invalid && mainProfileForm.get('Corp_PhoneNumber')?.touched"
+                                            class="text-danger">
+                                            Phone number must be between 10 and 15 digits.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="emailId">Corporate Email</label>
+                                        <input type="email" class="form-control" id="emailId"
+                                            formControlName="Corp_Emailid" placeholder="Enter corporate email">
+                                        <div *ngIf="mainProfileForm.get('Corp_Emailid')?.invalid && mainProfileForm.get('Corp_Emailid')?.touched"
+                                            class="text-danger">
+                                            Please enter a valid email address.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="designation">Designation</label>
+                                        <input type="text" class="form-control" id="designation"
+                                            placeholder="Enter designation" formControlName="MainProfile_Designation">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="employee">Employees</label>
+                                        <input type="number" class="form-control" id="employee"
+                                            placeholder="Number of employees" formControlName="Employee_Counts">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="url">Website URL</label>
+                                        <input type="text" class="form-control" id="url"
+                                            placeholder="Company website URL" formControlName="Website_URL">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="about">About above entered Management Main Profile</label>
+                                        <input type="text" placeholder="Brief description of the management profile"
+                                            class="form-control" id="about" formControlName="Mngmt_About_Text">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mainText">Organization main display text</label>
+                                        <input type="text" class="form-control" id="mainText"
+                                            placeholder="Primary tagline or display text"
+                                            formControlName="Main_Display_Text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="profile">Organization Profile</label>
+                                        <textarea placeholder="Write a brief overview of the organization"
+                                            class="form-control" id="profile" rows="2"
+                                            formControlName="Corp_About_Text"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group border p-3 rounded">
+                                        <label for="orgLogo">Organization Logo</label>
+                                        <input *ngIf="!isProfileExisting" type="file"
+                                            class="form-control-file border p-2 rounded" id="orgLogo"
+                                            (change)="onOrgLogoChange($event)">
+                                        <div *ngIf="orgLogoUrl && !isProfileExisting" class="mt-2 border p-2 rounded">
+                                            <img [src]="orgLogoUrl" alt="Organization Logo"
+                                                style="max-width: 150px; max-height: 150px;">
+                                        </div>
+
+                                        <div *ngIf="isProfileExisting" class="mt-2 border p-2 rounded">
+                                            <img src="{{imgURL}}{{mainProfileForm.get('Corp_Logo')?.value| slice:1:-4}}jpeg"
+                                                alt="Profile Picture" style="max-width: 150px; max-height: 150px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group border p-3 rounded">
+                                        <label for="profilePic">Profile Picture</label>
+                                        <input *ngIf="!isProfileExisting && !editenabled" type="file"
+                                            class="form-control-file border p-2 rounded" id="profilePic"
+                                            (change)="onProfilePicChange($event)">
+                                        <div *ngIf="profilePicUrl" class="mt-2 border p-2 rounded">
+                                            <img [src]="profilePicUrl" alt="Profile Picture"
+                                                style="max-width: 150px; max-height: 150px;">
+                                        </div>
+
+                                        <div *ngIf="isProfileExisting || editenabled" class="mt-2 border p-2 rounded">
+                                            <img src="{{imgURL}}{{mainProfileForm.get('MainProfile_Mngmt_Pic')?.value| slice:1:-4}}jpeg"
+                                                alt="Profile Picture" style="max-width: 150px; max-height: 150px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <button *ngIf="!isProfileExisting && !editenabled" type="submit"
+                                        (click)="onSubmit()" class="btn custom-btn float-right">
+                                        Add Profile
+                                    </button>
+
+                                    <button *ngIf="isProfileExisting" type="button" class="btn custom-btn float-right"
+                                        (click)="enableEditing()">
+                                        Edit Profile
+                                    </button>
+
+                                    <button *ngIf="editenabled" class="btn custom-btn float-right"
+                                        (click)="editMainProfile()">
+                                        Save Profile
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </tab>
+
+                    <tab (selectTab)="onTabChange('Key Management Profile')" heading="Key Management Profile" id="tab2">
+
+                        <div class="row topcontent">
+
+                            <div class="col-md-6 mb-3">
+                                <span><strong>Profile Add-on: </strong>Key Management Profile</span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <button (click)="openModal(addKeyManagementProfile)" type="button"
+                                    class="btn custom-btn float-right">Add Management Profile</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="card-body pa-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S#</th>
+                                            <th>Id</th>
+                                            <th>On-Main</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Designation</th>
+                                            <th>Detail</th>
+                                            <th>Image</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let profile of keyManagementProfileArr; index as i">
+
+                                            <!-- Serial -->
+                                            <td>{{ i + 1 }}</td>
+
+                                            <!-- ID -->
+                                            <td>{{ profile.MDR_TOP_MANAGEMENT_ID }}</td>
+
+                                            <!-- Main Profile Flag -->
+                                            <td class="actdct_icon">
+                                                <span *ngIf="profile.MDR_TOP_MNGMT_ACTIV_FLG; else notOnMain">
+                                                    <img src="assets/images/active_icon.png" alt="Yes" />
+                                                </span>
+                                                <ng-template #notOnMain>
+                                                    <img src="assets/images/deactive_icon.png" alt="No" />
+                                                </ng-template>
+                                            </td>
+
+                                            <!-- First Name -->
+                                            <td>{{ profile.MDR_TOP_MNGMT_FIRST_NAME }}</td>
+
+                                            <!-- Last Name -->
+                                            <td>{{ profile.MDR_TOP_MNGMT_LAST_NAME }}</td>
+
+                                            <!-- Designation -->
+                                            <td>{{ profile.MDR_TOP_MNGMT_CORP_TITLE }}</td>
+
+                                            <!-- Detail Button -->
+                                            <td>
+                                                <button (click)="showDetails(profile, keymanagementProfileDetails)"
+                                                    class="btn btn-sm btn-outline-info">
+                                                    Detail
+                                                </button>
+                                            </td>
+
+                                            <!-- Profile Image -->
+                                            <td>
+                                                <img src="{{imgURL}}{{profile.MDR_TOP_MNGMT_PIC_IMAGE | slice:1:-4}}jpeg"
+                                                    alt="Profile Image"
+                                                    style="max-width: 50px; max-height: 50px; object-fit: cover;" />
+                                            </td>
+
+                                            <!-- Edit Action -->
+                                            <td class="delete-icon" title="Edit">
+                                                <i (click)="openeditKeyManagementProfile(profile, editKeyManagementProfile)"
+                                                    class="fa fa-edit"></i>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </tab>
+
+                    <tab (selectTab)="onTabChange('Media & Certifications')" heading="Media & Certifications" id="tab3">
+
+                        <div class="row topcontent">
+
+                            <div class="col-md-6 mb-3">
+                                <span><strong>Profile Add-on: </strong>Media & Certifications</span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <button (click)="openModal(addMediaCertification)" type="button"
+                                    class="btn custom-btn float-right">Add Media &
+                                    Certifications</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="card-body pa-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S#</th>
+                                            <th>Id</th>
+                                            <th>Active</th>
+                                            <th>Subject</th>
+                                            <th>Media Details</th>
+                                            <th>Media Image</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="mediaCertificationsArr && mediaCertificationsArr.length > 0">
+                                        <tr *ngFor="let media of mediaCertificationsArr; index as i">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{ media.MDR_MEDIA_ID }}</td>
+                                            <td class="actdct_icon">
+                                                <span *ngIf="media.MDR_MEDIA_ACTIV_FLG; else notActive">
+                                                    <img src="assets/images/active_icon.png" alt="Yes" />
+                                                </span>
+                                                <ng-template #notActive>
+                                                    <img src="assets/images/deactive_icon.png" alt="No" />
+                                                </ng-template>
+                                            </td>
+                                            <td>
+                                                <button (click)="showDetails(media, mediaDetails)"
+                                                    class="btn btn-sm btn-outline-info">
+                                                    Detail
+                                                </button>
+                                            </td>
+                                            <td>{{ media.MDR_MEDIA_HEAD_TXT }}</td>
+                                            <td>
+                                                <img [src]="imgURL + (media.MDR_MEDIA_PIC | slice:1)" alt="Media Image"
+                                                    style="max-width: 50px; max-height: 50px; object-fit: cover;" />
+                                            </td>
+                                            <td class="delete-icon" title="Edit">
+                                                <i (click)="openeditMediaCerification(media, editMediaCertification)"
+                                                    class="fa fa-edit"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </tab>
+
+                    <tab (selectTab)="onTabChange('Product & Services')" heading="Product & Services" id="tab4">
+
+                        <div class="row topcontent">
+
+                            <div class="col-md-6 mb-3">
+                                <span><strong>Profile Add-on: </strong>Product & Services</span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <button (click)="openModal(addProductService)" type="button"
+                                    class="btn custom-btn float-right">Add Product &
+                                    Services</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="card-body pa-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S#</th>
+                                            <th>Id</th>
+                                            <th>Active</th>
+                                            <th>Products/Services</th>
+                                            <th>Image</th>
+                                            <th>Details</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let product of storeandprdtArr; index as i">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{ product.MDR_STORE_PRDCT_SERVC_ID }}</td>
+                                            <td class="actdct_icon">
+                                                <span *ngIf="product.MDR_STORE_PRDCT_SERVC_ACTIV_FLG; else notActive">
+                                                    <img src="assets/images/active_icon.png" alt="Yes" />
+                                                </span>
+                                                <ng-template #notActive>
+                                                    <img src="assets/images/deactive_icon.png" alt="No" />
+                                                </ng-template>
+                                            </td>
+                                            <td>{{ product.MDR_STORE_PRDCT_SERVC_TXT }}</td>
+                                            <td>
+                                                <img [src]="imgURL + (product.MDR_STORE_PRDCT_SERVC_IMAGE | slice:1)"
+                                                    alt="Product Image"
+                                                    style="max-width: 50px; max-height: 50px; object-fit: cover;" />
+
+                                            </td>
+                                            <td>
+                                                <button (click)="showDetails(product, productAndServiceDetails)" class="btn btn-sm btn-outline-info">Details</button>
+                                            </td>
+                                            <td class="delete-icon" title="Edit">
+                                                <i (click)="openditProductService(product, editProductService)"
+                                                    class="fa fa-edit"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </tab>
+
+                    <tab (selectTab)="onTabChange('Clients & Recommendations')" heading="Clients & Recommendations"
+                        id="tab5">
+
+                        <div class="row topcontent">
+
+                            <div class="col-md-6 mb-3">
+                                <span><strong>Profile Add-on: </strong>Clients & Recommendations</span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <button (click)="openModal(addClientRecommendation)" type="button"
+                                    class="btn custom-btn float-right">Add Clients &
+                                    Recommendations</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="card-body pa-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S#</th>
+                                            <th>Id</th>
+                                            <th>Active</th>
+                                            <th>Client</th>
+                                            <th>Representative</th>
+                                            <th>Designation</th>
+                                            <th>Image</th>
+                                            <th>Appre details</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let client of clientRecommendationArr; index as i">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{ client.MDR_STORE_CLIENT_ID }}</td>
+                                            <td class="actdct_icon">
+                                                <span *ngIf="client.MDR_STORE_CLIENT_ACTIV_FLG; else notActive">
+                                                    <img src="assets/images/active_icon.png" alt="Yes" />
+                                                </span>
+                                                <ng-template #notActive>
+                                                    <img src="assets/images/deactive_icon.png" alt="No" />
+                                                </ng-template>
+                                            </td>
+                                            <td>{{ client.MDR_STORE_CLIENT_ORG }}</td>
+                                            <td>{{ client.MDR_STORE_CLIENT_REP_FIRSTNAME }} {{
+                                                client.MDR_STORE_CLIENT_REP_LASTNAME }}</td>
+                                            <td>{{ client.MDR_STORE_CLIENT_REP_DESIGNATION }}</td>
+                                            <td>
+                                                <img [src]="imgURL + (client.MDR_STORE_CLIENT_IMAGE | slice:1)"
+                                                    alt="Client Image"
+                                                    style="max-width: 50px; max-height: 50px; object-fit: cover;" />
+                                            </td>
+                                            <td>
+                                                <button (click)="showDetails(client, clientRecommendationDetails)" class="btn btn-sm btn-outline-info">
+                                                    {{ client.MDR_STORE_CLIENT_SAID_ABOUT_TEXT ? 'Appre details' :
+                                                    'Nodetails' }}
+                                                </button>
+                                            </td>
+                                            <td class="delete-icon" title="Edit">
+                                                <i (click)="openeditClientRecommendations(client, editClientRecommendation)"
+                                                    class="fa fa-edit" style="cursor: pointer;"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </tab>
+
+                    <tab (selectTab)="onTabChange('Geo Service')" heading="Geo Service" id="tab7">
+
+                        <div class="row topcontent">
+
+                            <div class="col-md-6 mb-3">
+                                <span><strong>Profile Add-on: </strong>Geo Servicibility</span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <button (click)="openModal(geoServicibility)" type="button"
+                                    class="btn custom-btn float-right">Add Geo Servicibility</button>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="card-body pa-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>S#</th>
+                                            <th>Geo Category</th>
+                                            <th>Active</th>
+                                            <th>Country ID</th>
+                                            <th>State ID</th>
+                                            <th>City ID</th>
+                                            <th>Pin Code</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let geo of geoservicibilityArr; index as i">
+                                            <!-- Serial -->
+                                            <td>{{ i + 1 }}</td>
+
+                                            <!-- Geo Category -->
+                                            <td>{{ geo.MDR_GEOSERVICIBILITY_CATGRY }}</td>
+
+                                            <!-- Active Status -->
+                                            <td class="actdct_icon">
+                                                <span *ngIf="geo.MDR_GEO_ACTIV_FLG; else notActive">
+                                                    <img src="assets/images/active_icon.png" alt="Yes" />
+                                                </span>
+                                                <ng-template #notActive>
+                                                    <img src="assets/images/deactive_icon.png" alt="No" />
+                                                </ng-template>
+                                            </td>
+
+                                            <!-- Country ID -->
+                                            <td>{{ geo.MDR_SERVC_COUNTRY_ID }}</td>
+
+                                            <!-- State ID -->
+                                            <td>{{ geo.MDR_SERVC_STATE_ID }}</td>
+
+                                            <!-- City ID -->
+                                            <td>{{ geo.MDR_SERVC_CITY_ID }}</td>
+
+                                            <!-- Pin Code -->
+                                            <td>{{ geo.MDR_SERV_PINCODE }}</td>
+
+                                            <!-- Edit Action -->
+                                            <td class="delete-icon" title="Edit">
+                                                <i class="fa fa-edit" style="cursor: pointer;"
+                                                    (click)="openeditgeoServicibilityClient(geo, editgeoServicibility)"></i>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </tab>
+
+                    <tab (selectTab)="onTabChange('Corp Contact')" heading="Corp Contact" id="tab6">
+
+                        <div class="row">
+                            <!-- LEFT: Corporate Information -->
+                            <div class="col-md-6">
+                                <h5 class="mb-2 ">Corporate Information</h5>
+                                <table class="table table-bordered table-sm custom-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Corporate Name</th>
+                                            <td>{{ orgProfile.MDR_ORG_NAME }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Org GSTIN</th>
+                                            <td>{{ orgProfile.MDR_PROFILE_ORG_GSTIN }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Org Type</th>
+                                            <td>{{ orgProfile.MDR_ORG_TYPE }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Contact Number</th>
+                                            <td>{{ orgProfile.MDR_CORP_CONTACT_NUMBER }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ orgProfile.MDR_CORP_CONTACT_EMAILID }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Responder</th>
+                                            <td>{{ orgProfile.MDR_CORP_RESPONDER }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Status</th>
+                                            <td class="actdct_icon">
+                                                <span *ngIf="orgProfile.MDR_ADDRESS_ACTIV_FLG; else notActive">
+                                                    <img src="assets/images/active_icon.png" alt="Active" />
+                                                </span>
+                                                <ng-template #notActive>
+                                                    <img src="assets/images/deactive_icon.png" alt="Inactive" />
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- RIGHT: Corporate Address -->
+                            <div class="col-md-6">
+                                <h5 class="mb-2 ">Corporate Address</h5>
+                                <table class="table table-bordered table-sm custom-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>Address</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Landmark</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_LANDMARK }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Country</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_COUNTRY }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>State</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_STATE }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>City</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_CITY }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Pincode</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_PINCODE }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Latitude</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_LATD || '-' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Longitude</th>
+                                            <td>{{ orgProfile.MDR_ADDRESS_LONGTD || '-' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </tab>
+
+                </tabset>
+            </div>
+            <br><br>
+            <ngx-spinner template="<img src='assets/images/icons/please_wait.gif/>">
+            </ngx-spinner>
+        </div>
+    </div>
+</div>
+
+<ng-template #addKeyManagementProfile>
+    <form [formGroup]="keyManagementForm" (ngSubmit)="onaddKeyManagementProfileSubmit()">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Add Key Management Profile</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- First & Last Name -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name"
+                        formControlName="firstName" />
+                </div>
+                <div class="col-md-6">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="lastName" />
+                </div>
+            </div>
+
+            <!-- Designation & Active -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Designation</label>
+                    <input type="text" class="form-control" placeholder="Enter Designation"
+                        formControlName="designation" />
+                </div>
+                <div class="col-md-6">
+                    <label>Active</label>
+                    <select class="form-control" formControlName="active">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>About</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter short bio or role summary"
+                        formControlName="about"></textarea>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="profilePic">Profile Picture</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="profilePic"
+                        (change)="onProfilePicChangeaddKeyManagementProfile($event)" />
+                    <div *ngIf="profilePicUrladdKeyManagement" class="mt-2 border p-2 rounded">
+                        <img [src]="profilePicUrladdKeyManagement" alt="Profile Picture"
+                            style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn custom-btn" [disabled]="keyManagementForm.invalid">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #editKeyManagementProfile>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Edit Key Management Profile</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- First & Last Name -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name"
+                        [(ngModel)]="editkeymanagementprofile.First_Name" />
+                </div>
+                <div class="col-md-6">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name"
+                        [(ngModel)]="editkeymanagementprofile.Last_Name" />
+                </div>
+            </div>
+
+            <!-- Designation & Active -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Designation</label>
+                    <input type="text" class="form-control" placeholder="Enter Designation"
+                        [(ngModel)]="editkeymanagementprofile.Designation" />
+                </div>
+                <div class="col-md-6">
+                    <label>Active</label>
+                    <select class="form-control" [(ngModel)]="editkeymanagementprofile.Activ_Flg">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>About</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter short bio or role summary"
+                        [(ngModel)]="editkeymanagementprofile.About_Txt"></textarea>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="profilePic">Profile Picture</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="profilePic"
+                        (change)="onProfilePicChangeaddKeyManagementProfile($event)" />
+                    <div *ngIf="profilePicUrladdKeyManagement" class="mt-2 border p-2 rounded">
+                        <img [src]="profilePicUrladdKeyManagement" alt="Profile Picture"
+                            style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button (click)="oneditKeyManagementProfileSubmit()" type="submit" class="btn custom-btn">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #addMediaCertification>
+    <form [formGroup]="mediaCertificationForm" (ngSubmit)="onSubmitMediaCertification()">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Add Media & Certifications</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Subject & Active -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Subject</label>
+                    <input type="text" class="form-control" placeholder="Enter Subject" formControlName="subject" />
+                </div>
+                <div class="col-md-6">
+                    <label>Active</label>
+                    <select class="form-control" formControlName="active">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Media Details -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>Media Details</label>
+                    <textarea class="form-control" rows="3"
+                        placeholder="Enter media description or certification detail"
+                        formControlName="details"></textarea>
+                </div>
+            </div>
+
+            <!-- Media Image -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="mediaPic">Media Image</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="mediaPic"
+                        (change)="onMediaImageSelectedaddMediaCertification($event)" />
+                    <div *ngIf="mediaImageUrl" class="mt-2 border p-2 rounded">
+                        <img [src]="mediaImageUrl" alt="Media" style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn custom-btn" [disabled]="mediaCertificationForm.invalid">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #editMediaCertification>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Edit Media & Certifications</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Subject & Active -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Subject</label>
+                    <input [(ngModel)]="editMedia.MediaSubject" type="text" class="form-control"
+                        placeholder="Enter Subject" />
+                </div>
+                <div class="col-md-6">
+                    <label>Active</label>
+                    <select [(ngModel)]="editMedia.ActivFlg" class="form-control">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Media Details -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>Media Details</label>
+                    <textarea [(ngModel)]="editMedia.HeaderText" class="form-control" rows="3"
+                        placeholder="Enter media description or certification detail"></textarea>
+                </div>
+            </div>
+
+            <!-- Media Image -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="mediaPic">Media Image</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="mediaPic"
+                        (change)="onMediaImageSelectedaddMediaCertification($event)" />
+                    <div *ngIf="mediaImageUrl" class="mt-2 border p-2 rounded">
+                        <img [src]="mediaImageUrl" alt="Media" style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button (click)="editMediaCerification()" type="submit" class="btn custom-btn">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #addProductService>
+    <form [formGroup]="productServiceForm" (ngSubmit)="onSubmitProductService()">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Add Product / Service</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Product/Service Text -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label>Product / Service Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Product / Service Name"
+                        formControlName="Prdct_Servc_Txt" />
+                </div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="mediaPic">Upload Product / Service Image</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="mediaPic"
+                        (change)="onMediaImageSelectedaddProductAndService($event)" accept="image/*" />
+                    <div *ngIf="mediaImageUrl2" class="mt-2 border p-2 rounded">
+                        <img [src]="mediaImageUrl2" alt="Media" style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn custom-btn" [disabled]="productServiceForm.invalid">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #editProductService>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Edit Product / Service</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Product/Service Text -->
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label>Product / Service Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Product / Service Name"
+                        [(ngModel)]="editproductservice.Prd_Srvc_Txt" />
+                </div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Active</label>
+                    <select class="form-control" [(ngModel)]="editproductservice.Activ_Flg">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="mediaPic">Upload Product / Service Image</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="mediaPic"
+                        (change)="onMediaImageSelectedaddProductAndService($event)" accept="image/*" />
+                    <div *ngIf="mediaImageUrl2" class="mt-2 border p-2 rounded">
+                        <img [src]="mediaImageUrl2" alt="Media" style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button (click)="oneditProductService()" type="submit" class="btn custom-btn">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #addClientRecommendation>
+    <form [formGroup]="clientRecommendationForm" (ngSubmit)="onSubmitClientRecommendation()">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Add Client & Recommendation</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Organization Name -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>Client Organization Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Organization Name"
+                        formControlName="Client_Org_Name" />
+                </div>
+            </div>
+
+            <!-- Client First & Last Name -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Client First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name"
+                        formControlName="Client_First_Name" />
+                </div>
+                <div class="col-md-6">
+                    <label>Client Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name"
+                        formControlName="Client_Last_Name" />
+                </div>
+            </div>
+
+            <!-- Designation -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Designation</label>
+                    <input type="text" class="form-control" placeholder="Enter Designation"
+                        formControlName="Designation" />
+                </div>
+            </div>
+
+            <!-- Appreciation / Recommendation -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>Appreciation / Recommendation</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter appreciation or recommendation"
+                        formControlName="Appreciation_Txt"></textarea>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="personPic">Profile Picture</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="personPic"
+                        (change)="onMediaImageaddClientRecommendation($event)" accept="image/*" />
+                    <div *ngIf="ProfilePicaddclient" class="mt-2 border p-2 rounded">
+                        <img [src]="ProfilePicaddclient" alt="Media" style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn custom-btn" [disabled]="clientRecommendationForm.invalid">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #editClientRecommendation>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Edit Client & Recommendation</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Organization Name -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>Client Organization Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Organization Name"
+                        [(ngModel)]="editclientandrecommendation.Client_Org_Name" />
+                </div>
+            </div>
+
+            <!-- Client First & Last Name -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Client First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name"
+                        [(ngModel)]="editclientandrecommendation.Client_First_Name" />
+                </div>
+                <div class="col-md-6">
+                    <label>Client Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name"
+                        [(ngModel)]="editclientandrecommendation.Client_Last_Name" />
+                </div>
+            </div>
+
+            <!-- Designation -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Designation</label>
+                    <input type="text" class="form-control" placeholder="Enter Designation"
+                        [(ngModel)]="editclientandrecommendation.Designation" />
+                </div>
+            </div>
+
+            <!-- Appreciation / Recommendation -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <label>Appreciation / Recommendation</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter appreciation or recommendation"
+                        [(ngModel)]="editclientandrecommendation.Appreciation_Txt"></textarea>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="personPic">Profile Picture</label>
+                    <input type="file" class="form-control-file border p-2 rounded" id="personPic"
+                        (change)="onMediaImageaddClientRecommendation($event)" accept="image/*" />
+                    <div *ngIf="ProfilePicaddclient" class="mt-2 border p-2 rounded">
+                        <img [src]="ProfilePicaddclient" alt="Media" style="max-width: 150px; max-height: 150px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button (click)="oneditClientRecommendation()" type="submit" class="btn custom-btn">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #geoServicibility>
+    <form [formGroup]="geoServicibilityForm" (ngSubmit)="onSubmitGeoServicibility()">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Add Geo Servicibility</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Geo Category -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Geo Category</label>
+                    <select class="form-control" formControlName="Geo_Category">
+                        <option value="">Select</option>
+                        <option [ngValue]="'Urban'">Urban</option>
+                        <option [ngValue]="'Rural'">Rural</option>
+                        <option [ngValue]="'Semi-Urban'">Semi-Urban</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label>Country</label>
+                    <select class="form-control" formControlName="CountryId" (change)="changeCountry($event)">
+                        <option value="">Select</option>
+                        <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">{{country.CNTRY_NM}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>State</label>
+                    <select formControlName="StateId" class="form-control" (change)="changeState($event)">
+                        <option value="">Select</option>
+                        <option *ngFor="let state of stateList" [value]="state.STATE_ID">{{state.STATE_NM}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>City</label>
+                    <select formControlName="CityId" class="form-control" (change)="changeCity($event)">
+                        <option selected value="">Select</option>
+                        <option *ngFor="let city of cityList" [value]="city.CITY_ID">{{city.CITY_NM}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Pin</label>
+                    <select formControlName="PinCode" class="form-control" (change)="changePin($event)">
+                        <option selected value="">Select</option>
+                        <option *ngFor="let zip of zipList" [value]="zip.Id">{{zip.Value}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row mt-3">
+                <div class="col-md-12 text-right">
+                    <button type="submit" class="btn custom-btn" [disabled]="geoServicibilityForm.invalid">
+                        Save Geo Servicibility
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #editgeoServicibility>
+    <div>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Edit Geo Servicibility</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Geo Category -->
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Geo Category</label>
+                    <select [(ngModel)]="editgeoservicibility.Geo_Category" class="form-control">
+                        <option value="">Select</option>
+                        <option [ngValue]="'Urban'">Urban</option>
+                        <option [ngValue]="'Rural'">Rural</option>
+                        <option [ngValue]="'Semi-Urban'">Semi-Urban</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>Active</label>
+                    <select class="form-control" [(ngModel)]="editgeoservicibility.Activ_Flg">
+                        <option [ngValue]="true">Yes</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label>Country</label>
+                    <select [(ngModel)]="editgeoservicibility.CountryId" class="form-control"
+                        (change)="changeCountry($event)">
+                        <option value="">Select</option>
+                        <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">{{country.CNTRY_NM}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>State</label>
+                    <select [(ngModel)]="editgeoservicibility.StateId" class="form-control"
+                        (change)="changeState($event)">
+                        <option value="">Select</option>
+                        <option *ngFor="let state of stateList" [value]="state.STATE_ID">{{state.STATE_NM}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>City</label>
+                    <select [(ngModel)]="editgeoservicibility.CityId" class="form-control"
+                        (change)="changeCity($event)">
+                        <option selected value="">Select</option>
+                        <option *ngFor="let city of cityList" [value]="city.CITY_ID">{{city.CITY_NM}}</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Pin</label>
+                    <select [(ngModel)]="editgeoservicibility.PinCode" class="form-control"
+                        (change)="changePin($event)">
+                        <option selected value="">Select</option>
+                        <option *ngFor="let zip of zipList" [value]="zip.Id">{{zip.Value}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="row mt-3">
+                <div class="col-md-12 text-right">
+                    <button (click)="oneditGeoServicibility()" type="submit" class="btn custom-btn">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #keymanagementProfileDetails>
+    <div>
+        <!-- Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Key Management Profile Details</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>ID:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_TOP_MANAGEMENT_ID }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Active:</strong></div>
+                <div class="col-md-6">
+                    <span *ngIf="detail.MDR_TOP_MNGMT_ACTIV_FLG; else notActive">
+                        <img src="assets/images/active_icon.png" alt="Active" style="height:20px;" />
+                    </span>
+                    <ng-template #notActive>
+                        <img src="assets/images/deactive_icon.png" alt="Inactive" style="height:20px;" />
+                    </ng-template>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>First Name:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_TOP_MNGMT_FIRST_NAME }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Last Name:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_TOP_MNGMT_LAST_NAME }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Designation:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_TOP_MNGMT_CORP_TITLE }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Main Profile:</strong></div>
+                <div class="col-md-6">
+                    <span *ngIf="detail.MDR_TO_MANAGEMENT_MAIN_PROFILE_FLG === true" class="text-success">Yes</span>
+                    <span *ngIf="detail.MDR_TO_MANAGEMENT_MAIN_PROFILE_FLG === false" class="text-danger">No</span>
+                    <span *ngIf="detail.MDR_TO_MANAGEMENT_MAIN_PROFILE_FLG == null" class="text-muted">-</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>About:</strong></div>
+                <div class="col-md-6 text-secondary">{{ detail.MDR_TOP_MNGMT_ABOUT_TXT }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Profile Image:</strong></div>
+                <div class="col-md-6">
+                    <img [src]="imgURL + (detail.MDR_TOP_MNGMT_PIC_IMAGE | slice:1)" alt="Profile Image"
+                        class="img-thumbnail rounded mt-1"
+                        style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #mediaDetails>
+    <div>
+        <!-- Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Media & Certification Details</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>ID:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_MEDIA_ID }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Active:</strong></div>
+                <div class="col-md-6">
+                    <span *ngIf="detail.MDR_MEDIA_ACTIV_FLG; else notActive">
+                        <img src="assets/images/active_icon.png" alt="Active" style="height:20px;" />
+                    </span>
+                    <ng-template #notActive>
+                        <img src="assets/images/deactive_icon.png" alt="Inactive" style="height:20px;" />
+                    </ng-template>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Heading:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_MEDIA_HEAD_TXT }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Subject:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_MEDIA_SUBJCT_TXT }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Media Image:</strong></div>
+                <div class="col-md-6">
+                    <img [src]="imgURL + (detail.MDR_MEDIA_PIC | slice:1)" alt="Media Image"
+                        class="img-thumbnail rounded mt-1"
+                        style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #productAndServiceDetails>
+    <div>
+        <!-- Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Product & Service Details</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>ID:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_STORE_PRDCT_SERVC_ID }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Active:</strong></div>
+                <div class="col-md-6">
+                    <span *ngIf="detail.MDR_STORE_PRDCT_SERVC_ACTIV_FLG; else notActive">
+                        <img src="assets/images/active_icon.png" alt="Active" style="height:20px;" />
+                    </span>
+                    <ng-template #notActive>
+                        <img src="assets/images/deactive_icon.png" alt="Inactive" style="height:20px;" />
+                    </ng-template>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Product / Service:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_STORE_PRDCT_SERVC_TXT }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Image:</strong></div>
+                <div class="col-md-6">
+                    <img [src]="imgURL + (detail.MDR_STORE_PRDCT_SERVC_IMAGE | slice:1)" alt="Product / Service Image"
+                        class="img-thumbnail rounded mt-1"
+                        style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #clientRecommendationDetails>
+    <div>
+        <!-- Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Client Recommendation Details</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>ID:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_STORE_CLIENT_ID }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Active:</strong></div>
+                <div class="col-md-6">
+                    <span *ngIf="detail.MDR_STORE_CLIENT_ACTIV_FLG; else notActive">
+                        <img src="assets/images/active_icon.png" alt="Active" style="height:20px;" />
+                    </span>
+                    <ng-template #notActive>
+                        <img src="assets/images/deactive_icon.png" alt="Inactive" style="height:20px;" />
+                    </ng-template>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Organization:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_STORE_CLIENT_ORG }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Representative Name:</strong></div>
+                <div class="col-md-6">
+                    {{ detail.MDR_STORE_CLIENT_REP_FIRSTNAME }} {{ detail.MDR_STORE_CLIENT_REP_LASTNAME }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Designation:</strong></div>
+                <div class="col-md-6">{{ detail.MDR_STORE_CLIENT_REP_DESIGNATION }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Feedback:</strong></div>
+                <div class="col-md-6 text-secondary">{{ detail.MDR_STORE_CLIENT_SAID_ABOUT_TEXT }}</div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6"><strong>Client Image:</strong></div>
+                <div class="col-md-6">
+                    <img [src]="imgURL + (detail.MDR_STORE_CLIENT_IMAGE | slice:1)" alt="Client Image"
+                        class="img-thumbnail rounded mt-1"
+                        style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

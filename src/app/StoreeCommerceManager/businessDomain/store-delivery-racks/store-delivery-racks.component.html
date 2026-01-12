@@ -1,0 +1,93 @@
+<div class="content">
+    <h1 class="heading-title">Manage Store Racks for holding ready Packages for Delivery</h1>
+
+    <div class="row">
+        <!-- <div class="col-md-12">
+            <div class="card">
+                <div class="col-md-6 pl-0">
+                    <p><strong>Store: Daizy Wines & Liquor</strong></p><br>
+                    <button class="btn custom-btn">Manage my Store Racks</button>
+                </div>
+            </div>
+        </div> -->
+
+
+        <div class="col-md-12">
+            <div class="card pb-0">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h5>Already added Racks for this Store</h5>
+                    </div>
+                    <div class="col-md-3"><button style="margin-bottom:10px;" data-toggle="modal" (click)="openModal(template)" class="btn custom-btn pull-right">Add new Rack</button></div>
+                </div>
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Rack ID</th>
+                            <th>Rack Name</th>
+                            <th>Holding Capacity</th>
+                            <th>Current filled by System</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let racklist of rackDetails; let i = index">
+                            <td>{{i + 1}}</td>
+                            <td>{{racklist.RETAIL_D2C_SORAGE_RACK_ID}}</td>
+                            <td>{{racklist.RETAIL_D2C_STORAGE_RACK_NAME}}</td>
+                            <td>{{racklist.RETAIL_D2C_STORAGE_RACK_PACKAGE_MAX_LIMIT_COUNT}}</td>
+                            <td>{{racklist.RETAIl_D2C_STORAGE_RACK_TOTL_CURNT_FILLED_COUNT}}</td>
+                            <td><i (click)="getRackDetail(template, racklist)" class="fa fa-edit"></i></td>
+                        </tr>
+                      
+                       
+                       
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<ng-template #template>
+    <form [formGroup]="addrackForm">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left"> {{isTitle == true ? 'Add New Rack': 'Update New Rack'}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+        <label class="form-label">Rack Name</label>
+        <input formControlName="RETAIL_D2C_STORAGE_RACK_NAME" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Inventory Holding Capacity Packets</label>
+            <select formControlName="RETAIL_D2C_STORAGE_RACK_PACKAGE_MAX_LIMIT_COUNT" class="form-select form-control">
+                <option value="Select" selected>Select</option>
+                <option value="100">100</option>
+                <option value="75">75</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+       
+    </div>
+  
+
+    <div class="modal-footer">
+        <button type="button" (click)="onBtnClick()" class="btn custom-btn">{{isAdd == true ? 'Add': 'Update'}}</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+    </div>
+    </form>
+  </ng-template>

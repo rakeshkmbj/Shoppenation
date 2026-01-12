@@ -1,0 +1,119 @@
+.footer-section {
+    margin-top: 30px;
+}
+
+.top-footer {
+    background: #ddd;
+    padding: 10px 0;
+    margin: 0;
+}
+
+.top-footer h3 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.top-footer p {
+    text-align: right;
+    margin: 0;
+}
+
+.top-footer a {
+    color: #007bff;
+    padding-left: 8px;
+}
+
+.bottom-footer {
+    padding: 10px;
+    overflow: hidden;
+}
+
+.bottom-footer .box {
+    float: left;
+    width: 16%;
+}
+
+.bottom-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.bottom-footer h4.title {
+    font-size: 15px;
+}
+
+.bottom-footer .box:nth-child(2) {
+    width: 12% !important;
+}
+
+.bottom-footer .box:nth-child(4),
+.bottom-footer .box:nth-child(5),
+.bottom-footer .box:nth-child(7) {
+    width: 11% !important;
+}
+
+.bottom-footer .box:nth-child(4) {
+    width: 12% !important;
+}
+
+.financial-available p {
+    clear: both;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.width-100 {
+    width: 100%;
+}
+.bottom-footer .box:nth-child(3),
+.bottom-footer .box:nth-child(6) {
+    width: 10% !important;
+}
+.bottom-footer .box a {
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.financial-available p.title {
+    background: #ddd;
+    padding: 10px;
+    border-radius: 3px;
+    line-height: 17px;
+    float: left;
+}
+
+
+.financial-available .title > img {
+     margin-right: 10px;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.bottom-footer input {
+    width: calc(100% - 50px) !important;
+    font-size: 14px;
+    height: 38px;
+}
+
+.bottom-footer button {
+    background: #ff960a;
+    margin-left: -2px;
+    border-radius: 0 4px 4px 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.copyright {
+    background: #ff7900; 
+    border-top: 1px solid #cd6304;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.copyright p {
+    margin: 0;
+    font-size: 12px;
+}

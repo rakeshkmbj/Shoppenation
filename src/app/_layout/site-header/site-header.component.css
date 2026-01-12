@@ -1,0 +1,119 @@
+.header {
+    padding: 6px 35px;
+    border-bottom: 5px solid #FF7900;
+    background: #fff;
+}
+.logo {
+    text-align: center;
+}
+.logo span {
+    display: block;
+    line-height: 12px;
+    font-weight: 600;
+    font-size: 11px;
+    text-align: center;
+}
+
+.logo img {
+    max-width: 60px;
+}
+
+nav.navbar.navbar-light {
+    padding-bottom: 0;
+}
+
+form.form-inline.search-field {
+    position: relative;
+    margin-top: 12px;
+}
+.search-field input {
+    width: 100%;
+}
+
+button.btn {
+    width: 35px;
+    padding: 0;
+    height: 36px;
+    position: absolute;
+    right: 1px;
+    border: 0;
+    background: #FF7900;
+    border-left: 1px solid #ddd;
+    border-radius: 0 4px 4px 0;
+}
+
+.btn img {
+    max-width: 20px;
+}
+
+.backoffice-login {
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    margin: 10px 20px;
+    opacity: 0.7;
+}
+.backoffice-login img {
+    max-width: 30px;
+}
+
+.backoffice-login span {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.topnav {
+    text-align: right;
+    position: absolute;
+    right: 15px;
+    z-index: 99;
+}
+
+.topnav a {
+    display: block;
+    font-size: 10px;
+    color: #ff7900;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.header a.nav-link {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    color: #333;
+    font-weight: 600;
+    font-size: 13px;
+    padding-bottom: 0;
+}
+
+h3 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.helpdesk-icon img {
+    max-width: 18px;
+    opacity: 0.9;
+}
+
+.mdrlogin {
+  font-weight: bold;
+  animation: neonBlink 1s infinite alternate;
+}
+
+@keyframes neonBlink {
+  0% {
+    color: #ff00ff; /* neon pink */
+    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff33ff, 0 0 20px #ff66ff;
+  }
+  50% {
+    color: #a020f0; /* neon purple */
+    text-shadow: 0 0 5px #a020f0, 0 0 10px #b266ff, 0 0 20px #cc66ff;
+  }
+  100% {
+    color: #ff00ff; /* back to neon pink */
+    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff33ff, 0 0 20px #ff66ff;
+  }
+}

@@ -1,0 +1,129 @@
+label.block {
+    display: block;
+}
+
+i.icofont-ui-edit {
+    font-size: 20px;
+    color: #ba080b;
+    cursor: pointer;
+}
+
+.head-level .btn {
+    width: 100%;
+    min-height: 30px;
+    padding: 0;
+    font-size: 12px;
+}
+
+input.form-check-input {
+    position: relative;
+    margin: 0;
+}
+
+.left-box {
+    border: 1px solid #ddd;
+}
+
+.left-box {
+    h6 {
+        padding: 10px;
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .table th, .table td {
+        padding: 8px 5px;
+    }
+}
+
+i.icofont-trash {
+    color: #ba080b;
+    cursor: pointer;
+}
+
+span.add-btn {
+    border: 1px solid #ba080b;
+    display: block;
+    font-size: 11px;
+    padding: 0px;
+    border-radius: 5px;
+    color: #ba080b;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 10px 20px;
+}
+
+.modal-body {
+    padding: 10px 20px;
+}
+
+span.list-item {
+    border: 1px solid #cfd8dc;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 25px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+input.only-text-field {
+    text-align: center;
+    border: none;
+    pointer-events: none;
+}
+
+tr.active input.only-text-field {
+    pointer-events: all;
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.update {
+    display: block;
+}
+
+.update button {
+    min-width: 75px;
+}
+
+i.icofont-close {
+    font-size: 20px;
+    padding: 5px 5px;
+    margin-left: 5px;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    cursor: pointer;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.modal-content button.btn.black-btn {
+    min-width: 100px;
+}
+
+button.add-btn {
+    border: 1px solid #e91e63;
+    background: none;
+    font-weight: 600;
+    border-radius: 25px;
+    font-size: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.modal-body button.btn.black-btn {
+    width: 100px;
+    height: 40px;
+}

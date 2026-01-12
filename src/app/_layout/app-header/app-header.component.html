@@ -1,0 +1,155 @@
+<div class="container-fluid header">
+    <div class="row">
+    <div class="col-md-3 logo">
+        <div class="left"><img src="../assets/images/logo.png" />
+   <span class="dbmy">Doing Business My Way</span>
+</div>
+  <div class="menu-options hidden"><span class="menu-action"><i></i></span></div>
+    </div>
+  
+    <div class="col-md-9 width-80">
+        <form class="form-inline search-field">
+            <input class="form-control" placeholder="What can we help you find today?">
+            <button class="btn" type="button"> <img src="../assets/images/search.png" /></button>
+          </form>   
+        <div class="name-area float-right"> <a title=""><strong>{{firstName}}<small class="user-roll">Admin</small></strong> <img src="assets/images/admin.jpg" alt=""></a>
+            <ul>
+                <li class="company-name"><span><img src="assets/images/logo.png" alt="">{{subAccountName}}</span></li>
+                <li><a title="">My Balance</a></li>
+                <li><a title="">Inbox</a></li>
+                <li><a title="">Setting</a></li>
+                <li><a title="">Available</a></li>
+                <li (click)="logout()"><a title="">logout</a></li>
+            </ul>
+        </div>
+        <ul class="quick-notify-section custom-dropdowns">
+            <li class="store_manager" routerLink="/dashboard"> <i class="fa fa-home" aria-hidden="true"></i>
+                <label>Home</label>
+            </li>
+            <li class="store_manager" routerLink="/StoreeCommerceManager"> <i class="fa fa-cogs" aria-hidden="true"></i>
+                <label>Store eCommerce Manager</label>
+            </li>
+
+            <li class="message-list"> <span><i class="fa fa-bell-o"></i><strong class="skyblue-bg">{{unseenMessage}}</strong></span>
+          </li>
+              <!-- <li class="notification-list"> <span><i class="fa fa-envelope-o"></i><strong class="red-bg">12</strong></span>
+              </li> -->
+              <li class="notification-list"> <span data-toggle="modal" data-target="#myModal"><i class="fa fa-shopping-cart"></i><strong class="red-bg">{{totalCartItem}}</strong></span>
+              </li>
+             
+          </ul>
+   
+</div>
+  </div>
+  </div>
+
+  <!-- The Modal -->
+<div class="modal cart-modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Shopping Cart Detail(s)</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <table class="table">
+              
+                <tbody>
+                  <tr>
+                    <td class="cart-img"><img src="../assets/images/img-not-found.png" /></td>
+                    <td class="product-name">Vivo Y12 3 GB 64 GB Aqua Blue<br><small>14567-01</small></td>
+                    <td class="quantity"><div id="field1">
+                        <button type="button" id="sub" class="sub">-</button>
+                        <input type="number" id="1" value="1" min="1" max="1000" />
+                        <button type="button" id="add" class="add">+</button>
+                    </div></td>
+                    <td class="price-add-remove"><div class="price">RS. 2000</div>
+                        <div class="free-shipping">
+                            <div class="fs"><div><span>Free Shipping</span></div></div>
+                        <div class="db">Delivery by 31st Jul</div>
+                    </div>
+                    <div class="add-remove">
+                        <div class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</div>
+                        <div class="save-later"><i class="fa fa-heart-o" aria-hidden="true"></i> Save for Later</div>
+                    </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cart-img"><img src="../assets/images/img-not-found.png" /></td>
+                    <td class="product-name">Vivo Y12 3 GB 64 GB Aqua Blue<br><small>14567-01</small></td>
+                    <td class="quantity"><div id="field1">
+                        <button type="button" id="sub" class="sub">-</button>
+                        <input type="number" id="1" value="1" min="1" max="1000" />
+                        <button type="button" id="add" class="add">+</button>
+                    </div></td>
+                    <td class="price-add-remove"><div class="price">RS. 2000</div>
+                        <div class="free-shipping">
+                            <div class="fs"><div><span>Free Shipping</span></div></div>
+                        <div class="db">Delivery by 31st Jul</div>
+                    </div>
+                    <div class="add-remove">
+                        <div class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</div>
+                        <div class="save-later"><i class="fa fa-heart-o" aria-hidden="true"></i> Save for Later</div>
+                    </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cart-img"><img src="../assets/images/img-not-found.png" /></td>
+                    <td class="product-name">Vivo Y12 3 GB 64 GB Aqua Blue<br><small>14567-01</small></td>
+                    <td class="quantity"><div id="field1">
+                        <button type="button" id="sub" class="sub">-</button>
+                        <input type="number" id="1" value="1" min="1" max="1000" />
+                        <button type="button" id="add" class="add">+</button>
+                    </div></td>
+                    <td class="price-add-remove"><div class="price">RS. 2000</div>
+                        <div class="free-shipping">
+                            <div class="fs"><div><span>Free Shipping</span></div></div>
+                        <div class="db">Delivery by 31st Jul</div>
+                    </div>
+                    <div class="add-remove">
+                        <div class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</div>
+                        <div class="save-later"><i class="fa fa-heart-o" aria-hidden="true"></i> Save for Later</div>
+                    </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="cart-img"><img src="../assets/images/img-not-found.png" /></td>
+                    <td class="product-name">Vivo Y12 3 GB 64 GB Aqua Blue<br><small>14567-01</small></td>
+                    <td class="quantity"><div id="field1">
+                        <button type="button" id="sub" class="sub">-</button>
+                        <input type="number" id="1" value="1" min="1" max="1000" />
+                        <button type="button" id="add" class="add">+</button>
+                    </div></td>
+                    <td class="price-add-remove"><div class="price">RS. 2000</div>
+                        <div class="free-shipping">
+                            <div class="fs"><div><span>Free Shipping</span></div></div>
+                        <div class="db">Delivery by 31st Jul</div>
+                    </div>
+                    <div class="add-remove">
+                        <div class="remove"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</div>
+                        <div class="save-later"><i class="fa fa-heart-o" aria-hidden="true"></i> Save for Later</div>
+                    </div>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn custom-btn">Proceed to Checkout</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+   
+   
+   
+   

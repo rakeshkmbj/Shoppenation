@@ -1,0 +1,122 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+        <h1 class="heading-title">Publisher Dashboard</h1>
+        </div>
+    </div>
+    <form>
+        <div class="topLevel">
+            <div class="row">
+                <div class="col-md-3">
+                <div class="from-group w-100 relative">
+                    <label>From Date</label>
+                    <input type="text" class="form-control" placeholder="dd/mm/yyyy" />
+                    <i class="ti-calendar"></i>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="from-group w-100 relative">
+                    <label>To Date</label>
+                    <input type="text" class="form-control" placeholder="dd/mm/yyyy" />
+                    <i class="ti-calendar"></i>
+                </div>
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-center p-0">
+                    <div class="or mt-3"><span>OR</span></div>
+                </div>
+                <div class="col-md-5 report-radio-fields">
+                    <label class="d-block w-100">Report for</label>
+                    <div class="d-flex mt-1">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                        <label class="form-check-label" for="inlineRadio1">Today</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                        <label class="form-check-label" for="inlineRadio2">Yesterday</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                        <label class="form-check-label" for="inlineRadio3">Weekly</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">
+                        <label class="form-check-label" for="inlineRadio3">Monthly</label>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-md-3">
+              <div class="form-group">
+                <label for="sorton">Sort On</label>
+                <select class="form-control" id="sorton" (change)="sortEvent($event)">
+                  <option value="">Select</option>
+                  <option value="ALL">For All Geo & Inventories</option>
+                  <option value="GR">Geography Region</option>
+                  <option value="IT">Inventory Type</option>
+                </select>
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group min-width-150" *ngIf="sortType === 'GR' || sortType === 'ALL'">
+                <label for="country">Country</label>
+                <select class="form-control" id="country">
+                  <option selected>Select</option>
+                  <option>India</option>
+                </select>
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group min-width-150" *ngIf="sortType === 'IT' || sortType === 'ALL'">
+                <label for="inventory">Inventory Type</label>
+                <select class="form-control" id="inventory">
+                  <option selected>Select</option>
+                  <option>Websites</option>
+                  <option>Apps</option>
+                  <option>OTT</option>
+                  <option>CTV</option>
+                </select>
+              </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-md-3 mt-2">
+                 <button class="btn custom-btn w-100">View Revenue Report</button>
+            </div>
+            </div>
+        </div>
+    </form>
+
+<div class="card mt-3">
+  <div class="d-flex align-items-center">
+<h4 class="mr-auto">Generated Report</h4>
+
+</div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Inventory Type</th>
+        <th scope="col">Size</th>
+        <th scope="col">Impressions</th>
+        <th scope="col">Clicks</th>
+        <th scope="col"> CPM</th>
+        <th scope="col"> Revenue</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>xxxx</td>
+        <td>xxxx</td>
+        <td>xxxx</td>
+        <td>xxxx</td>
+        <td>xxxx</td>
+        <td>xxxx</td>
+        <td>xxxx</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>

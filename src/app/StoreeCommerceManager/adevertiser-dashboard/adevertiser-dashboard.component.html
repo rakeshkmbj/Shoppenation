@@ -1,0 +1,375 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Advertiser Dashboard</h1>
+        </div>
+    </div>
+
+    <div class="topLevel">
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <tabset>
+              <tab heading="Manage User Inventory" id="tab1">
+
+                <div class="row">
+                    <div class="col-md-3 mt-2">
+                        <div class="from-group">
+                            <label for="role">Role</label>
+                            <select class="form-control" id="role">
+                                <option>Publisher</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="col-md-3 d-flex align-items-end pl-0">
+        
+                        <button class="btn custom-btn w-75">Manage Inventory</button>
+                    </div>
+                </div>
+            
+            <div class="card mt-3">
+                <div class="d-flex align-items-center">
+                    <h4 class="mr-auto">Inventory Details</h4>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User ID</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Detail of Inventory</th>
+                            <th scope="col">Action</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let list of inventoryist; index as i">
+                            <td>{{i+1}}</td>
+                            <td>{{list.RETAIL_D2C_ACCT_INTRNL_USR_ID}}</td>
+                            <td>{{list.RETAIL_D2C_ACCT_INTRNL_FIRST_NAME}} {{list.RETAIL_D2C_ACCT_INTRNL_LAST_NAME}}</td>
+                            <td><button (click)="viewopenModal(viewdetailtemplate, list.RETAIL_D2C_ACCT_INTRNL_USR_ID)"
+                                    class="btn btn-outline-info btn-sm px-3">View Detail</button></td>
+                            <td><button (click)="openModal(template, list.RETAIL_D2C_ACCT_INTRNL_USR_ID)" class="btn custom-btn w-50">Add New</button></td>
+                        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+        
+              </tab>
+              <tab heading="Manage User Master Details">
+                <div class="card mt-3">
+                    <div class="d-flex align-items-center">
+                        <h4 class="mr-auto">User Master Details</h4>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">User ID</th>
+                                <th scope="col">User Name</th>
+                                <th scope="col">Master Details</th>
+                                <th scope="col">Action</th>
+            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1234</td>
+                                <td>TechBuddy</td>
+                                <td><button class="btn btn-outline-info btn-sm px-3">View</button></td>
+                                <td><button (click)="AddMasterDetailopenModal(addMasterDetailtemplate, '1100060')" class="btn custom-btn">Add Master Detail</button></td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        </div>
+              </tab>
+              <tab heading="Data Extraction from Excel">Basic content 2</tab>
+              <tab heading="Populate Publisher Reporting">Basic content 2</tab>
+            </tabset>
+          </div>
+    </div>
+</div>
+
+
+
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add New Inventory <span
+                class="badge bg-secondary ml-2 px-2 pb-1 text-white"><small>User Id: 112</small></span></h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="inventoryForm">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="from-group mb-2">
+                    <label for="it">Inventory Type</label>
+                    <select class="form-control" id="it" formControlName="INVTYPE_ID">
+                        <option value="" selected>Select</option>
+                        <option value="1">Web</option>
+                        <option value="2">App</option>
+                        <option value="3">OTT-CTC</option>
+                        <option value="4">M-WEB</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="from-group mb-2">
+                    <label for="it">Name of Inventory</label>
+                    <input type="text" class="form-control" formControlName="INV_NAME" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="from-group mb-2">
+                    <label >Req. Ad Type</label>
+                    <select class="form-control" id="rat" formControlName="ADTYPE_ID">
+                        <option value="" selected>Select</option>
+                        <option value="1">Video</option>
+                        <option value="2">Display</option>
+                        <option value="3">INAPP</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="from-group mb-2">
+                    <label for="rau">Req. Ad Unit</label>
+                    <select class="form-control" id="rau" formControlName="ADUNIT_ID">
+                        <option value="" selected>Select</option>
+                        <option value="1">INSTREAM</option>
+                        <option value="2">OUTSTREAM</option>
+                        <option value="3"> VAST</option>
+                        <option value="4">DISP-BANNER</option>
+                        <option value="5">APP-BANNER</option>
+                        <option value="6">RECTANGLE</option>
+                        <option value="7">APPOPEN</option>
+                        <option value="8">NATIVE</option>
+                        <option value="9">INTERSTITIAL</option>
+                        <option value="10">REWARDING</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="from-group">
+                    <label for="aaeo">Allocated to Ad Exchaning Org.</label>
+                    <select class="form-control" id="aaeo" formControlName="ALLOCATD_ORGID">
+                        <option value="" selected>Select</option>
+                        <option value="1">UNIBOT</option>
+                        <option value="2">GAMESZONE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="from-group">
+                    <label for="fee">Fee %</label>
+                    <input class="form-control" id="fee" formControlName="FEE_PERCNTG" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-end px-1">
+                <button (click)="modalRef?.hide()" class="btn btn-secondary mr-2 cancel-btn">Cancel</button>
+                <button class="btn custom-btn px-4" (click)="addPubinventory()">Add Inventory</button>
+            </div>
+        </div>
+    </div>
+</form>
+</ng-template>
+
+<ng-template #viewdetailtemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">View Details <span
+                class="badge bg-secondary ml-2 px-2 pb-1 text-white"><small>User Id: {{userid}}</small></span></h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card" *ngFor="let item of pubInventoryList">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Pub Inv Id</label>
+                        <input type="text" value="{{item.AD_PUBLISHER_INVENTORY_ID}}" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Pub Inv Name</label>
+                        <input type="text" value="{{item.AD_PUB_INVNAME}}" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Pub Inv Type Name</label>
+                        <input type="text" value="{{item.AD_INVTYPE_NAME}}" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Pub Ad Type Name</label>
+                        <input type="text" value="{{item.AD_ADTYPE_NAME}}" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Pub Ad unit Name</label>
+                        <input type="text" value="{{item.AD_ADUNIT_NAME}}" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Exch Inv Id</label>
+                        <input type="text" value="{{item.AD_EXCH_INV_ID}}" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Exch Inv Name</label>
+                        <input type="text" value="xxxxxx" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Exch Inv Type Name</label>
+                        <input type="text" value="Wb" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Exch Type Name</label>
+                        <input type="text" value="Ban" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Exch Ad unit Name</label>
+                        <input type="text" value="Sq rect" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Fee %</label>
+                        <input [(ngModel)]="item.AD_ADMEDIA_FEE_PERCNTG" type="text" value="{{item.AD_ADMEDIA_FEE_PERCNTG}}" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="from-group mb-2">
+                        <label for="it">Active Flag</label>
+                        <select [(ngModel)]="item.AD_PUB_INV_ACTIV_FLG" class="form-control" value="{{item.AD_PUB_INV_ACTIV_FLG}}">
+                            <option value="true">Active</option>
+                            <option value="false">InActive</option>
+                            
+                        </select>
+                        <!-- <input formControlName="FEE_PERCNTG" type="text" value="{{item.AD_PUB_INV_ACTIV_FLG}}" class="form-control" /> -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <button (click)="getSelectedInventory(item)" class="btn mt-2 custom-btn px-4">Edit</button>
+                </div>
+            </div>
+        </div>
+  
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-end px-1">
+                <button (click)="modalRef?.hide()" class="btn btn-secondary mr-2 cancel-btn">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #addMasterDetailtemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Master Details<span
+                class="badge bg-secondary ml-2 px-2 pb-1 text-white"><small>User Id: {{detailmodaluserid}}</small></span></h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="masterDetailForm">
+      
+    <div class="modal-body">
+      
+            <country-state-city-pin (countryEvent)="receiveCountryId($event)" (stateEvent)="receiveStateId($event)" (cityEvent)="receiveCityId($event)" (pincodeEvent)="receivePinId($event)"></country-state-city-pin>
+            <div class="row">
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label for="it">Org. Name</label>
+                    <input formControlName="ORG_NAME" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label >Address</label>
+                    <input formControlName="ORG_ADDRESS" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label >Bank Name</label>
+                    <input formControlName="BANK_NAME" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label >Bank Account Number</label>
+                    <input formControlName="BANK_ACCOUNT_NUMBR" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label >Branch Name</label>
+                    <input formControlName="BANK_BRANCH" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label>IFSC</label>
+                    <input formControlName="BANK_IFSC" type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="from-group mb-2">
+                    <label>Attach Contract PDF</label>
+                    <!-- <input formControlName="CONTRCT_PDF_ATTCHMNT" type="text" class="form-control" /> -->
+                    <div class="custom-file fileInputProfileWrap">
+                        <input name="file" type="file" class="custom-file-input" (change)="onSelectedFile($event)"
+                          formControlName="CONTRCT_PDF_ATTCHMNT">
+                       
+                        <label class="custom-file-label">{{uploadLabel}}</label>
+                        <div class="img-space" *ngIf="isImageSaved">
+                          <ng-container>
+                            <img [src]="'data:image/jpeg;base64,' + base64textString">
+                          </ng-container>
+                        </div>
+          
+                      </div>
+                </div>
+            </div>
+    </div>
+</div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-end px-1">
+                <button (click)="modalRef?.hide()" class="btn btn-secondary mr-2 cancel-btn">Cancel</button>
+                <button (click)="addPubMasterDetail()" class="btn custom-btn px-4">Save Master Detail</button>
+            </div>
+        </div>
+    </div>
+</form>
+</ng-template>

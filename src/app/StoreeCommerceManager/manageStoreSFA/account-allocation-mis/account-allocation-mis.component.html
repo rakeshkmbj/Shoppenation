@@ -1,0 +1,129 @@
+<div class="content">
+    <h1 class="heading-title">Account Allocation MIS</h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card pb-0">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="dropdown1">Account Category</label>
+                            <select id="dropdown1" class="form-control">
+                                <option value="" selected disabled>Select option</option>
+                                <option value="option1a">Primary</option>
+                                <option value="option1b">Secondary</option>
+                                <option value="option1b">Teritiary</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="dropdown2">Country</label>
+                            <select id="dropdown2" class="form-control">
+                                <option value="" selected disabled>Select option</option>
+                                <option value="option2a">Option 2A</option>
+                                <option value="option2b">Option 2B</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="dropdown3">State</label>
+                            <select id="dropdown3" class="form-control">
+                                <option value="" selected disabled>Select option</option>
+                                <option value="option3a">Option 3A</option>
+                                <option value="option3b">Option 3B</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="dropdown4">City</label>
+                            <select id="dropdown4" class="form-control">
+                                <option value="" selected disabled>Select option</option>
+                                <option value="option4a">Option 4A</option>
+                                <option value="option4b">Option 4B</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <button (click)="getAccount()" type="button" class="btn custom-btn float-right">Get
+                            Account</button>
+                    </div>
+                </div>
+
+                <div *ngIf="isGetAccVisible" class="card pb-0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Subacc ID</th>
+                                <th>Store ID</th>
+                                <th>Account Name</th>
+                                <th>Account Address</th>
+                                <th>Pincode</th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>18988</td>
+                                <td>18237</td>
+                                <td>Pawan Departments</td>
+                                <td>D 78 South ex</td>
+                                <td>91865923</td>
+                                <td>
+                                    <button (click)="showAllocation(viewusertemplate)" class="mr-2 px-2 py-1 action-btn">Show Allocation</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #viewusertemplate>
+    <form>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Allocated to Sales Force</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last name</th>
+                        <th>Mobile No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>873412</td>
+                        <td>Umesh</td>
+                        <td>Sharma</td>
+                        <td>7163693076</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="modal-footer">
+            <button (click)="modalRef.hide()" type="button" class="btn btn-secondary">Close</button>
+        </div>
+    </form>
+</ng-template>

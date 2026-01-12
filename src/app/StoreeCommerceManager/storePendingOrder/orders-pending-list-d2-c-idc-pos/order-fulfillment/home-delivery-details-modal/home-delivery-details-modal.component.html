@@ -1,0 +1,59 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Home Delivery Details</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="hideModal()">
+      <i class="ti-close"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <ul class="list-group inline-list">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Order allocated to Trip Id
+            <span class="badge badge-primary badge-pill">{{dataList.Order_Allocated_to_Trip_Numbr}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Driver Mobile Number
+            <span><strong>{{dataList.Delivery_Vahan_Driver_Mobile_Number}}</strong></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Allocated to Vahan Id
+            <span class="badge badge-primary badge-pill">{{dataList.Order_With_Delivery_Vahan_Id}}</span>
+        </li>
+
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Vehicle Id
+            <span class="badge badge-primary badge-pill">{{dataList.Delivery_Vahan_Vehicle_Number}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Vahan Driver Name
+            <span><strong>{{dataList.Delivery_Vahan_Driver_First_Name}} {{dataList.Delivery_Vahan_Driver_Last_Name}}</strong></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Delivery Centre
+            <span><strong>{{dataList.Delivery_Centre_Name}}</strong></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Trip Execution Forecasted Date
+            <span class="badge badge-primary badge-pill">{{dataList.Trip_Execution_Forecasted_Date | date:'medium'}}</span>
+        </li>
+    </ul>
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Order taken by Vahan from Store
+            <span *ngIf="dataList.Order_Taken_by_Vahan_Flag == true"><i class="ti-check"></i></span>
+            <span *ngIf="dataList.Order_Taken_by_Vahan_Flag == false"><i class="ti-close"></i></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Order taken DateTime
+            <span class="badge badge-primary badge-pill">{{dataList.Order_Taken_by_Vahan_DateTime | date:'medium'}}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Order delivered to Customer
+            <span *ngIf="dataList.Order_Delivery_Done_to_Customer_Flag == true"><i class="ti-check"></i></span>
+            <span *ngIf="dataList.Order_Delivery_Done_to_Customer_Flag == false"><i class="ti-close"></i></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Order delivered DateTime
+            <span class="badge badge-primary badge-pill">{{dataList.Order_Delivered_To_Customer_DateTime | date:'medium'}}</span>
+        </li>
+    </ul>
+</div>

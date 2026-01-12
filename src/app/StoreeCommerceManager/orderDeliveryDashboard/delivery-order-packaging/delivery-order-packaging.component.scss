@@ -1,0 +1,155 @@
+.toplevel {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.orderStatus td img {
+    max-width: 50px;
+}
+
+.vipDiv {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 3px;
+    min-height: 210px;
+}
+
+.orderStatus td {
+    vertical-align: middle;
+}
+
+.orderStatus td .btn {
+    font-size: 13px;
+}
+
+.bottom-btn {
+    float: right;
+    margin: 15px 0 20px;
+}
+
+.alert.alert-danger {
+    margin: 15px 0 0;
+    padding: 10px;
+}
+
+.alert .fa {
+    font-size: 25px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.default-img img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #eee;
+}
+
+.customer-order-table
+{  
+     td {
+        padding: 8px;
+    }
+    
+    img {
+    max-width: 65px;
+}
+
+
+}
+
+.alert-warning {
+    font-size: 15px;
+    margin: 0;
+}
+
+.card-body.order-item-list {
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    padding: 6px;
+    line-height: 15px;
+}
+
+p.cbq input {
+    max-width: 100px;
+    margin: 10px auto;
+}
+
+.card.inventory-out-order select {
+    margin: 0 15px;
+    width: 80px;
+}
+
+span.width-100 {
+    width: 100px;
+}
+
+select.form-control {
+    width: 70px;
+    float: right;
+}
+
+.badge-primary {
+    color: #fff;
+    background-color: #00bcd6;
+    padding: 8px 20px;
+}
+
+button.btn.new_package_btn {
+    font-size: 12px;
+    width: 100%;
+    margin-top: 5px;
+    background: #bd2130;
+    color: #fff;
+}
+
+.error {
+    position: absolute;
+    font-size: 9px;
+    color: red;
+    bottom: 20px;
+    text-align: center;
+    padding-left: 10px;
+}
+
+.info-text {
+    color: #bd2130;
+    font-size: 14px;
+
+ i {
+    font-size: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+}
+
+.no-data {
+    p {
+        font-size: 15px;
+        font-weight: 600;
+    }
+ img {
+    max-width: 30px;
+    margin-right: 5px;
+}
+}
+
+.modal-content .card-body.pa-0 .col-md-6 + .col-md-6 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 25px;
+}
+
+.no-data{
+    color: #bd2130;
+    margin: 0;
+ i {
+    font-size: 25px;
+    color: #bd2130;
+}
+}

@@ -1,0 +1,2157 @@
+<div class="main-content-area">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="heading-title">Manage my Store Item Prices & Discounts</h1>
+
+        </div>
+    </div>
+    <form [formGroup]="itemSubitemForm">
+        <div class="row topLevel">
+            <div class="col-md-4">
+
+                <div class="form-group">
+                    <label>Store</label>
+                    <div class="form-control form-level no-border">
+                        {{storeName}}
+                    </div>
+                    <!-- <select class="form-control" formControlName="SUBACCT_OFFICE_ID" (change)="onStoreChange($event)">
+          <option value="">Select</option>
+          <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+          </select> -->
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Store Product-Line</label>
+                    <select class="form-control" formControlName="RETAIL_D2C_PRODUCT_ID"
+                        (change)="productLineChange($event)">
+                        <option value="">Select</option>
+                        <option *ngFor="let productline of productLinelist" [value]="productline.RETAIL_D2C_PRODUCT_ID">
+                            {{productline.RETAIL_D2C_PRODUCT_NAME}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Store Item</label>
+                    <select class="form-control" formControlName="itemid" (change)="itemChange($event)">
+                        <option value="">Select</option>
+                        <option *ngFor="let item of dropShipItemList" [value]="item.RETAIL_D2C_ITEM_ID">
+                            {{item.RETAIL_D2C_ITEM_NAME}}</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 bottom-btn mt-1">
+                <button type="button" (click)="manageyStoreItemsPricesandDiscounts()"
+                    class="btn custom-btn float-right">Manage Store Items Price & Discounts</button>
+                <!-- <button type="button" (click)="getItemSubtemDiscount()" class="btn float-right mr-2">Show already MRP & Discounts</button> -->
+
+            </div>
+        </div>
+    </form>
+
+    <div *ngIf="showMrpDiscountTable" class="card exiting-office-table mt-2 pb-0">
+        <div class="card-header">
+            Already Added MRP & Discounts
+        </div>
+
+        <div class="search-field-list">
+            <div class="search-list-label">Product Line: <span>{{productName}}</span></div>
+            <div class="search-list-label">Item: <span>{{itemName}}</span></div>
+        </div>
+        <div class="card-body pa-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Sub-Item Name</th>
+                        <th *ngIf="domainid == 1">Size</th>
+                        <th>MRP/UNIT(Rs.)</th>
+                        <th>Export Price(USD)</th>
+                        <th>Discounts ID</th>
+                        <th>Valid from</th>
+                        <th>Valid To</th>
+                        <th>Discount Validity</th>
+                        <th>%</th>
+                        <th>Discount</th>
+                        <th>MRP</th>
+                        <th>Discount</th>
+                        <th>&nbsp;</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let itemSubitemDiscount of manageStoreItemPDList; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{itemSubitemDiscount.RETAIL_D2C_SUBITEM_NAME}}</td>
+                        <td *ngIf="domainid == 1">{{itemSubitemDiscount.RETAIL_D2C_SUBITEM_SIZE}}</td>
+                        <td>{{itemSubitemDiscount.RETAIL_D2C_SUBITEM_MRP}}</td>
+                        <td>{{itemSubitemDiscount.RETAIL_D2C_SUBITEM_CASE_MRP}}</td>
+                        <td>{{itemSubitemDiscount.DiscountId}}</td>
+                        <td>{{itemSubitemDiscount.RETAIL_D2C_DISCOUNT_VALID_FROM_DATE | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{itemSubitemDiscount.RETAIL_D2C_DISCOUNT_VALID_TO_DATE | date: 'dd/MM/yyyy'}}</td>
+                        <td class="actdct_icon">
+                            <span *ngIf="itemSubitemDiscount.RETAIL_D2C_DISCOUNT_VALIDITY_FLG; else elseBlock">
+                                <img src="assets/images/active_icon.png">
+                            </span>
+                            <ng-template #elseBlock><img src="assets/images/deactive_icon.png"></ng-template>
+                        </td>
+
+                        <td class="actdct_icon">
+                            <span *ngIf="itemSubitemDiscount.RETAIL_D2C_DISCOUNT_PERCENTG_FLG; else elseBlock1">
+                                <img src="assets/images/active_icon.png">
+                            </span>
+                            <ng-template #elseBlock1><img src="assets/images/deactive_icon.png"></ng-template>
+
+                        </td>
+                        <td>{{itemSubitemDiscount.RETAIL_D2C_DISCOUNT_FIGURE}}</td>
+                        <td (click)="selectSubItemPriceData(itemSubitemDiscount, template1)" class="delete-icon"><i
+                                class="fa fa-edit"></i></td>
+                        <td (click)="selecttemSubtemDiscountData(itemSubitemDiscount, template)" class="delete-icon"><i
+                                class="fa fa-edit"></i></td>
+                        <td><a (click)="openB2BModal(itemSubitemDiscount, templateB2B)">B2B</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Store Item Discounts</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form [formGroup]="discountForm">
+            <div class="search-field-list">
+                <div class="search-list-label">Product Line: <span>{{productName}}</span></div>
+                <div class="search-list-label">Item: <span>{{itemName}}</span></div>
+                <div class="search-list-label">Sub Item Name: <span>{{subitemName}}</span></div>
+                <div class="search-list-label">Discount Coupon ID: <span>{{couponID}}</span></div>
+                <div class="search-list-label">Retail MRP: <span>{{retailMRP}}</span></div>
+                <div class="search-list-label">Whole Sale Price: <span>{{wholesalePrice}}</span></div>
+                <div class="search-list-label">Size: <span>{{retailSize}}</span></div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select class="form-control" formControlName="RETAIL_D2C_DISCOUNT_PERCENTG_FLG">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Validity</label>
+                        <select class="form-control" formControlName="RETAIL_D2C_DISCOUNT_VALIDITY_FLG">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_DISCOUNT_FIGURE">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valid From</label>
+                        <input type="text" bsDatepicker (bsValueChange)="onDateChange($event)"
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" class="form-control"
+                            formControlName="RETAIL_VALID_FROM_DATE">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valid To</label>
+                        <input type="text" bsDatepicker (bsValueChange)="onDateChange($event)"
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" class="form-control"
+                            formControlName="RETAIL_VALID_To_DATE">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button type="button" (click)="updateItemSubitemDiscount()" class="btn custom-btn float-right">Save
+                        Discount for Sub-Item</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #template1>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Store Item Prices</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form [formGroup]="mrpForm">
+            <div class="search-field-list">
+                <div class="search-list-label">Product Line: <span>{{productName}}</span></div>
+                <div class="search-list-label">Item: <span>{{itemName}}</span></div>
+                <div class="search-list-label">Sub Item Name: <span>{{subitemName}}</span></div>
+                <div class="search-list-label">Size: <span>{{retailSize}}</span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Retail Prise(Rs.)</label>
+                        <input type="text" class="form-control" formControlName="Retail_MRP">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Export Price (USD)</label>
+                        <input type="text" class="form-control" formControlName="RETAIL_WHOLESALE_MRP">
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button type="button" (click)="updateItemSubitemMRP()" class="btn custom-btn float-right">Save Item
+                        MRP</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #EditRegularDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Regular Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+            <div class="search-field-list">
+                <div class="search-list-label">Valid From: <span>{{discountEdit.DateFrom}}</span>
+                </div>
+                <div class="search-list-label">Valid To: <span>{{discountEdit.DateTo}}</span></div>
+                <div class="search-list-label">Discount Validity: <span></span></div>
+                <div class="search-list-label">Discount Figure:
+                    <span>{{discountEdit.PercntgFigure}}</span>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="DisDatefrom" name="fromDate" class="form-control"
+                            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="DisDateto" name="toDate" class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: DisDatefrom ? DisDatefrom: null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!DisDatefrom">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Validity</label>
+                        <select class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div> -->
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select [(ngModel)]="discountEdit.PercntgFlg" name="discountPercentFlag"
+                            class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option [value]="true">Yes</option>
+                            <option [value]="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="discountEdit.PercntgFigure" name="disfig" type="text"
+                            class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button (click)="editDiscount(discountEdit)" type="button"
+                        class="btn custom-btn float-right">Save</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #AddRegularDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Regular Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="b2bItemDiscount.FromDate" name="fromDate" class="form-control"
+                            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="b2bItemDiscount.ToDate" name="toDate" class="form-control"
+                            bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: b2bItemDiscount.FromDate ? b2bItemDiscount.FromDate : null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!b2bItemDiscount.FromDate">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Validity</label>
+                        <select class="form-control" formControlName="">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select (click)="onslectDiscountFlag($event)" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option value='true'>Yes</option>
+                            <option value='false'>No</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="b2bItemDiscount.PercntgFigure" name="discount" type="text"
+                            class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button (click)="addRegularDiscount()" type="button" class="btn custom-btn float-right">Add</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #EditItemCountDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Item Count Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+            <div class="search-field-list">
+                <div class="search-list-label">Valid From: <span>{{discountEdit.DateFrom}}</span></div>
+                <div class="search-list-label">Valid To: <span>{{discountEdit.DateTo}}</span></div>
+                <div class="search-list-label">%: <span>{{discountEdit.PercntgFlg}}</span></div>
+                <div class="search-list-label">Discount Figure: <span>{{discountEdit.PercntgFigure}}</span></div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="DisDatefrom" name="fromDate" class="form-control"
+                            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="DisDateto" name="toDate" class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: DisDatefrom ? DisDatefrom: null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!DisDatefrom">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select [(ngModel)]="discountEdit.PercntgFlg" name="discountPercentFlag" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option [value]="true">Yes</option>
+                            <option [value]="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="discountEdit.PercntgFigure" name="disfig" type="number" class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button (click)="editDiscount(discountEdit)" type="button" class="btn custom-btn float-right">Save</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #AddItemCountDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Item Count Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="b2bItemDiscount.FromDate" name="fromDate" class="form-control"
+                            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="b2bItemDiscount.ToDate" name="toDate" class="form-control"
+                            bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: b2bItemDiscount.FromDate ? b2bItemDiscount.FromDate : null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!b2bItemDiscount.FromDate">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Validity</label>
+                        <select class="form-control" formControlName="">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select (click)="onslectDiscountFlag($event)" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="b2bItemDiscount.PercntgFigure" name="discountFig" type="number"
+                            class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Item Count</label>
+                        <input [(ngModel)]="b2bItemDiscount.CountsOnCart" name="itemCount" type="number"
+                            class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button (click)="addRegularDiscount()" type="button" class="btn custom-btn float-right">Add</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #EditPromotionalDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Item Count Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+            <div class="search-field-list">
+                <div class="search-list-label">Valid From: <span>{{discountEdit.DateFrom}}</span></div>
+                <div class="search-list-label">Valid To: <span>{{discountEdit.DateTo}}</span></div>
+                <div class="search-list-label">%: <span>{{discountEdit.PercntgFlg}}</span></div>
+                <div class="search-list-label">Discount Figure: <span>{{discountEdit.PercntgFigure}}</span></div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="DisDatefrom" name="fromDate" class="form-control"
+                            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="DisDateto" name="toDate" class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: DisDatefrom ? DisDatefrom: null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!DisDatefrom">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select [(ngModel)]="discountEdit.PercntgFlg" name="discountPercentFlag" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option [value]="true">Yes</option>
+                            <option [value]="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="discountEdit.PercntgFigure" name="disfig" type="number" class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button (click)="editDiscount(discountEdit)" type="button" class="btn custom-btn float-right">Save</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #AddPromotionalDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Promotional Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="b2bItemDiscount.FromDate" name="fromDate" class="form-control"
+                            bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="b2bItemDiscount.ToDate" name="toDate" class="form-control"
+                            bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: b2bItemDiscount.FromDate ? b2bItemDiscount.FromDate : null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!b2bItemDiscount.FromDate">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Validity</label>
+                        <select class="form-control" formControlName="">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div> -->
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select (click)="onslectDiscountFlag($event)" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="b2bItemDiscount.PercntgFigure" name="discountFig" type="text"
+                            class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button (click)="addRegularDiscount()" type="button" class="btn custom-btn float-right">Add</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #EditPrefferedDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Preffered Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form [formGroup]="mrpForm">
+            <div class="search-field-list">
+                <div class="search-list-label">Valid From: <span></span></div>
+                <div class="search-list-label">Valid To: <span></span></div>
+                <div class="search-list-label">Discount Validity: <span></span></div>
+                <div class="search-list-label">%: <span></span></div>
+                <div class="search-list-label">Discount Figure: <span></span></div>
+                <div class="search-list-label">Account: <span></span></div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" formControlName="" class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" formControlName="" class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Validity</label>
+                        <select class="form-control" formControlName="">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select class="form-control" formControlName="">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input type="text" class="form-control" formControlName="">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Account</label>
+                        <select class="form-control" formControlName="">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Account 1</option>
+                            <option value=false>Account 2</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button type="button" (click)="updateItemSubitemMRP()"
+                        class="btn custom-btn float-right">Save</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #AddPrefferedDiscount>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Preffered Discount</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body pt-0">
+        <form>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="addNewPreferredPartnerDiscount.ValidFrom" name="fromDate"
+                            class="form-control" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+                            placeholder="dd/mm/yyyy">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">From date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="addNewPreferredPartnerDiscount.ValidTo" name="toDate"
+                            class="form-control" bsDatepicker
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', minDate: addNewPreferredPartnerDiscount.ValidFrom ? addNewPreferredPartnerDiscount.ValidFrom : null }"
+                            placeholder="dd/mm/yyyy" [disabled]="!addNewPreferredPartnerDiscount.ValidFrom">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="icofont-ui-calendar"></i></span>
+                        </div>
+                        <div *ngIf="" class="invalid-feedback">
+                            <div *ngIf="">To date is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount %</label>
+                        <select (click)="onslectDiscountFlagPreddredDiscount($event)" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Discount Figure</label>
+                        <input [(ngModel)]="addNewPreferredPartnerDiscount.PrefDiscountNumber" name="discount"
+                            type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select class="form-control" (change)="changeCountry($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">{{country.CNTRY_NM}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>State</label>
+                        <select class="form-control" (change)="changeState($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let state of stateList" [value]="state.STATE_ID">{{state.STATE_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>City</label>
+                        <select class="form-control" (change)="changeCity($event)">
+                            <option selected value="">Select</option>
+                            <option *ngFor="let city of cityList" [value]="city.CITY_ID">{{city.CITY_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Network Accounts</label>
+                        <select (change)="onSelectNetworkAcc($event)" class="form-control">
+                            <option selected value="Select">Select</option>
+                            <option *ngFor="let acc of secondaryAcc" [value]="acc.SubaccountId">{{ acc.OfficeName }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <button type="button" (click)="addPrefferedDiscount()"
+                        class="btn custom-btn float-right">Add</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+
+<ng-template #templateB2B>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">B2B STAKEHOLDER DISCOUNTS FOR SUBITEM</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <tabset class="p-3">
+
+        <tab (selectTab)="onTabChange('Distributors')" heading="Distributors" id="tab1">
+
+            <div class="form-group">
+                <label class="me-3 mb-1">Select Discount Type</label>
+                <div class="d-flex tab-div mb-3">
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab1" type="radio" name="options1" value="regularDiscount" (change)="onSelecttab1($event)">
+                            Regular Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab1" type="radio" name="options1" value="itemCountsDiscount"
+                                (change)="onSelecttab1($event)"> Item Counts Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab1" type="radio" name="options1" value="promotionalDiscount"
+                                (change)="onSelecttab1($event)"> Promotional Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab1" type="radio" name="options1" value="prefferedPartnerDiscount"
+                                (change)="onSelecttab1($event)"> Preffered Partner Discount
+                        </label>
+                    </div>
+                </div>
+
+                <!-- for regular discount -->
+                <div *ngIf="isRegularDiscountSelectedTab1">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab1Regular">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditRegularDiscountModal(EditRegularDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab1Regular>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button (click)="openAddRegularDiscountModal(AddRegularDiscount)"
+                                class="btn custom-btn mr-3">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for item counts discount -->
+                <div *ngIf="isItemCountDiscountSelectedTab1">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab1ItemCount">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Item Counts</th>
+                                <th>Units</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_COUNT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_UNIT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditItemCountDiscountModal(EditItemCountDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab1ItemCount>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddItemCountDiscountModal(AddItemCountDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for promotional discount -->
+                <div *ngIf="isPromotionalDiscountSelectedTab1">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab1Promo">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditPromotionalDiscountModal(EditPromotionalDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab1Promo>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddPromotionaliscountModal(AddPromotionalDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for preffered discount -->
+                <div *ngIf="isPrefferdPartnerDiscountSelectedTab1">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab1Pref">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Account</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_ACCOUNT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditPrefferedDiscountModal(EditPrefferedDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab1Pref>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddPrefferediscountModal(AddPrefferedDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </tab>
+
+        <tab (selectTab)="onTabChange('Retailers')" heading="Retailers" id="tab2">
+
+            <div class="form-group">
+                <label class="me-3 mb-1">Select Discount Type</label>
+                <div class="d-flex tab-div mb-3">
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab2" type="radio" name="options2" value="regularDiscount" (change)="onSelecttab2($event)">
+                            Regular Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab2" type="radio" name="options2" value="itemCountsDiscount"
+                                (change)="onSelecttab2($event)"> Item Counts Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab2" type="radio" name="options2" value="promotionalDiscount"
+                                (change)="onSelecttab2($event)"> Promotional Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab2" type="radio" name="options2" value="prefferedPartnerDiscount"
+                                (change)="onSelecttab2($event)"> Preffered Partner Discount
+                        </label>
+                    </div>
+                </div>
+
+                <!-- for regular discount -->
+                <div *ngIf="isRegularDiscountSelectedTab2">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab2Regular">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditRegularDiscountModal(EditRegularDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab2Regular>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button (click)="openAddRegularDiscountModal(AddRegularDiscount)"
+                                class="btn custom-btn mr-3">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for item counts discount -->
+                <div *ngIf="isItemCountDiscountSelectedTab2">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab2ItemCount">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Item Counts</th>
+                                <th>Units</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_COUNT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_UNIT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditItemCountDiscountModal(EditItemCountDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab2ItemCount>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddItemCountDiscountModal(AddItemCountDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for promotional discount -->
+                <div *ngIf="isPromotionalDiscountSelectedTab2">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab2Promo">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditPromotionalDiscountModal(EditPromotionalDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab2Promo>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddPromotionaliscountModal(AddPromotionalDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for preffered discount -->
+                <div *ngIf="isPrefferdPartnerDiscountSelectedTab2">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab2Pref">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Account</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_ACCOUNT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditPrefferedDiscountModal(EditPrefferedDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab2Pref>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddPrefferediscountModal(AddPrefferedDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </tab>
+
+        <tab (selectTab)="onTabChange('Franchise')" heading="Franchise" id="tab3">
+
+            <div class="form-group">
+                <label class="me-3 mb-1">Select Discount Type</label>
+                <div class="d-flex tab-div mb-3">
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab3" type="radio" name="options3" value="regularDiscount" (change)="onSelecttab3($event)">
+                            Regular Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab3" type="radio" name="options3" value="itemCountsDiscount"
+                                (change)="onSelecttab3($event)"> Item Counts Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab3" type="radio" name="options3" value="promotionalDiscount"
+                                (change)="onSelecttab3($event)"> Promotional Discount
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input [(ngModel)]="selectedDiscountTypeTab3" type="radio" name="options3" value="prefferedPartnerDiscount"
+                                (change)="onSelecttab3($event)"> Preffered Partner Discount
+                        </label>
+                    </div>
+                </div>
+
+                <!-- for regular discount -->
+                <div *ngIf="isRegularDiscountSelectedTab3">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab3Regular">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditRegularDiscountModal(EditRegularDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab3Regular>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button (click)="openAddRegularDiscountModal(AddRegularDiscount)"
+                                class="btn custom-btn mr-3">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for item counts discount -->
+                <div *ngIf="isItemCountDiscountSelectedTab3">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab3ItemCount">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Item Counts</th>
+                                <th>Units</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_COUNT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_UNIT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditItemCountDiscountModal(EditItemCountDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab3ItemCount>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddItemCountDiscountModal(AddItemCountDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for promotional discount -->
+                <div *ngIf="isPromotionalDiscountSelectedTab3">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab3Promo">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditPromotionalDiscountModal(EditPromotionalDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab3Promo>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddPromotionaliscountModal(AddPromotionalDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- for preffered discount -->
+                <div *ngIf="isPrefferdPartnerDiscountSelectedTab3">
+                    <table class="table" *ngIf="dicountArr && dicountArr.length > 0; else noDataTab3Pref">
+                        <thead>
+                            <tr>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Discount Validity</th>
+                                <th>%</th>
+                                <th>Discount Figure</th>
+                                <th>Account</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let discount of dicountArr">
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALD_FRM_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_VALID_TO_DATE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_DISCNT_VALID_FLG; else deactive1"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive1>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td class="actdct_icon">
+                                    <div>
+                                        <img *ngIf="discount.RETAIL_B2B_ITEM_SPL_DISC_PERCNTG_FIG; else deactive2"
+                                            src="assets/images/active_icon.png">
+                                        <ng-template #deactive2>
+                                            <img src="assets/images/deactive_icon.png">
+                                        </ng-template>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_DISCOUNT_FIGURE || 'NA' }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        {{ discount.RETAIL_B2B_ITEM_ACCOUNT || 'NA' }}
+                                    </div>
+                                </td>
+                                <td class="delete-icon">
+                                    <i class="fa fa-edit"
+                                        (click)="openEditPrefferedDiscountModal(EditPrefferedDiscount, discount)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ng-template #noDataTab3Pref>
+                        <div class="text-center text-muted py-3">No data available.</div>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 pt-3 text-right">
+                            <button class="btn custom-btn mr-3"
+                                (click)="openAddPrefferediscountModal(AddPrefferedDiscount)">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </tab>
+
+    </tabset>
+
+
+    <!-- <div class="modal-body pt-0">
+        <div class="card-body pa-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Valid From</th>
+                        <th>Valid To</th>
+                        <th>Discount Validity</th>
+                        <th>%</th>
+                        <th>Distributor Discount</th>
+                        <th>Retailer Discount</th>
+                        <th>Franchise Discount</th>
+                        <th>Own Store Discount</th>
+                        <th>Distributor Spl. Discount</th>
+                        <th>Retailer Spl. Discount</th>
+                        <th>Franchise Spl. Discount</th>
+                        <th>&nbsp;</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_DISCOUNT_VALID_FROM_DATE !== null">
+                                {{ bebModalData.RETAIL_B2B_DISCOUNT_VALID_FROM_DATE }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_DISCOUNT_VALID_FROM_DATE === null">
+                                NA
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_DISCOUNT_VALID_TO_DATE !== null">
+                                {{ bebModalData.RETAIL_B2B_DISCOUNT_VALID_TO_DATE }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_DISCOUNT_VALID_TO_DATE === null">
+                                NA
+                            </div>
+                        </td>
+                        <td class="actdct_icon">
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_VALIDITY_FLG !== null">
+                                {{ bebModalData.RETAIL_B2B_VALIDITY_FLG }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_VALIDITY_FLG === null">
+                                <img src="assets/images/deactive_icon.png">
+                            </div>
+                        </td>
+                        <td class="actdct_icon">
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_DISCOUNT_PERCENTG_FLG !== null">
+                                {{ bebModalData.RETAIL_B2B_DISCOUNT_PERCENTG_FLG }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_DISCOUNT_PERCENTG_FLG === null">
+                                <img src="assets/images/deactive_icon.png">
+                            </div>
+                        </td>
+
+                        <td class="actdct_icon">
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_DISTRIBUTOR_DISCOUNT_FIGURE !== null">
+                                {{ bebModalData.RETAIL_B2B_DISTRIBUTOR_DISCOUNT_FIGURE }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_DISTRIBUTOR_DISCOUNT_FIGURE === null">
+                              <img src="assets/images/deactive_icon.png">
+                            </div>
+                        </td>
+
+                        <td>
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_RETAILER_DISCOUNT_FIGURE !== null">
+                                {{ bebModalData.RETAIL_B2B_RETAILER_DISCOUNT_FIGURE }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_RETAILER_DISCOUNT_FIGURE === null">
+                                NA
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_FRANCHISE_DISCOUNT_FIGURE !== null">
+                                {{ bebModalData.RETAIL_B2B_FRANCHISE_DISCOUNT_FIGURE }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_FRANCHISE_DISCOUNT_FIGURE === null">
+                                NA
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_OWNSTORE_DISCOUNT_FIGURE !== null">
+                                {{ bebModalData.RETAIL_B2B_OWNSTORE_DISCOUNT_FIGURE }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_OWNSTORE_DISCOUNT_FIGURE === null">
+                                NA
+                            </div>
+                        </td>
+                        <td class="actdct_icon">
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_DISTRI_ITEM_COUNT_SPL_DISC_AVLBL_FLG !== null">
+                                {{ bebModalData.RETAIL_B2B_DISTRI_ITEM_COUNT_SPL_DISC_AVLBL_FLG }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_DISTRI_ITEM_COUNT_SPL_DISC_AVLBL_FLG === null">
+                                <span [popover]="distributorpopoverTemplate" [outsideClick]="true">
+                                    <img src="assets/images/deactive_icon.png">
+                                    
+                                </span>
+                                
+                            </div>
+                        </td>
+                        <td class="actdct_icon">
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_RETAILER_ITEM_COUNT_SPL_DISC_AVLBL_FLG !== null">
+                                {{ bebModalData.RETAIL_B2B_RETAILER_ITEM_COUNT_SPL_DISC_AVLBL_FLG }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_RETAILER_ITEM_COUNT_SPL_DISC_AVLBL_FLG === null">
+                                <span [popover]="retailerpopoverTemplate" [outsideClick]="true"><img src="assets/images/deactive_icon.png">
+                                </span>
+                                </div>
+                        </td>
+                        <td class="actdct_icon">
+                            <div *ngIf="bebModalData && bebModalData.RETAIL_B2B_FRANCHISE_ITEM_COUNT_SPL_DISC_AVLBL_FLG !== null">
+                                {{ bebModalData.RETAIL_B2B_FRANCHISE_ITEM_COUNT_SPL_DISC_AVLBL_FLG }}
+                            </div>
+                            <div *ngIf="!bebModalData || bebModalData.RETAIL_B2B_FRANCHISE_ITEM_COUNT_SPL_DISC_AVLBL_FLG === null">
+                                <span [popover]="franchisepopoverTemplate" [outsideClick]="true"><img src="assets/images/deactive_icon.png"></span>
+                            </div>
+                        </td>
+                        <td class="delete-icon"><i class="fa fa-edit"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div> -->
+</ng-template>
+
+<!-- <ng-template #distributorpopoverTemplate>
+    <p><strong>Distributor Spl. Discount</strong></p>
+    <div class="form-group">
+        <label>Item Count on Discount</label>
+        <input type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Added Spl. Discount %</label>
+        <input type="number" class="form-control">
+    </div>
+    <div class="form-group">
+        <button class="btn custom-btn w-100"> Add </button>
+    </div>
+</ng-template>
+
+<ng-template #retailerpopoverTemplate>
+    <p><strong>Retailer Spl. Discount</strong></p>
+    <div class="form-group">
+        <label>Item Count on Discount</label>
+        <input type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Added Spl. Discount %</label>
+        <input type="number" class="form-control">
+    </div>
+    <div class="form-group">
+        <button class="btn custom-btn w-100"> Add </button>
+    </div>
+</ng-template>
+
+<ng-template #franchisepopoverTemplate>
+    <p><strong>Franchise Spl. Discount</strong></p>
+    <div class="form-group">
+        <label>Item Count on Discount</label>
+        <input type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Added Spl. Discount %</label>
+        <input type="number" class="form-control">
+    </div>
+    <div class="form-group">
+        <button class="btn custom-btn w-100"> Add </button>
+    </div>
+</ng-template> -->

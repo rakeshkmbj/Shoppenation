@@ -1,0 +1,288 @@
+<div class="content">
+    <!-- <h1 class="heading-title">Retail Store</h1> -->
+    <!-- <div class="card">
+        <div class="card-header">{{isTitle == true ? 'Add Retail Store Under Same GSTIN Number': 'Update Retail Store Under Same GSTIN Number'}}</div>
+        <div class="card-body p-0">
+            <form [formGroup]="RetailStoreForm">
+                <div class="form-field">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Office/Store Name</label>
+                                <input formControlName="RETAIL_D2C_SUBACCT_OFFICE_NAME" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Office/Store Address</label>
+                                <input formControlName="RETAIL_D2C_SUBACCT_OFFICE_ADDRESS" type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <country-state-city-pin [parentForm]="RetailStoreForm.get('country_state_city_pin')" [reset]="reset$">
+                    </country-state-city-pin>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Type of Office</label>
+                                <select class="form-control" formControlName="RETAIL_STORE_OFFICE_SHOWROOM_FLG">
+                  <option value="Retail">Retail</option>
+                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-btn bottom-btn pr-0 pb-0">
+                        <button (click)="resetForm()" type="button" class="btn cancel-btn">Cancel</button>
+                        <button *ngIf="!isTitle" (click)="updateRetailStore()" type="button" class="btn custom-btn">Update</button>
+                        <button *ngIf="isTitle" (click)="addRetailStore()" type="button" class="btn custom-btn">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div> -->
+
+    <!-- <pre>
+  {{RetailStoreForm.value | json}}
+</pre> -->
+
+    <!-- <div class="card">
+            <div class="card-header">Add/Edit Business Office</div>
+            <div class="card-body">
+            
+                <div class="form-field">
+                    <div class="row">
+    
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>First Name</label>
+                               <input type="text" class="form-control" />
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Last Name</label>
+                               <input type="text" class="form-control" />
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Contact Number</label>
+                               <input type="text" class="form-control" />
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Address</label>
+                               <input type="text" class="form-control" />
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Office Name</label>
+                               <input type="text" class="form-control" />
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control">
+                                    <option selected>Select</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                  </select>
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>State</label>
+                                <select class="form-control">
+                                    <option selected>Select</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                  </select>
+                              </div>
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>City</label>
+                                <select class="form-control">
+                                    <option selected>Select</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                  </select>
+                              </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="orderno">Zip Code</label>
+                                <select class="form-control">
+                                    <option selected>Select</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                    <option>xxxxx</option>
+                                  </select>
+                              </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+    
+                    <h5>Registared Address</h5>
+                    <div class="col-md-12 reg_address">
+                        <div class="custom-radio form-check-inline">
+                            <input type="radio" class="custom-control-input" name="optradio">
+                            <label class="custom-control-label">Corporate Office</label>
+                          </div>  
+    
+                          <div class="custom-radio form-check-inline">
+                            <input type="radio" class="custom-control-input" name="optradio">
+                            <label class="custom-control-label">Resg. Office</label>
+                          </div>  
+                          <div class="custom-radio form-check-inline">
+                            <input type="radio" class="custom-control-input" name="optradio">
+                            <label class="custom-control-label">Branch Office</label>
+                          </div> 
+                          <div class="custom-radio form-check-inline">
+                            <input type="radio" class="custom-control-input" name="optradio">
+                            <label class="custom-control-label">Showroom</label>
+                          </div>
+                         
+                          <div class="custom-radio form-check-inline">
+                            <input type="radio" class="custom-control-input" name="optradio">
+                            <label class="custom-control-label">Factory</label>
+                          </div>
+                          <div class="custom-radio form-check-inline">
+                            <input type="radio" class="custom-control-input" name="optradio">
+                            <label class="custom-control-label">Store/Godown</label>
+                          </div>
+                          
+                    </div>
+                  
+                </div>
+            </div>
+           
+          </div> -->
+
+    <!-- <div class="card exiting-office-table">
+        <div class="card-header">My Exiting Business Office</div>
+        <div class="card-body pa-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Office Name</th>
+                        <th>Address</th>
+                        <th colspan="2">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let retailstore of retailStoreList let i = index" [class.active]="i == selectedRow">
+                        <td>{{i + 1}}</td>
+                        <td>{{retailstore.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</td>
+                        <td>{{retailstore.RETAIL_D2C_SUBACCT_OFFICE_ADDRESS}}</td>
+                        <td (click)="setClickedRow(i)" class="delete-icon"><i (click)="getRetailStoreById(retailstore.SUBACCT_OFFICES_RPOSTRY_ID)" class="fa fa-edit"></i></td>
+                        <td class="delete-icon"><i class="fa fa-trash"></i></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div> -->
+
+    <h1 class="heading-title">Add Physical Store Under Same Account</h1>
+
+    <div class="card">
+
+        <div class="search-field-list pt-0">
+            <div class="search-list-label">Account ID: <span>{{accountid}}</span></div>
+            <div class="search-list-label">Sub-Account ID: <span>{{subaccountid}}</span></div>
+
+
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-8 mt-2">
+                <button (click)="getPhysicalStoresSubAccount()" class="btn custom-btn mr-3">Display Physical Store</button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card pl-0 pr-0 physical-store" *ngIf="physicalStoreData">
+        <div class="card-header px-3 d-flex">
+            <h4 class="m-0 pt-2">Display Physical Store</h4>
+            <button (click)="openModal()" class="btn custom-btn ml-auto">Add New Physical Store</button>
+        </div>
+        <div class="card-body py-1 px-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Store ID</th>
+                        <th>Store Name</th>
+                        <th>Domain & Address</th>
+                        <th>On Same<br> Location</th>
+                        <th>Physical<br> Store</th>
+                        <th>Store Replica<br> Required</th>
+                        <th>Replica Made</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of physicalStoreData; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{data.SUBACCT_OFFICES_RPOSTRY_ID}}</td>
+                        <td>{{data.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</td>
+                        <td>
+                            <a placement="top" tooltip="{{data.RETAIL_D2C_SUBACCT_OFFICE_ADDRESS}}">View</a>
+                        </td>
+                        <td>
+                            <span *ngIf="data.RETAIL_D2C_SAME_PERIMETRIC_AREA_AS_PRIMARY_STORE_FLG == true else elseCondition">
+                            <img class="w-25" src="assets/images/active_icon1.png " />
+                        </span>
+                            <ng-template #elseCondition><img class="w-25" src="assets/images/deactive_icon1.png " /></ng-template>
+                        </td>
+                        <td>
+                            <span *ngIf="data.RETAIL_D2C_SUBACCT_OFFICE_PRIMARY_ACCOUNT_STORE_FLG == true else elseCondition0">
+                                <img class="w-25" src="assets/images/active_icon1.png " />
+                            </span>
+                            <ng-template #elseCondition0><img class="w-25" src="assets/images/deactive_icon1.png " /></ng-template>
+                        </td>
+                        <td>
+                            <span *ngIf="data.REPLICA_REQUIRED_FLG == true else elseCondition1">
+                                <img class="w-25" src="assets/images/active_icon1.png " />
+                            </span>
+                            <ng-template #elseCondition1><img class="w-25" src="assets/images/deactive_icon1.png " /></ng-template>
+                        </td>
+                        <td>
+                            <span *ngIf="data.REPLICA_CREATED_FLG == true else elseCondition2">
+                                <img class="w-25" src="assets/images/active_icon1.png " />
+                            </span>
+                            <ng-template #elseCondition2><img class="w-25" src="assets/images/deactive_icon1.png " /></ng-template>
+                        </td>
+                        <td><button class="btn outline-btn ">Create Replica</button></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <br><br>
+</div>
+<ngx-spinner template="<img src='assets/images/icons/please_wait.gif' />">
+</ngx-spinner>
