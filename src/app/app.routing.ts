@@ -49,6 +49,17 @@ import { PostManagementComponent } from './Mdr_connect_Dashboard/post-management
 import { CommunincationDeskComponent } from './Mdr_connect_Dashboard/communincation-desk/communincation-desk.component';
 import { SellerStoreSkuManagementComponent } from './Mdr_connect_Dashboard/seller-store-sku-management/seller-store-sku-management.component';
 import { BuyServicesComponent } from './Mdr_connect_Dashboard/buy-services/buy-services.component';
+import { AccountBasedMISComponent } from './All-Day-Vending/account-based-mis/account-based-mis.component';
+import { BatchUploadComponent } from './All-Day-Vending/batch-upload/batch-upload.component';
+import { ManageCustomerCardComponent } from './All-Day-Vending/manage-customer-card/manage-customer-card.component';
+import { ManageVendorsComponent } from './All-Day-Vending/manage-vendors/manage-vendors.component';
+import { ManageVendsComponent } from './All-Day-Vending/manage-vends/manage-vends.component';
+import { MyCardTransactionsComponent } from './All-Day-Vending/my-card-transactions/my-card-transactions.component';
+import { MyUsersManagementComponent } from './All-Day-Vending/my-users-management/my-users-management.component';
+import { PayablesReceivablesComponent } from './All-Day-Vending/payables-receivables/payables-receivables.component';
+import { RefillMyCardComponent } from './All-Day-Vending/refill-my-card/refill-my-card.component';
+import { MyInvoicesComponent } from './All-Day-Vending/my-invoices/my-invoices.component';
+import { AccountManagementComponent } from './All-Day-Vending/account-management/account-management.component';
 
 const appRoutes: Routes = [
   {
@@ -108,9 +119,20 @@ const appRoutes: Routes = [
       { path: 'businessAccountAllocation', component: BusinessAccountAllocationComponent },
       { path: 'profileManagement', component: ProfileManagementComponent },
       { path: 'postManagement', component: PostManagementComponent },
-      { path: 'communicationDesk', component:  CommunincationDeskComponent},
-      { path: 'sellerstoreskumanagement', component:  SellerStoreSkuManagementComponent},
-      { path: 'buyservice', component:  BuyServicesComponent},
+      { path: 'communicationDesk', component: CommunincationDeskComponent },
+      { path: 'sellerstoreskumanagement', component: SellerStoreSkuManagementComponent },
+      { path: 'buyservice', component: BuyServicesComponent },
+      { path: 'myUserManagement', component: MyUsersManagementComponent },
+      { path: 'payablesReceivables', component: PayablesReceivablesComponent },
+      { path: 'manageCustomerCard', component: ManageCustomerCardComponent },
+      { path: 'accountBasedMIS', component: AccountBasedMISComponent },
+      { path: 'batchUpload', component: BatchUploadComponent },
+      { path: 'manageVends', component: ManageVendsComponent },
+      { path: 'manageVendors', component: ManageVendorsComponent },
+      { path: 'myCardTransactions', component: MyCardTransactionsComponent },
+      { path: 'refillMyCard', component: RefillMyCardComponent },
+      { path: 'myInvoices', component: MyInvoicesComponent },
+      { path: 'accountManagement', component: AccountManagementComponent },
 
     ]
   },

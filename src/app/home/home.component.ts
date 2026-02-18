@@ -6,19 +6,20 @@ import { RegisterService } from '../services/register.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginComponent } from '../login';
+import { AtAGlanceComponent } from '../About/at-aglance/at-aglance.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent  implements OnInit {
-  baseUrl:string = "http://eguarddocshieldapi/carryr/b2b";
+export class HomeComponent implements OnInit {
+  baseUrl: string = "http://eguarddocshieldapi/carryr/b2b";
   modalRef: BsModalRef;
   closeResult: string;
- // isModalShown = true;
+  // isModalShown = true;
   images = [1, 2, 3].map((n) => `../assets/images/${n}.png`);
-  @ViewChild('template') modalTemplate : TemplateRef<any>;
+  @ViewChild('template') modalTemplate: TemplateRef<any>;
   couponForm: FormGroup;
   mobilemsg: {};
   mobileMsg: boolean;
@@ -26,69 +27,73 @@ export class HomeComponent  implements OnInit {
   Coupon: any;
   message: any;
   submitted: boolean;
- 
-  
+
+
   constructor(
     private modalService: BsModalService,
-    private registerService:RegisterService,
+    private registerService: RegisterService,
     private toastr: ToastrService,
     private router: Router,
     private formBuilder: FormBuilder
-    ) {}
+  ) { }
 
   openLoginModal() {
-    this.modalRef = this.modalService.show(LoginComponent,  Object.assign({}, { class: 'login-modal' }));
-}
+    this.modalRef = this.modalService.show(LoginComponent, Object.assign({}, { class: 'login-modal' }));
+  }
 
-ngOnInit () {
-  this.couponForm  =  this.formBuilder.group({
-    mobileNumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-   // password: ['', Validators.required]
-});
-}
+  ngOnInit() {
+    this.couponForm = this.formBuilder.group({
+      mobileNumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      // password: ['', Validators.required]
+    });
+  }
 
-ngAfterViewInit() {
-   // this.openModal(this.modalTemplate);
-  
+  openLearnMore() {
+    this.modalRef = this.modalService.show(AtAGlanceComponent, Object.assign({}, { class: 'modal-xl' }));
+  }
+
+  ngAfterViewInit() {
+    // this.openModal(this.modalTemplate);
+
   }
 
   config = {
     backdrop: true,
     ignoreBackdropClick: true
   };
-  
+
   // openModal(template: TemplateRef<any>) {
   //   this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'coupon-modal' }));
   // }
 
-//   openCouponModal(couponModal: TemplateRef<any>) {
-//     this.modalRef.hide();
-//     this.modalRef = this.modalService.show(couponModal, this.config);
- 
-// }
+  //   openCouponModal(couponModal: TemplateRef<any>) {
+  //     this.modalRef.hide();
+  //     this.modalRef = this.modalService.show(couponModal, this.config);
 
-get f(){
-  return this.couponForm.controls;
-}
-generateCoupon() {  
+  // }
 
-  this.submitted = true;
+  get f() {
+    return this.couponForm.controls;
+  }
+  generateCoupon() {
 
-  if (this.couponForm.invalid) {
-    return;
-}
-  console.log(this.couponForm.value);
-  let mobileNumber = this.couponForm.value.mobileNumber;
-  this.registerService.getCall(this.baseUrl +'/CouponAllocation/' + mobileNumber + "/" + true ).subscribe((data: any) => {
-    this.mobileMsg = true;
-    this.mobilemsg = data;
-    console.log(data);
-    this.Coupon = data.Coupon;
-    this.message = data.message;
- 
- });  
- 
-} 
+    this.submitted = true;
+
+    if (this.couponForm.invalid) {
+      return;
+    }
+    console.log(this.couponForm.value);
+    let mobileNumber = this.couponForm.value.mobileNumber;
+    this.registerService.getCall(this.baseUrl + '/CouponAllocation/' + mobileNumber + "/" + true).subscribe((data: any) => {
+      this.mobileMsg = true;
+      this.mobilemsg = data;
+      console.log(data);
+      this.Coupon = data.Coupon;
+      this.message = data.message;
+
+    });
+
+  }
 
 
 

@@ -1,0 +1,367 @@
+<div class="content">
+
+    <h1 class="heading-title">Manage Customer Cards</h1>
+
+    <div class="toplevel">
+
+        <form [formGroup]="displayCardHolders">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Class / Department</label>
+
+                        <select class="form-control" formControlName="classId">
+                            <option value="">Select</option>
+                            <option value="1">Class I</option>
+                            <option value="2">Class II</option>
+                            <option value="3">Class III</option>
+                            <option value="4">Class IV</option>
+                            <option value="5">Class V</option>
+                            <option value="6">Class VI</option>
+                            <option value="7">Class VII</option>
+                            <option value="8">Class VIII</option>
+                            <option value="9">Class IX</option>
+                            <option value="10">Class X</option>
+                            <option value="11">Class XI</option>
+                            <option value="12">Class XII</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-right mb-3">
+
+                    <!-- DISABLED UNTIL CLASS SELECTED -->
+                    <button type="button" class="btn mr-2 custom-btn" (click)="DisplayCardHolders()"
+                        [disabled]="displayCardHolders.invalid">
+
+                        Display Acc. Card User
+                    </button>
+
+                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)">
+
+                        Add New User Card
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+
+        <div *ngIf="cardHolders?.length > 0" class="card exiting-office-table mt-2 pb-0">
+
+            <div class="card-header">
+                Already Added Card Holder(s)
+            </div>
+
+            <div class="card-body pa-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Serial#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Id</th>
+                            <th>Roll No.</th>
+                            <th>Password</th>
+                            <th>Status</th>
+                            <th>Mobile No.</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let user of cardHolders; let i = index">
+
+                            <!-- Serial -->
+                            <td>{{ (i + 1) | number:'2.0' }}</td>
+
+                            <!-- First Name -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_FIRST_NAME }}</td>
+
+                            <!-- Last Name -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_LAST_NAME }}</td>
+
+                            <!-- ID -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_REGID }}</td>
+
+                            <!-- Roll No -->
+                            <td>{{ user.ADC_VEND_ACCOUNT_INTERNL_UID }}</td>
+
+                            <!-- Details -->
+                            <td>
+                                <button (click)="showPassword(user, showpassword)" class="btn btn-primary btn-sm">
+                                    show
+                                </button>
+                            </td>
+
+                            <!-- Status -->
+                            <td class="actdct_icon">
+                                <span
+                                    *ngIf="user.ADC_VEND_CARDHOLDR_MALE_FLG || user.ADC_VEND_CARDHOLDR_FEMALE_FLG; else inactive">
+                                    <img src="assets/images/active_icon1.png" width="20">
+                                </span>
+                                <ng-template #inactive>
+                                    <img src="assets/images/deactive_icon.png" width="20">
+                                </ng-template>
+                            </td>
+
+                            <!-- Mobile -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR }}</td>
+
+                            <!-- Action -->
+                            <td>
+                                <button class="btn btn-primary btn-sm mr-1">
+                                    View Transactions
+                                </button>
+
+                                <button (click)="confirmDelete(confirmDeleteModal,user)"
+                                    class="btn btn-primary btn-sm mr-1">
+                                    Delete Card
+                                </button>
+
+                                <span class="icon ml-1">
+                                    <i (click)="editUserCard(addUserCardModal, user)" class="fa fa-edit mt-2"></i>
+                                </span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<ng-template #addUserCardModal>
+    <form [formGroup]="userCardForm" (ngSubmit)="submitUserCard()">
+
+        <div class="modal-header">
+            <h4 class="modal-title">
+                {{ isEditMode ? 'Edit User Card' : 'Add New User Card' }}
+            </h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Row 1 -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>Card #</label>
+                    <input type="text" class="form-control" formControlName="cardNo">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Card Issued Type</label>
+                    <select class="form-control" formControlName="cardType">
+                        <option value="Student">Student</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Trainees">Trainees</option>
+                        <option value="Visitors">Visitors</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Roll / Admission / ID</label>
+                    <input type="text" class="form-control" formControlName="rollNo">
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" formControlName="firstName">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" formControlName="lastName">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Parent / Guardian Name</label>
+                    <input type="text" class="form-control" formControlName="guardianName">
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>Associated Primary Mobile</label>
+                    <input type="text" class="form-control" formControlName="primaryMobile">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Alternate Mobile</label>
+                    <input type="text" class="form-control" formControlName="altMobile">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Email</label>
+                    <input type="email" class="form-control" formControlName="email">
+                </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="fw-bold">Gender</label>
+
+                    <select class="form-control" formControlName="gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>
+                        Class / Department
+                    </label>
+
+                    <select class="form-control" formControlName="classId">
+                        <option value="1">Class I</option>
+                        <option value="2">Class II</option>
+                        <option value="3">Class III</option>
+                        <option value="4">Class IV</option>
+                        <option value="5">Class V</option>
+                        <option value="6">Class VI</option>
+                        <option value="7">Class VII</option>
+                        <option value="8">Class VIII</option>
+                        <option value="9">Class IX</option>
+                        <option value="10">Class X</option>
+                        <option value="11">Class XI</option>
+                        <option value="12">Class XII</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Photo -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label class="fw-bold">Attach User Photo</label>
+
+                            <div class="custom-file fileInputProfileWrap">
+                                <input type="file" class="custom-file-input" id="UserPhoto" accept="image/*"
+                                    (change)="onFileSelect($event)">
+
+                                <!-- Filename -->
+                                <label class="custom-file-label" for="UserPhoto">
+                                    {{ uploadLabel || 'Choose file' }}
+                                </label>
+
+                                <!-- Image Preview -->
+                                <div class="img-space mt-2 mb-3" *ngIf="isImageSaved">
+                                    <img [src]="imagePreview" class="img-thumbnail">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-center mt-4">
+                <button class="btn btn-danger px-4" type="submit" [disabled]="userCardForm.invalid">
+                    {{ isEditMode ? 'Edit User Card' : 'Add New User Card' }}
+                </button>
+            </div>
+
+        </div>
+    </form>
+</ng-template>
+
+
+<ng-template #confirmDeleteModal>
+    <form (ngSubmit)="deleteCard()">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Confirm Delete</h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row mb-3">
+
+                <div class="col-md-10">
+                    <label>Card Issued Type</label>
+                    <select class="form-control" [(ngModel)]="confirmation" name="confirmation">
+                        <option value="">Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="text-right mt-4">
+                <button class="btn btn-danger px-4" type="submit">
+                    Submit
+                </button>
+            </div>
+
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #showpassword>
+
+    <div class="modal-header">
+        <h4 class="modal-title">User Password</h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label>Name</label>
+            </div>
+            <div class="col-md-9">
+                <span class="plain-text">
+                    {{ selectedUser.ADC_VEND_CARDHOLDR_FIRST_NAME + " " + selectedUser.ADC_VEND_CARDHOLDR_LAST_NAME }}
+                </span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label>Mobile</label>
+            </div>
+            <div class="col-md-9">
+                <span class="plain-text">
+                    {{ selectedUser.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR }}
+                </span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label>Password</label>
+            </div>
+            <div class="col-md-9">
+                <span class="plain-text">
+                    {{ userpassword.Password }}
+                </span>
+            </div>
+        </div>
+
+    </div>
+</ng-template>

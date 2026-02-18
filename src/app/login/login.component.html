@@ -16,6 +16,7 @@
                     <option value="1">All Day Shop</option>
                     <option value="2">All Day Distribution</option>
                     <option value="3">All Day MDR-Connect</option>
+                    <option value="4">All Day Vending</option>
                 </select>
                 <div *ngIf="submitted && f.platform.errors" class="invalid-feedback">
                     <div *ngIf="f.platform.errors.required">Platform is required</div>
@@ -27,26 +28,27 @@
                 <select formControlName="domain" class="form-control" (change)="domainChange($event)" id="domain"
                     [ngClass]="{ 'is-invalid': submitted && f.domain.errors }">
                     <option value="">Select</option>
-                    <option value="1">Admediaworld</option>
-                    <option value="2">All-Day Kitchen</option>
-                    <option value="3">All-Day Kirana</option>
-                    <option value="4">All-Day Fashion</option>
-                    <option value="5">All-Day Electronics & Large Appliances</option>
-                    <option value="6">All-Day Home & Office Furnitures</option>
-                    <option value="7">All-Day Pharma & Medicos</option>
-                    <option value="8">All-Day Home Décor & Furnishings</option>
-                    <option value="9">All-Day Pet Shoppe & Pet Care</option>
-                    <option value="10">All-Day Garden & Outdoor</option>
-                    <option value="11">All-Day Food & Agro Care</option>
-                    <option value="12">All-Day New & Used Automobile</option>
-                    <option value="13">All-Day Health & Medical Equipments </option>
-                    <option value="14">All-Day Home Office & Automobile Services</option>
-                    <option value="15">All-Day Automobile Spare Parts </option>
-                    <option value="16">All-Day Kitchen & Dining </option>
-                    <option value="17">All-Day Electrical & Lighting</option>
-                    <option value="18">All-Day Mobile & Entertainment Gadgets </option>
-                    <option value="19">All-Day Sanitary Paints & Furnishing</option>
-                    <option value="20">All-Day De-Evento </option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="1">Admediaworld</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="2">All-Day Kitchen</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="3">All-Day Kirana</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="4">All-Day Fashion</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="5">All-Day Electronics & Large Appliances</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="6">All-Day Home & Office Furnitures</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="7">All-Day Pharma & Medicos</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="8">All-Day Home Décor & Furnishings</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="9">All-Day Pet Shoppe & Pet Care</option>                    
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="11">All-Day Food & Agro Care</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="12">All-Day New & Used Automobile</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="13">All-Day Health & Medical Equipments </option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="14">All-Day Home Office & Automobile Services</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="15">All-Day Automobile Spare Parts </option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="16">All-Day Kitchen & Dining </option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="17">All-Day Electrical & Lighting</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="18">All-Day Mobile & Entertainment Gadgets </option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="19">All-Day Sanitary Paints & Furnishing</option>
+                    <option *ngIf="loginForm.get('platform')?.value != 4" value="20">All-Day De-Evento </option>
+
+                    <option *ngIf="loginForm.get('platform')?.value == 4" value="10">All-Day Problend</option>
                 </select>
                 <div *ngIf="submitted && f.domain.errors" class="invalid-feedback">
                     <div *ngIf="f.domain.errors.required">Domain is required</div>

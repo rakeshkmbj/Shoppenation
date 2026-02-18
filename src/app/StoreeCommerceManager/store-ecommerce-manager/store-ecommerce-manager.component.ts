@@ -40,7 +40,6 @@ export class StoreEcommerceManagerComponent implements OnInit {
 
     this.getlogindata = localStorage.getItem('logindata');
     this.getlogindata = JSON.parse(this.getlogindata);
-    console.log("Login data uoxyfgdinuw: ", this.getlogindata)
    }
 
   ngOnInit(): void {

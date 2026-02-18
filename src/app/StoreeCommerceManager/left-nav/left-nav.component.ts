@@ -36,8 +36,6 @@ export class LeftNavComponent implements OnInit {
     this.MDR_Connect_App_Flag = this.getlogindata.MDR_Connect_App_Flag;
     this.MDR_Seller_With_SKU_Flag = this.getlogindata.MDR_Seller_With_SKU_Flag;
 
-    console.log("NAv bAr wala login data: ", this.getlogindata)
-
     // this.primarySellerFlag = false;
 
 
@@ -63,6 +61,11 @@ export class LeftNavComponent implements OnInit {
   status10: boolean = false;
   status11: boolean = false;
   status12: boolean = false;
+  status13: boolean = false;
+  status14: boolean = false;
+  status15: boolean = false;
+  status16: boolean = false;
+  status17: boolean = false;
 
   clickEvent1() {
     this.status1 = !this.status1;
@@ -110,6 +113,26 @@ export class LeftNavComponent implements OnInit {
 
   clickEvent12() {
     this.status12 = !this.status12;
+  }
+
+  clickEvent13() {
+    this.status13 = !this.status13;
+  }
+
+  clickEvent14() {
+    this.status14 = !this.status14;
+  }
+
+  clickEvent15() {
+    this.status15 = !this.status15;
+  }
+
+  clickEvent16() {
+    this.status16 = !this.status16;
+  }
+
+  clickEvent17() {
+    this.status17 = !this.status17;
   }
 
   handleItemSubitemDiscountClick(event: Event) {

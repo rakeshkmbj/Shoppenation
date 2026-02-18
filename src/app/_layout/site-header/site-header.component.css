@@ -117,3 +117,201 @@ h3 {
     text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff33ff, 0 0 20px #ff66ff;
   }
 }
+
+/* Prevent wrapping */
+.header .row {
+    flex-wrap: nowrap;
+}
+
+/* Section spacing */
+.nav-section {
+    gap: 18px;
+    margin-left: 25px;
+}
+
+/* Push login section to right */
+.section-login {
+    margin-left: auto;
+}
+
+/* Reduce icon size */
+.backoffice-login img {
+    max-width: 22px;
+}
+
+/* Reduce font size slightly */
+.backoffice-login span {
+    font-size: 11px;
+}
+
+/* Reduce link font */
+.section-links span {
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+/* Reduce logo slightly */
+.logo img {
+    max-width: 50px;
+}
+
+/* Reduce overall spacing */
+.backoffice-login {
+    margin: 5px 8px;
+}
+
+/* Push all nav content to right */
+.section-links {
+    margin-left: auto;
+}
+
+/* Keep proper spacing between sections */
+.section-products {
+    margin-left: 30px;
+}
+
+.section-login {
+    margin-left: 30px;
+}
+
+.section-links a {
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #FF7900;              /* default orange */
+
+    text-decoration: underline;
+
+    margin-right: 18px;
+
+    transition: color 0.25s ease;
+    cursor: pointer;
+
+}
+
+
+/* Hover effect (slightly darker orange for premium feel) */
+.section-links a:hover {
+
+    color: #cc6100;
+
+}
+
+.applications-box {
+
+  border: 1px solid #d6dde6;
+  border-radius: 10px;
+
+  padding: 6px 16px 8px 16px;
+
+  background: #f8fafc;
+
+}
+
+
+/* Heading */
+.applications-heading {
+
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #2f6fed;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 4px;
+
+}
+
+
+/* Row */
+.applications-list {
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+}
+
+
+/* App item */
+.app-item {
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 4px 6px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+/* Hover */
+.app-item:hover {
+
+  background: #eef4ff;
+
+}
+
+
+/* MDR Connect highlight (subtle, clean) */
+.primary-app {
+
+  font-weight: 600;
+
+  color: #2f6fed;
+
+}
+
+
+/* Icons */
+.app-item img {
+
+  width: 18px;
+  height: 18px;
+
+}
+
+
+/* Text */
+.app-item span {
+
+  font-size: 13px;
+
+}
+
+.applications-heading {
+
+  text-align: center;        /* center horizontally */
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #1b3c74;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 6px;
+
+  text-transform: uppercase;
+
+}
+
+
+/* Optional: make box full-width aligned nicely */
+.applications-box {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}

@@ -1,32 +1,71 @@
 <div class="container-fluid header">
-  <div class="row d-flex align-items-center">
-    <div class="col-md-1 logo">
+  <div class="row align-items-center flex-nowrap">
+
+    <!-- Logo -->
+    <div class="col-auto logo">
       <img src="../assets/images/logo_1.jpg" />
     </div>
-    <div class="col-md-6 pl-0">
-      <h3>All Day Digital Applications Enterprise Platform</h3>
+
+    <!-- Section 1 -->
+    <div class="col-auto d-flex nav-section section-links">
+      <a (click)="openDataAndPrivacy()">Data & Privacy</a>
+      <a (click)="openRefund()">Refund</a>
+      <a (click)="openPricingAndTM()">Pricing & T/M</a>
     </div>
-    <div class="col-md-5 justify-content-end d-flex">
-      <div class="backoffice-login" (click)="openMdrCoonectModal()">
-        <img style="max-width: 25px;" src="../assets/images/MdrConnect.jpg" />
-        <span>MDR Connect</span>
-        <span class="mdrlogin">Register Now</span>
+
+    <!-- Section 2 : Enterprise Applications -->
+    <div class="col-auto nav-section section-products">
+
+      <div class="applications-box">
+
+        <div class="applications-heading">
+          ENTERPRISE APPLICATIONS
+        </div>
+
+        <div class="applications-list">
+
+          <div class="backoffice-login app-item primary-app" (click)="openAllDayVending()">
+            <img src="../assets/images/vending.jpg" />
+            <span>All-Day Vending</span>
+          </div>
+
+          <div class="backoffice-login app-item primary-app" (click)="openMdrCoonectModal()">
+            <img src="../assets/images/MdrConnect.jpg" />
+            <span>MDR Connect</span>
+          </div>
+
+          <div class="backoffice-login app-item primary-app" (click)="openAllDayDistribution()">
+            <img src="../assets/images/distribution.png" />
+            <span>All-Day Distribution</span>
+          </div>
+
+        </div>
+
       </div>
+
+    </div>
+
+    <!-- Section 3 -->
+    <div class="col-auto d-flex nav-section section-login ">
       <div class="backoffice-login" (click)="openLoginModal()">
-        <img style="max-width: 25px;" src="../assets/images/login_icon.png" />
+        <img src="../assets/images/login_icon.png" />
         <span>Partner Login</span>
       </div>
+
       <div class="backoffice-login">
         <img src="../assets/images/d_man.png" />
         <span>Delivery Login</span>
       </div>
+
       <div class="helpdesk-icon backoffice-login">
         <img src="../assets/images/helpdesk-icon.png" />
         <span>Help Desk</span>
       </div>
     </div>
+
   </div>
 </div>
+
 <nav class="navbar navbar-inverse bg-inverse hidden">
   <div id="navbarsExampleDefault">
     <ul class="nav">

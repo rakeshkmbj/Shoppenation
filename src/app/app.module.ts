@@ -84,6 +84,24 @@ import { PostManagementComponent } from './Mdr_connect_Dashboard/post-management
 import { CommunincationDeskComponent } from './Mdr_connect_Dashboard/communincation-desk/communincation-desk.component';
 import { SellerStoreSkuManagementComponent } from './Mdr_connect_Dashboard/seller-store-sku-management/seller-store-sku-management.component';
 import { BuyServicesComponent } from './Mdr_connect_Dashboard/buy-services/buy-services.component';
+import { MyUsersManagementComponent } from './All-Day-Vending/my-users-management/my-users-management.component';
+import { PayablesReceivablesComponent } from './All-Day-Vending/payables-receivables/payables-receivables.component';
+import { ManageCustomerCardComponent } from './All-Day-Vending/manage-customer-card/manage-customer-card.component';
+import { AccountBasedMISComponent } from './All-Day-Vending/account-based-mis/account-based-mis.component';
+import { BatchUploadComponent } from './All-Day-Vending/batch-upload/batch-upload.component';
+import { ManageVendsComponent } from './All-Day-Vending/manage-vends/manage-vends.component';
+import { ManageVendorsComponent } from './All-Day-Vending/manage-vendors/manage-vendors.component';
+import { MyCardTransactionsComponent } from './All-Day-Vending/my-card-transactions/my-card-transactions.component';
+import { RefillMyCardComponent } from './All-Day-Vending/refill-my-card/refill-my-card.component';
+import { MyInvoicesComponent } from './All-Day-Vending/my-invoices/my-invoices.component';
+import { AccountManagementComponent } from './All-Day-Vending/account-management/account-management.component';
+import { DataAndPrivacyComponent } from './About/data-and-privacy/data-and-privacy.component';
+import { RefundComponent } from './About/refund/refund.component';
+import { PricingAndTMComponent } from './About/pricing-and-tm/pricing-and-tm.component';
+import { AtAGlanceComponent } from './About/at-aglance/at-aglance.component';
+import { AllDayVendingComponent } from './About/all-day-vending/all-day-vending.component';
+import { AllDayDistributionComponent } from './About/all-day-distribution/all-day-distribution.component';
+
 @NgModule({
   imports: [ 
     BrowserModule,
@@ -170,8 +188,24 @@ import { BuyServicesComponent } from './Mdr_connect_Dashboard/buy-services/buy-s
      PostManagementComponent,
      CommunincationDeskComponent,
      SellerStoreSkuManagementComponent,
-     BuyServicesComponent
-   
+     BuyServicesComponent,
+     MyUsersManagementComponent,
+     PayablesReceivablesComponent,
+     ManageCustomerCardComponent,
+     AccountBasedMISComponent,
+     BatchUploadComponent,
+     ManageVendsComponent,
+     ManageVendorsComponent,
+     MyCardTransactionsComponent,
+     RefillMyCardComponent,
+     MyInvoicesComponent,
+     AccountManagementComponent,
+     DataAndPrivacyComponent,
+     RefundComponent,
+     PricingAndTMComponent,
+     AtAGlanceComponent,
+     AllDayVendingComponent,
+     AllDayDistributionComponent,
      ],
      providers: [
     

@@ -670,7 +670,6 @@ export class MdrConnectComponent implements OnInit {
             timeOut: 5000,
           });
         });
-
   }
 
 }
