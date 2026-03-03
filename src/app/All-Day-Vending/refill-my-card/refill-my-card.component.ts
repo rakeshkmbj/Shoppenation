@@ -55,6 +55,8 @@ export class RefillMyCardComponent implements OnInit {
               confirmPayFlg: true
             }
 
+            console.log("payload: ", payload)
+
             this.apiService.postCall(this.apiService.baseURL + '/MDR_Service_10and8_MakePayments', payload)
               .subscribe(data => {
                 console.log(data);

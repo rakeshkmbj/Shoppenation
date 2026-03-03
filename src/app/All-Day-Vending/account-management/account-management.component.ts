@@ -320,7 +320,7 @@ export class AccountManagementComponent implements OnInit {
     this.showuserStore = true;
     this.spinner.show();
 
-    this.apiService.getCall(this.apiService.baseURL + '/GetRetailStoresByAccountSubAccount/' + acc.THIRD_NODE_ACCT_STORE_ID + "/" + acc.THIRD_NODE_ACCT_SUBACCT_ID + "/" + acc.THIRD_NODE_ACCT_STORE_ID)
+    this.apiService.getCall(this.apiService.baseURL + '/GetRetailStoresByAccountSubAccount/' + 19 + "/" + acc.THIRD_NODE_ACCT_SUBACCT_ID + "/" + acc.THIRD_NODE_ACCT_STORE_ID)
       .subscribe(data => {
         this.userStoreList = data;
         console.log(data);
@@ -452,7 +452,7 @@ export class AccountManagementComponent implements OnInit {
     console.log("Selected Third Node Acc: ", this.selectedThirdNode);
 
     let addStoreUserData = {
-      RETAIL_ACCOUNT_ID: +this.selectedThirdNode.THIRD_NODE_ACCT_STORE_ID,
+      RETAIL_ACCOUNT_ID: 19,   // need to change this
       RETAIL_SUBACCOUNT_ID: +this.selectedThirdNode.THIRD_NODE_ACCT_SUBACCT_ID,
       RETAIl_STORE_ID: +this.selectedThirdNode.THIRD_NODE_ACCT_STORE_ID,
       RETAIL_USR_EMAIL_ID: this.addStoreUserForm.value.RETAIL_USR_EMAIL_ID,

@@ -6,7 +6,28 @@
 
         <tabset class="col-md-12">
 
-            <tab heading="My Spend On Vend" id="tab1">
+            <tab heading="My Current Balance" id="tab1" (selectTab)="onTabChange('tab1')">
+
+            </tab>
+
+            <tab heading="My Spend On Vend" id="tab2" (selectTab)="onTabChange('tab2')">
+
+                <div class="transaction-filter card p-3 mt-2">
+                    <div class="row align-items-end">
+
+                        <div class="col-md-3">
+                            <label class="filter-label">From Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="fromDate1">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button class="btn btn-primary show-btn" (click)="onSpendOnVend()">
+                                Show Transactions
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
 
                 <div class="card exiting-office-table orderStatus p-0 mt-2">
 
@@ -73,7 +94,24 @@
 
             </tab>
 
-            <tab heading="My Card Refill Details" id="tab2">
+            <tab heading="My Card Refill Details" id="tab3" (selectTab)="onTabChange('tab3')">
+
+                <div class="transaction-filter card p-3 mt-2">
+                    <div class="row align-items-end">
+
+                        <div class="col-md-3">
+                            <label class="filter-label">From Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="fromDate2">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button class="btn btn-primary show-btn" (click)="onCardRefillDetails()">
+                                Show Transactions
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
 
                 <div class="card exiting-office-table orderStatus p-0 mt-2">
 

@@ -48,6 +48,8 @@ export class ManageCustomerCardComponent implements OnInit {
   confirmation = "";
   SelectedUser: any;
   isEditMode = false;
+  classDepName: any;
+  classDepArr: any;
 
   constructor(
     private apiService: ApiService,
@@ -77,7 +79,7 @@ export class ManageCustomerCardComponent implements OnInit {
       altMobile: ['', [Validators.pattern('^[0-9]{10}$')]],
       email: ['', Validators.email],
       gender: ['M', Validators.required],
-      classId: ['1', Validators.required],
+      classId: ['', Validators.required],
       photo: [null]
     });
 
@@ -88,7 +90,7 @@ export class ManageCustomerCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.getClassDep()
   }
 
   generate() {
@@ -194,7 +196,7 @@ export class ManageCustomerCardComponent implements OnInit {
     this.userCardForm.reset({
       cardType: 'Student',
       gender: 'M',
-      classId: '1'
+      classId: ''
     });
 
     this.userCardForm.enable();
@@ -205,6 +207,66 @@ export class ManageCustomerCardComponent implements OnInit {
     this.isImageSaved = false;
 
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
+  }
+
+
+  addNewClassDep(template: any) {
+    this.classDepName = "";
+    this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  submitAddClassDep() {
+    if (this.classDepName !== '') {
+
+      const payload = {
+        Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
+        Account_Storeid: this.storeid,
+        Account_Class_Dept_Name: this.classDepName
+      }
+
+      this.apiService.postCall(`${this.apiService.baseURL}/ADD-CLASS-DEPARTMNT`, payload)
+        .subscribe(data => {
+          console.log(data);
+
+          this.toastr.success(data.Message);
+          this.getClassDep()
+        },
+          (error) => {
+            console.log(error);
+            this.toastr.error(error.Message, '', {
+              timeOut: 5000,
+            });
+          }
+        );
+
+    } else {
+      this.toastr.error('Please Enter a valid Class \ Departmnet Name');
+    }
+
+    this.modalRef.hide();
+  }
+
+  getClassDep() {
+
+    this.classDepArr = null;
+
+    const payload = {
+      Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
+      Account_Storeid: this.storeid,
+    }
+
+     this.apiService.postCall(`${this.apiService.baseURL}/GetAccount-Class-dept`, payload)
+        .subscribe(data => {
+          console.log(data);
+          this.classDepArr = data;
+        },
+          (error) => {
+            console.log(error);
+            this.toastr.error(error.Message, '', {
+              timeOut: 5000,
+            });
+          }
+        );
   }
 
   editUserCard(template: any, user: any) {
@@ -255,6 +317,8 @@ export class ManageCustomerCardComponent implements OnInit {
         Pic: this.base64textString
       };
 
+      console.log("Payload for add card holder: ", payload);
+
       this.apiService.postCall(
         `${this.apiService.baseURL}/EditVend-CardHolder-Credentials`,
         payload
@@ -268,8 +332,8 @@ export class ManageCustomerCardComponent implements OnInit {
       // ===== ADD API (your existing logic) =====
       const payload = {
         Card_MUID: formValue.cardNo,
-        Second_Node_Storecode: this.getlogindata.Storecode,
-        Account_Acctid: this.getlogindata.RETAIL_D2C_ACCT_ID,
+        Second_Node_Storecode: '1001090106', // need to change
+        Account_Acctid: '19', // need to change
         Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
         Account_Storeid: this.storeid,
         Class_Dept_ID: formValue.classId,
@@ -285,6 +349,8 @@ export class ManageCustomerCardComponent implements OnInit {
         Email_id: formValue.email,
         Cardholder_PIC: formValue.photo
       };
+
+      console.log("Payload for add card holder: ", payload);
 
       this.apiService.postCall(`${this.apiService.baseURL}/ADD_New_CARDHOLDER`, payload)
         .subscribe(data => {

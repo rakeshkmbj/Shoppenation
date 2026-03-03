@@ -13,6 +13,10 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class MyCardTransactionsComponent implements OnInit {
 
+  activeTabId: string = 'tab1';
+  getlogindata: any;
+  fromDate1: string = '';
+  fromDate2: string = '';
 
   constructor(
     private apiService: ApiService,
@@ -22,11 +26,99 @@ export class MyCardTransactionsComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
   ) {
- 
+
+    this.getlogindata = localStorage.getItem('logindata');
+    this.getlogindata = JSON.parse(this.getlogindata);
+    console.log("Login data: ", this.getlogindata)
+
   }
 
   ngOnInit(): void {
-    
+    this.onCurrentBalanceTabSelected()
+  }
+
+  onTabChange(tabId: string): void {
+    this.activeTabId = tabId;
+
+    switch (tabId) {
+      case 'tab1':
+        this.onCurrentBalanceTabSelected();
+        break;
+      case 'tab2':
+        break;
+      case 'tab3':
+        break;
+      default:
+        break;
+    }
+  }
+
+  onCurrentBalanceTabSelected(): void {
+
+    const payload = {
+      Card_Manufid: this.getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID
+    }
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderBalance', payload)
+      .subscribe(data => {
+        console.log(data);
+
+      },
+        (error) => {
+          this.toastr.error(error, '', {
+            timeOut: 5000,
+          });
+        });
+  }
+
+  onSpendOnVend(): void {
+    console.log("My Spend On Vend")
+
+    const payload = {
+      Cardholder_Regid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
+      Frm_Date: this.fromDate1
+    }
+
+    console.log("payload: ",payload )
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderSpends', payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message) {
+          this.toastr.error(data.Message)
+        }
+
+      },
+        (error) => {
+          this.toastr.error(error, '', {
+            timeOut: 5000,
+          });
+        });
+  }
+
+  onCardRefillDetails(): void {
+    console.log("y Card Refill Details")
+
+    const payload = {
+      Cardholder_Regid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
+      Frm_Date: this.fromDate2
+    }
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderRefill', payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message) {
+          this.toastr.error(data.Message)
+        }
+
+      },
+        (error) => {
+          this.toastr.error(error, '', {
+            timeOut: 5000,
+          });
+        });
   }
 
 }

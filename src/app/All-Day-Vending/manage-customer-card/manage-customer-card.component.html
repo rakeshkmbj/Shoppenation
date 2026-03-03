@@ -13,18 +13,9 @@
 
                         <select class="form-control" formControlName="classId">
                             <option value="">Select</option>
-                            <option value="1">Class I</option>
-                            <option value="2">Class II</option>
-                            <option value="3">Class III</option>
-                            <option value="4">Class IV</option>
-                            <option value="5">Class V</option>
-                            <option value="6">Class VI</option>
-                            <option value="7">Class VII</option>
-                            <option value="8">Class VIII</option>
-                            <option value="9">Class IX</option>
-                            <option value="10">Class X</option>
-                            <option value="11">Class XI</option>
-                            <option value="12">Class XII</option>
+                            <option *ngFor="let classDep of classDepArr" [value]="classDep.ADC_VEND_CLAS_DEPT_ID">
+                                {{ classDep.ADC_VEND_CLAS_DEPT_NAME }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -33,15 +24,16 @@
             <div class="row">
                 <div class="col-md-12 text-right mb-3">
 
-                    <!-- DISABLED UNTIL CLASS SELECTED -->
                     <button type="button" class="btn mr-2 custom-btn" (click)="DisplayCardHolders()"
                         [disabled]="displayCardHolders.invalid">
-
                         Display Acc. Card User
                     </button>
 
-                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)">
+                    <button type="button" class="btn mr-2 custom-btn" (click)="addNewClassDep(addNewClassDepartment)">
+                        Add New Class/Department
+                    </button>
 
+                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)">
                         Add New User Card
                     </button>
 
@@ -228,18 +220,10 @@
                     </label>
 
                     <select class="form-control" formControlName="classId">
-                        <option value="1">Class I</option>
-                        <option value="2">Class II</option>
-                        <option value="3">Class III</option>
-                        <option value="4">Class IV</option>
-                        <option value="5">Class V</option>
-                        <option value="6">Class VI</option>
-                        <option value="7">Class VII</option>
-                        <option value="8">Class VIII</option>
-                        <option value="9">Class IX</option>
-                        <option value="10">Class X</option>
-                        <option value="11">Class XI</option>
-                        <option value="12">Class XII</option>
+                        <option value="">Select</option>
+                        <option *ngFor="let classDep of classDepArr" [value]="classDep.ADC_VEND_CLAS_DEPT_ID">
+                            {{ classDep.ADC_VEND_CLAS_DEPT_NAME }}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -280,7 +264,6 @@
         </div>
     </form>
 </ng-template>
-
 
 <ng-template #confirmDeleteModal>
     <form (ngSubmit)="deleteCard()">
@@ -364,4 +347,35 @@
         </div>
 
     </div>
+</ng-template>
+
+<ng-template #addNewClassDepartment>
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add New Class Department
+            </h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Row 1 -->
+            <div class="row mb-3">
+                <div class="col-md-10">
+                    <label>Class/Department Name</label>
+                    <input type="text" class="form-control" [(ngModel)]="classDepName" name="classDepName">
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-center mt-4">
+                <button (click)="submitAddClassDep()" class="btn btn-danger px-4" type="submit">
+                    Add
+                </button>
+            </div>
+
+        </div>
 </ng-template>

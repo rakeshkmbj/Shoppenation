@@ -286,3 +286,52 @@ button.btn.shop-today-btn {
     border-radius: 3px;
 }
 
+.contact-section {
+    background: #f2f2f2;
+    padding: 55px 0 0 0;   /* Increased top spacing */
+}
+
+.contact-section .container {
+    max-width: 1400px;
+}
+
+/* Better column spacing */
+.contact-section .col-md-4 {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* Headings */
+.contact-left h4,
+.contact-middle h5,
+.contact-right h5 {
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.contact-title {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Paragraph spacing */
+.contact-section p {
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: #555;
+}
+
+/* Links spacing */
+.contact-left p {
+    margin-bottom: 14px;
+}
+
+/* Footer */
+.contact-footer {
+    background: #ea7c2d;
+    color: #fff;
+    text-align: center;
+    padding: 18px 0;   /* Increased height */
+    margin-top: 50px;  /* More breathing space */
+    font-size: 14px;
+}
