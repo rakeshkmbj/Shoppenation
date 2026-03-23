@@ -286,7 +286,7 @@ export class ManageCustomerCardComponent implements OnInit {
       classId: user.Class_Department_ID || '1'
     });
 
-    this.userCardForm.get('cardNo')?.disable();
+    // this.userCardForm.get('cardNo')?.disable();
     this.userCardForm.get('cardType')?.disable();
     this.userCardForm.get('rollNo')?.disable();
     this.userCardForm.get('primaryMobile')?.disable();
