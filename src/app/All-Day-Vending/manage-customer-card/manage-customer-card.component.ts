@@ -255,6 +255,8 @@ export class ManageCustomerCardComponent implements OnInit {
       Account_Storeid: this.storeid,
     }
 
+    console.log("payload: ", payload )
+
      this.apiService.postCall(`${this.apiService.baseURL}/GetAccount-Class-dept`, payload)
         .subscribe(data => {
           console.log(data);

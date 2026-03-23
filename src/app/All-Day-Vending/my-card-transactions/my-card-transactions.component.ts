@@ -17,6 +17,10 @@ export class MyCardTransactionsComponent implements OnInit {
   getlogindata: any;
   fromDate1: string = '';
   fromDate2: string = '';
+  cardholderRefill: any;
+  cardholderSpends: any;
+  showCardholderRefill: boolean;
+  showCardholderSpends: boolean;
 
   constructor(
     private apiService: ApiService,
@@ -55,31 +59,31 @@ export class MyCardTransactionsComponent implements OnInit {
 
   onCurrentBalanceTabSelected(): void {
 
-    const payload = {
-      Card_Manufid: this.getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID
-    }
+    // const payload = {
+    //   Card_Manufid: this.getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID
+    // }
 
-    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderBalance', payload)
-      .subscribe(data => {
-        console.log(data);
+    // this.apiService.postCall(this.apiService.baseURL + '/GetCardholderBalance', payload)
+    //   .subscribe(data => {
+    //     console.log(data);
 
-      },
-        (error) => {
-          this.toastr.error(error, '', {
-            timeOut: 5000,
-          });
-        });
+    //   },
+    //     (error) => {
+    //       this.toastr.error(error, '', {
+    //         timeOut: 5000,
+    //       });
+    //     });
   }
 
   onSpendOnVend(): void {
-    console.log("My Spend On Vend")
+    this.showCardholderSpends = false;
 
     const payload = {
       Cardholder_Regid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
       Frm_Date: this.fromDate1
     }
 
-    console.log("payload: ",payload )
+    console.log("payload: ", payload)
 
     this.apiService.postCall(this.apiService.baseURL + '/GetCardholderSpends', payload)
       .subscribe(data => {
@@ -87,7 +91,11 @@ export class MyCardTransactionsComponent implements OnInit {
 
         if (data.Message) {
           this.toastr.error(data.Message)
+        } else {
+          this.cardholderSpends = data;
         }
+
+        this.showCardholderSpends = true;
 
       },
         (error) => {
@@ -98,7 +106,8 @@ export class MyCardTransactionsComponent implements OnInit {
   }
 
   onCardRefillDetails(): void {
-    console.log("y Card Refill Details")
+
+    this.showCardholderRefill = false;
 
     const payload = {
       Cardholder_Regid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
@@ -111,7 +120,11 @@ export class MyCardTransactionsComponent implements OnInit {
 
         if (data.Message) {
           this.toastr.error(data.Message)
+        } else {
+          this.cardholderRefill = data;
         }
+
+        this.showCardholderRefill = true;
 
       },
         (error) => {

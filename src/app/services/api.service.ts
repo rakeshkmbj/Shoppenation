@@ -77,21 +77,19 @@ export class ApiService {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-
+      'Authorization': `Basic ZXBwdXNlcjpFcHBVc2VyQEVwcA==`,
     });
     let options = { headers: headers }
     return this.http.post(baseURL, data, options)
-
   }
-
-
 
   getCall(baseURL): Observable<any> {
 
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
       "Access-Control-Allow-Headers": "*",
-      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+      'Authorization': `Basic ZXBwdXNlcjpFcHBVc2VyQEVwcA==`,
     });
     return this.http.get(baseURL, { headers: headers });
   }
