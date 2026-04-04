@@ -7,6 +7,45 @@
         <form [formGroup]="displayCardHolders">
 
             <div class="row">
+
+                <div *ngIf="getlogindata.SECND_NODE_SUBACCT_FLG == true" class="col-md-4">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select class="form-control" (change)="changeCountry($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">
+                                {{country.CNTRY_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div *ngIf="getlogindata.SECND_NODE_SUBACCT_FLG == true" class="col-md-4">
+                    <div class="form-group">
+                        <label>State</label>
+                        <select class="form-control" (change)="changeState($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let state of stateList" [value]="state.STATE_ID">
+                                {{state.STATE_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div *ngIf="getlogindata.SECND_NODE_SUBACCT_FLG == true" class="col-md-4">
+                    <div class="form-group">
+                        <label>My Account's</label>
+
+                        <select class="form-control" formControlName="accId" (change)="onAccountChange($event)">
+
+                            <option value="">Select</option>
+
+                            <option *ngFor="let acc of thirdNodeAccArr" [value]="acc.THIRD_NODE_ACCT_SUBACCT_ID">
+                                {{ acc.RETAIL_D2C_SUBACCT_OFFICE_NAME }}
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Class / Department</label>
@@ -25,15 +64,17 @@
                 <div class="col-md-12 text-right mb-3">
 
                     <button type="button" class="btn mr-2 custom-btn" (click)="DisplayCardHolders()"
-                        [disabled]="displayCardHolders.invalid">
+                        [disabled]="!displayCardHolders.get('classId')?.value">
                         Display Acc. Card User
                     </button>
 
-                    <button type="button" class="btn mr-2 custom-btn" (click)="addNewClassDep(addNewClassDepartment)">
+                    <button type="button" class="btn mr-2 custom-btn" (click)="addNewClassDep(addNewClassDepartment)"
+                        [disabled]="!displayCardHolders.get('accId')?.value">
                         Add New Class/Department
                     </button>
 
-                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)">
+                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)"
+                        [disabled]="!displayCardHolders.get('accId')?.value">
                         Add New User Card
                     </button>
 
@@ -84,8 +125,9 @@
 
                             <!-- Details -->
                             <td>
-                                <button (click)="showPassword(user, showpassword)" class="btn btn-primary btn-sm">
-                                    show
+                                <button (click)="openChangePassword(user, changePasswordModal)"
+                                    class="btn btn-primary btn-sm">
+                                    Change pwd
                                 </button>
                             </td>
 
@@ -105,8 +147,13 @@
 
                             <!-- Action -->
                             <td>
-                                <button class="btn btn-primary btn-sm mr-1">
-                                    View Transactions
+                                <button (click)="viewTransactionModal(viewTransactionsModal, user)" class="btn btn-primary btn-sm mr-1">
+                                    View Txns
+                                </button>
+
+                                <button (click)="viewBalance(cardBalanceModal,user)"
+                                    class="btn btn-primary btn-sm mr-1">
+                                    View Bal.
                                 </button>
 
                                 <button (click)="confirmDelete(confirmDeleteModal,user)"
@@ -281,7 +328,7 @@
             <div class="row mb-3">
 
                 <div class="col-md-10">
-                    <label>Card Issued Type</label>
+                    <label>Confirmation</label>
                     <select class="form-control" [(ngModel)]="confirmation" name="confirmation">
                         <option value="">Select</option>
                         <option value="yes">Yes</option>
@@ -301,10 +348,11 @@
     </form>
 </ng-template>
 
-<ng-template #showpassword>
-
+<ng-template #addNewClassDepartment>
     <div class="modal-header">
-        <h4 class="modal-title">User Password</h4>
+        <h4 class="modal-title">
+            Add New Class Department
+        </h4>
 
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
@@ -313,69 +361,301 @@
 
     <div class="modal-body">
 
-        <div class="row mb-2">
-            <div class="col-md-3">
-                <label>Name</label>
-            </div>
-            <div class="col-md-9">
-                <span class="plain-text">
-                    {{ selectedUser.ADC_VEND_CARDHOLDR_FIRST_NAME + " " + selectedUser.ADC_VEND_CARDHOLDR_LAST_NAME }}
-                </span>
+        <!-- Row 1 -->
+        <div class="row mb-3">
+            <div class="col-md-10">
+                <label>Class/Department Name</label>
+                <input type="text" class="form-control" [(ngModel)]="classDepName" name="classDepName">
             </div>
         </div>
 
-        <div class="row mb-2">
-            <div class="col-md-3">
-                <label>Mobile</label>
-            </div>
-            <div class="col-md-9">
-                <span class="plain-text">
-                    {{ selectedUser.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR }}
-                </span>
-            </div>
+        <!-- Submit -->
+        <div class="text-center mt-4">
+            <button (click)="submitAddClassDep()" class="btn btn-danger px-4" type="submit">
+                Add
+            </button>
         </div>
 
-        <div class="row mb-2">
-            <div class="col-md-3">
-                <label>Password</label>
+    </div>
+</ng-template>
+
+<ng-template #changePasswordModal>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Change Password
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="changePasswordForm">
+
+            <div class="row">
+
+                <!-- Current Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="text" class="form-control" formControlName="currentPassword"
+                            [ngClass]="{ 'is-invalid': submitted && f.currentPassword.errors }">
+
+                        <div *ngIf="submitted && f.currentPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.currentPassword.errors.required">
+                                Current password is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="text" class="form-control" formControlName="newPassword"
+                            [ngClass]="{ 'is-invalid': submitted && f.newPassword.errors }">
+
+                        <div *ngIf="submitted && f.newPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.newPassword.errors.required">
+                                New password is required
+                            </div>
+                            <div *ngIf="f.newPassword.errors.minlength">
+                                Minimum 6 characters required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" formControlName="confirmPassword"
+                            [ngClass]="{ 'is-invalid': submitted && (f.confirmPassword.errors || passwordMismatch) }">
+
+                        <div *ngIf="submitted && (f.confirmPassword.errors || passwordMismatch)"
+                            class="invalid-feedback">
+                            <div *ngIf="passwordMismatch">
+                                Passwords do not match
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-md-9">
-                <span class="plain-text">
-                    {{ userpassword.Password }}
-                </span>
+
+            <!-- Buttons -->
+            <div class="row">
+                <div class="col-md-12 mt-3">
+                    <button type="button" class="btn custom-btn float-right" (click)="changePassword()"
+                        [disabled]="changePasswordForm.invalid">
+                        Update Password
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #cardBalanceModal>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Card Balance
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-6 text-center">
+                <div class="balance-card">
+
+                    <label class="balance-label">Available Balance</label>
+
+                    <h2 class="balance-amount">
+                        ₹ {{ cardBalance || 0 }}
+                    </h2>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Button -->
+        <div class="row mt-3">
+            <div class="col-md-12 text-right">
+                <button type="button" class="btn custom-btn" (click)="modalRef.hide()">
+                    Close
+                </button>
             </div>
         </div>
 
     </div>
 </ng-template>
 
-<ng-template #addNewClassDepartment>
-        <div class="modal-header">
-            <h4 class="modal-title">
-                Add New Class Department
-            </h4>
+<ng-template #viewTransactionsModal>
 
-            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            View My Transactions
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+            <tabset class="col-md-12">
+
+                <!-- 🔹 TAB 1: Spend -->
+                <tab heading="My Spend On Vend" (selectTab)="onTabChange('tab2')">
+
+                    <!-- Filter -->
+                    <div class="transaction-filter card p-3 mt-2">
+                        <div class="row align-items-end">
+
+                            <div class="col-md-4">
+                                <label>From Date</label>
+                                <input type="date" class="form-control" [(ngModel)]="fromDate1">
+                            </div>
+
+                            <div class="col-md-4">
+                                <button class="btn btn-primary mt-4" (click)="onSpendOnVend()">
+                                    Show Transactions
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div *ngIf="showCardholderSpends" class="card mt-3">
+
+                        <div class="card-header">
+                            <span><b>Balance:</b> ₹{{cardholderSpends?.CurrentBalance}}</span>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date/Time</th>
+                                        <th>Vend ID</th>
+                                        <th>Location</th>
+                                        <th>Amount</th>
+                                        <th>Product</th>
+                                        <th>Balance After</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngIf="cardholderSpends?.DebitDetail?.length; else noSpend">
+                                    <tr *ngFor="let item of cardholderSpends.DebitDetail; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_TRANS_DATETIME | date:'dd-MMM-yyyy hh:mm a' }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_TRANS_VENDID }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_TRANS_LOCTN || 'N/A' }}</td>
+                                        <td>₹{{ item.ADC_MEMBER_DEBIT_COST_AMT }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_PRODCT_ID }}</td>
+                                        <td>₹{{ item.ADC_MEMBER_CARD_BAL_AFTER_TRANS }}</td>
+                                    </tr>
+                                </tbody>
+
+                                <ng-template #noSpend>
+                                    <tr>
+                                        <td colspan="7" class="text-center">No transactions found</td>
+                                    </tr>
+                                </ng-template>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </tab>
+
+                <!-- 🔹 TAB 2: Refill -->
+                <tab heading="My Card Refill" (selectTab)="onTabChange('tab3')">
+
+                    <!-- Filter -->
+                    <div class="transaction-filter card p-3 mt-2">
+                        <div class="row align-items-end">
+
+                            <div class="col-md-4">
+                                <label>From Date</label>
+                                <input type="date" class="form-control" [(ngModel)]="fromDate2">
+                            </div>
+
+                            <div class="col-md-4">
+                                <button class="btn btn-primary mt-4" (click)="onCardRefillDetails()">
+                                    Show Transactions
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div *ngIf="showCardholderRefill" class="card mt-3">
+
+                        <div class="card-header">
+                            <span><b>Balance:</b> ₹{{cardholderRefill?.CurrentBalance}}</span>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date/Time</th>
+                                        <th>Refill Amt</th>
+                                        <th>Invoice</th>
+                                        <th>Balance After</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngIf="cardholderRefill?.CreditDetail?.length; else noRefill">
+                                    <tr *ngFor="let item of cardholderRefill.CreditDetail; let i = index">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ item.ADC_MEMBER_CREDIT_TRANS_DATETIME | date:'dd-MMM-yyyy hh:mm a' }}
+                                        </td>
+                                        <td>₹{{ item.ADC_MEMBER_CREDIT_AMT }}</td>
+                                        <td>
+                                            INV-{{ item.ADC_MEMBER_CREDIT_CARTID }}
+                                            ({{ item.ADC_MEMBER_CREDIT_FRM_PORTL_FLG ? 'Online' : 'Offline' }})
+                                        </td>
+                                        <td>₹{{ item.ADC_MEMBER_CARD_BAL_AFTER_TRANS }}</td>
+                                    </tr>
+                                </tbody>
+
+                                <ng-template #noRefill>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No refill transactions found</td>
+                                    </tr>
+                                </ng-template>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </tab>
+
+            </tabset>
+
+        <!-- Footer -->
+        <div class="text-center mt-3">
+            <button class="btn btn-danger px-4" (click)="modalRef.hide()">Close</button>
         </div>
 
-        <div class="modal-body">
+    </div>
 
-            <!-- Row 1 -->
-            <div class="row mb-3">
-                <div class="col-md-10">
-                    <label>Class/Department Name</label>
-                    <input type="text" class="form-control" [(ngModel)]="classDepName" name="classDepName">
-                </div>
-            </div>
-
-            <!-- Submit -->
-            <div class="text-center mt-4">
-                <button (click)="submitAddClassDep()" class="btn btn-danger px-4" type="submit">
-                    Add
-                </button>
-            </div>
-
-        </div>
 </ng-template>

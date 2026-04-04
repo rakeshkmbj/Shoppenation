@@ -50,6 +50,22 @@ export class ManageCustomerCardComponent implements OnInit {
   isEditMode = false;
   classDepName: any;
   classDepArr: any;
+  thirdNodeAccArr: any;
+  selectedAccountObj: any;
+  changePasswordForm: FormGroup;
+  submitted = false;
+  passwordMismatch = false;
+  cardBalance: any;
+  activeTabId: string = 'tab2';
+  fromDate1: string = '';
+  fromDate2: string = '';
+  cardholderRefill: any = null;
+  cardholderSpends: any = null;
+  showCardholderRefill: boolean = false;
+  showCardholderSpends: boolean = false;
+  loadingSpend: boolean = false;
+  loadingRefill: boolean = false;
+  selectedUer: any;
 
   constructor(
     private apiService: ApiService,
@@ -83,14 +99,39 @@ export class ManageCustomerCardComponent implements OnInit {
       photo: [null]
     });
 
-
     this.displayCardHolders = this.formBuilder.group({
       classId: ['', Validators.required],
+      accId: ['', Validators.required]
     })
   }
 
   ngOnInit(): void {
-    this.getClassDep()
+
+    this.onTabChange('tab2');
+
+    this.getCountry();
+
+    if (this.getlogindata.THIRD_NODE_SUBACCT_FLG) {
+
+      this.displayCardHolders.setValue({
+        classId: '',
+        accId: this.accountid
+      });
+
+      this.selectedAccountObj = {
+        THIRD_NODE_ACCT_SUBACCT_ID: this.subaccountid,
+        THIRD_NODE_ACCT_STORE_ID: this.storeid
+      }
+
+      this.getClassDep(this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID, this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID);
+    }
+
+    this.changePasswordForm = this.formBuilder.group({
+      currentPassword: [{ value: '', disabled: true }, Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    });
+
   }
 
   generate() {
@@ -116,8 +157,8 @@ export class ManageCustomerCardComponent implements OnInit {
     this.showAccHolders = false;
 
     const payload = {
-      Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-      Account_Storeid: this.storeid,
+      Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
       Class_Department_ID: formValue.classId || this.userCardForm.value.classId
     }
 
@@ -161,8 +202,8 @@ export class ManageCustomerCardComponent implements OnInit {
 
     const payload = {
       SecondNode_Storecode: this.getlogindata.Storecode,
-      Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-      Account_Storeid: this.storeid,
+      Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
       Class_Department_ID: this.displayCardHolders.value.classId,
       Card_Regid: this.SelectedUser.ADC_VEND_CARDHOLDR_REGID
     }
@@ -219,17 +260,19 @@ export class ManageCustomerCardComponent implements OnInit {
     if (this.classDepName !== '') {
 
       const payload = {
-        Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-        Account_Storeid: this.storeid,
+        Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+        Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
         Account_Class_Dept_Name: this.classDepName
       }
+
+      console.log("payload: ", payload)
 
       this.apiService.postCall(`${this.apiService.baseURL}/ADD-CLASS-DEPARTMNT`, payload)
         .subscribe(data => {
           console.log(data);
 
           this.toastr.success(data.Message);
-          this.getClassDep()
+          this.getClassDep(this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID, this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID);
         },
           (error) => {
             console.log(error);
@@ -246,29 +289,29 @@ export class ManageCustomerCardComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  getClassDep() {
+  getClassDep(subaccid: any, storeid: any) {
 
     this.classDepArr = null;
 
     const payload = {
-      Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-      Account_Storeid: this.storeid,
+      Account_Subacctid: subaccid,
+      Account_Storeid: storeid,
     }
 
-    console.log("payload: ", payload )
+    console.log("payload: ", payload)
 
-     this.apiService.postCall(`${this.apiService.baseURL}/GetAccount-Class-dept`, payload)
-        .subscribe(data => {
-          console.log(data);
-          this.classDepArr = data;
-        },
-          (error) => {
-            console.log(error);
-            this.toastr.error(error.Message, '', {
-              timeOut: 5000,
-            });
-          }
-        );
+    this.apiService.postCall(`${this.apiService.baseURL}/GetAccount-Class-dept`, payload)
+      .subscribe(data => {
+        console.log(data);
+        this.classDepArr = data;
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.Message, '', {
+            timeOut: 5000,
+          });
+        }
+      );
   }
 
   editUserCard(template: any, user: any) {
@@ -303,12 +346,12 @@ export class ManageCustomerCardComponent implements OnInit {
       return;
     }
 
-    const formValue = this.userCardForm.getRawValue(); // IMPORTANT (includes disabled fields)
+    const formValue = this.userCardForm.getRawValue();
 
     if (this.isEditMode) {
       const payload = {
-        Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-        Account_Storeid: this.storeid,
+        Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+        Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
         Class_Department_ID: formValue.classId,
         Card_Regid: formValue.cardNo,
         First_Name: formValue.firstName,
@@ -407,12 +450,12 @@ export class ManageCustomerCardComponent implements OnInit {
     this.selectedUser = user;
 
     const payload = {
-      Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-      Account_Storeid: this.storeid,
+      Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
       CardRegid: user.ADC_VEND_CARDHOLDR_REGID
     }
 
-    console.log("Payload: ", payload)
+    console.log("Payload: ", payload);
 
     this.apiService.postCall(`${this.apiService.baseURL}/GetVendPassword`, payload)
       .subscribe(data => {
@@ -428,6 +471,308 @@ export class ManageCustomerCardComponent implements OnInit {
             timeOut: 5000,
           });
           this.modalRef.hide();
+        }
+      );
+  }
+
+
+  openChangePassword(user: any, template: any) {
+
+    this.selectedUser = user;
+
+    const payload = {
+      Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
+      CardRegid: user.ADC_VEND_CARDHOLDR_REGID
+    }
+
+    console.log("payload: ", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/GetVendPassword`, payload)
+      .subscribe(data => {
+        console.log(data);
+
+        this.changePasswordForm.patchValue({
+          currentPassword: data.Password
+        });
+
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.error, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'width-720' }));
+  }
+
+  get f() {
+    return this.changePasswordForm.controls;
+  }
+
+  changePassword() {
+    this.submitted = true;
+
+    if (this.changePasswordForm.invalid) return;
+
+    const { newPassword, confirmPassword } = this.changePasswordForm.value;
+
+    if (newPassword !== confirmPassword) {
+      this.passwordMismatch = true;
+      return;
+    }
+
+    this.passwordMismatch = false;
+
+    const payload = {
+      CardRegid: this.selectedUser.ADC_VEND_CARDHOLDR_REGID,
+      Password: this.f.newPassword.value
+    };
+
+    console.log("Change Password Payload:", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/ChangeVendPassword`, payload)
+      .subscribe(data => {
+        console.log(data);
+        this.toastr.success(data.message);
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.error, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+    this.modalRef.hide();
+  }
+
+  getCountry() {
+    this.apiService.CountryList().subscribe((res) => {
+      this.countryList = res;
+      //   this.getState();
+    });
+  }
+
+  changeCountry(e) {
+    this.countryID = e.target.value;
+    console.log(this.countryID);
+    // this.countryName = e.target.options[e.target.options.selectedIndex].text;
+    if (this.countryID) {
+      this.getState();
+    }
+    else {
+      this.stateList = null;
+      this.cityList = null;
+      this.zipList = null;
+    }
+  }
+
+  getState() {
+    this.apiService.StateList(this.countryID).subscribe((res) => {
+      this.stateList = res;
+      console.log(this.stateList);
+    });
+  }
+
+  changeState(e) {
+    this.stateID = e.target.value;
+    this.stateName = e.target.options[e.target.options.selectedIndex].text;
+    if (this.countryID) {
+      this.getCity();
+    }
+    else {
+      this.cityList = null;
+      this.zipList = null;
+    }
+
+    this.openSNThirdNode();
+
+  }
+
+  getCity() {
+    this.apiService.CityList(this.countryID, this.stateID).subscribe((res) => {
+      this.cityList = res;
+      console.log(this.cityList);
+    });
+  }
+
+  changeCity(e) {
+    this.cityID = e.target.value;
+    console.log(this.cityID);
+    this.cityName = e.target.options[e.target.options.selectedIndex].text;
+  }
+
+  openSNThirdNode() {
+
+    const payload = {
+      Cntryid: this.countryID,
+      Stateid: this.stateID,
+      Secnd_node_flg: false,
+      Third_node_flg: true,
+      Subacctid: this.subaccountid,
+      Storeid: this.storeid,
+      B2b_id: "jr0xpPU"
+    }
+
+    console.log("payload: ", payload)
+
+    this.apiService.postCall(`${this.apiService.baseURL}/GetAcctNetwork`, payload)
+      .subscribe(data => {
+        console.log(data);
+        this.thirdNodeAccArr = Array.isArray(data) ? data : [];
+
+        console.log("Third Node Acc: ", this.thirdNodeAccArr)
+
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.error, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+  }
+
+  onAccountChange(event: any) {
+    const selectedId = event.target.value;
+
+    this.selectedAccountObj = this.thirdNodeAccArr.find(
+      x => x.THIRD_NODE_ACCT_SUBACCT_ID == selectedId
+    );
+
+    console.log('Selected Object:', this.selectedAccountObj);
+
+    this.getClassDep(this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID, this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID);
+  }
+
+  viewBalance(template: any, user: any) {
+
+    console.log("Selected user: ", user)
+
+    const payload = {
+      Card_Manufid: user.ADC_VEND_MANUFACTR_CARDID
+    }
+
+    console.log("payload: ", payload);
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderBalance', payload)
+      .subscribe(data => {
+        console.log(data);
+        this.cardBalance = data.Balance;
+      },
+        (error) => {
+          this.toastr.error(error, '', {
+            timeOut: 5000,
+          });
+        });
+
+    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'width-480' }));
+
+  }
+
+  viewTransactionModal(template: any, user: any){
+
+    this.selectedUer = user;
+    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'modal-xl' }));
+
+  }
+
+
+  onTabChange(tabId: string): void {
+    this.activeTabId = tabId;
+
+    // Reset UI states
+    this.showCardholderRefill = false;
+    this.showCardholderSpends = false;
+
+    if (tabId === 'tab2') {
+      this.cardholderSpends = null;
+    }
+
+    if (tabId === 'tab3') {
+      this.cardholderRefill = null;
+    }
+  }
+
+  onSpendOnVend(): void {
+
+    if (!this.fromDate1) {
+      this.toastr.warning('Please select From Date');
+      return;
+    }
+
+    this.loadingSpend = true;
+    this.showCardholderSpends = false;
+
+    const payload = {
+      Cardholder_Regid: this.selectedUer.ADC_VEND_CARDHOLDR_REGID,
+      Frm_Date: this.fromDate1
+    };
+
+    this.spinner.show();
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderSpends', payload)
+      .subscribe(
+        (data: any) => {
+
+          this.spinner.hide();
+          this.loadingSpend = false;
+
+          if (data?.Message) {
+            this.toastr.error(data.Message);
+            return;
+          }
+
+          this.cardholderSpends = data || {};
+          this.showCardholderSpends = true;
+        },
+        (error) => {
+          this.spinner.hide();
+          this.loadingSpend = false;
+          this.toastr.error('Failed to fetch transactions');
+        }
+      );
+  }
+
+  onCardRefillDetails(): void {
+
+    if (!this.fromDate2) {
+      this.toastr.warning('Please select From Date');
+      return;
+    }
+
+    this.loadingRefill = true;
+    this.showCardholderRefill = false;
+
+    const payload = {
+      Cardholder_Regid: this.selectedUer.ADC_VEND_CARDHOLDR_REGID,
+      Frm_Date: this.fromDate2
+    };
+
+    this.spinner.show();
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetCardholderRefill', payload)
+      .subscribe(
+        (data: any) => {
+
+          this.spinner.hide();
+          this.loadingRefill = false;
+
+          if (data?.Message) {
+            this.toastr.error(data.Message);
+            return;
+          }
+
+          this.cardholderRefill = data || {};
+          this.showCardholderRefill = true;
+        },
+        (error) => {
+          this.spinner.hide();
+          this.loadingRefill = false;
+          this.toastr.error('Failed to fetch refill data');
         }
       );
   }

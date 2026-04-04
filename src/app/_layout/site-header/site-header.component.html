@@ -1,66 +1,92 @@
 <div class="container-fluid header">
-  <div class="row align-items-center flex-nowrap">
 
-    <!-- Logo -->
-    <div class="col-auto logo">
+  <div class="row flex-nowrap align-items-stretch">
+
+    <!-- LOGO -->
+    <div class="col-auto logo d-flex align-items-center">
       <img src="../assets/images/logo_1.jpg" />
     </div>
 
-    <!-- Section 1 -->
-    <div class="col-auto d-flex nav-section section-links">
-      <a (click)="openDataAndPrivacy()">Data & Privacy</a>
-      <a (click)="openRefund()">Refund</a>
-      <a (click)="openPricingAndTM()">Pricing & T/M</a>
-    </div>
+    <!-- RIGHT CONTENT -->
+    <div class="col position-relative">
 
-    <!-- Section 2 : Enterprise Applications -->
-    <div class="col-auto nav-section section-products">
+      <!-- ✅ LEFT BLOCK -->
+      <div class="left-block">
 
-      <div class="applications-box">
-
-        <div class="applications-heading">
-          ENTERPRISE APPLICATIONS
+        <!-- 🔥 HEADING (NOW CORRECT POSITION) -->
+        <div class="top-heading">
+          All Day Digital Enterprise Application Platform
         </div>
 
-        <div class="applications-list">
+        <!-- 🔥 NAV LINKS -->
+        <div class="d-flex section-links">
 
-          <div class="backoffice-login app-item primary-app" (click)="openAllDayVending()">
-            <img src="../assets/images/vending.jpg" />
-            <span>All-Day Vending</span>
+          <div class="products-dropdown">
+            <span class="products-label">Products</span>
+
+            <div class="products-menu">
+              <div class="app-item" (click)="openAllDayVending()">
+                <img src="../assets/images/vending.jpg" />
+                <span>All-Day Vending</span>
+              </div>
+
+              <div class="app-item" (click)="openMdrConnect()">
+                <img src="../assets/images/MdrConnect.jpg" />
+                <span>MDR Connect</span>
+              </div>
+
+              <div class="app-item" (click)="openAllDayDistribution()">
+                <img src="../assets/images/distribution.png" />
+                <span>All-Day Distribution</span>
+              </div>
+
+              <div class="app-item" (click)="openMedexHCP()">
+                <img src="../assets/images/businessman.png" />
+                <span>Medx</span>
+              </div>
+            </div>
           </div>
 
-          <div class="backoffice-login app-item primary-app" (click)="openMdrCoonectModal()">
-            <img src="../assets/images/MdrConnect.jpg" />
-            <span>MDR Connect</span>
-          </div>
-
-          <div class="backoffice-login app-item primary-app" (click)="openAllDayDistribution()">
-            <img src="../assets/images/distribution.png" />
-            <span>All-Day Distribution</span>
-          </div>
+          <span class="links" (click)="openDataAndPrivacy()">Data & Privacy</span>
+          <span class="links" (click)="openRefund()">Refunds</span>
+          <span class="links" (click)="openPricingAndTM()">Pricing</span>
+          <span class="links" (click)="openTerms()">Terms</span>
+          <span class="links" (click)="openConnect()">Connect</span>
 
         </div>
 
       </div>
 
-    </div>
+      <!-- 🔥 RIGHT SIDE -->
+      <div class="d-flex section-login">
 
-    <!-- Section 3 -->
-    <div class="col-auto d-flex nav-section section-login ">
-      <div class="backoffice-login" (click)="openLoginModal()">
-        <img src="../assets/images/login_icon.png" />
-        <span>Partner Login</span>
+        <div class="backoffice-login" (click)="openMdrCoonectModal()">
+          <img src="../assets/images/MdrConnect.jpg" />
+          <span>MDR Connect</span>
+        </div>
+
+        <div class="backoffice-login">
+          <img src="../assets/images/businessman.png" />
+          <span>HCP Login</span>
+        </div>
+
+        <div class="backoffice-login" (click)="openLoginModal()">
+          <img src="../assets/images/login_icon.png" />
+          <span>Partner Login</span>
+        </div>
+
+        <div class="backoffice-login">
+          <img src="../assets/images/d_man.png" />
+          <span>Delivery Login</span>
+        </div>
+
+        <div class="backoffice-login helpdesk-icon">
+          <img src="../assets/images/helpdesk-icon.png" />
+          <span>Help Desk</span>
+        </div>
+
       </div>
 
-      <div class="backoffice-login">
-        <img src="../assets/images/d_man.png" />
-        <span>Delivery Login</span>
-      </div>
-
-      <div class="helpdesk-icon backoffice-login">
-        <img src="../assets/images/helpdesk-icon.png" />
-        <span>Help Desk</span>
-      </div>
     </div>
 
   </div>

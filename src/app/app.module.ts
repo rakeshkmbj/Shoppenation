@@ -101,6 +101,10 @@ import { PricingAndTMComponent } from './About/pricing-and-tm/pricing-and-tm.com
 import { AtAGlanceComponent } from './About/at-aglance/at-aglance.component';
 import { AllDayVendingComponent } from './About/all-day-vending/all-day-vending.component';
 import { AllDayDistributionComponent } from './About/all-day-distribution/all-day-distribution.component';
+import { MedexHcpComponent } from './About/medex-hcp/medex-hcp.component';
+import { AboutUsComponent } from './About/about-us/about-us.component';
+import { ConnectComponent } from './About/connect/connect.component';
+import { TermsComponent } from './About/terms/terms.component';
 
 @NgModule({
   imports: [ 
@@ -206,6 +210,10 @@ import { AllDayDistributionComponent } from './About/all-day-distribution/all-da
      AtAGlanceComponent,
      AllDayVendingComponent,
      AllDayDistributionComponent,
+     MedexHcpComponent,
+     AboutUsComponent,
+     ConnectComponent,
+     TermsComponent,
      ],
      providers: [
     

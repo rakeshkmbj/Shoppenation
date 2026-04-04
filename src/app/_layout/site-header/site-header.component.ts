@@ -7,17 +7,24 @@ import { RefundComponent } from 'src/app/About/refund/refund.component';
 import { PricingAndTMComponent } from 'src/app/About/pricing-and-tm/pricing-and-tm.component';
 import { AllDayVendingComponent } from 'src/app/About/all-day-vending/all-day-vending.component';
 import { AllDayDistributionComponent } from 'src/app/About/all-day-distribution/all-day-distribution.component';
+import { MedexHcpComponent } from 'src/app/About/medex-hcp/medex-hcp.component';
+import { ConnectComponent } from 'src/app/About/connect/connect.component';
+import { MdrConnectComponent2 } from 'src/app/About/mdr-connect/mdr-connect.component';
+import { TermsComponent } from 'src/app/About/terms/terms.component';
 @Component({
   selector: 'site-header',
   templateUrl: './site-header.component.html',
   styleUrls: ['./site-header.component.css']
 })
 export class SiteHeaderComponent implements OnInit {
-  modalRef: BsModalRef;
+  modalRef: BsModalRef | undefined;
   constructor(
     private modalService: BsModalService,
+    private bsModalRef: BsModalRef,
   ) { }
 
+  isProductOpen = false;
+  
   ngOnInit() {
   }
 
@@ -47,6 +54,22 @@ export class SiteHeaderComponent implements OnInit {
 
   openPricingAndTM() {
     this.modalRef = this.modalService.show(PricingAndTMComponent, Object.assign({}, { class: 'modal-xl' }));
+  }
+
+  openMedexHCP() {
+    this.modalRef = this.modalService.show(MedexHcpComponent, Object.assign({}, { class: 'modal-xl' }));
+  }
+
+  openConnect() {
+    this.modalRef = this.modalService.show(ConnectComponent, Object.assign({}, { class: 'modal-xl' }));
+  }
+
+  openMdrConnect() {
+    this.modalRef = this.modalService.show(MdrConnectComponent2, Object.assign({}, { class: 'modal-xl' }));
+  }
+
+  openTerms(){
+    this.modalRef = this.modalService.show(TermsComponent, Object.assign({}, { class: 'modal-xl' }));
   }
 
 }

@@ -347,7 +347,7 @@ export class AccountManagementComponent implements OnInit {
     console.log("Selected Third Node Acc: ", this.selectedThirdNode);
 
     let editStoreUserData = {
-      RETAIL_ACCOUNT_ID: +this.selectedThirdNode.THIRD_NODE_ACCT_STORE_ID,
+      RETAIL_ACCOUNT_ID: 19,
       RETAIL_SUBACCOUNT_ID: +this.selectedThirdNode.THIRD_NODE_ACCT_SUBACCT_ID,
       RETAIl_STORE_ID: +this.selectedThirdNode.THIRD_NODE_ACCT_STORE_ID,
       RETAIL_USR_ID: this.userID,
@@ -363,10 +363,11 @@ export class AccountManagementComponent implements OnInit {
       RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD: this.addStoreUserForm.value.RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD,
     }
 
+    console.log("payload: ", editStoreUserData)
+
     this.apiService.postCall(this.apiService.baseURL + '/EditStoreUsers', editStoreUserData)
       .subscribe(data => {
         this.toastr.success('Update Successfully', '', { timeOut: 5000, });
-        this.modalRef.hide();
         this.getUserStoreList(this.selectedThirdNode);
       },
         (error) => {
@@ -374,11 +375,14 @@ export class AccountManagementComponent implements OnInit {
             timeOut: 5000,
           });
         });
+    this.modalRef.hide();
   }
 
   selectedAccId: any
 
   getRetailStoresById(addStoreUserModal: any, acc: any) {
+
+    this.userID = acc.RETAIL_USR_ID;
 
     this.modalRef.hide();
 
@@ -408,25 +412,11 @@ export class AccountManagementComponent implements OnInit {
             class: 'width-720'
           });
 
-          if (data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path) {
-            const imagePath = data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path.substring(2);
-            this.imagePreview = this.imgURL + imagePath;
-            this.isImageSaved = true;
-          } else {
-            this.isImageSaved = false;
-            this.imagePreview = null;
-          }
+          this.imagePreview = null;
+          this.imagePreview2 = null;
+          this.isImageSaved = false;
+          this.isImageSaved1 = false;
 
-          if (data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO) {
-            const imagePath = data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO.substring(2);
-            this.imagePreview2 = this.imgURL + imagePath;
-            this.isImageSaved1 = true;
-          } else {
-            this.isImageSaved1 = false;
-            this.imagePreview2 = null;
-          }
-
-          // ✅ patch form safely
           this.addStoreUserForm.patchValue({
             RETAIL_USR_FIRST_NAME: data.RETAIL_USR_FIRST_NAME,
             RETAIL_USR_LAST_NAME: data.RETAIL_USR_LAST_NAME,
@@ -435,7 +425,6 @@ export class AccountManagementComponent implements OnInit {
             RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS: data.RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS,
             RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR: data.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR,
             RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD: data.RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD,
-            RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO_ID: data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO_ID
           });
         },
         (error) => {

@@ -15,7 +15,7 @@
 }
 
 .logo img {
-    max-width: 60px;
+    max-width: 80px;
 }
 
 nav.navbar.navbar-light {
@@ -146,7 +146,6 @@ h3 {
 
 /* Reduce link font */
 .section-links span {
-    font-size: 12px;
     font-weight: 600;
     margin-right: 15px;
     cursor: pointer;
@@ -162,9 +161,8 @@ h3 {
     margin: 5px 8px;
 }
 
-/* Push all nav content to right */
 .section-links {
-    margin-left: auto;
+    margin-left: 20px; /* small spacing after logo */
 }
 
 /* Keep proper spacing between sections */
@@ -314,4 +312,183 @@ h3 {
   flex-direction: column;
   align-items: center;
 
+}
+
+.section-links a {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* HEADER */
+.header {
+  padding: 6px 20px;
+  border-bottom: 5px solid #FF7900;
+  background: #fff;
+}
+
+/* LOGO FULL HEIGHT */
+.logo {
+  padding: 0 15px;
+}
+
+.logo img {
+  height: 80px;   /* 🔥 controls full header height */
+  object-fit: contain;
+}
+
+/* RIGHT CONTAINER */
+.nav-row {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LEFT LINKS */
+.section-links {
+  gap: 22px;
+}
+
+/* RIGHT SIDE */
+.section-login {
+  margin-left: auto;
+  gap: 10px;
+}
+
+/* DROPDOWN FIX */
+.products-dropdown {
+  position: relative;
+}
+
+/* 🔥 CRITICAL: keep hover area alive */
+.products-dropdown {
+  position: relative;
+  padding-bottom: 6px; /* creates invisible hover bridge */
+}
+
+.products-dropdown:hover .products-menu {
+  display: block;
+}
+
+.nav-row {
+  justify-content: space-between;
+}
+
+/* LEFT BLOCK */
+.left-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* RIGHT LOGIN */
+.section-login {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+
+.products-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FF7900;
+}
+
+.links {
+  color: #FF7900;
+  font-size: 18px;
+}
+
+/* 🔥 RIGHT SIDE STRUCTURE */
+.nav-row {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 🔥 HEADING */
+.top-heading {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #5f6f7f;
+  margin-bottom: 6px;
+}
+
+/* 🔥 LEFT LINKS */
+.section-links {
+  gap: 22px;
+}
+
+/* 🔥 RIGHT LOGIN */
+.section-login {
+  margin-left: auto;
+  gap: 10px;
+}
+
+/* 🔥 DROPDOWN FIX (NO FLICKER) */
+.products-dropdown {
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.products-dropdown:hover .products-menu {
+  display: block;
+}
+
+.left-block {
+  display: inline-block;   /* 🔥 shrink to content width */
+}
+
+.col {
+  position: relative;
+}
+
+.section-login {
+  position: absolute;
+  right: 20px;
+  bottom: 8px;
+}
+
+/* WRAPPER */
+.products-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* LABEL */
+.products-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #FF7900;
+  cursor: pointer;
+  padding-bottom: 8px; /* 🔥 creates hover bridge */
+}
+
+/* MENU */
+.products-menu {
+  position: absolute;
+  top: 100%;           /* directly attached */
+  left: 0;
+  background: #fff;
+  border: 1px solid #d6dde6;
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 999;
+
+  /* 🔥 animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+}
+
+/* 🔥 HOVER AREA FIX (NO GAP) */
+.products-dropdown:hover .products-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.products-menu:hover {
+  visibility: visible;
+  opacity: 1;
 }

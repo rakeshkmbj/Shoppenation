@@ -225,14 +225,13 @@ export class MyUsersManagementComponent implements OnInit {
       var reader = new FileReader();
       reader.onload = this._handleReaderLoaded.bind(this);
       reader.readAsBinaryString(file);
-
     }
   }
 
   _handleReaderLoaded(readerEvt) {
     let binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
-    console.log(this.base64textString);
+    // console.log(this.base64textString);
     this.isImageSaved = true;
   }
 
@@ -253,7 +252,7 @@ export class MyUsersManagementComponent implements OnInit {
   _handleReaderLoaded1(readerEvt1) {
     let binaryString1 = readerEvt1.target.result;
     this.base64textString1 = btoa(binaryString1);
-    console.log(this.base64textString1);
+    // console.log(this.base64textString1);
     this.isImageSaved1 = true;
   }
 
@@ -311,7 +310,6 @@ export class MyUsersManagementComponent implements OnInit {
         this.cstmrActiveFlag = data.RETAIL_D2C_ACCT_INTRNL_CSTMR_ISACTIV_FLG;
         console.log(data);
         this.modalRef = this.modalService.show(addStoreUserModal, Object.assign({}, { class: 'width-720' }));
-        this.isImageSaved = true;
         this.imagePath = data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path.substring(2);
         let imgurl = this.imgURL + this.imagePath;
         fetch(imgurl)
@@ -334,13 +332,9 @@ export class MyUsersManagementComponent implements OnInit {
           RETAIL_USR_EMAIL_ID: data.RETAIL_USR_EMAIL_ID,
           RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS: data.RETAIL_D2C_ACCT_INTRNL_CSTMR_ADDRESS,
           RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO: data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO,
-          RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path: data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_PHOTO_Path,
           RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR: data.RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR,
           RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD: data.RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD,
-          RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO_ID: data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO_ID,
-
         });
-        this.isImageSaved = true;
       },
         (error) => {
           this.toastr.error(error.error.Message, '', {
@@ -367,6 +361,8 @@ export class MyUsersManagementComponent implements OnInit {
       RETAIL_D2C_ACCT_INTRNL_CSTMR_ISACTIV_FLG: this.cstmrActiveFlag,
       RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD: this.addStoreUserForm.value.RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD,
     }
+
+    console.log("Edit payload: ", editStoreUserData);
 
     this.apiService.postCall(this.apiService.baseURL + '/EditStoreUsers', editStoreUserData)
       .subscribe(data => {

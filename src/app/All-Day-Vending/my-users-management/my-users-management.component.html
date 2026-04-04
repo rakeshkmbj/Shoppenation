@@ -282,7 +282,6 @@
                                         <img [src]="'data:image/jpeg;base64,' + base64textString">
                                     </ng-container>
                                 </div>
-
                             </div>
                         </fieldset>
                     </div>
@@ -308,9 +307,9 @@
             </div>
             <div class="row">
                 <div class="col-md-12 mt-2">
-                    <button *ngIf="editMode" (click)="EditStoreUsers()" type="button"
+                    <button *ngIf="editMode" [disabled]="addStoreUserForm.invalid" (click)="EditStoreUsers()" type="button"
                         class="btn custom-btn float-right">Update User Details</button>
-                    <button *ngIf="!editMode" (click)="addStoreUser()" type="button"
+                    <button *ngIf="!editMode" [disabled]="addStoreUserForm.invalid" (click)="addStoreUser()" type="button"
                         class="btn custom-btn float-right">Save User Details</button>
                 </div>
             </div>
