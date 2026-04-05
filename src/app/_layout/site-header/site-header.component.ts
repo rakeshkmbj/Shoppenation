@@ -11,6 +11,10 @@ import { MedexHcpComponent } from 'src/app/About/medex-hcp/medex-hcp.component';
 import { ConnectComponent } from 'src/app/About/connect/connect.component';
 import { MdrConnectComponent2 } from 'src/app/About/mdr-connect/mdr-connect.component';
 import { TermsComponent } from 'src/app/About/terms/terms.component';
+import { HelpDeskComponent } from 'src/app/help-desk/help-desk.component';
+import { HcpLoginComponent } from 'src/app/hcp-login/hcp-login.component';
+import { DeliveryLoginComponent } from 'src/app/delivery-login/delivery-login.component';
+
 @Component({
   selector: 'site-header',
   templateUrl: './site-header.component.html',
@@ -26,6 +30,18 @@ export class SiteHeaderComponent implements OnInit {
   isProductOpen = false;
   
   ngOnInit() {
+  }
+
+  openHelpdeskLoginModal() {
+    this.modalRef = this.modalService.show(HelpDeskComponent, Object.assign({}, { class: 'login-modal' }));
+  }
+
+  openHcpLoginModal() {
+    this.modalRef = this.modalService.show(HcpLoginComponent, Object.assign({}, { class: 'login-modal' }));
+  }
+
+  openDeliveryLoginModal() {
+    this.modalRef = this.modalService.show(DeliveryLoginComponent, Object.assign({}, { class: 'login-modal' }));
   }
 
   openLoginModal() {

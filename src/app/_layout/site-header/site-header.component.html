@@ -42,7 +42,7 @@
 
               <div class="app-item" (click)="openMedexHCP()">
                 <img src="../assets/images/businessman.png" />
-                <span>Medx</span>
+                <span>MedX</span>
               </div>
             </div>
           </div>
@@ -65,7 +65,7 @@
           <span>MDR Connect</span>
         </div>
 
-        <div class="backoffice-login">
+        <div class="backoffice-login" (click)="openHcpLoginModal()">
           <img src="../assets/images/businessman.png" />
           <span>HCP Login</span>
         </div>
@@ -75,12 +75,12 @@
           <span>Partner Login</span>
         </div>
 
-        <div class="backoffice-login">
+        <div class="backoffice-login" (click)="openDeliveryLoginModal()">
           <img src="../assets/images/d_man.png" />
           <span>Delivery Login</span>
         </div>
 
-        <div class="backoffice-login helpdesk-icon">
+        <div class="backoffice-login helpdesk-icon" (click)="openHelpdeskLoginModal()">
           <img src="../assets/images/helpdesk-icon.png" />
           <span>Help Desk</span>
         </div>

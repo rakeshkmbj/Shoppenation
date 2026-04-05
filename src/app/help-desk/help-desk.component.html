@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Helpdesk Login</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="login-field">
+        <form novalidate>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input formControlName="mobile" type="text" class="form-control" placeholder="Mobile Number">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" placeholder="Enter password"
+                    id="pwd">
+            </div>
+
+            <label class="form-forget">
+                <a>Forgot your password?</a>
+            </label>
+            <br>
+            <div class="bottom-btn">
+                <button type="submit" class="btn custom-btn">Sign In</button>
+            </div>
+        </form>
+    </div>
+</div>

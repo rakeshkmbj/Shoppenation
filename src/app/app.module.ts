@@ -105,6 +105,9 @@ import { MedexHcpComponent } from './About/medex-hcp/medex-hcp.component';
 import { AboutUsComponent } from './About/about-us/about-us.component';
 import { ConnectComponent } from './About/connect/connect.component';
 import { TermsComponent } from './About/terms/terms.component';
+import { HcpLoginComponent } from './hcp-login/hcp-login.component';
+import { DeliveryLoginComponent } from './delivery-login/delivery-login.component';
+import { HelpDeskComponent } from './help-desk/help-desk.component';
 
 @NgModule({
   imports: [ 
@@ -214,6 +217,9 @@ import { TermsComponent } from './About/terms/terms.component';
      AboutUsComponent,
      ConnectComponent,
      TermsComponent,
+     HcpLoginComponent,
+     DeliveryLoginComponent,
+     HelpDeskComponent,
      ],
      providers: [
     
