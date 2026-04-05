@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit {
   ) { }
 
   domainimages = [
-    { img: "../assets/images/domain images/newalcohol.jpg", name: "Alcohol & Liquor" },
     { img: "../assets/images/domain images/restaurants.png", name: "Restaurants & F&B" },
     { img: "../assets/images/domain images/newfmcg.jpg", name: "FMCG" },
     { img: "../assets/images/domain images/fashion.png", name: "Fashion & Lifestyle" },
