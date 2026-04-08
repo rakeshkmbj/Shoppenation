@@ -13,14 +13,20 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class MyCardTransactionsComponent implements OnInit {
 
+  modalRef: BsModalRef | undefined;
   activeTabId: string = 'tab1';
   getlogindata: any;
   fromDate1: string = '';
   fromDate2: string = '';
   cardholderRefill: any;
   cardholderSpends: any;
-  showCardholderRefill: boolean;
-  showCardholderSpends: boolean;
+  showCardholderRefill: boolean | undefined;
+  showCardholderSpends: boolean | undefined;
+  changePasswordForm: FormGroup;
+  submitted: any | undefined;
+  passwordMismatch: any | undefined;
+  subaccountid: any | undefined;
+  storeid: any | undefined;
 
   constructor(
     private apiService: ApiService,
@@ -31,9 +37,19 @@ export class MyCardTransactionsComponent implements OnInit {
     private spinner: NgxSpinnerService,
   ) {
 
+    this.subaccountid = this.apiService.requiredLoginData.subaccountid;
+    this.storeid = this.apiService.requiredLoginData.storeid;
+
     this.getlogindata = localStorage.getItem('logindata');
     this.getlogindata = JSON.parse(this.getlogindata);
     console.log("Login data: ", this.getlogindata)
+
+    this.changePasswordForm = this.formBuilder.group({
+      currentPassword: [{ value: '', disabled: true }, Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    });
+
 
   }
 
@@ -132,6 +148,79 @@ export class MyCardTransactionsComponent implements OnInit {
             timeOut: 5000,
           });
         });
+  }
+
+  openChangePassword(template: any) {
+
+    this.changePasswordForm.reset();
+
+    const payload = {
+      Account_Subacctid: this.subaccountid,
+      Account_Storeid: this.storeid,
+      CardRegid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID
+    }
+
+    console.log("payload: ", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/GetVendPassword`, payload)
+      .subscribe(data => {
+        console.log(data);
+
+        this.changePasswordForm.patchValue({
+          currentPassword: data.Password
+        });
+
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.error, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'width-720' }));
+  }
+
+  get f() {
+    return this.changePasswordForm.controls;
+  }
+
+  changePassword() {
+    this.submitted = true;
+
+    if (this.changePasswordForm.invalid) return;
+
+    const { newPassword, confirmPassword } = this.changePasswordForm.value;
+
+    if (newPassword !== confirmPassword) {
+      this.passwordMismatch = true;
+      return;
+    }
+
+    this.passwordMismatch = false;
+
+    const payload = {
+      CardRegid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
+      Password: this.f.newPassword.value
+    };
+
+    console.log("Change Password Payload:", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/ChangeVendPassword`, payload)
+      .subscribe(data => {
+        console.log(data);
+        this.toastr.success(data.Message);
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.error, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+    this.modalRef?.hide();
   }
 
 }

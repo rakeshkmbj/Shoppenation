@@ -95,7 +95,6 @@ export class ManageCustomerCardComponent implements OnInit {
       altMobile: ['', [Validators.pattern('^[0-9]{10}$')]],
       email: ['', Validators.email],
       gender: ['M', Validators.required],
-      classId: ['', Validators.required],
       photo: [null]
     });
 
@@ -347,12 +346,13 @@ export class ManageCustomerCardComponent implements OnInit {
     }
 
     const formValue = this.userCardForm.getRawValue();
+    const parentformValue = this.displayCardHolders.value;
 
     if (this.isEditMode) {
       const payload = {
         Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
         Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
-        Class_Department_ID: formValue.classId,
+        Class_Department_ID: parentformValue.classId,
         Card_Regid: formValue.cardNo,
         First_Name: formValue.firstName,
         Last_Name: formValue.lastName,
@@ -375,13 +375,14 @@ export class ManageCustomerCardComponent implements OnInit {
 
     } else {
       // ===== ADD API (your existing logic) =====
+
       const payload = {
         Card_MUID: formValue.cardNo,
         Second_Node_Storecode: '1001090106', // need to change
         Account_Acctid: '19', // need to change
-        Account_Subacctid: this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID,
-        Account_Storeid: this.storeid,
-        Class_Dept_ID: formValue.classId,
+        Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+        Account_Storeid: this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
+        Class_Dept_ID: parentformValue.classId,
         Card_Typeid: formValue.cardType,
         First_Name: formValue.firstName,
         Last_Name: formValue.lastName,
@@ -478,6 +479,8 @@ export class ManageCustomerCardComponent implements OnInit {
 
   openChangePassword(user: any, template: any) {
 
+    this.changePasswordForm.reset();
+
     this.selectedUser = user;
 
     const payload = {
@@ -536,7 +539,7 @@ export class ManageCustomerCardComponent implements OnInit {
     this.apiService.postCall(`${this.apiService.baseURL}/ChangeVendPassword`, payload)
       .subscribe(data => {
         console.log(data);
-        this.toastr.success(data.message);
+        this.toastr.success(data.Message);
       },
         (error) => {
           console.log(error);
@@ -673,7 +676,7 @@ export class ManageCustomerCardComponent implements OnInit {
 
   }
 
-  viewTransactionModal(template: any, user: any){
+  viewTransactionModal(template: any, user: any) {
 
     this.selectedUer = user;
     this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'modal-xl' }));
