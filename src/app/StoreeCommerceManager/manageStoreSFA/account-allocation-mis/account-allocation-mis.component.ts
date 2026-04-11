@@ -35,7 +35,7 @@ export class AccountAllocationMISComponent implements OnInit {
      this.getlogindata = JSON.parse(this.getlogindata);
      this.accountid = this.getlogindata.RETAIL_D2C_ACCT_ID;
      this.subaccountid = this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID;
-     this.storeid = this.getlogindata.SUBACCT_OFFICES_RPOSTRY_ID;
+     this.storeid = this.getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID;
     }
  
    ngOnInit(): void {

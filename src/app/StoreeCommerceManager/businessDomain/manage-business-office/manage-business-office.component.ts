@@ -173,7 +173,7 @@ export class ManageBusinessOfficeComponent implements OnInit {
       this.isTitle = false;
       this.scrollToTop();
       this.RetailStoreForm.patchValue({
-        SUBACCT_OFFICES_RPOSTRY_ID: data.SUBACCT_OFFICES_RPOSTRY_ID,
+        RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID: data.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID,
         RETAIL_D2C_ACCT_ID: this.accountid,
         RETAIL_D2C_SUBACCT_ID: this.subaccountid,
         RETAIL_D2C_SUBACCT_OFFICE_NAME: data.RETAIL_D2C_SUBACCT_OFFICE_NAME,
@@ -200,7 +200,7 @@ export class ManageBusinessOfficeComponent implements OnInit {
   updateRetailStore(){
    
     let updateData = {
-      SUBACCT_OFFICES_RPOSTRY_ID: + this.officeId,
+      RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID: + this.officeId,
       RETAIL_D2C_ACCT_ID:this.RetailStoreForm.value.RETAIL_D2C_ACCT_ID,
       RETAIL_D2C_SUBACCT_ID: this.RetailStoreForm.value.RETAIL_D2C_SUBACCT_ID,
       RETAIL_D2C_SUBACCT_OFFICE_NAME: this.RetailStoreForm.value.RETAIL_D2C_SUBACCT_OFFICE_NAME,

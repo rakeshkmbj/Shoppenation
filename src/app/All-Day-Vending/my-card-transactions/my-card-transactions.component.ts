@@ -50,11 +50,19 @@ export class MyCardTransactionsComponent implements OnInit {
       confirmPassword: ['', Validators.required]
     });
 
-
   }
 
   ngOnInit(): void {
-    this.onCurrentBalanceTabSelected()
+    this.onCurrentBalanceTabSelected();
+    this.initForm();
+  }
+
+  initForm() {
+    this.changePasswordForm = this.formBuilder.group({
+      currentPassword: [{ value: '', disabled: true }],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    });
   }
 
   onTabChange(tabId: string): void {
@@ -152,34 +160,29 @@ export class MyCardTransactionsComponent implements OnInit {
 
   openChangePassword(template: any) {
 
-    this.changePasswordForm.reset();
+    this.submitted = false;
+    this.passwordMismatch = false;
+
+    this.initForm();
 
     const payload = {
       Account_Subacctid: this.subaccountid,
       Account_Storeid: this.storeid,
       CardRegid: this.getlogindata.ADC_VEND_CARDHOLDR_REGID
-    }
-
-    console.log("payload: ", payload);
+    };
 
     this.apiService.postCall(`${this.apiService.baseURL}/GetVendPassword`, payload)
-      .subscribe(data => {
-        console.log(data);
+      .subscribe((data: any) => {
 
         this.changePasswordForm.patchValue({
           currentPassword: data.Password
         });
 
-      },
-        (error) => {
-          console.log(error);
-          this.toastr.error(error.error, '', {
-            timeOut: 5000,
-          });
-        }
-      );
+      }, (error) => {
+        this.toastr.error(error.error, '', { timeOut: 5000 });
+      });
 
-    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'width-720' }));
+    this.modalRef = this.modalService.show(template, { class: 'width-720' });
   }
 
   get f() {

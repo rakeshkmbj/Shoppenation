@@ -120,6 +120,10 @@ export class StoreEcommerceManagerComponent implements OnInit {
     this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'width-720' }));
   }
 
+  accDetails(template: any) {
+    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'width-720' }));
+  }
+
   get f() {
     return this.changePasswordForm.controls;
   }

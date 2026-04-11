@@ -89,80 +89,6 @@
                     <p class="nav-highlight">Industry Domain ID: <span>{{ getlogindata.DOMAIN_ID || '-' }}</span></p>
                 </div>
 
-                <div class="nav-item">
-                    <p class="nav-highlight">Registered Mob: <span>{{ getlogindata.Account_Registered_From_MobileNumber
-                            || '-' }}</span></p>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">Domain Name: <span>{{ getlogindata.RETAIL_D2C_DOMAIN_NAME || '-' }}</span>
-                    </p>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">Multiple Domain:</p>
-                    <b [class.ok]="getlogindata.SUBACCT_MULTI_DOMAIN_ACTIVE"
-                        [class.no]="!getlogindata.SUBACCT_MULTI_DOMAIN_ACTIVE">
-                        {{ getlogindata.SUBACCT_MULTI_DOMAIN_ACTIVE ? '✔' : '✘' }}
-                    </b>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">MDR-Connect:</p>
-                    <b [class.ok]="getlogindata.MDR_Connect_App_Flag" [class.no]="!getlogindata.MDR_Connect_App_Flag">
-                        {{ getlogindata.MDR_Connect_App_Flag ? '✔' : '✘' }}
-                    </b>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">All-Day Distribution:</p>
-                    <b [class.ok]="getlogindata.Distribution_App_Flag" [class.no]="!getlogindata.Distribution_App_Flag">
-                        {{ getlogindata.Distribution_App_Flag ? '✔' : '✘' }}
-                    </b>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">GSTIN: <span>{{ getlogindata.SUB_ACCT_GSTIN_NO || '-' }}</span></p>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">Account ID: <span>{{ getlogindata.RETAIL_D2C_ACCT_ID || '-' }}</span></p>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">Subacct ID: <span>{{ getlogindata.RETAIL_D2C_USR_SUBACCT_ID || '-'
-                            }}</span></p>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">Store ID: <span>{{ getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID || '-'
-                            }}</span></p>
-                </div>
-
-                <div class="nav-item">
-                    <p class="nav-highlight">Store Code: {{ getlogindata.Storecode || '-' }}</p>
-                </div>
-
-                <div class="nav-item">
-
-                    <div>
-                        <p [class.ok]="getlogindata.FIRST_NODE_SUBACCT_FLG"
-                            [class.no]="!getlogindata.FIRST_NODE_SUBACCT_FLG" class="nav-highlight">Primary: {{
-                            getlogindata.FIRST_NODE_SUBACCT_FLG ? '✔' : '✘' }}</p>
-                    </div>
-                    <div>
-                        <p [class.ok]="getlogindata.SECND_NODE_SUBACCT_FLG"
-                            [class.no]="!getlogindata.SECND_NODE_SUBACCT_FLG" class="nav-highlight">Secondary: {{
-                            getlogindata.SECND_NODE_SUBACCT_FLG ? '✔' : '✘' }}</p>
-                    </div>
-                    <div>
-                        <p [class.ok]="getlogindata.THIRD_NODE_SUBACCT_FLG"
-                            [class.no]="!getlogindata.THIRD_NODE_SUBACCT_FLG" class="nav-highlight">Tertiary: {{
-                            getlogindata.THIRD_NODE_SUBACCT_FLG ? '✔' : '✘' }}</p>
-                    </div>
-
-                </div>
-
             </div>
         </div>
 
@@ -312,6 +238,8 @@
 
                                 <!-- <li><a (click)="openChangePassword(changePasswordModal)" class="dropdown-item">Change Password</a></li> -->
                                 <li><a (click)="logout()" class="dropdown-item">Logout</a></li>
+                                <li><a (click)="accDetails(accountDetailsModal)" class="dropdown-item">Acc Details</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -340,93 +268,212 @@
 </div>
 
 <ng-template #changePasswordModal>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">
-      Change Password
-      <span class="small">Secure your account</span>
-    </h4>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Change Password
+            <span class="small">Secure your account</span>
+        </h4>
 
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-  <div class="modal-body">
-    <form [formGroup]="changePasswordForm">
+    <div class="modal-body">
+        <form [formGroup]="changePasswordForm">
 
-      <div class="row">
+            <div class="row">
 
-        <!-- Current Password -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label>Current Password</label>
-            <input type="password"
-                   class="form-control"
-                   formControlName="currentPassword"
-                   [ngClass]="{ 'is-invalid': submitted && f.currentPassword.errors }">
+                <!-- Current Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control" formControlName="currentPassword"
+                            [ngClass]="{ 'is-invalid': submitted && f.currentPassword.errors }">
 
-            <div *ngIf="submitted && f.currentPassword.errors" class="invalid-feedback">
-              <div *ngIf="f.currentPassword.errors.required">
-                Current password is required
-              </div>
+                        <div *ngIf="submitted && f.currentPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.currentPassword.errors.required">
+                                Current password is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" formControlName="newPassword"
+                            [ngClass]="{ 'is-invalid': submitted && f.newPassword.errors }">
+
+                        <div *ngIf="submitted && f.newPassword.errors" class="invalid-feedback">
+                            <div *ngIf="f.newPassword.errors.required">
+                                New password is required
+                            </div>
+                            <div *ngIf="f.newPassword.errors.minlength">
+                                Minimum 6 characters required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" formControlName="confirmPassword"
+                            [ngClass]="{ 'is-invalid': submitted && (f.confirmPassword.errors || passwordMismatch) }">
+
+                        <div *ngIf="submitted && (f.confirmPassword.errors || passwordMismatch)"
+                            class="invalid-feedback">
+                            <div *ngIf="f.confirmPassword.errors?.required">
+                                Confirm password is required
+                            </div>
+                            <div *ngIf="passwordMismatch">
+                                Passwords do not match
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-        </div>
 
-        <!-- New Password -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label>New Password</label>
-            <input type="password"
-                   class="form-control"
-                   formControlName="newPassword"
-                   [ngClass]="{ 'is-invalid': submitted && f.newPassword.errors }">
-
-            <div *ngIf="submitted && f.newPassword.errors" class="invalid-feedback">
-              <div *ngIf="f.newPassword.errors.required">
-                New password is required
-              </div>
-              <div *ngIf="f.newPassword.errors.minlength">
-                Minimum 6 characters required
-              </div>
+            <!-- Buttons -->
+            <div class="row">
+                <div class="col-md-12 mt-3">
+                    <button type="button" class="btn custom-btn float-right" (click)="changePassword()">
+                        Update Password
+                    </button>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Confirm Password -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password"
-                   class="form-control"
-                   formControlName="confirmPassword"
-                   [ngClass]="{ 'is-invalid': submitted && (f.confirmPassword.errors || passwordMismatch) }">
+        </form>
+    </div>
+</ng-template>
 
-            <div *ngIf="submitted && (f.confirmPassword.errors || passwordMismatch)"
-                 class="invalid-feedback">
-              <div *ngIf="f.confirmPassword.errors?.required">
-                Confirm password is required
-              </div>
-              <div *ngIf="passwordMismatch">
-                Passwords do not match
-              </div>
+<ng-template #accountDetailsModal>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Account Details
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body account-modal">
+
+        <div class="row">
+
+            <!-- COLUMN 1 -->
+            <div class="col-md-4">
+                <div class="info-block">
+                    <label>Office Name</label>
+                    <div class="value">{{ getlogindata.RETAIL_D2C_SUBACCT_OFFICE_NAME || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Industry Domain ID</label>
+                    <div class="value">{{ getlogindata.DOMAIN_ID || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>GSTIN</label>
+                    <div class="value">{{ getlogindata.SUB_ACCT_GSTIN_NO || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Store ID</label>
+                    <div class="value">{{ getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>MDR-Connect</label>
+                    <span class="status" [class.ok]="getlogindata.MDR_Connect_App_Flag"
+                        [class.no]="!getlogindata.MDR_Connect_App_Flag">
+                        {{ getlogindata.MDR_Connect_App_Flag ? '✔' : '✘' }}
+                    </span>
+                </div>
             </div>
-          </div>
+
+            <!-- COLUMN 2 -->
+            <div class="col-md-4">
+                <div class="info-block">
+                    <label>Address</label>
+                    <div class="value">{{ getlogindata.RETAIL_D2C_SUBACCT_OFFICE_ADDRESS || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Domain Name</label>
+                    <div class="value">{{ getlogindata.RETAIL_D2C_DOMAIN_NAME || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Account ID</label>
+                    <div class="value">{{ getlogindata.RETAIL_D2C_ACCT_ID || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Store Code</label>
+                    <div class="value">{{ getlogindata.Storecode || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>All-Day Distribution</label>
+                    <span class="status" [class.ok]="getlogindata.Distribution_App_Flag"
+                        [class.no]="!getlogindata.Distribution_App_Flag">
+                        {{ getlogindata.Distribution_App_Flag ? '✔' : '✘' }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- COLUMN 3 -->
+            <div class="col-md-4">
+                <div class="info-block">
+                    <label>Registered Mobile</label>
+                    <div class="value">{{ getlogindata.Account_Registered_From_MobileNumber || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Subacct ID</label>
+                    <div class="value">{{ getlogindata.RETAIL_D2C_USR_SUBACCT_ID || '-' }}</div>
+                </div>
+
+                <div class="info-block">
+                    <label>Multiple Domain</label>
+                    <span class="status" [class.ok]="getlogindata.SUBACCT_MULTI_DOMAIN_ACTIVE"
+                        [class.no]="!getlogindata.SUBACCT_MULTI_DOMAIN_ACTIVE">
+                        {{ getlogindata.SUBACCT_MULTI_DOMAIN_ACTIVE ? '✔' : '✘' }}
+                    </span>
+                </div>
+            </div>
+
         </div>
 
-      </div>
+        <!-- ACCOUNT HIERARCHY -->
+        <div class="row mt-3 border-top pt-2">
+            <div class="col-md-12">
+                <label class="section-title">Account Hierarchy</label>
 
-      <!-- Buttons -->
-      <div class="row">
-        <div class="col-md-12 mt-3">
-          <button type="button"
-                  class="btn custom-btn float-right"
-                  (click)="changePassword()">
-            Update Password
-          </button>
+                <div class="d-flex justify-content-between hierarchy-row">
+                    <span [class.ok]="getlogindata.FIRST_NODE_SUBACCT_FLG"
+                        [class.no]="!getlogindata.FIRST_NODE_SUBACCT_FLG">
+                        Primary: {{ getlogindata.FIRST_NODE_SUBACCT_FLG ? '✔' : '✘' }}
+                    </span>
+
+                    <span [class.ok]="getlogindata.SECND_NODE_SUBACCT_FLG"
+                        [class.no]="!getlogindata.SECND_NODE_SUBACCT_FLG">
+                        Secondary: {{ getlogindata.SECND_NODE_SUBACCT_FLG ? '✔' : '✘' }}
+                    </span>
+
+                    <span [class.ok]="getlogindata.THIRD_NODE_SUBACCT_FLG"
+                        [class.no]="!getlogindata.THIRD_NODE_SUBACCT_FLG">
+                        Tertiary: {{ getlogindata.THIRD_NODE_SUBACCT_FLG ? '✔' : '✘' }}
+                    </span>
+                </div>
+            </div>
         </div>
-      </div>
 
-    </form>
-  </div>
+    </div>
 </ng-template>

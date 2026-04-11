@@ -102,12 +102,20 @@ export class ManageCustomerCardComponent implements OnInit {
       classId: ['', Validators.required],
       accId: ['', Validators.required]
     })
+
+    this.changePasswordForm = this.formBuilder.group({
+      currentPassword: [{ value: '', disabled: true }, Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    });
+
   }
 
   ngOnInit(): void {
 
     this.onTabChange('tab2');
 
+    this.initForm();
     this.getCountry();
 
     if (this.getlogindata.THIRD_NODE_SUBACCT_FLG) {
@@ -125,12 +133,14 @@ export class ManageCustomerCardComponent implements OnInit {
       this.getClassDep(this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID, this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID);
     }
 
+  }
+
+  initForm() {
     this.changePasswordForm = this.formBuilder.group({
-      currentPassword: [{ value: '', disabled: true }, Validators.required],
+      currentPassword: [{ value: '', disabled: true }],
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
     });
-
   }
 
   generate() {
@@ -479,9 +489,11 @@ export class ManageCustomerCardComponent implements OnInit {
 
   openChangePassword(user: any, template: any) {
 
-    this.changePasswordForm.reset();
-
     this.selectedUser = user;
+    this.submitted = false;
+    this.passwordMismatch = false;
+
+    this.initForm();
 
     const payload = {
       Account_Subacctid: this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
