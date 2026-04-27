@@ -187,6 +187,9 @@ this.newSelfForm = this.formBuilder.group({
 
 
   getAllItemSubItemAvailableForInventory() {
+
+    console.log("Display subitem payload: ",'/GetAllItemSubItemAvailableForInventory' + "/" + this.domainid + "/" + this.accountid + "/" + this.subaccountid + "/" + this.storeid + "/" + this.productID + "/" + this.itemId)
+
     this.apiService.getCall(this.apiService.baseURL + '/GetAllItemSubItemAvailableForInventory' + "/" + this.domainid + "/" + this.accountid + "/" + this.subaccountid + "/" + this.storeid + "/" + this.productID + "/" + this.itemId)
     .subscribe(data => {
       this.productLineInventoryList = data;
