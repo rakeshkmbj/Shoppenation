@@ -28,35 +28,71 @@ export class SiteHeaderComponent implements OnInit {
   ) { }
 
   isProductOpen = false;
-  
+  isMobileMenuOpen = false;
+
   ngOnInit() {
   }
 
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
+  isAppsOpen = false;
+
+  toggleApps() {
+    this.isAppsOpen = !this.isAppsOpen;
+  }
+
+  isMenuOpen = false;
+  isProductsOpen = false;
+
+  toggleMenu() {
+
+    this.isAppsOpen = false;
+
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleProducts() {
+    if (window.innerWidth < 992) {
+      this.isProductsOpen = !this.isProductsOpen;
+    }
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
   openHelpdeskLoginModal() {
+    this.closeMenu();
     this.modalRef = this.modalService.show(HelpDeskComponent, Object.assign({}, { class: 'login-modal' }));
   }
 
   openHcpLoginModal() {
+    this.closeMenu();
     this.modalRef = this.modalService.show(HcpLoginComponent, Object.assign({}, { class: 'login-modal' }));
   }
 
   openDeliveryLoginModal() {
+    this.closeMenu();
     this.modalRef = this.modalService.show(DeliveryLoginComponent, Object.assign({}, { class: 'login-modal' }));
   }
 
   openLoginModal() {
+    this.closeMenu();
     this.modalRef = this.modalService.show(LoginComponent, Object.assign({}, { class: 'login-modal' }));
   }
 
   openMdrCoonectModal() {
+    this.closeMenu();
     this.modalRef = this.modalService.show(MdrConnectComponent, Object.assign({}, { class: 'modal-xl' }));
   }
 
-  openAllDayVending(){
+  openAllDayVending() {
     this.modalRef = this.modalService.show(AllDayVendingComponent, Object.assign({}, { class: 'modal-xl' }));
   }
 
-  openAllDayDistribution(){
+  openAllDayDistribution() {
     this.modalRef = this.modalService.show(AllDayDistributionComponent, Object.assign({}, { class: 'modal-xl' }));
   }
 
@@ -84,7 +120,7 @@ export class SiteHeaderComponent implements OnInit {
     this.modalRef = this.modalService.show(MdrConnectComponent2, Object.assign({}, { class: 'modal-xl' }));
   }
 
-  openTerms(){
+  openTerms() {
     this.modalRef = this.modalService.show(TermsComponent, Object.assign({}, { class: 'modal-xl' }));
   }
 

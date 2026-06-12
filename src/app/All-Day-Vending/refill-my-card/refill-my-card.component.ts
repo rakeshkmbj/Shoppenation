@@ -8,6 +8,8 @@ import { NavigationExtras, Router } from '@angular/router';
 import { RazorpayService } from 'src/app/razorpay.service';
 import { PaymentStatusService } from 'src/app/services/payment-status.service';
 import { FormsModule } from '@angular/forms';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-refill-my-card',
@@ -16,7 +18,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class RefillMyCardComponent implements OnInit {
 
-  modalRef: BsModalRef;
+  paymentSub!: Subscription;
+  modalRef?: BsModalRef;
   getlogindata: any;
 
   constructor(
@@ -42,44 +45,60 @@ export class RefillMyCardComponent implements OnInit {
   gstAmount = 0;
   totalAmount = 0;
 
+  private destroy$ = new Subject<void>();
+
   ngOnInit() {
     this.calculateAmount();
-    this.paymentStatusService.paymentStatus$.subscribe(async status => {
-      if (status) {
-        if (status.success) {
-          try {
-            const payload = {
-              cartId: this.openCart?.MDR_CONCT_SERVICE_CARTID,
-              storecode: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
-              serviceId: this.openCart?.MDR_CONCT_CART_FOR_SERVICEID,
-              confirmPayFlg: true
-            }
+    this.paymentStatusService.paymentStatus$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(status => status?.success)
+      )
+      .subscribe(status => {
 
-            console.log("payload: ", payload)
+        if (status) {
+          if (status.success) {
+            try {
+              const payload = {
+                cartId: this.openCart?.MDR_CONCT_SERVICE_CARTID,
+                storecode: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
+                serviceId: this.openCart?.MDR_CONCT_CART_FOR_SERVICEID,
+                confirmPayFlg: true
+              }
 
-            this.apiService.postCall(this.apiService.baseURL + '/MDR_Service_10and8_MakePayments', payload)
-              .subscribe(data => {
-                console.log(data);
-                this.toastr.success(data.Message, '', {
-                  timeOut: 5000,
-                });
-                this.modalRef?.hide();
-              },
-                (error) => {
-                  console.log(error)
-                  this.toastr.error(error, '', {
+              console.log("payload: ", payload)
+
+              this.apiService.postCall(this.apiService.baseURL + '/MDR_Service_10and8_MakePayments', payload)
+                .subscribe(data => {
+                  console.log(data);
+                  this.toastr.success(data.Message, '', {
                     timeOut: 5000,
                   });
-                });
+                  this.modalRef?.hide();
+                },
+                  (error) => {
+                    console.log(error)
+                    this.toastr.error(error, '', {
+                      timeOut: 5000,
+                    });
+                  });
 
-          } catch (error: any) {
-            console.log(error)
+              this.paymentStatusService.updatePaymentStatus(null);
+
+            } catch (error: any) {
+              console.log(error)
+            }
           }
+          
+          console.log('Payment status: ', status)
         }
 
-        console.log('Payment status: ', status)
-      }
-    });
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   calculateAmount() {

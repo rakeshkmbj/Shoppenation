@@ -1,41 +1,74 @@
+<!-- ================= HERO CAROUSEL ================= -->
 <carousel [noPause]="false">
+
   <slide>
-    <img src="../assets/images/1.png" alt="First slide" style="display: block; width: 100%;">
-    <div class="carousel-caption d-none d-md-block">
-      <h3>Do More Of ....<br><span>What Makes You Happy</span></h3>
-      <p>Ability to Bridge<br> Business to Business & Direct to Consumers Commerce</p>
+    <img src="../assets/images/1.png" class="w-100" />
+
+    <!-- 🔥 TEXT NOW VISIBLE ON ALL DEVICES -->
+    <div class="carousel-caption custom-caption">
+      <h3>
+        Do More Of ....<br>
+        <span>What Makes You Happy</span>
+      </h3>
+
+      <p>
+        Ability to Bridge<br>
+        Business to Business & Direct to Consumers Commerce
+      </p>
     </div>
   </slide>
+
   <slide>
-    <img src="../assets/images/2.png" alt="Second slide" style="display: block; width: 100%;">
-    <div class="carousel-caption d-none d-md-block">
-      <h3>Do More Of ....<br><span>What Makes You Happy</span></h3>
-      <p>Ability to Bridge<br> Business to Business & Direct to Consumers Commerce</p>
+    <img src="../assets/images/2.png" class="w-100" />
+
+    <div class="carousel-caption custom-caption">
+      <h3>
+        Do More Of ....<br>
+        <span>What Makes You Happy</span>
+      </h3>
+
+      <p>
+        Ability to Bridge<br>
+        Business to Business & Direct to Consumers Commerce
+      </p>
     </div>
   </slide>
+
   <slide>
-    <img src="../assets/images/3.png" alt="Third slide" style="display: block; width: 100%;">
-    <div class="carousel-caption d-none d-md-block">
-      <h3>Do More Of ....<br><span>What Makes You Happy</span></h3>
-      <p>Ability to Bridge<br> Business to Business & Direct to Consumers Commerce</p>
+    <img src="../assets/images/3.png" class="w-100" />
+
+    <div class="carousel-caption custom-caption">
+      <h3>
+        Do More Of ....<br>
+        <span>What Makes You Happy</span>
+      </h3>
+
+      <p>
+        Ability to Bridge<br>
+        Business to Business & Direct to Consumers Commerce
+      </p>
     </div>
   </slide>
+
 </carousel>
 
-<section class="slider">
 
-</section>
+<!-- ================= SERVICES ================= -->
 <div class="our-services padding">
 
   <div class="container pl-0 pr-0">
-    <div class="section-title">
+
+    <div class="section-title text-center">
       <h1 class="title">Shoppenation Business Domains</h1>
     </div>
 
     <div class="domain-carousel-wrapper">
-      <div class="domain-carousel-track" [style.transform]="'translateX(-' + (currentIndex * 25) + '%)'">
+      <div class="domain-carousel-track"
+           [style.transform]="'translateX(-' + (currentIndex * 25) + '%)'">
 
-        <div class="domain-carousel-item" *ngFor="let item of domainimages" (click)="openLoginModal()">
+        <div class="domain-carousel-item"
+             *ngFor="let item of domainimages"
+             (click)="openLoginModal()">
 
           <section class="gray-scale-frame">
             <div class="content">
@@ -55,81 +88,106 @@
   </div>
 </div>
 
+
+<!-- ================= DIGITAL TRANSFORMATION ================= -->
 <div class="digital-transformation">
-  <div class="row">
-    <div class="col-sm-3 pr-0">
-      <h2>Digital Transformation Platform for Businesses</h2>
-    </div>
-    <div class="col-sm-7 pl-0">
-      <div class="dtps-provider">
-        <div class="row">
-          <div class="col-sm-5">
-            <h5>Get your Brand Direct to Consumers & be ready for Future...</h5>
-          </div>
-          <div class="col-sm-2">
-            <div class="img"><img src="../assets/images/logo_1.jpg" /></div>
-          </div>
-          <div class="col-sm-5">
-            <p><strong><u>Revolution for Businesses</u></strong></p>
-            <p>
-              Selling online with your own website powered with an e-commerce engine integrated with
-              your onw brand, website and marketplace has never been so easier, faster and scalable</p>
-          </div>
-        </div>
+
+  <div class="container">
+
+    <div class="row align-items-center">
+
+      <div class="col-lg-3 col-12 text-center text-lg-start">
+        <h2>Digital Transformation Platform for Businesses</h2>
       </div>
+
+      <div class="col-lg-7 col-12 mt-3 mt-lg-0">
+
+        <div class="dtps-provider">
+
+          <div class="row align-items-center">
+
+            <div class="col-lg-5 col-12 text-center text-lg-start">
+              <h5>
+                Get your Brand Direct to Consumers & be ready for Future...
+              </h5>
+            </div>
+
+            <div class="col-lg-2 col-12 text-center">
+              <img src="../assets/images/logo_1.jpg" style="max-width:60px;">
+            </div>
+
+            <div class="col-lg-5 col-12 text-center text-lg-start">
+              <p><strong><u>Revolution for Businesses</u></strong></p>
+              <p>
+                Selling online with your own website powered with an e-commerce engine integrated with your brand and marketplace has never been easier.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-lg-2 col-12 text-center mt-3 mt-lg-0">
+        <button (click)="openLearnMore()"
+                class="btn btn-primary learn-more-btn w-100">
+          Learn More
+        </button>
+      </div>
+
     </div>
 
-    <div class="col-sm-2 learnmore">
-      <button (click)="openLearnMore()" type="button" class="btn btn-primary learn-more-btn">Learn More</button>
-    </div>
   </div>
+
 </div>
 
-<!-- Contact Section -->
+
+<!-- ================= CONTACT SECTION ================= -->
 <div class="contact-section">
+
   <div class="contact-container">
 
-    <!-- <div class="contact-card">
-      <h5>Know more About us</h5>
-      <p><a href="http://www.all-day.in/#/home" target="_blank">
-          http://www.all-day.in/#/home
-        </a></p>
-      <p><a href="http://www.ad-connect.in/" target="_blank">
-          http://www.ad-connect.in/
-        </a></p>
-      <button (click)="openAboutUs()" type="button" class="btn btncolor">About Us</button>
-    </div> -->
-
+    <!-- ABOUT -->
     <div class="contact-card about-section">
       <h5>Know more About us</h5>
-      <button (click)="openAboutUs()" type="button" class="btn btncolor">About Us</button>
-      <div class="about-content">
+
+      <button (click)="openAboutUs()" class="btn btncolor">
+        About Us
+      </button>
+
+      <div class="about-content mt-2">
+
         <p>
           Know More for our All-Day Shop Platform<br>
           <a href="http://www.all-day.in/#/home" target="_blank">
             http://www.all-day.in/#/home
           </a>
         </p>
+
         <p>
           Know more for our IPTV & Ad Monetization Platform<br>
           <a href="http://www.ad-connect.in/" target="_blank">
             http://www.ad-connect.in/
           </a>
         </p>
+
       </div>
     </div>
 
+    <!-- REGISTERED -->
     <div class="contact-card">
       <h5>Registered Address</h5>
       <p>
         Plot No, 11-A Central Market<br>
         2nd Floor, Lajpat Nagar II<br>
         New Delhi 110024 - INDIA<br>
-        + 91 8700693372<br>
+        +91 8700693372<br>
         <strong>Support@all-day.in</strong>
       </p>
     </div>
 
+    <!-- OFFICE -->
     <div class="contact-card">
       <h5>Development Centre & Sales office</h5>
       <p>
@@ -142,4 +200,5 @@
     </div>
 
   </div>
+
 </div>

@@ -1,12 +1,14 @@
 <div class="modal-header custom-header">
 
-    <div class="img-container">
-        <img class="mdrimg" src="../../assets/images/mdr-connect-ind.png" />
-    </div>
+    <div class="header-left">
+        <div class="img-container">
+            <img class="mdrimg" src="../../assets/images/mdr-connect-ind.png" />
+        </div>
 
-    <div class="title-wrapper">
-        <h4 class="modal-title">MDR-Connect</h4>
-        <h4 class="modal-title">Connecting Businesses</h4>
+        <div class="title-wrapper">
+            <h4 class="modal-title">MDR-Connect</h4>
+            <h4 class="modal-title subtitle">Connecting Businesses</h4>
+        </div>
     </div>
 
     <button type="button" class="close-btn" (click)="close()">
@@ -2703,7 +2705,8 @@
                 <div class="mt-3">
                     <p><strong>Total Cost Before Discount :</strong> {{ cartDetials?.MDR_CONCT_PER_UNIT_SERVICE_COST |
                         number:'1.2-2' }}</p>
-                    <p><strong>Discount Amount :</strong> {{ cartDetials?.MDR_CONCT_SERVICE_DISCNT_AMT | number:'1.2-2' }}
+                    <p><strong>Discount Amount :</strong> {{ cartDetials?.MDR_CONCT_SERVICE_DISCNT_AMT | number:'1.2-2'
+                        }}
                     </p>
                     <p><strong>GST Amount :</strong> {{ cartDetials?.MDR_CONCT_CART_GST_CHARGED_AMT | number:'1.2-2' }}
                     </p>
