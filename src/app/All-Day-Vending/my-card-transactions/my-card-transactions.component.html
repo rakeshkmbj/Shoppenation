@@ -1,0 +1,276 @@
+<div class="content">
+
+    <h1 class="heading-title">View My Transactions</h1>
+
+    <div class="toplevel">
+
+        <div class="row">
+            <div class="col-md-12 text-right mb-3">
+
+                <button type="button" class="btn mr-2 custom-btn" (click)="openChangePassword(changePasswordModal)">
+                    Change Password
+                </button>
+
+            </div>
+        </div>
+
+        <tabset class="col-md-12">
+
+            <tab heading="My Spend On Vend" id="tab2" (selectTab)="onTabChange('tab2')">
+
+                <div class="transaction-filter card p-3 mt-2">
+                    <div class="row align-items-end">
+
+                        <div class="col-md-3">
+                            <label class="filter-label">From Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="fromDate1">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button class="btn btn-primary show-btn" (click)="onSpendOnVend()">
+                                Show Transactions
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div *ngIf="showCardholderSpends" class="card exiting-office-table orderStatus p-0 mt-2">
+
+                    <!-- Card Header -->
+                    <div class="card-header">
+                        <div style="display: flex; flex-direction: column;">
+                            <span>Card Balance: {{cardholderSpends.CurrentBalance}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body pa-0">
+                        <div class="row m-0">
+                            <div class="col-md-12 py-2">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font">Serial#</th>
+                                            <th class="font">Date/Time</th>
+                                            <th class="font">Vending Machine Id</th>
+                                            <th class="font">Location</th>
+                                            <th class="font">Amt Spent</th>
+                                            <th class="font">Drink Id</th>
+                                            <th class="font">Card Balance After Spent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of cardholderSpends?.DebitDetail; let i = index">
+                                            <td>{{ i + 1 }}</td>
+
+                                            <!-- Date/Time -->
+                                            <td>
+                                                {{ item.ADC_MEMBER_DEBIT_TRANS_DATETIME | date:'dd-MMM-yyyy hh:mm a' }}
+                                            </td>
+
+                                            <!-- Vending Machine Id -->
+                                            <td>{{ item.ADC_MEMBER_DEBIT_TRANS_VENDID }}</td>
+
+                                            <!-- Location -->
+                                            <td>
+                                                {{ item.ADC_MEMBER_DEBIT_TRANS_LOCTN || 'N/A' }}
+                                            </td>
+
+                                            <!-- Amount -->
+                                            <td>₹{{ item.ADC_MEMBER_DEBIT_COST_AMT }}</td>
+
+                                            <!-- Drink Id -->
+                                            <td>
+                                                {{ item.ADC_MEMBER_DEBIT_PRODCT_ID }}
+                                            </td>
+
+                                            <!-- Balance After -->
+                                            <td>₹{{ item.ADC_MEMBER_CARD_BAL_AFTER_TRANS }}</td>
+                                        </tr>
+                                    </tbody>
+
+                                    <ng-template #noData>
+                                        <tr>
+                                            <td colspan="7" class="text-center">No transactions found</td>
+                                        </tr>
+                                    </ng-template>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </tab>
+
+            <tab heading="My Card Refill Details" id="tab3" (selectTab)="onTabChange('tab3')">
+
+                <div class="transaction-filter card p-3 mt-2">
+                    <div class="row align-items-end">
+
+                        <div class="col-md-3">
+                            <label class="filter-label">From Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="fromDate2">
+                        </div>
+
+                        <div class="col-md-3">
+                            <button class="btn btn-primary show-btn" (click)="onCardRefillDetails()">
+                                Show Transactions
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div *ngIf="showCardholderRefill" class="card exiting-office-table orderStatus p-0 mt-2">
+
+                    <!-- Card Header -->
+                    <div class="card-header">
+                        <div style="display: flex; flex-direction: column;">
+                            <span>Card Balance: {{cardholderRefill.CurrentBalance}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body pa-0">
+                        <div class="row m-0">
+                            <div class="col-md-12 py-2">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font">Serial#</th>
+                                            <th class="font">Date/Time</th>
+                                            <th class="font">Refill Amt</th>
+                                            <th class="font">Invoice Detail</th>
+                                            <th class="font">Balance After Refill</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="cardholderRefill?.CreditDetail.length; else noRefillData">
+                                        <tr *ngFor="let item of cardholderRefill?.CreditDetail; let i = index">
+
+                                            <!-- Serial -->
+                                            <td>{{ i + 1 }}</td>
+
+                                            <!-- Date/Time -->
+                                            <td>
+                                                {{ item.ADC_MEMBER_CREDIT_TRANS_DATETIME | date:'dd-MMM-yyyy hh:mm a' }}
+                                            </td>
+
+                                            <!-- Refill Amount -->
+                                            <td>₹{{ item.ADC_MEMBER_CREDIT_AMT }}</td>
+
+                                            <!-- Invoice Detail -->
+                                            <td>
+                                                INV-{{ item.ADC_MEMBER_CREDIT_CARTID }}
+                                                ({{ item.ADC_MEMBER_CREDIT_FRM_PORTL_FLG ? 'Online' : 'Offline' }})
+                                            </td>
+
+                                            <!-- Balance After -->
+                                            <td>₹{{ item.ADC_MEMBER_CARD_BAL_AFTER_TRANS }}</td>
+
+                                        </tr>
+                                    </tbody>
+
+                                    <ng-template #noRefillData>
+                                        <tr>
+                                            <td colspan="5" class="text-center">No refill transactions found</td>
+                                        </tr>
+                                    </ng-template>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </tab>
+
+        </tabset>
+
+    </div>
+</div>
+
+<ng-template #changePasswordModal>
+    <div class="modal-header">
+        <h4 class="modal-title">Change Password</h4>
+
+        <button type="button" class="close" (click)="modalRef.hide()">
+            &times;
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="changePasswordForm">
+
+            <div class="row">
+
+                <!-- Current Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Current Password</label>
+
+                        <input type="text" class="form-control" formControlName="currentPassword" disabled>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>New Password</label>
+
+                        <input type="text" class="form-control" formControlName="newPassword" [ngClass]="{
+                     'is-invalid': (submitted || f.newPassword.touched) && f.newPassword.errors
+                   }">
+
+                        <div *ngIf="(submitted || f.newPassword.touched) && f.newPassword.errors"
+                            class="invalid-feedback">
+
+                            <div *ngIf="f.newPassword.errors?.required">
+                                New password is required
+                            </div>
+
+                            <div *ngIf="f.newPassword.errors?.minlength">
+                                Minimum 6 characters required
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+
+                        <input type="text" class="form-control" formControlName="confirmPassword" [ngClass]="{
+                     'is-invalid': (submitted || f.confirmPassword.touched) && (f.confirmPassword.errors || passwordMismatch)
+                   }">
+
+                        <div *ngIf="(submitted || f.confirmPassword.touched) && (f.confirmPassword.errors || passwordMismatch)"
+                            class="invalid-feedback">
+
+                            <div *ngIf="f.confirmPassword.errors?.required">
+                                Confirm password is required
+                            </div>
+
+                            <div *ngIf="passwordMismatch">
+                                Passwords do not match
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Button -->
+            <div class="row">
+                <div class="col-md-12 mt-3 text-right">
+                    <button type="button" class="btn custom-btn" (click)="changePassword()">
+                        Update Password
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</ng-template>

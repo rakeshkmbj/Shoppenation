@@ -15,7 +15,7 @@
         </div>
         <!-- <select class="form-control" formControlName="SUBACCT_OFFICE_ID" (change)="onStoreChange($event)" [ngClass]="{ 'is-invalid': submitted && f.SUBACCT_OFFICE_ID.errors }">
           <option value="">Select</option>
-          <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
+          <option *ngFor="let store of storelist" [value]="store.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
         </select>
         <div *ngIf="submitted && f.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
           <div *ngIf="f.SUBACCT_OFFICE_ID.errors.required">Store is required</div>

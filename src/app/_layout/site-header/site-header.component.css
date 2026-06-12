@@ -1,101 +1,105 @@
 .header {
-    padding: 6px 35px;
-    border-bottom: 5px solid #FF7900;
-    background: #fff;
+  padding: 6px 35px;
+  /* border-bottom: 5px solid #FF7900; */
+  background: #fff;
 }
+
 .logo {
-    text-align: center;
+  text-align: center;
 }
+
 .logo span {
-    display: block;
-    line-height: 12px;
-    font-weight: 600;
-    font-size: 11px;
-    text-align: center;
+  display: block;
+  line-height: 12px;
+  font-weight: 600;
+  font-size: 11px;
+  text-align: center;
 }
 
 .logo img {
-    max-width: 60px;
+  max-width: 80px;
 }
 
 nav.navbar.navbar-light {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
 
 form.form-inline.search-field {
-    position: relative;
-    margin-top: 12px;
+  position: relative;
+  margin-top: 12px;
 }
+
 .search-field input {
-    width: 100%;
+  width: 100%;
 }
 
 button.btn {
-    width: 35px;
-    padding: 0;
-    height: 36px;
-    position: absolute;
-    right: 1px;
-    border: 0;
-    background: #FF7900;
-    border-left: 1px solid #ddd;
-    border-radius: 0 4px 4px 0;
+  width: 35px;
+  padding: 0;
+  height: 36px;
+  position: absolute;
+  right: 1px;
+  border: 0;
+  background: #FF7900;
+  border-left: 1px solid #ddd;
+  border-radius: 0 4px 4px 0;
 }
 
 .btn img {
-    max-width: 20px;
+  max-width: 20px;
 }
 
 .backoffice-login {
-    text-align: center;
-    display: inline-block;
-    cursor: pointer;
-    margin: 10px 20px;
-    opacity: 0.7;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  margin: 10px 20px;
+  opacity: 0.7;
 }
+
 .backoffice-login img {
-    max-width: 30px;
+  max-width: 30px;
 }
 
 .backoffice-login span {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .topnav {
-    text-align: right;
-    position: absolute;
-    right: 15px;
-    z-index: 99;
+  text-align: right;
+  position: absolute;
+  right: 15px;
+  z-index: 99;
 }
 
 .topnav a {
-    display: block;
-    font-size: 10px;
-    color: #ff7900;
-    cursor: pointer;
-    text-decoration: underline;
+  display: block;
+  font-size: 10px;
+  color: #ff7900;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .header a.nav-link {
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-    color: #333;
-    font-weight: 600;
-    font-size: 13px;
-    padding-bottom: 0;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  color: #333;
+  font-weight: 600;
+  font-size: 13px;
+  padding-bottom: 0;
 }
 
 h3 {
-    font-size: 20px;
-    margin: 0;
-    font-weight: bold;
+  font-size: 20px;
+  margin: 0;
+  font-weight: bold;
 }
 
 .helpdesk-icon img {
-    max-width: 18px;
-    opacity: 0.9;
+  max-width: 18px;
+  opacity: 0.9;
 }
 
 .mdrlogin {
@@ -105,15 +109,695 @@ h3 {
 
 @keyframes neonBlink {
   0% {
-    color: #ff00ff; /* neon pink */
+    color: #ff00ff;
+    /* neon pink */
     text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff33ff, 0 0 20px #ff66ff;
   }
+
   50% {
-    color: #a020f0; /* neon purple */
+    color: #a020f0;
+    /* neon purple */
     text-shadow: 0 0 5px #a020f0, 0 0 10px #b266ff, 0 0 20px #cc66ff;
   }
+
   100% {
-    color: #ff00ff; /* back to neon pink */
+    color: #ff00ff;
+    /* back to neon pink */
     text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff33ff, 0 0 20px #ff66ff;
   }
+}
+
+/* Prevent wrapping */
+.header .row {
+  flex-wrap: nowrap;
+}
+
+/* Section spacing */
+.nav-section {
+  gap: 18px;
+  margin-left: 25px;
+}
+
+/* Push login section to right */
+.section-login {
+  margin-left: auto;
+}
+
+/* Reduce icon size */
+.backoffice-login img {
+  max-width: 22px;
+}
+
+/* Reduce font size slightly */
+.backoffice-login span {
+  font-size: 11px;
+}
+
+/* Reduce link font */
+.section-links span {
+  font-weight: 600;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+/* Reduce logo slightly */
+.logo img {
+  max-width: 50px;
+}
+
+/* Reduce overall spacing */
+.backoffice-login {
+  margin: 5px 8px;
+}
+
+.section-links {
+  margin-left: 20px;
+  /* small spacing after logo */
+}
+
+/* Keep proper spacing between sections */
+.section-products {
+  margin-left: 30px;
+}
+
+.section-login {
+  margin-left: 30px;
+}
+
+.section-links a {
+
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #FF7900;
+  /* default orange */
+
+  text-decoration: underline;
+
+  margin-right: 18px;
+
+  transition: color 0.25s ease;
+  cursor: pointer;
+
+}
+
+
+/* Hover effect (slightly darker orange for premium feel) */
+.section-links a:hover {
+
+  color: #cc6100;
+
+}
+
+.applications-box {
+
+  border: 1px solid #d6dde6;
+  border-radius: 10px;
+
+  padding: 6px 16px 8px 16px;
+
+  background: #f8fafc;
+
+}
+
+
+/* Heading */
+.applications-heading {
+
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #2f6fed;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 4px;
+
+}
+
+
+/* Row */
+.applications-list {
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+}
+
+
+/* App item */
+.app-item {
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 4px 6px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+/* Hover */
+.app-item:hover {
+
+  background: #eef4ff;
+
+}
+
+
+/* MDR Connect highlight (subtle, clean) */
+.primary-app {
+
+  font-weight: 600;
+
+  color: #2f6fed;
+
+}
+
+
+/* Icons */
+.app-item img {
+
+  width: 18px;
+  height: 18px;
+
+}
+
+
+/* Text */
+.app-item span {
+
+  font-size: 13px;
+
+}
+
+.applications-heading {
+
+  text-align: center;
+  /* center horizontally */
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #1b3c74;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 6px;
+
+  text-transform: uppercase;
+
+}
+
+
+/* Optional: make box full-width aligned nicely */
+.applications-box {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.section-links a {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* HEADER */
+.header {
+  padding: 6px 20px;
+  border-bottom: 5px solid #FF7900;
+  background: #fff;
+}
+
+/* LOGO FULL HEIGHT */
+.logo {
+  padding: 0 15px;
+}
+
+.logo img {
+  height: 80px;
+  /* 🔥 controls full header height */
+  object-fit: contain;
+}
+
+/* RIGHT CONTAINER */
+.nav-row {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LEFT LINKS */
+.section-links {
+  gap: 22px;
+}
+
+/* RIGHT SIDE */
+.section-login {
+  margin-left: auto;
+  gap: 10px;
+}
+
+/* DROPDOWN FIX */
+.products-dropdown {
+  position: relative;
+}
+
+/* 🔥 CRITICAL: keep hover area alive */
+.products-dropdown {
+  position: relative;
+  padding-bottom: 6px;
+  /* creates invisible hover bridge */
+}
+
+.products-dropdown:hover .products-menu {
+  display: block;
+}
+
+.nav-row {
+  justify-content: space-between;
+}
+
+/* LEFT BLOCK */
+.left-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* RIGHT LOGIN */
+/* .section-login {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+} */
+
+.products-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FF7900;
+}
+
+.links {
+  color: #FF7900;
+  font-size: 18px;
+}
+
+/* 🔥 RIGHT SIDE STRUCTURE */
+.nav-row {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 🔥 HEADING */
+.top-heading {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #5f6f7f;
+  margin-bottom: 6px;
+}
+
+/* 🔥 LEFT LINKS */
+.section-links {
+  gap: 22px;
+}
+
+/* 🔥 RIGHT LOGIN */
+.section-login {
+  margin-left: auto;
+  gap: 10px;
+}
+
+/* 🔥 DROPDOWN FIX (NO FLICKER) */
+.products-dropdown {
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.products-dropdown:hover .products-menu {
+  display: block;
+}
+
+.left-block {
+  display: inline-block;
+  /* 🔥 shrink to content width */
+}
+
+.col {
+  position: relative;
+}
+
+.section-login {
+  position: absolute;
+  right: 20px;
+  bottom: 8px;
+}
+
+/* WRAPPER */
+.products-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* LABEL */
+.products-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #FF7900;
+  cursor: pointer;
+  padding-bottom: 8px;
+  /* 🔥 creates hover bridge */
+}
+
+/* MENU */
+.products-menu {
+  position: absolute;
+  top: 100%;
+  /* directly attached */
+  left: 0;
+  background: #fff;
+  border: 1px solid #d6dde6;
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 999;
+
+  /* 🔥 animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+}
+
+/* 🔥 HOVER AREA FIX (NO GAP) */
+.products-dropdown:hover .products-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.products-menu:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ================= MOBILE TOGGLE ================= */
+.mobile-toggle {
+  font-size: 22px;
+  cursor: pointer;
+  padding: 10px;
+  display: none;
+}
+
+/* ================= DEFAULT DESKTOP ================= */
+.nav-content {
+  display: block;
+}
+
+/* ================= TABLET + MOBILE ================= */
+@media (max-width: 992px) {
+
+  /* Show burger */
+  .mobile-toggle {
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    z-index: 1001;
+  }
+
+  /* Remove forced single row */
+  .header .row {
+    flex-wrap: wrap !important;
+  }
+
+  /* Stack layout */
+  .nav-content {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  /* OPEN STATE */
+  .nav-content.open {
+    max-height: 1000px;
+    padding-top: 50px;
+  }
+
+  /* Center heading */
+  .top-heading {
+    text-align: left;
+    font-size: 16px;
+  }
+
+  /* LINKS STACK */
+  .section-links {
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 0;
+  }
+
+  .links,
+  .products-label {
+    font-size: 14px;
+  }
+
+  /* DROPDOWN FULL WIDTH */
+  .products-menu {
+    position: relative;
+    box-shadow: none;
+    border: none;
+    padding-left: 10px;
+  }
+
+  /* LOGIN SECTION STACK */
+  .section-login {
+    position: static !important;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .backoffice-login {
+    width: 25%;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .backoffice-login span {
+    font-size: 10px;
+  }
+
+  /* LOGO SIZE */
+  .logo img {
+    height: 50px;
+  }
+}
+
+@media (max-width: 992px) {
+
+  /* ===== HEADER CLEAN ===== */
+  .header {
+    padding: 10px 15px;
+  }
+
+  .top-heading {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    padding-right: 40px;
+  }
+
+  /* ===== BURGER ===== */
+  .mobile-toggle {
+    position: absolute;
+    right: 15px;
+    top: 14px;
+    font-size: 22px;
+    z-index: 1001;
+  }
+
+  /* ===== PANEL STYLE (KEY FIX) ===== */
+  .nav-content {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 85%;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 1000;
+    padding: 20px 18px;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .nav-content.open {
+    right: 0;
+  }
+
+  /* ===== REMOVE LOGO INSIDE PANEL ===== */
+  .nav-content .logo {
+    display: none;
+  }
+
+  /* ===== SECTION BLOCK ===== */
+  .mobile-section {
+    margin-top: 25px;
+  }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #8a98a8;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ===== CONTENT LINKS ===== */
+  .mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .links,
+  .products-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FF7900;
+  }
+
+  /* ===== DROPDOWN CLEAN ===== */
+  .products-menu {
+    position: relative;
+    display: none;
+    padding-left: 12px;
+    margin-top: 6px;
+    border-left: 2px solid #eee;
+  }
+
+  .products-dropdown.open .products-menu {
+    display: block;
+  }
+
+  .app-item span {
+    font-size: 13px;
+  }
+
+  /* ===== APPLICATION GRID (KEY FIX) ===== */
+  .applications-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 10px;
+  }
+
+  .backoffice-login {
+    text-align: center;
+    padding: 10px 5px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .backoffice-login:hover {
+    background: #f5f7fb;
+  }
+
+  .backoffice-login img {
+    max-width: 28px;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+
+  .backoffice-login span {
+    font-size: 11px;
+    font-weight: 600;
+    color: #5f6f7f;
+  }
+
+  /* LIGHT overlay instead of heavy fade */
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    /* background: rgba(0, 0, 0, 0.15); */
+    /* 🔥 reduced from 0.25 */
+    z-index: 999;
+  }
+
+  .nav-content {
+    background: #ffffff;
+    /* pure white */
+    opacity: 1 !important;
+  }
+
+  /* improve contrast */
+  .links,
+  .products-label {
+    color: #FF7900;
+  }
+
+  .section-title {
+    color: #2f3e4e;
+  }
+}
+
+@media (max-width: 992px) {
+  .top-heading {
+    font-size: 14px;
+    /* reduced from 16–18 */
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+/* HEADER TITLE NEXT TO LOGO */
+.header-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5f6f7f;
+  line-height: 1.2;
+}
+
+/* MOBILE ONLY TUNING */
+@media (max-width: 992px) {
+
+  .header-title {
+    font-size: 13px;
+    padding-right: 10px;
+  }
+
+  .logo img {
+    height: 45px;
+  }
+
+  .header .row {
+    align-items: center;
+  }
+}
+
+@media (max-width: 992px) {
+
+  .backoffice-login {
+    padding: 4px 2px;
+    /* 🔥 reduce from 6–10px */
+  }
+
+  .backoffice-login img {
+    max-width: 22px;
+    margin-bottom: 3px;
+  }
+
 }

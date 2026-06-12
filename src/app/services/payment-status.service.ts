@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentStatusService {
-  private paymentStatusSubject = new BehaviorSubject<any>(null);
+  private paymentStatusSubject = new Subject<any>();
   paymentStatus$ = this.paymentStatusSubject.asObservable(); // Observable for other components
 
   // Function to update payment status

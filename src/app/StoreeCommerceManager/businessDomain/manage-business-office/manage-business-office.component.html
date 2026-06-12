@@ -186,7 +186,7 @@
                         <td>{{i + 1}}</td>
                         <td>{{retailstore.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</td>
                         <td>{{retailstore.RETAIL_D2C_SUBACCT_OFFICE_ADDRESS}}</td>
-                        <td (click)="setClickedRow(i)" class="delete-icon"><i (click)="getRetailStoreById(retailstore.SUBACCT_OFFICES_RPOSTRY_ID)" class="fa fa-edit"></i></td>
+                        <td (click)="setClickedRow(i)" class="delete-icon"><i (click)="getRetailStoreById(retailstore.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID)" class="fa fa-edit"></i></td>
                         <td class="delete-icon"><i class="fa fa-trash"></i></td>
                     </tr>
 
@@ -242,7 +242,7 @@
                 <tbody>
                     <tr *ngFor="let data of physicalStoreData; index as i">
                         <td>{{i+1}}</td>
-                        <td>{{data.SUBACCT_OFFICES_RPOSTRY_ID}}</td>
+                        <td>{{data.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID}}</td>
                         <td>{{data.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</td>
                         <td>
                             <a placement="top" tooltip="{{data.RETAIL_D2C_SUBACCT_OFFICE_ADDRESS}}">View</a>

@@ -1,0 +1,667 @@
+<div class="content">
+
+    <h1 class="heading-title">Manage Customer Cards</h1>
+
+    <div class="toplevel">
+
+        <form [formGroup]="displayCardHolders">
+
+            <div class="row">
+
+                <div *ngIf="getlogindata.SECND_NODE_SUBACCT_FLG == true" class="col-md-4">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select class="form-control" (change)="changeCountry($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">
+                                {{country.CNTRY_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div *ngIf="getlogindata.SECND_NODE_SUBACCT_FLG == true" class="col-md-4">
+                    <div class="form-group">
+                        <label>State</label>
+                        <select class="form-control" (change)="changeState($event)">
+                            <option value="">Select</option>
+                            <option *ngFor="let state of stateList" [value]="state.STATE_ID">
+                                {{state.STATE_NM}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div *ngIf="getlogindata.SECND_NODE_SUBACCT_FLG == true" class="col-md-4">
+                    <div class="form-group">
+                        <label>My Account's</label>
+
+                        <select class="form-control" formControlName="accId" (change)="onAccountChange($event)">
+
+                            <option value="">Select</option>
+
+                            <option *ngFor="let acc of thirdNodeAccArr" [value]="acc.THIRD_NODE_ACCT_SUBACCT_ID">
+                                {{ acc.RETAIL_D2C_SUBACCT_OFFICE_NAME }}
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Class / Department</label>
+
+                        <select class="form-control" formControlName="classId">
+                            <option value="">Select</option>
+                            <option *ngFor="let classDep of classDepArr" [value]="classDep.ADC_VEND_CLAS_DEPT_ID">
+                                {{ classDep.ADC_VEND_CLAS_DEPT_NAME }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-right mb-3">
+
+                    <button type="button" class="btn mr-2 custom-btn" (click)="DisplayCardHolders()"
+                        [disabled]="!displayCardHolders.get('classId')?.value">
+                        Display Acc. Card User
+                    </button>
+
+                    <button type="button" class="btn mr-2 custom-btn" (click)="addNewClassDep(addNewClassDepartment)"
+                        [disabled]="!displayCardHolders.get('accId')?.value">
+                        Add New Class/Department
+                    </button>
+
+                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)"
+                        [disabled]="!displayCardHolders.get('accId')?.value">
+                        Add New User Card
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+
+        <div *ngIf="cardHolders?.length > 0" class="card exiting-office-table mt-2 pb-0">
+
+            <div class="card-header">
+                Already Added Card Holder(s)
+            </div>
+
+            <div class="card-body pa-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Serial#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Id</th>
+                            <th>Roll No.</th>
+                            <th>Password</th>
+                            <th>Status</th>
+                            <th>Mobile No.</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let user of cardHolders; let i = index">
+
+                            <!-- Serial -->
+                            <td>{{ (i + 1) | number:'2.0' }}</td>
+
+                            <!-- First Name -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_FIRST_NAME }}</td>
+
+                            <!-- Last Name -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_LAST_NAME }}</td>
+
+                            <!-- ID -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_REGID }}</td>
+
+                            <!-- Roll No -->
+                            <td>{{ user.ADC_VEND_ACCOUNT_INTERNL_UID }}</td>
+
+                            <!-- Details -->
+                            <td>
+                                <button (click)="openChangePassword(user, changePasswordModal)"
+                                    class="btn btn-primary btn-sm">
+                                    Change pwd
+                                </button>
+                            </td>
+
+                            <!-- Status -->
+                            <td class="actdct_icon">
+                                <span
+                                    *ngIf="user.ADC_VEND_CARDHOLDR_MALE_FLG || user.ADC_VEND_CARDHOLDR_FEMALE_FLG; else inactive">
+                                    <img src="assets/images/active_icon1.png" width="20">
+                                </span>
+                                <ng-template #inactive>
+                                    <img src="assets/images/deactive_icon.png" width="20">
+                                </ng-template>
+                            </td>
+
+                            <!-- Mobile -->
+                            <td>{{ user.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR }}</td>
+
+                            <!-- Action -->
+                            <td>
+                                <button (click)="viewTransactionModal(viewTransactionsModal, user)"
+                                    class="btn btn-primary btn-sm mr-1">
+                                    View Txns
+                                </button>
+
+                                <button (click)="viewBalance(cardBalanceModal,user)"
+                                    class="btn btn-primary btn-sm mr-1">
+                                    View Bal.
+                                </button>
+
+                                <button (click)="confirmDelete(confirmDeleteModal,user)"
+                                    class="btn btn-primary btn-sm mr-1">
+                                    Delete Card
+                                </button>
+
+                                <span class="icon ml-1">
+                                    <i (click)="editUserCard(addUserCardModal, user)" class="fa fa-edit mt-2"></i>
+                                </span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<ng-template #addUserCardModal>
+    <form [formGroup]="userCardForm" (ngSubmit)="submitUserCard()">
+
+        <div class="modal-header">
+            <h4 class="modal-title">
+                {{ isEditMode ? 'Edit User Card' : 'Add New User Card' }}
+            </h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- Row 1 -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>Card #</label>
+                    <input type="text" class="form-control" formControlName="cardNo">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Card Issued Type</label>
+                    <select class="form-control" formControlName="cardType">
+                        <option value="Student">Student</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Trainees">Trainees</option>
+                        <option value="Visitors">Visitors</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Roll / Admission / ID</label>
+                    <input type="text" class="form-control" formControlName="rollNo">
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" formControlName="firstName">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" formControlName="lastName">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Parent / Guardian Name</label>
+                    <input type="text" class="form-control" formControlName="guardianName">
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>Associated Primary Mobile</label>
+                    <input type="text" class="form-control" formControlName="primaryMobile">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Alternate Mobile</label>
+                    <input type="text" class="form-control" formControlName="altMobile">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Email</label>
+                    <input type="email" class="form-control" formControlName="email">
+                </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="fw-bold">Gender</label>
+
+                    <select class="form-control" formControlName="gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <label>
+                        Class / Department
+                    </label>
+
+                    <select class="form-control" formControlName="classId">
+                        <option value="">Select</option>
+                        <option *ngFor="let classDep of classDepArr" [value]="classDep.ADC_VEND_CLAS_DEPT_ID">
+                            {{ classDep.ADC_VEND_CLAS_DEPT_NAME }}
+                        </option>
+                    </select>
+                </div> -->
+            </div>
+
+            <!-- Photo -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <fieldset class="form-group">
+                            <label class="fw-bold">Attach User Photo</label>
+
+                            <div class="custom-file fileInputProfileWrap">
+                                <input type="file" class="custom-file-input" id="UserPhoto" accept="image/*"
+                                    (change)="onFileSelect($event)">
+
+                                <!-- Filename -->
+                                <label class="custom-file-label" for="UserPhoto">
+                                    {{ uploadLabel || 'Choose file' }}
+                                </label>
+
+                                <!-- Image Preview -->
+                                <div class="img-space mt-2 mb-3" *ngIf="isImageSaved">
+                                    <img [src]="imagePreview" class="img-thumbnail">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-center mt-4">
+                <button class="btn btn-danger px-4" type="submit" [disabled]="userCardForm.invalid">
+                    {{ isEditMode ? 'Edit User Card' : 'Add New User Card' }}
+                </button>
+            </div>
+
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #confirmDeleteModal>
+    <form (ngSubmit)="deleteCard()">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Confirm Delete</h4>
+
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row mb-3">
+
+                <div class="col-md-10">
+                    <label>Confirmation</label>
+                    <select class="form-control" [(ngModel)]="confirmation" name="confirmation">
+                        <option value="">Select</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="text-right mt-4">
+                <button class="btn btn-danger px-4" type="submit">
+                    Submit
+                </button>
+            </div>
+
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #addNewClassDepartment>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Add New Class Department
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <!-- Row 1 -->
+        <div class="row mb-3">
+            <div class="col-md-10">
+                <label>Class/Department Name</label>
+                <input type="text" class="form-control" [(ngModel)]="classDepName" name="classDepName">
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center mt-4">
+            <button (click)="submitAddClassDep()" class="btn btn-danger px-4" type="submit">
+                Add
+            </button>
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template #changePasswordModal>
+    <div class="modal-header">
+        <h4 class="modal-title">Change Password</h4>
+
+        <button type="button" class="close" (click)="modalRef.hide()">
+            &times;
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="changePasswordForm">
+
+            <div class="row">
+
+                <!-- Current Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Current Password</label>
+
+                        <input type="text" class="form-control" formControlName="currentPassword" disabled>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>New Password</label>
+
+                        <input type="text" class="form-control" formControlName="newPassword" [ngClass]="{
+                     'is-invalid': (submitted || f.newPassword.touched) && f.newPassword.errors
+                   }">
+
+                        <div *ngIf="(submitted || f.newPassword.touched) && f.newPassword.errors"
+                            class="invalid-feedback">
+
+                            <div *ngIf="f.newPassword.errors?.required">
+                                New password is required
+                            </div>
+
+                            <div *ngIf="f.newPassword.errors?.minlength">
+                                Minimum 6 characters required
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+
+                        <input type="text" class="form-control" formControlName="confirmPassword" [ngClass]="{
+                     'is-invalid': (submitted || f.confirmPassword.touched) && (f.confirmPassword.errors || passwordMismatch)
+                   }">
+
+                        <div *ngIf="(submitted || f.confirmPassword.touched) && (f.confirmPassword.errors || passwordMismatch)"
+                            class="invalid-feedback">
+
+                            <div *ngIf="f.confirmPassword.errors?.required">
+                                Confirm password is required
+                            </div>
+
+                            <div *ngIf="passwordMismatch">
+                                Passwords do not match
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Button -->
+            <div class="row">
+                <div class="col-md-12 mt-3 text-right">
+                    <button type="button" class="btn custom-btn" (click)="changePassword()">
+                        Update Password
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #cardBalanceModal>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Card Balance
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-6 text-center">
+                <div class="balance-card">
+
+                    <label class="balance-label">Available Balance</label>
+
+                    <h2 class="balance-amount">
+                        ₹ {{ cardBalance || 0 }}
+                    </h2>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Button -->
+        <div class="row mt-3">
+            <div class="col-md-12 text-right">
+                <button type="button" class="btn custom-btn" (click)="modalRef.hide()">
+                    Close
+                </button>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template #viewTransactionsModal>
+
+    <div class="modal-header">
+        <h4 class="modal-title">
+            View My Transactions
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <tabset class="col-md-12">
+
+            <!-- 🔹 TAB 1: Spend -->
+            <tab heading="My Spend On Vend" (selectTab)="onTabChange('tab2')">
+
+                <!-- Filter -->
+                <div class="transaction-filter card p-3 mt-2">
+                    <div class="row align-items-end">
+
+                        <div class="col-md-4">
+                            <label>From Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="fromDate1">
+                        </div>
+
+                        <div class="col-md-4">
+                            <button class="btn btn-primary mt-4" (click)="onSpendOnVend()">
+                                Show Transactions
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div *ngIf="showCardholderSpends" class="card mt-3">
+
+                    <div class="card-header">
+                        <span><b>Balance:</b> ₹{{cardholderSpends?.CurrentBalance}}</span>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date/Time</th>
+                                    <th>Vend ID</th>
+                                    <th>Location</th>
+                                    <th>Amount</th>
+                                    <th>Product</th>
+                                    <th>Balance After</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngIf="cardholderSpends?.DebitDetail?.length; else noSpend">
+                                <tr *ngFor="let item of cardholderSpends.DebitDetail; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ item.ADC_MEMBER_DEBIT_TRANS_DATETIME | date:'dd-MMM-yyyy hh:mm a' }}</td>
+                                    <td>{{ item.ADC_MEMBER_DEBIT_TRANS_VENDID }}</td>
+                                    <td>{{ item.ADC_MEMBER_DEBIT_TRANS_LOCTN || 'N/A' }}</td>
+                                    <td>₹{{ item.ADC_MEMBER_DEBIT_COST_AMT }}</td>
+                                    <td>{{ item.ADC_MEMBER_DEBIT_PRODCT_ID }}</td>
+                                    <td>₹{{ item.ADC_MEMBER_CARD_BAL_AFTER_TRANS }}</td>
+                                </tr>
+                            </tbody>
+
+                            <ng-template #noSpend>
+                                <tr>
+                                    <td colspan="7" class="text-center">No transactions found</td>
+                                </tr>
+                            </ng-template>
+
+                        </table>
+                    </div>
+                </div>
+
+            </tab>
+
+            <!-- 🔹 TAB 2: Refill -->
+            <tab heading="My Card Refill" (selectTab)="onTabChange('tab3')">
+
+                <!-- Filter -->
+                <div class="transaction-filter card p-3 mt-2">
+                    <div class="row align-items-end">
+
+                        <div class="col-md-4">
+                            <label>From Date</label>
+                            <input type="date" class="form-control" [(ngModel)]="fromDate2">
+                        </div>
+
+                        <div class="col-md-4">
+                            <button class="btn btn-primary mt-4" (click)="onCardRefillDetails()">
+                                Show Transactions
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div *ngIf="showCardholderRefill" class="card mt-3">
+
+                    <div class="card-header">
+                        <span><b>Balance:</b> ₹{{cardholderRefill?.CurrentBalance}}</span>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date/Time</th>
+                                    <th>Refill Amt</th>
+                                    <th>Invoice</th>
+                                    <th>Balance After</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngIf="cardholderRefill?.CreditDetail?.length; else noRefill">
+                                <tr *ngFor="let item of cardholderRefill.CreditDetail; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ item.ADC_MEMBER_CREDIT_TRANS_DATETIME | date:'dd-MMM-yyyy hh:mm a' }}
+                                    </td>
+                                    <td>₹{{ item.ADC_MEMBER_CREDIT_AMT }}</td>
+                                    <td>
+                                        INV-{{ item.ADC_MEMBER_CREDIT_CARTID }}
+                                        ({{ item.ADC_MEMBER_CREDIT_FRM_PORTL_FLG ? 'Online' : 'Offline' }})
+                                    </td>
+                                    <td>₹{{ item.ADC_MEMBER_CARD_BAL_AFTER_TRANS }}</td>
+                                </tr>
+                            </tbody>
+
+                            <ng-template #noRefill>
+                                <tr>
+                                    <td colspan="5" class="text-center">No refill transactions found</td>
+                                </tr>
+                            </ng-template>
+
+                        </table>
+                    </div>
+                </div>
+
+            </tab>
+
+        </tabset>
+
+        <!-- Footer -->
+        <div class="text-center mt-3">
+            <button class="btn btn-danger px-4" (click)="modalRef.hide()">Close</button>
+        </div>
+
+    </div>
+
+</ng-template>

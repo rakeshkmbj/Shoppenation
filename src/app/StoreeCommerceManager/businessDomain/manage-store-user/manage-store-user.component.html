@@ -14,13 +14,6 @@
                         <div class="form-control form-level no-border">
                             {{storeName}}
                         </div>
-                        <!-- <select class="form-control" formControlName="SUBACCT_OFFICE_ID" (change)="onStoreChange($event)" [ngClass]="{ 'is-invalid': submitted && f.SUBACCT_OFFICE_ID.errors }">
-          <option selected value="">Select</option>
-          <option *ngFor="let store of storelist" [value]="store.SUBACCT_OFFICES_RPOSTRY_ID">{{store.RETAIL_D2C_SUBACCT_OFFICE_NAME}}</option>
-        </select>
-        <div *ngIf="submitted && f.SUBACCT_OFFICE_ID.errors" class="invalid-feedback">
-          <div *ngIf="f.SUBACCT_OFFICE_ID.errors.required">Store is required</div>
-      </div>  -->
                     </div>
                 </div>
             </div>
@@ -283,6 +276,10 @@
                             <option value="4">Store Order Packaging Incharge</option>
                             <option value="5">Store Inventory Incharge</option>
                             <option value="6">Finncial Accounts Incharge</option>
+
+                            <option value="51">DATA SOURCE MAKER</option>
+                            <option value="52">DATA CHECKER</option>
+                            <option value="53">DATA PUBLISHER</option>
 
                             <option *ngIf="SECONDRY_SELLER_FLG == true" value="15">SFA TERITIARY SALES</option>
                             <option *ngIf="PRIMARY_SELLER_FLG == true" value="16">SFA SECONDARY SALES</option>

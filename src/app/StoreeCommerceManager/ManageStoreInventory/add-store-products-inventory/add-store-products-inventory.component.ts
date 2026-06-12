@@ -87,7 +87,7 @@ export class AddStoreProductsInventoryComponent implements OnInit {
       this.getlogindata = JSON.parse(this.getlogindata);
       this.accountid = this.getlogindata.RETAIL_D2C_ACCT_ID;
       this.subaccountid = this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID;
-      this.storeid = this.getlogindata.SUBACCT_OFFICES_RPOSTRY_ID;
+      this.storeid = this.getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID;
       this.storeName = this.getlogindata.RETAIL_D2C_SUBACCT_OFFICE_NAME;
      }
 
@@ -187,6 +187,9 @@ this.newSelfForm = this.formBuilder.group({
 
 
   getAllItemSubItemAvailableForInventory() {
+
+    console.log("Display subitem payload: ",'/GetAllItemSubItemAvailableForInventory' + "/" + this.domainid + "/" + this.accountid + "/" + this.subaccountid + "/" + this.storeid + "/" + this.productID + "/" + this.itemId)
+
     this.apiService.getCall(this.apiService.baseURL + '/GetAllItemSubItemAvailableForInventory' + "/" + this.domainid + "/" + this.accountid + "/" + this.subaccountid + "/" + this.storeid + "/" + this.productID + "/" + this.itemId)
     .subscribe(data => {
       this.productLineInventoryList = data;

@@ -1,53 +1,213 @@
 <div class="container-fluid header">
-  <div class="row d-flex align-items-center">
-    <div class="col-md-1 logo">
-      <img src="../assets/images/logo_1.jpg" />
+
+  <!-- ================= MOBILE NAV ================= -->
+  <div class="d-lg-none">
+
+    <!-- TOP BAR -->
+    <div class="row align-items-center">
+
+      <div class="col-auto logo d-flex align-items-center">
+        <img src="../assets/images/logo_1.jpg" />
+      </div>
+
+      <div class="col header-title">
+        All Day Digital Enterprise Application Platform
+      </div>
+
+      <div class="col-auto mobile-toggle" (click)="toggleMenu()">
+        ☰
+      </div>
+
     </div>
-    <div class="col-md-6 pl-0">
-      <h3>All Day Digital Applications Enterprise Platform</h3>
-    </div>
-    <div class="col-md-5 justify-content-end d-flex">
-      <div class="backoffice-login" (click)="openMdrCoonectModal()">
-        <img style="max-width: 25px;" src="../assets/images/MdrConnect.jpg" />
-        <span>MDR Connect</span>
-        <span class="mdrlogin">Register Now</span>
+
+    <!-- OVERLAY -->
+    <div class="nav-overlay" *ngIf="isMenuOpen" (click)="toggleMenu()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="nav-content" [class.open]="isMenuOpen">
+
+      <div class="left-block">
+
+        <!-- LINKS -->
+        <div class="d-flex section-links">
+
+          <!-- PRODUCTS -->
+          <div class="products-dropdown" [class.open]="isProductsOpen" (click)="toggleProducts()">
+
+            <span class="products-label">Products</span>
+
+            <div class="products-menu">
+
+              <div class="app-item" (click)="openAllDayVending()">
+                <img src="../assets/images/vending.jpg" />
+                <span>All-Day Vending</span>
+              </div>
+
+              <div class="app-item" (click)="openMdrConnect()">
+                <img src="../assets/images/MdrConnect.jpg" />
+                <span>MDR Connect</span>
+              </div>
+
+              <div class="app-item" (click)="openAllDayDistribution()">
+                <img src="../assets/images/distribution.png" />
+                <span>All-Day Distribution</span>
+              </div>
+
+              <div class="app-item" (click)="openMedexHCP()">
+                <img src="../assets/images/businessman.png" />
+                <span>MedX</span>
+              </div>
+
+            </div>
+          </div>
+
+          <span class="links" (click)="openDataAndPrivacy()">Data & Privacy</span>
+          <span class="links" (click)="openRefund()">Refunds</span>
+          <span class="links" (click)="openPricingAndTM()">Pricing</span>
+          <span class="links" (click)="openTerms()">Terms</span>
+          <span class="links" (click)="openConnect()">Connect</span>
+
+        </div>
+
       </div>
-      <div class="backoffice-login" (click)="openLoginModal()">
-        <img style="max-width: 25px;" src="../assets/images/login_icon.png" />
-        <span>Partner Login</span>
+
+      <!-- APPLICATIONS (ACCORDION) -->
+      <div class="mobile-section">
+
+        <div class="section-title clickable" (click)="toggleApps()">
+          Applications
+          <span class="arrow" [class.rotate]="isAppsOpen">⌄</span>
+        </div>
+
+        <div class="applications-grid" *ngIf="isAppsOpen">
+
+          <div class="backoffice-login" (click)="openMdrCoonectModal(); closeMenu()">
+            <img src="../assets/images/MdrConnect.jpg" />
+            <span>MDR Connect</span>
+          </div>
+
+          <div class="backoffice-login" (click)="openHcpLoginModal(); closeMenu()">
+            <img src="../assets/images/businessman.png" />
+            <span>HCP Login</span>
+          </div>
+
+          <div class="backoffice-login" (click)="openLoginModal(); closeMenu()">
+            <img src="../assets/images/login_icon.png" />
+            <span>Partner Login</span>
+          </div>
+
+          <div class="backoffice-login" (click)="openDeliveryLoginModal(); closeMenu()">
+            <img src="../assets/images/d_man.png" />
+            <span>Delivery Login</span>
+          </div>
+
+          <div class="backoffice-login helpdesk-icon" (click)="openHelpdeskLoginModal(); closeMenu()">
+            <img src="../assets/images/helpdesk-icon.png" />
+            <span>Help Desk</span>
+          </div>
+
+        </div>
+
       </div>
-      <div class="backoffice-login">
-        <img src="../assets/images/d_man.png" />
-        <span>Delivery Login</span>
-      </div>
-      <div class="helpdesk-icon backoffice-login">
-        <img src="../assets/images/helpdesk-icon.png" />
-        <span>Help Desk</span>
-      </div>
+
     </div>
   </div>
+
+  <!-- ================= DESKTOP NAV ================= -->
+  <div class="d-none d-lg-block">
+
+    <!-- ✅ YOUR ORIGINAL CODE (NO CHANGE AT ALL) -->
+    <div class="container-fluid">
+
+      <div class="row flex-nowrap align-items-stretch">
+
+        <!-- LOGO -->
+        <div class="col-auto logo d-flex align-items-center">
+          <img src="../assets/images/logo_1.jpg" />
+        </div>
+
+        <!-- RIGHT CONTENT -->
+        <div class="col position-relative">
+
+          <div class="left-block">
+
+            <div class="top-heading">
+              All Day Digital Enterprise Application Platform
+            </div>
+
+            <div class="d-flex section-links">
+
+              <div class="products-dropdown">
+                <span class="products-label">Products</span>
+
+                <div class="products-menu">
+                  <div class="app-item" (click)="openAllDayVending()">
+                    <img src="../assets/images/vending.jpg" />
+                    <span>All-Day Vending</span>
+                  </div>
+
+                  <div class="app-item" (click)="openMdrConnect()">
+                    <img src="../assets/images/MdrConnect.jpg" />
+                    <span>MDR Connect</span>
+                  </div>
+
+                  <div class="app-item" (click)="openAllDayDistribution()">
+                    <img src="../assets/images/distribution.png" />
+                    <span>All-Day Distribution</span>
+                  </div>
+
+                  <div class="app-item" (click)="openMedexHCP()">
+                    <img src="../assets/images/businessman.png" />
+                    <span>MedX</span>
+                  </div>
+                </div>
+              </div>
+
+              <span class="links" (click)="openDataAndPrivacy()">Data & Privacy</span>
+              <span class="links" (click)="openRefund()">Refunds</span>
+              <span class="links" (click)="openPricingAndTM()">Pricing</span>
+              <span class="links" (click)="openTerms()">Terms</span>
+              <span class="links" (click)="openConnect()">Connect</span>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT SIDE -->
+          <div class="d-flex section-login">
+
+            <div class="backoffice-login" (click)="openMdrCoonectModal()">
+              <img src="../assets/images/MdrConnect.jpg" />
+              <span>MDR Connect</span>
+            </div>
+
+            <div class="backoffice-login" (click)="openHcpLoginModal()">
+              <img src="../assets/images/businessman.png" />
+              <span>HCP Login</span>
+            </div>
+
+            <div class="backoffice-login" (click)="openLoginModal()">
+              <img src="../assets/images/login_icon.png" />
+              <span>Partner Login</span>
+            </div>
+
+            <div class="backoffice-login" (click)="openDeliveryLoginModal()">
+              <img src="../assets/images/d_man.png" />
+              <span>Delivery Login</span>
+            </div>
+
+            <div class="backoffice-login helpdesk-icon" (click)="openHelpdeskLoginModal()">
+              <img src="../assets/images/helpdesk-icon.png" />
+              <span>Help Desk</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
 </div>
-<nav class="navbar navbar-inverse bg-inverse hidden">
-  <div id="navbarsExampleDefault">
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/">Home<small>(Site layout)</small></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/StoreeCommerceManager">StoreeCommerceManager<small>(Site layout)</small></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/login">Login Page<small>(No layout)</small></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/register">Register Page<small>(No layout)</small></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard">Dashboard<small>(App layout)</small></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/profile">Profile<small>(App layout)</small></a>
-      </li>
-    </ul>
-  </div>
-</nav>

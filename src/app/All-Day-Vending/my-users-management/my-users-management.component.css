@@ -1,0 +1,99 @@
+.details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* space between rows */
+  width: 100%;
+  padding: 10px 0;
+}
+
+
+.details-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 6px 0;
+}
+
+.details-row label {
+  flex: 0 0 50%; /* take up 50% of width */
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.details-row span {
+  flex: 1;
+  text-align: right;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.details-photo {
+  height: 80px;      /* fixed image height */
+  width: auto;       /* maintain aspect ratio */
+  object-fit: cover;
+}
+
+
+.heading h2 {
+    padding: 10px 5px 10px;
+    font-size: 20px;
+}
+
+.topLevel {
+    background: #fff;
+    padding: 20px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.custom-file {
+     height: 100%;
+}
+
+h1.heading-title {
+  
+
+    span {
+        font-size: 10px;
+        text-transform: inherit;
+        background: #495057;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 25px;
+    }
+}
+
+h1.heading-title img {
+    max-width: 65px;
+    margin-right: 5px;
+}
+
+h1.heading-title small {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 13px;
+    position: absolute;
+    left: 80px;
+    bottom: 4px;
+    color: grey;
+}
+
+.table th, .table td {
+    padding: 5px;
+    line-height: 18px;
+}
+
+td.actdct_icon img {
+    max-width: 25px;
+}
+
+.search-list-label {
+    margin-bottom: 5px;
+}
+
+.btn {
+    font-size: 14px;
+    min-height: 36px;
+}

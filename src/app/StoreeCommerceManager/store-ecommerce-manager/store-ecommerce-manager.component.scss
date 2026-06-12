@@ -522,11 +522,31 @@ button#button-basic {
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(3, auto);
-  /* 2–3 rows */
   align-items: start;
-  font-size: 10px;
-  line-height: 1.2;
+
+  column-gap: 20px;   /* spacing between columns */
+  row-gap: 4px;       /* spacing between rows */
+
+  font-size: 11px;    /* slightly readable */
+  line-height: 1;   /* FIX: was too tight */
   white-space: nowrap;
+}
+
+/* remove default p spacing issue */
+.nav-item p {
+  margin: 0;
+}
+
+/* better label/value separation */
+.nav-highlight {
+  font-weight: 600;
+  color: #c0392b;
+}
+
+.nav-highlight span {
+  color: #333;
+  margin-left: 4px;
+  font-weight: 500;
 }
 
 /* Individual cells */
@@ -650,4 +670,48 @@ button#button-basic {
 .flag-icon.no {
   color: red;
   font-weight: 700;
+}
+
+.account-modal {
+  font-size: 13px;
+}
+
+.info-block {
+  margin-bottom: 10px;
+}
+
+.info-block label {
+  font-size: 11px;
+  color: #777;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ok {
+  color: #28a745;
+}
+
+.no {
+  color: #dc3545;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+.hierarchy-row span {
+  font-weight: 600;
 }

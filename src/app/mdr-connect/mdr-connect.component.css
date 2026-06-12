@@ -235,3 +235,97 @@ th {
   color: #000;
 }
 
+@media (max-width: 768px) {
+
+  .custom-header {
+    display: flex;
+    align-items: flex-start;   /* 🔥 important */
+    justify-content: space-between;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mdrimg {
+    height: 40px;
+    width: auto;
+  }
+
+  .title-wrapper {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .modal-title {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .modal-title.subtitle {
+    font-size: 12px;
+    color: #7a8896;
+  }
+
+  .close-btn {
+    font-size: 22px;
+    line-height: 1;
+  }
+}
+
+/* ================= DESKTOP FIX ================= */
+@media (min-width: 769px) {
+
+  .custom-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 15px 20px;
+  }
+
+  /* LEFT: LOGO ONLY */
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .img-container {
+    margin-right: 10px;
+  }
+
+  .mdrimg {
+    height: 60px;   /* restore proper desktop size */
+    width: auto;
+  }
+
+  /* 🔥 CENTER TITLE */
+  .title-wrapper {
+    text-align: center;
+    width: 100%;
+  }
+
+  .modal-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .modal-title.subtitle {
+    font-size: 22px;
+    color: #7a8896;
+    font-weight: 600;
+  }
+
+  /* RIGHT: CLOSE */
+  .close-btn {
+    font-size: 28px;
+    justify-self: end;
+  }
+}

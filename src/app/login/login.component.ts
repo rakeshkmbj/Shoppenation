@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit {
       UserLoginMobileNumber: +this.loginForm.value.mobile,
       UserLoginPassword: this.loginForm.value.password,
       MDR_App_Flg: this.platformId == 3 ? true : false,
-      Distribution_App_Flg: this.platformId == 2 ? true : false
+      Distribution_App_Flg: this.platformId == 2 || this.platformId == 4 ? true : false
     }
 
     console.log(loginData)

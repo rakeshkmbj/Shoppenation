@@ -165,7 +165,7 @@ export class BusinessAccountAllocationComponent implements OnInit {
     this.getlogindata = JSON.parse(this.getlogindata);
     this.accountid = this.getlogindata.RETAIL_D2C_ACCT_ID;
     this.subaccountid = this.getlogindata.RETAIL_D2C_USR_SUBACCT_ID;
-    this.storeid = this.getlogindata.SUBACCT_OFFICES_RPOSTRY_ID;
+    this.storeid = this.getlogindata.RETAIL_D2C_ACCT_INTRNL_OFFICE_REGID;
     this.PRIMARY_SELLER_FLG = this.apiService.requiredLoginData.PRIMARY_SELLER_FLG;
     this.SECONDRY_SELLER_FLG = this.apiService.requiredLoginData.SECONDRY_SELLER_FLG;
     this.TERITIARY_SELLER_FLG = this.apiService.requiredLoginData.TERITIARY_SELLER_FLG;
