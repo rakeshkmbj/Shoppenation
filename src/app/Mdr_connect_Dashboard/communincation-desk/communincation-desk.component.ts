@@ -5,7 +5,7 @@ import {Paginator} from '../../_models/pagination'
 @Component({
   selector: 'app-communincation-desk',
   templateUrl: './communincation-desk.component.html',
-  styleUrls: ['./communincation-desk.component.css']
+  styleUrls: ['./communincation-desk.component.scss']
 })
 export class CommunincationDeskComponent implements OnInit {
  modalRef!: BsModalRef;

@@ -48,7 +48,7 @@ interface MdrRegistrationRequest {
 @Component({
   selector: 'app-mdr-connect',
   templateUrl: './mdr-connect.component.html',
-  styleUrls: ['./mdr-connect.component.css'],
+  styleUrls: ['./mdr-connect.component.scss'],
 })
 export class MdrConnectComponent implements OnInit {
   modalRef: BsModalRef;

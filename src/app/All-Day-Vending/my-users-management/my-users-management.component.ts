@@ -8,7 +8,7 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-my-users-management',
   templateUrl: './my-users-management.component.html',
-  styleUrls: ['./my-users-management.component.css']
+  styleUrls: ['./my-users-management.component.scss']
 })
 export class MyUsersManagementComponent implements OnInit {
 

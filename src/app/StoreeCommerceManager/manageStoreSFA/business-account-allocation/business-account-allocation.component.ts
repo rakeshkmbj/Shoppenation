@@ -123,7 +123,7 @@ interface Credentials {
 @Component({
   selector: 'app-business-account-allocation',
   templateUrl: './business-account-allocation.component.html',
-  styleUrls: ['./business-account-allocation.component.css']
+  styleUrls: ['./business-account-allocation.component.scss']
 })
 export class BusinessAccountAllocationComponent implements OnInit {
 

@@ -14,7 +14,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-refill-my-card',
   templateUrl: './refill-my-card.component.html',
-  styleUrls: ['./refill-my-card.component.css']
+  styleUrls: ['./refill-my-card.component.scss']
 })
 export class RefillMyCardComponent implements OnInit {
 

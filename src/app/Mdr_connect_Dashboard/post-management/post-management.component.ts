@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-post-management',
   templateUrl: './post-management.component.html',
-  styleUrls: ['./post-management.component.css']
+  styleUrls: ['./post-management.component.scss']
 })
 export class PostManagementComponent implements OnInit {
   modalRef!: BsModalRef;

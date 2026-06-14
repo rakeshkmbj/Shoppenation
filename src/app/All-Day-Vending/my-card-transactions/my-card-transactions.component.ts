@@ -9,7 +9,7 @@ import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-my-card-transactions',
   templateUrl: './my-card-transactions.component.html',
-  styleUrls: ['./my-card-transactions.component.css']
+  styleUrls: ['./my-card-transactions.component.scss']
 })
 export class MyCardTransactionsComponent implements OnInit {
 
