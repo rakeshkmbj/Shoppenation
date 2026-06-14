@@ -7,7 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-mdr-connect',
   templateUrl: './mdr-connect.component.html',
-  styleUrls: ['./mdr-connect.component.css']
+  styleUrls: ['./mdr-connect.component.scss']
 })
 export class MdrConnectComponent2 implements OnInit {
 

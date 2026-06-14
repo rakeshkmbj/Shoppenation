@@ -10,7 +10,7 @@ import { PaymentStatusService } from 'src/app/services/payment-status.service';
 @Component({
   selector: 'app-buy-services',
   templateUrl: './buy-services.component.html',
-  styleUrls: ['./buy-services.component.css']
+  styleUrls: ['./buy-services.component.scss']
 })
 export class BuyServicesComponent implements OnInit {
 

@@ -522,7 +522,7 @@ button#button-basic {
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(3, auto);
-  align-items: start;
+  align-items: flex-start;
 
   column-gap: 20px;   /* spacing between columns */
   row-gap: 4px;       /* spacing between rows */

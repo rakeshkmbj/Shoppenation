@@ -10,7 +10,7 @@ import { RazorpayService } from '../../razorpay.service';
 @Component({
   selector: 'app-manage-customer-card',
   templateUrl: './manage-customer-card.component.html',
-  styleUrls: ['./manage-customer-card.component.css']
+  styleUrls: ['./manage-customer-card.component.scss']
 })
 export class ManageCustomerCardComponent implements OnInit {
 

@@ -9,7 +9,7 @@ import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-account-management',
   templateUrl: './account-management.component.html',
-  styleUrls: ['./account-management.component.css']
+  styleUrls: ['./account-management.component.scss']
 })
 export class AccountManagementComponent implements OnInit {
 

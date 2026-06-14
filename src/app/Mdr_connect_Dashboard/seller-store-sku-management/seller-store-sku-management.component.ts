@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-seller-store-sku-management',
   templateUrl: './seller-store-sku-management.component.html',
-  styleUrls: ['./seller-store-sku-management.component.css']
+  styleUrls: ['./seller-store-sku-management.component.scss']
 })
 export class SellerStoreSkuManagementComponent implements OnInit {
 
