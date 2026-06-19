@@ -36,6 +36,26 @@ export class HomeComponent implements OnInit {
     private formBuilder: FormBuilder
   ) { }
 
+  slides = [
+    '../assets/images/11.png',
+    '../assets/images/22.png',
+    '../assets/images/33.png',
+    '../assets/images/44.png'
+  ];
+
+  currentIndex2 = 0;
+
+
+  getPrevIndex() {
+    return this.currentIndex2 === 0
+      ? this.slides.length - 1
+      : this.currentIndex2 - 1;
+  }
+
+  getNextIndex() {
+    return (this.currentIndex2 + 1) % this.slides.length;
+  }
+
   domainimages = [
     { img: "../assets/images/domain images/restaurants.png", name: "Restaurants & F&B" },
     { img: "../assets/images/domain images/newfmcg.jpg", name: "FMCG" },
@@ -74,6 +94,11 @@ export class HomeComponent implements OnInit {
       mobileNumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       // password: ['', Validators.required]
     });
+
+    setInterval(() => {
+      this.currentIndex2 =
+        (this.currentIndex2 + 1) % this.slides.length;
+    }, 3500);
 
     setInterval(() => {
       this.nextSlide();

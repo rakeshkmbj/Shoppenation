@@ -2,55 +2,91 @@
 <carousel [noPause]="false">
 
   <slide>
+    <img src="../assets/images/4.png" class="w-100" />
+
+    <div class="hero-overlay-content">
+      <h2>
+        Ability to Bridge
+        <span>Business to Business</span>
+        & Direct to Consumers Commerce
+      </h2>
+    </div>
+  </slide>
+
+  <slide>
+    <img src="../assets/images/5.png" class="w-100" />
+
+    <div class="hero-overlay-content">
+      <h2>
+        Ability to Bridge
+        <span>Business to Business</span>
+        & Direct to Consumers Commerce
+      </h2>
+    </div>
+  </slide>
+
+  <slide>
     <img src="../assets/images/1.png" class="w-100" />
 
-    <!-- 🔥 TEXT NOW VISIBLE ON ALL DEVICES -->
-    <div class="carousel-caption custom-caption">
-      <h3>
-        Do More Of ....<br>
-        <span>What Makes You Happy</span>
-      </h3>
-
-      <p>
-        Ability to Bridge<br>
-        Business to Business & Direct to Consumers Commerce
-      </p>
+    <div class="hero-overlay-content">
+      <h2>
+        Ability to Bridge
+        <span>Business to Business</span>
+        & Direct to Consumers Commerce
+      </h2>
     </div>
   </slide>
 
   <slide>
     <img src="../assets/images/2.png" class="w-100" />
 
-    <div class="carousel-caption custom-caption">
-      <h3>
-        Do More Of ....<br>
-        <span>What Makes You Happy</span>
-      </h3>
-
-      <p>
-        Ability to Bridge<br>
-        Business to Business & Direct to Consumers Commerce
-      </p>
+    <div class="hero-overlay-content">
+      <h2>
+        Ability to Bridge
+        <span>Business to Business</span>
+        & Direct to Consumers Commerce
+      </h2>
     </div>
   </slide>
 
   <slide>
     <img src="../assets/images/3.png" class="w-100" />
 
-    <div class="carousel-caption custom-caption">
-      <h3>
-        Do More Of ....<br>
-        <span>What Makes You Happy</span>
-      </h3>
-
-      <p>
-        Ability to Bridge<br>
-        Business to Business & Direct to Consumers Commerce
-      </p>
+    <div class="hero-overlay-content">
+      <h2>
+        Ability to Bridge
+        <span>Business to Business</span>
+        & Direct to Consumers Commerce
+      </h2>
     </div>
   </slide>
 
 </carousel>
+
+
+<section class="platform-showcase">
+
+  <div class="section-header">
+    <h2>Our Next Generation Ecosystems</h2>
+  </div>
+
+  <div class="custom-slider">
+
+    <div class="side-card left">
+      <img [src]="slides[getPrevIndex()]" />
+    </div>
+
+    <div class="center-card">
+      <img [src]="slides[currentIndex2]" />
+    </div>
+
+    <div class="side-card right">
+      <img [src]="slides[getNextIndex()]" />
+    </div>
+
+  </div>
+
+</section>
 
 
 <!-- ================= SERVICES ================= -->
@@ -63,12 +99,9 @@
     </div>
 
     <div class="domain-carousel-wrapper">
-      <div class="domain-carousel-track"
-           [style.transform]="'translateX(-' + (currentIndex * 25) + '%)'">
+      <div class="domain-carousel-track" [style.transform]="'translateX(-' + (currentIndex * 25) + '%)'">
 
-        <div class="domain-carousel-item"
-             *ngFor="let item of domainimages"
-             (click)="openLoginModal()">
+        <div class="domain-carousel-item" *ngFor="let item of domainimages" (click)="openLoginModal()">
 
           <section class="gray-scale-frame">
             <div class="content">
@@ -119,7 +152,8 @@
             <div class="col-lg-5 col-12 text-center text-lg-start">
               <p><strong><u>Revolution for Businesses</u></strong></p>
               <p>
-                Selling online with your own website powered with an e-commerce engine integrated with your brand and marketplace has never been easier.
+                Selling online with your own website powered with an e-commerce engine integrated with your brand and
+                marketplace has never been easier.
               </p>
             </div>
 
@@ -130,8 +164,7 @@
       </div>
 
       <div class="col-lg-2 col-12 text-center mt-3 mt-lg-0">
-        <button (click)="openLearnMore()"
-                class="btn btn-primary learn-more-btn w-100">
+        <button (click)="openLearnMore()" class="btn btn-primary learn-more-btn w-100">
           Learn More
         </button>
       </div>
