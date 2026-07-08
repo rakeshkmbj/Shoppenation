@@ -1,4 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 import { SiteLayoutComponent } from './_layout/site-layout/site-layout.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -77,6 +78,7 @@ const appRoutes: Routes = [
   {
     path: '',
     component: StoreEcommerceManagerComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'dashboard', component: DefaultComponent },
       // { path: '', component: RightPanelComponent, pathMatch: 'full' },
