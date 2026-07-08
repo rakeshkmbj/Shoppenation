@@ -60,6 +60,8 @@ import { PayablesReceivablesComponent } from './All-Day-Vending/payables-receiva
 import { RefillMyCardComponent } from './All-Day-Vending/refill-my-card/refill-my-card.component';
 import { MyInvoicesComponent } from './All-Day-Vending/my-invoices/my-invoices.component';
 import { AccountManagementComponent } from './All-Day-Vending/account-management/account-management.component';
+import { DrugManagementComponent } from './DrugMlrManagement/drug-management/drug-management.component';
+import { DeviceManagementComponent } from './DrugMlrManagement/device-management/device-management.component';
 
 const appRoutes: Routes = [
   {
@@ -133,6 +135,8 @@ const appRoutes: Routes = [
       { path: 'refillMyCard', component: RefillMyCardComponent },
       { path: 'myInvoices', component: MyInvoicesComponent },
       { path: 'accountManagement', component: AccountManagementComponent },
+      { path: 'deviceDataReview', component: DeviceManagementComponent },
+      { path: 'drugDataReview', component: DrugManagementComponent },
 
     ]
   },

@@ -1,0 +1,2479 @@
+<div class="content">
+
+    <h1 class="heading-title">Manage My Store Clinical Data (MLR Approvals)</h1>
+
+    <div class="toplevel">
+
+        <tabset class="col-md-12">
+
+            <tab heading="Pharmacokinetics (PK)" id="tab1" (selectTab)="onTabChange('tab1')">
+
+                <!-- PK Content -->
+
+            </tab>
+
+            <tab heading="Pharmacodynamics (PD)" id="tab2" (selectTab)="onTabChange('tab2')">
+
+                <div class="card exiting-office-table orderStatus p-0 mt-2">
+
+                    <!-- Card Header -->
+                    <div class="card-header">
+                        <div style="display: flex; flex-direction: column;">
+                            <span>In My List (PK)</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body pa-0">
+                        <div class="row m-0">
+                            <div class="col-md-12 py-2">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="font">Serial #</th>
+                                            <th class="font">Data Created</th>
+                                            <th class="font">Date Recvd</th>
+                                            <th class="font">Clinical Data Subitem</th>
+                                            <th class="font">Subitemid</th>
+                                            <th class="font text-center">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr>
+                                            <td>1</td>
+                                            <td>✓</td>
+                                            <td>15/01/2026</td>
+                                            <td>IBUPROFENE</td>
+                                            <td>39876</td>
+                                            <td class="text-center">
+                                                <button (click)="openDataRepo(masterEntryPKTemplate)"
+                                                    class="btn btn-dark btn-sm mr-2">
+                                                    Clinical Data Repository
+                                                </button>
+
+                                                <button class="btn btn-dark btn-sm">
+                                                    W-Flow Cycles
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>2</td>
+                                            <td>✓</td>
+                                            <td>18/01/2026</td>
+                                            <td>PARACETAMOL</td>
+                                            <td>39877</td>
+                                            <td class="text-center">
+                                                <button (click)="openDataRepo(masterEntryPKTemplate)"
+                                                    class="btn btn-dark btn-sm mr-2">
+                                                    Clinical Data Repository
+                                                </button>
+
+                                                <button class="btn btn-dark btn-sm">
+                                                    W-Flow Cycles
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>3</td>
+                                            <td>✓</td>
+                                            <td>20/01/2026</td>
+                                            <td>AZITHROMYCIN</td>
+                                            <td>39878</td>
+                                            <td class="text-center">
+                                                <button (click)="openDataRepo(masterEntryPKTemplate)"
+                                                    class="btn btn-dark btn-sm mr-2">
+                                                    Clinical Data Repository
+                                                </button>
+
+                                                <button class="btn btn-dark btn-sm">
+                                                    W-Flow Cycles
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                    <ng-template #noData>
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                No records found
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </tab>
+
+            <tab heading="Pharmacovigilance" id="tab3" (selectTab)="onTabChange('tab3')">
+
+                <!-- Pharmacovigilance Content -->
+
+            </tab>
+
+        </tabset>
+
+    </div>
+</div>
+
+<ng-template #masterEntryPKTemplate>
+
+    <!-- HEADER -->
+    <div class="modal-header">
+        <h4 class="modal-title">PK (Drug KBase)</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+        <div class="store-tab-content">
+
+            <tabset class="custom-tabset">
+
+                <tab heading="Drug PK Profile" id="tab1">
+
+                    <form [formGroup]="drugPkForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label>Subitem id</label>
+                                    <input type="text" class="form-control" formControlName="subitemId">
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label>Drug Name</label>
+                                    <input type="text" class="form-control" formControlName="drugName">
+                                </div>
+
+                                <!-- <div class="col-md-4">
+                                    <label>PK id</label>
+                                    <input type="text" class="form-control" formControlName="pkId">
+                                </div> -->
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label>Drug Type</label>
+                                    <select class="form-control" formControlName="drugType">
+                                        <option value="">Select Drug Type</option>
+                                        <option>Small Molecule</option>
+                                        <option>Biologic</option>
+                                        <option>Cellular</option>
+                                        <option>Gene Therapy</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Drug Form</label>
+                                    <select class="form-control" formControlName="drugForm">
+                                        <option value="">Select Form</option>
+                                        <option>Tablet</option>
+                                        <option>Capsule</option>
+                                        <option>Injection</option>
+                                        <option>Syrup</option>
+                                        <option>Cream</option>
+                                        <option>Ointment</option>
+                                        <option>Aerosols</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Route of Administration</label>
+                                    <select class="form-control" formControlName="route">
+                                        <option value="">Select Route</option>
+                                        <option>Internal (Gastrointestinal)</option>
+                                        <option>Parenteral</option>
+                                        <option>Topical</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <!-- ================= Target Class ================= -->
+                                <div class="col-md-3">
+                                    <label>Target Class</label>
+                                    <select class="form-control" formControlName="targetClass">
+                                        <option value="">Select Class</option>
+                                        <option value="T1">Receptors</option>
+                                        <option value="T2">Enzymes</option>
+                                        <option value="T3">Ion Channels</option>
+                                        <option value="T4">Transporters</option>
+                                        <option value="T5">Nucleic Acids / Genetic Targets</option>
+                                        <option value="T6">Structural Proteins</option>
+                                        <option value="T7">Others (Emerging/Complex)</option>
+                                    </select>
+                                </div>
+
+
+                                <!-- ================= Target Family ================= -->
+                                <div class="col-md-3">
+                                    <label>Target Family</label>
+                                    <select class="form-control" formControlName="targetFamily">
+
+                                        <option value="">Select Family</option>
+
+                                        <!-- T1 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T1'" value="F1">GPCR
+                                        </option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T1'" value="F2">Nuclear
+                                            Receptors</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T1'" value="F3">
+                                            Ligand-Gated Ion Channel Receptors</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T1'" value="F4">
+                                            Tyrosine Kinase Receptors</option>
+
+                                        <!-- T2 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T2'" value="F5">Kinases
+                                        </option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T2'" value="F6">
+                                            Proteases</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T2'" value="F7">
+                                            Oxidoreductases</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T2'" value="F8">
+                                            Transferases</option>
+
+                                        <!-- T3 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T3'" value="F9">
+                                            Voltage-Gated Channels</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T3'" value="F10">
+                                            Ligand-Gated Channels</option>
+
+                                        <!-- T4 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T4'" value="F11">
+                                            Neurotransmitter Transporters</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T4'" value="F12">Efflux
+                                            Transporters</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T4'" value="F13">Uptake
+                                            Transporters</option>
+
+                                        <!-- T5 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T5'" value="F14">DNA
+                                        </option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T5'" value="F15">RNA
+                                        </option>
+
+                                        <!-- T6 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T6'" value="F16">
+                                            Cytoskeletal Proteins</option>
+
+                                        <!-- T7 -->
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T7'" value="F17">Immune
+                                            Checkpoints</option>
+                                        <option *ngIf="drugPkForm.get('targetClass')?.value === 'T7'" value="F18">
+                                            Protein Complexes</option>
+
+                                    </select>
+                                </div>
+
+
+                                <!-- ================= Target Subtype ================= -->
+                                <div class="col-md-3">
+                                    <label>Target Subtype</label>
+                                    <select class="form-control" formControlName="targetSubtype">
+
+                                        <option value="">Select Subtype</option>
+
+                                        <!-- F1 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F1'">Adrenergic
+                                            Receptors</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F1'">Dopamine
+                                            Receptors</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F1'">Serotonin
+                                            Receptors</option>
+
+                                        <!-- F2 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F2'">Estrogen Receptor
+                                            (ER)</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F2'">Androgen Receptor
+                                            (AR)</option>
+
+                                        <!-- F3 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F3'">NMDA Receptor
+                                        </option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F3'">GABA-A Receptor
+                                        </option>
+
+                                        <!-- F4 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F4'">EGFR</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F4'">VEGFR</option>
+
+                                        <!-- F5 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F5'">Tyrosine Kinases
+                                            (EGFR, BCR-ABL)</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F5'">Serine/Threonine
+                                            Kinases</option>
+
+                                        <!-- F6 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F6'">HIV Protease
+                                        </option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F6'">Thrombin</option>
+
+                                        <!-- F7 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F7'">COX-1</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F7'">COX-2</option>
+
+                                        <!-- F8 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F8'">DNA Polymerase
+                                        </option>
+
+                                        <!-- F9 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F9'">Sodium Channels
+                                            (Nav1.5)</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F9'">Calcium Channels
+                                            (L-type)</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F9'">Potassium
+                                            Channels</option>
+
+                                        <!-- F10 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F10'">Nicotinic ACh
+                                            Channel</option>
+
+                                        <!-- F11 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F11'">SERT</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F11'">DAT</option>
+
+                                        <!-- F12 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F12'">P-gp</option>
+
+                                        <!-- F13 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F13'">GLUT1</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F13'">SGLT2</option>
+
+                                        <!-- F14 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F14'">DNA
+                                            Topoisomerase</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F14'">DNA Polymerase
+                                        </option>
+
+                                        <!-- F15 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F15'">mRNA (antisense
+                                            targets)</option>
+
+                                        <!-- F16 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F16'">Tubulin</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F16'">Actin</option>
+
+                                        <!-- F17 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F17'">PD-1</option>
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F17'">PD-L1</option>
+
+                                        <!-- F18 -->
+                                        <option *ngIf="drugPkForm.get('targetFamily')?.value === 'F18'">Ribosome
+                                        </option>
+
+                                    </select>
+                                </div>
+
+
+                                <!-- ================= Specific Target ================= -->
+                                <div class="col-md-3">
+                                    <label>Specific Target</label>
+                                    <input type="text" class="form-control" formControlName="specificTarget"
+                                        placeholder="Enter or Null">
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label>Sub Route of Administration</label>
+
+                                    <select class="form-control" formControlName="subRoute">
+
+                                        <option value="">Select Sub Route</option>
+
+                                        <!-- ================= Internal ================= -->
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Internal (Gastrointestinal)'"
+                                            value="Oral (PO)">
+                                            Oral (PO)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Internal (Gastrointestinal)'"
+                                            value="Sublingual / Buccal">
+                                            Sublingual / Buccal
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Internal (Gastrointestinal)'"
+                                            value="Rectal">
+                                            Rectal
+                                        </option>
+
+
+                                        <!-- ================= Parenteral ================= -->
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Parenteral'"
+                                            value="Intravenous (IV)">
+                                            Intravenous (IV)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Parenteral'"
+                                            value="Intramuscular (IM)">
+                                            Intramuscular (IM)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Parenteral'"
+                                            value="Subcutaneous (SC)">
+                                            Subcutaneous (SC)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Parenteral'"
+                                            value="Intradermal">
+                                            Intradermal
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Parenteral'"
+                                            value="Inhalation">
+                                            Inhalation
+                                        </option>
+
+
+                                        <!-- ================= Topical ================= -->
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Topical'"
+                                            value="Transdermal">
+                                            Transdermal
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Topical'"
+                                            value="Dermal / Cutaneous">
+                                            Dermal / Cutaneous
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('route')?.value === 'Topical'" value="Mucosal">
+                                            Mucosal
+                                        </option>
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Drug Strength</label>
+                                    <input type="text" class="form-control" formControlName="drugStrength">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>MU</label>
+                                    <select class="form-control" formControlName="mu">
+                                        <option>mg</option>
+                                        <option>g</option>
+                                        <option>mcg</option>
+                                        <option>%</option>
+                                        <option>mg/mL</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label>Drug Ref Product</label>
+                                    <input type="text" class="form-control" formControlName="drugRefProduct">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Drug Study Type Population</label>
+                                    <select class="form-control" formControlName="studyPopulation">
+                                        <option>Healthy</option>
+                                        <option>Patients</option>
+                                        <option>Healthy & Patients</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label>Drug Phase</label>
+                                    <input type="text" class="form-control" formControlName="drugPhase">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Country</label>
+                                    <select class="form-control" formControlName="country">
+                                        <option selected value="">Select</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Sponsor</label>
+                                    <input type="text" class="form-control" formControlName="sponsor">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label>Dose Unit</label>
+                                    <input type="text" class="form-control" formControlName="doseUnit">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Bioanalytical Method</label>
+
+                                    <select class="form-control" formControlName="bioanalyticalMethod">
+
+                                        <option value="">Select Method</option>
+
+                                        <!-- ================= Small Molecule ================= -->
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Small Molecule'">
+                                            LC-MS/MS (Liquid Chromatography-Tandem Mass Spectrometry)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Small Molecule'">
+                                            GC-MS (Gas Chromatography-Mass Spectrometry)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Small Molecule'">
+                                            Sample Preparation (PPT/SPE/LLE)
+                                        </option>
+
+
+                                        <!-- ================= Biologic ================= -->
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Biologic'">
+                                            Ligand Binding Assays (LBA)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Biologic'">
+                                            Hybrid LBA/LC-MS/MS
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Biologic'">
+                                            Mass Spectrometry (HRMS)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Biologic'">
+                                            Capillary Electrophoresis (CE) Immunoassay
+                                        </option>
+
+
+                                        <!-- ================= Cellular ================= -->
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Cellular'">
+                                            Flow Cytometry (FACS)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Cellular'">
+                                            qPCR/ddPCR
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Cellular'">
+                                            ELISpot (Enzyme-Linked ImmunoSpot)
+                                        </option>
+
+
+                                        <!-- ================= Gene Therapy ================= -->
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Gene Therapy'">
+                                            qPCR (Quantitative PCR) & RT-qPCR
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Gene Therapy'">
+                                            ddPCR (Droplet Digital PCR)
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Gene Therapy'">
+                                            Hybridization-based ELISA
+                                        </option>
+
+                                        <option *ngIf="drugPkForm.get('drugType')?.value === 'Gene Therapy'">
+                                            Next-Generation Sequencing (NGS)
+                                        </option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <label>Var 1</label>
+                                    <input type="text" class="form-control" formControlName="var1">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Var 2</label>
+                                    <input type="text" class="form-control" formControlName="var2">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Var 3</label>
+                                    <input type="text" class="form-control" formControlName="var3">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="A-Absorption" id="tab2">
+
+                    <form [formGroup]="absorptionForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <h5 class="section-title">BIO-Availability</h5>
+                                </div>
+                            </div>
+
+                            <!-- BA DETAIL -->
+
+                            <div class="mb-3">
+                                <div class="col-md-8">
+                                    <label>Drug Bioavailability (BA) Detail</label>
+
+                                    <textarea class="form-control" rows="4" formControlName="baDetail">
+                                    </textarea>
+                                </div>
+                            </div>
+
+                            <!-- AUC / DOSE -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-4">
+
+                                    <label>AUC (Area under Curve) ORAL</label>
+
+                                    <input type="text" class="form-control" formControlName="aucOral">
+
+                                    <label class="mt-3">Drug Dose ORAL</label>
+
+                                    <input type="text" class="form-control" formControlName="doseOral">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>AUC (Area under Curve) IV</label>
+
+                                    <input type="text" class="form-control" formControlName="aucIv">
+
+                                    <label class="mt-3">Drug Dose IV</label>
+
+                                    <input type="text" class="form-control" formControlName="doseIv">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug (Absolute) BA-f%</label>
+
+                                    <input type="text" class="form-control" formControlName="absoluteBA">
+
+                                    <label class="mt-3">Drug (Relative) F%</label>
+
+                                    <input type="text" class="form-control" formControlName="relativeF">
+
+                                </div>
+
+                            </div>
+
+                            <!-- TMAX / CMAX / KA -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-3">
+
+                                    <label>Drug Tmax (Hours)</label>
+
+                                    <input type="text" class="form-control" formControlName="tmax">
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label>Drug Cmax (ng/mL)</label>
+
+                                    <input type="text" class="form-control" formControlName="cmax">
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label>Drug Ka (Speed of Absorption)</label>
+
+                                    <input type="text" class="form-control" formControlName="ka">
+
+                                </div>
+
+                            </div>
+
+                            <!-- PKA / FOOD EFFECT -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-3">
+
+                                    <label>pKa (Acid/Base Dissociation)</label>
+
+                                    <input type="text" class="form-control" formControlName="pka">
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label>BA (Food Effects)</label>
+
+                                    <select class="form-control" formControlName="foodEffect">
+
+                                        <option value="">Select</option>
+                                        <option value="None">None</option>
+                                        <option value="Increases">Increases</option>
+                                        <option value="Decreases">Decreases</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label>Drug BA</label>
+
+                                    <select class="form-control" formControlName="drugBA">
+
+                                        <option value="">Select</option>
+                                        <option value="High">High</option>
+                                        <option value="Moderate">Moderate</option>
+                                        <option value="Low">Low</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- CHECKBOXES -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-3">
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="gastricPhDependence">
+
+                                        <label class="form-check-label">
+                                            BA-Gastric PH Dependence
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" formControlName="supportTable2">
+
+                                        <label class="form-check-label">
+                                            BA-Support 2 Table
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="accessedUsingFeed">
+
+                                        <label class="form-check-label">
+                                            BA-Accessed using Feed
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="firstpassMetabolism">
+
+                                        <label class="form-check-label">
+                                            BA-Firstpass Metabolism
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="measuredUsingAUC">
+
+                                        <label class="form-check-label">
+                                            BA-Measured Using AUC
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="changesUsingDoseEscalation">
+
+                                        <label class="form-check-label">
+                                            BA-Changes using Dose Escalation
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="consistentPatient">
+
+                                        <label class="form-check-label">
+                                            BA-Consistent Patient
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="measuredUsingCmax">
+
+                                        <label class="form-check-label">
+                                            BA-Measured Using Cmax
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" formControlName="pgpSubstrate">
+
+                                        <label class="form-check-label">
+                                            BA-PGP Substrate
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" formControlName="supportTable1">
+
+                                        <label class="form-check-label">
+                                            BA-Support 1 Table
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="accessedUsingFasting">
+
+                                        <label class="form-check-label">
+                                            BA-Accessed using Fasting
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EXTRA -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="scLymphaticUptake">
+
+                                        <label class="form-check-label">
+                                            Drug-SC-Lymphatic-Uptake
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug-Cell-Engraftment Rate</label>
+
+                                    <input type="text" class="form-control" formControlName="engraftmentRate">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Vector Entry Rate</label>
+
+                                    <input type="text" class="form-control" formControlName="vectorEntryRate">
+
+                                </div>
+
+                            </div>
+
+                            <!-- VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                            <!-- CLINICAL REF -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-12">
+
+                                    <label>
+                                        Drug Eagent Clinical Ref, On BioAvailability
+                                    </label>
+
+                                    <textarea style="min-height: 120px; resize: vertical;" class="form-control" rows="4"
+                                        formControlName="clinicalRef">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="D-Distribution" id="tab3">
+
+                    <form [formGroup]="distributionForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        Distribution
+
+                                        <span class="section-subtitle">
+                                            Where The Drugs goes in the Body
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- TOP SECTION -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Volume of Distribution (Vd)</label>
+
+                                    <small class="text-muted d-block">
+                                        (Tissue Penetration)
+                                    </small>
+
+                                    <input type="text" class="form-control" formControlName="volumeDistribution">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Plasma Protein Binding %</label>
+
+                                    <input type="text" class="form-control" formControlName="plasmaProteinBinding">
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="bbbPenetration">
+
+                                        <label class="form-check-label">
+                                            Drug BBB Penetration
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- SECOND SECTION -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Tissue Selectivity</label>
+
+                                    <input type="text" class="form-control" formControlName="tissueSelectivity">
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="placentalTransfer">
+
+                                        <label class="form-check-label">
+                                            Drug Placental Transfer
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="breastMilkExcretion">
+
+                                        <label class="form-check-label">
+                                            Drug Breast Milk Excretion
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                            <!-- SUMMARY -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-12">
+
+                                    <label>Distribution Summary</label>
+
+                                    <textarea style="min-height: 120px; resize: vertical;" class="form-control" rows="4"
+                                        formControlName="summary">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="M-Metabolism" id="tab4">
+
+                    <form [formGroup]="metabolismForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        Metabolism
+
+                                        <span class="section-subtitle">
+                                            How the Drug is Bio-Transformed
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- TOP SECTION -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Primary Metabolism Organ</label>
+
+                                    <select class="form-control" formControlName="metabolismOrgan">
+
+                                        <option value="">Select Organ</option>
+                                        <option value="Liver">Liver</option>
+                                        <option value="Gut">Gut</option>
+                                        <option value="Plasma">Plasma</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Hepatic Clearance</label>
+
+                                    <input type="text" class="form-control" formControlName="hepaticClearance">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Intrinsic Clearance</label>
+
+                                    <input type="text" class="form-control" formControlName="intrinsicClearance">
+
+                                </div>
+
+                            </div>
+
+                            <!-- ENZYME -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Enzyme Involved</label>
+
+                                    <input type="text" class="form-control" formControlName="enzymeInvolved">
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="enzymeInhibitor">
+
+                                        <label class="form-check-label">
+                                            Drug Enzyme Inhibitor
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox" formControlName="enzymeInducer">
+
+                                        <label class="form-check-label">
+                                            Drug Enzyme Inducer
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- METABOLITES -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="activeMetabolites">
+
+                                        <label class="form-check-label">
+                                            Drug Active Metabolites
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Metabolites Potency</label>
+
+                                    <select class="form-control" formControlName="metabolitePotency">
+
+                                        <option value="">Select Potency</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Less Active">Less Active</option>
+                                        <option value="Toxic">Toxic</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="geneticPolymorphism">
+
+                                        <label class="form-check-label">
+                                            Drug Genetic Polymorphism Impact
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                            <!-- SUMMARY -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-12">
+
+                                    <label>Metabolism Summary</label>
+
+                                    <textarea style="min-height: 120px; resize: vertical;" class="form-control" rows="4"
+                                        formControlName="summary">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="E-Elimination" id="tab5">
+
+                    <form [formGroup]="eliminationForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        Elimination
+
+                                        <span class="section-subtitle">
+                                            How The Drug Leaves the Body
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- TOP SECTION -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Drug Clearance Value</label>
+
+                                    <input type="text" class="form-control" formControlName="clearanceValue">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Drug E-Half Life (L1/2)</label>
+
+                                    <input type="text" class="form-control" formControlName="halfLife">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Route of Elimination</label>
+
+                                    <select class="form-control" formControlName="routeElimination">
+
+                                        <option value="">Select Route</option>
+                                        <option value="Renal">Renal</option>
+                                        <option value="Biliary">Biliary</option>
+                                        <option value="Fecal">Fecal</option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EXCRETION -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Renal Excretion %</label>
+
+                                    <input type="text" class="form-control" formControlName="renalExcretion">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Hepatic Excretion %</label>
+
+                                    <input type="text" class="form-control" formControlName="hepaticExcretion">
+
+                                </div>
+
+                                <div class="col-md-4 d-flex align-items-end">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox" formControlName="dialyzable">
+
+                                        <label class="form-check-label">
+                                            Dialyzable
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                            <!-- SUMMARY -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-12">
+
+                                    <label>Elimination Summary</label>
+
+                                    <textarea style="min-height: 120px; resize: vertical;" class="form-control" rows="4"
+                                        formControlName="summary">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="Time Based" id="tab6">
+
+                    <form [formGroup]="timeBasedForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <!-- TITLE -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+                                        Drug-Time Based Behaviours
+                                        <span class="section-subtitle">
+                                            (Repeated Dosing Behaviour)
+                                        </span>
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- ROW 1 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Time to Steady State
+                                        (4-5 Half lives)
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="steadyState">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Accumulation Risk
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="accumulationRisk">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Peak thru Fluctuation %
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="peakFluctuation">
+
+                                </div>
+
+                            </div>
+
+                            <!-- LINEAR STATUS BOX -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-6">
+
+                                    <div class="border rounded p-3">
+
+                                        <!-- FLAG 1 -->
+
+                                        <div class="form-check mb-3">
+
+                                            <input class="form-check-input" type="checkbox"
+                                                formControlName="linearStatus">
+
+                                            <label class="form-check-label">
+
+                                                Drug Dose Proportion Linear Status
+
+                                            </label>
+
+                                        </div>
+
+                                        <!-- FIELD VAR 4 -->
+
+                                        <div>
+
+                                            <label>
+                                                Drug Non-Linear Threshold
+                                            </label>
+
+                                            <input type="text" class="form-control"
+                                                formControlName="nonLinearThreshold">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FLAG 2 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="dailyCompliance">
+
+                                        <label class="form-check-label">
+
+                                            Drug Dose Daily Compliance Suitability
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- SUMMARY -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-12">
+
+                                    <label>
+                                        Drug Time Based Behaviour Summary
+                                    </label>
+
+                                    <textarea class="form-control" rows="5" formControlName="summary">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                            <!-- VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="Spl-Population" id="tab7">
+
+                    <form [formGroup]="specialPopulationForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <!-- TITLE -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        Drugs Special Population Modifier
+
+                                        <span class="section-subtitle">
+
+                                            - Real World Prescribing
+
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 1 & 2 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-6">
+
+                                    <label>
+                                        Drug Renal Impairment Adjustment
+                                    </label>
+
+                                    <select class="form-control" formControlName="renalAdjustment">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="None">
+                                            None
+                                        </option>
+
+                                        <option value="Minor">
+                                            Minor
+                                        </option>
+
+                                        <option value="Severe">
+                                            Severe
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>
+                                        Drug Hepatic Impairment Adjustment
+                                    </label>
+
+                                    <select class="form-control" formControlName="hepaticAdjustment">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="None">
+                                            None
+                                        </option>
+
+                                        <option value="Minor">
+                                            Minor
+                                        </option>
+
+                                        <option value="Severe">
+                                            Severe
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FLAGS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="elderlyAdjustment">
+
+                                        <label class="form-check-label">
+
+                                            Drug Elderly Adjustment
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox" formControlName="pediatricData">
+
+                                        <label class="form-check-label">
+
+                                            Drug Pediatric Data Available
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox" formControlName="obesityImpact">
+
+                                        <label class="form-check-label">
+
+                                            Drug Obesity Impact
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 3 + FIELD VAR 4 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Pregnancy Category
+                                    </label>
+
+                                    <select class="form-control" formControlName="pregnancyCategory">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="No Risk Seen for Human Category">
+                                            No Risk Seen for Human Category
+                                        </option>
+
+                                        <option value="Risk Seen for Human Category">
+                                            Risk Seen for Human Category
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-8">
+
+                                    <label>
+                                        Special Population Drug Adjustment Note
+                                    </label>
+
+                                    <textarea class="form-control" rows="5" formControlName="adjustmentNote">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                            <!-- VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="Drug-Drug Int" id="tab8">
+
+                    <form [formGroup]="drugDrugInteractionForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <!-- TITLE -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        Drug-Drug Interaction
+
+                                        <span class="section-subtitle">
+
+                                            : Critical for Polypharmacy
+
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 1 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug-Drug Interaction Risk
+                                    </label>
+
+                                    <select class="form-control" formControlName="interactionRisk">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="Low">
+                                            Low
+                                        </option>
+
+                                        <option value="Moderate">
+                                            Moderate
+                                        </option>
+
+                                        <option value="High">
+                                            High
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 2 -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-8">
+
+                                    <label>
+                                        Drug Enzyme Inhibitors Affect Exposure
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="enzymeInhibitorExposure">
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 3 -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-8">
+
+                                    <label>
+                                        Drug Inducer Affect Exposure
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="inducerExposure">
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 4 -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-8">
+
+                                    <label>
+                                        Drug Transporter Exposure
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="transporterExposure">
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 5 -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-8">
+
+                                    <label>
+                                        Drug-Food Interaction
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="foodInteraction">
+
+                                </div>
+
+                            </div>
+
+                            <!-- FLAG 1 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="alcoholInteraction">
+
+                                        <label class="form-check-label">
+
+                                            Drug Alcohol Interaction Exposure
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 6 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-12">
+
+                                    <label>
+                                        Drug Drug Interaction Summary
+                                    </label>
+
+                                    <textarea class="form-control" rows="6" formControlName="interactionSummary">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EXTRA VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="Clinic Interpretaion" id="tab9">
+
+                    <form [formGroup]="clinicalInterpretationForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <!-- TITLE -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        Drugs Clinical Interpretation
+
+                                        <span class="section-subtitle">
+
+                                            - What doctor actually cares about
+
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 1 + 2 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-7">
+
+                                    <label>
+                                        Drug PK Therapeutic Window Index
+                                    </label>
+
+                                    <textarea class="form-control" rows="4" formControlName="therapeuticWindowIndex">
+                                    </textarea>
+
+                                </div>
+
+                                <div class="col-md-5">
+
+                                    <label>
+                                        Drug PK Therapeutic Window Interpretation
+                                    </label>
+
+                                    <select class="form-control" formControlName="therapeuticWindowInterpretation">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="Narrow">
+                                            Narrow
+                                        </option>
+
+                                        <option value="Wide">
+                                            Wide
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FLAG 1 + FIELD VAR 3 + FIELD VAR 4 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-3">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox" formControlName="tdmMonitoring">
+
+                                        <label class="form-check-label">
+
+                                            TDM Monitoring Registered
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <label>
+                                        Dose Flexibility
+                                    </label>
+
+                                    <select class="form-control" formControlName="doseFlexibility">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="Low">
+                                            Low
+                                        </option>
+
+                                        <option value="Moderate">
+                                            Moderate
+                                        </option>
+
+                                        <option value="High">
+                                            High
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>
+                                        Dose Forgiveness Index
+                                        (Missed Dose Safety)
+                                    </label>
+
+                                    <textarea class="form-control" rows="4" formControlName="doseForgivenessIndex">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 5 + FIELD VAR 6 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-6">
+
+                                    <label>
+                                        PK Safety Summary
+                                    </label>
+
+                                    <textarea class="form-control" rows="6" formControlName="pkSafetySummary">
+                                    </textarea>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>
+                                        Drug MR Summary
+                                    </label>
+
+                                    <textarea class="form-control" rows="6" formControlName="mrSummary">
+                                    </textarea>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EXTRA VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+                <tab heading="Requ-Evidnc" id="tab10">
+
+                    <form [formGroup]="regulatoryEvidenceForm">
+
+                        <div class="container-fluid pk-form mt-3">
+
+                            <!-- TITLE -->
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-12">
+
+                                    <h5 class="section-title">
+
+                                        PK Drugs Regulatory Evidence
+
+                                        <span class="section-subtitle">
+
+                                            - Medical Affairs & Audits
+
+                                        </span>
+
+                                    </h5>
+
+                                </div>
+
+                            </div>
+
+                            <!-- FIELD VAR 1 + 2 + 3 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Study Type
+                                    </label>
+
+                                    <select class="form-control" formControlName="studyType">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="BE">
+                                            BE
+                                        </option>
+
+                                        <option value="BA">
+                                            BA
+                                        </option>
+
+                                        <option value="Phase 1">
+                                            Phase 1
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Regulatory Approval
+                                    </label>
+
+                                    <select class="form-control" formControlName="regulatoryApproval">
+
+                                        <option value="">
+                                            Select
+                                        </option>
+
+                                        <option value="DCGA">
+                                            DCGA
+                                        </option>
+
+                                        <option value="USFDA">
+                                            USFDA
+                                        </option>
+
+                                        <option value="EMA">
+                                            EMA
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>
+                                        Drug Guidelines Ref.
+                                    </label>
+
+                                    <input type="text" class="form-control" formControlName="guidelineRef">
+
+                                </div>
+
+                            </div>
+
+                            <!-- FLAGS + FIELD VAR 4 -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-3">
+
+                                    <div class="form-check mt-4">
+
+                                        <input class="form-check-input" type="checkbox"
+                                            formControlName="publishedEvidence">
+
+                                        <label class="form-check-label">
+
+                                            Published Evidence Available
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-9">
+
+                                    <div class="border rounded p-3">
+
+                                        <label>
+                                            Evidence Study Attached
+                                        </label>
+
+                                        <textarea class="form-control mb-3" rows="5" formControlName="evidenceStudy">
+                                        </textarea>
+
+                                        <div class="mb-3">
+
+                                            <a href="javascript:void(0)">
+                                                Browse & Attach
+                                            </a>
+
+                                        </div>
+
+                                        <div class="form-check">
+
+                                            <input class="form-check-input" type="checkbox"
+                                                formControlName="studyDownloadable">
+
+                                            <label class="form-check-label">
+
+                                                Study Downloadable
+
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- EXTRA VARS -->
+
+                            <div class="row mb-4">
+
+                                <div class="col-md-4">
+
+                                    <label>Var 1</label>
+
+                                    <input type="text" class="form-control" formControlName="var1">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 2</label>
+
+                                    <input type="text" class="form-control" formControlName="var2">
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label>Var 3</label>
+
+                                    <input type="text" class="form-control" formControlName="var3">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </tab>
+
+            </tabset>
+
+        </div>
+
+    </div>
+
+</ng-template>

@@ -13,12 +13,12 @@ export class LeftNavComponent implements OnInit {
   public scrollbarOptions = { axis: 'yx', theme: 'minimal-dark' };
   getlogindata: any;
   navLinkAccess: boolean = false;
-  isDisabled: boolean;
+  isDisabled: boolean | undefined;
   role: any;
   MDR_Connect_App_Flag: any;
   MDR_Seller_With_SKU_Flag: any;
 
-  primarySellerFlag: boolean;
+  primarySellerFlag: boolean | undefined;
 
   constructor(
     private toastr: ToastrService,
@@ -66,6 +66,7 @@ export class LeftNavComponent implements OnInit {
   status15: boolean = false;
   status16: boolean = false;
   status17: boolean = false;
+  status18: boolean = false;
 
   clickEvent1() {
     this.status1 = !this.status1;
@@ -133,6 +134,10 @@ export class LeftNavComponent implements OnInit {
 
   clickEvent17() {
     this.status17 = !this.status17;
+  }
+
+  clickEvent18() {
+    this.status18 = !this.status18;
   }
 
   handleItemSubitemDiscountClick(event: Event) {
