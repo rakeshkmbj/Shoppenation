@@ -379,5 +379,27 @@
             </ul>
         </li>
 
+        <li [ngClass]="status18 ? 'active' : ''" class="nav-item" routerLinkActive="active">
+
+            <a (click)="clickEvent18()" style="cursor:pointer;">
+                <label><i class="lni lni-stats-up"></i></label>
+                Drug-Device MLR Management
+                <span class="icon"></span>
+            </a>
+
+            <ul class="dropdown" *ngIf="status18">
+                <li>
+                    <a routerLink="drugDataReview" routerLinkActive="active">
+                        Drug Clinical Data Review
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="deviceDataReview" routerLinkActive="active">
+                        Device Clinical Data Review
+                    </a>
+                </li>
+            </ul>
+        </li>
+
     </ul>
 </nav>

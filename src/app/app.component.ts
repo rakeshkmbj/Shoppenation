@@ -9,7 +9,7 @@ import { LoaderService } from './_services/loader.service';
 })
 export class AppComponent {
   name = 'Angular 4';
-  showLoader: boolean;
+  showLoader: any;
 
 
   constructor(
