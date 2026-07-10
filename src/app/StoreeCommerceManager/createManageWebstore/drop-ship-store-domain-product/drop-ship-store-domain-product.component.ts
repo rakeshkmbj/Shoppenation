@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./drop-ship-store-domain-product.component.scss']
 })
 export class DropShipStoreDomainProductComponent implements OnInit {
- // baseURL: string = "http://www.shripatigroup.com/alcoolretail/carryr/retail";
+ // baseURL: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
   imgURL = this.apiService.imgURL;
   isValid: boolean = true;
   itemsPerSlide = 4;

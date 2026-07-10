@@ -7,9 +7,9 @@ import * as _ from 'lodash';
 })
 
 export class ApiService {
-  baseURL: string = "http://www.shripatigroup.com/alcoolretail/carryr/retail";
-  csURL: string = "http://www.shripatigroup.com/eppcommonapis/api/EPP/";
-  imgURL: string = "http://www.shripatigroup.com/alcoolretail/";
+  baseURL: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
+  csURL: string = "https://www.shripatigroup.com/eppcommonapis/api/EPP/";
+  imgURL: string = "https://www.shripatigroup.com/alcoolretail/";
   countryList: Object;
   subject = new Subject();
   countryID: number;
