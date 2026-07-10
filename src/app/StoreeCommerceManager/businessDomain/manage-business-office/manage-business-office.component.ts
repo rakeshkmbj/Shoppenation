@@ -14,7 +14,7 @@ import { AddNewPhysicalStoreComponent } from './components/add-new-physical-stor
   styleUrls: ['./manage-business-office.component.scss']
 })
 export class ManageBusinessOfficeComponent implements OnInit {
- // baseURL: string = "http://www.shripatigroup.com/alcoolretail/carryr/retail";
+ // baseURL: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
   imgURL = this.apiService.imgURL;
   RetailStoreForm: FormGroup;
   resetSubject: Subject<boolean> = new Subject();
