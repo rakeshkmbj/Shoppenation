@@ -12,7 +12,7 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./store-delivery-racks.component.scss']
 })
 export class StoreDeliveryRacksComponent implements OnInit {
- // baseURL: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
+ // baseURL: string = "https://www.shoppenation.in/alcoolretail/carryr/retail";
   imgURL = this.apiService.imgURL;
   getlogindata: any;
   accountid: any;

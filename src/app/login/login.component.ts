@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   modalRef: BsModalRef | undefined;
   modalRef1: BsModalRef | null | undefined;
 
-  baseUrl: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
+  baseUrl: string = "https://www.shoppenation.in/alcoolretail/carryr/retail";
 
   loginForm: FormGroup;
   submitted: any;
