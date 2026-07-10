@@ -113,7 +113,7 @@ export class MdrConnectComponent implements OnInit {
   @Output() stateEvent = new EventEmitter<any>();
   @Output() cityEvent = new EventEmitter<any>();
   @Output() pincodeEvent = new EventEmitter<any>();
-  baseUrl: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
+  baseUrl: string = "https://www.shoppenation.in/alcoolretail/carryr/retail";
   MdrRegistration: FormGroup;
   constructor(
     private bsModalRef: BsModalRef,

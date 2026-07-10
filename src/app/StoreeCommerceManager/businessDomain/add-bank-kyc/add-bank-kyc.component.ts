@@ -10,7 +10,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./add-bank-kyc.component.scss']
 })
 export class AddBankKYCComponent implements OnInit {
- // baseURL: string = "https://www.shripatigroup.com/alcoolretail/carryr/retail";
+ // baseURL: string = "https://www.shoppenation.in/alcoolretail/carryr/retail";
   imgURL = this.apiService.imgURL;
   addStoreBankForm: FormGroup;
   storeUserForm:FormGroup;
