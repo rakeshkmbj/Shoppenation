@@ -61,6 +61,7 @@ export class AccountManagementComponent implements OnInit {
   selectedThirdNode: any;
   imagePreview: any;
   imagePreview2: any;
+  B2BLinkIdForD10: any;
 
   constructor(
     private apiService: ApiService,
@@ -80,6 +81,31 @@ export class AccountManagementComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (this.getlogindata.DOMAIN_ID == 10 && this.getlogindata.SECND_NODE_SUBACCT_FLG == true) {
+
+      const payload = {
+        "Domainid": this.getlogindata.DOMAIN_ID,
+        "Secndry_Subacctid": this.subaccountid,
+        "Secndry_Storeid": this.storeid
+      }
+
+      this.apiService.postCall(`${this.apiService.baseURL}/GetVendingPrimrySecndryB2BId`, payload)
+        .subscribe(data => {
+          console.log(data);
+          this.B2BLinkIdForD10 = data.ACCT_PRIMRY_SECNDRY_B2B_LINK_SEQ_ID;
+        },
+          (error) => {
+            console.log(error);
+            this.toastr.error(error.error, '', {
+              timeOut: 5000,
+            });
+          }
+        );
+    } else {
+      this.B2BLinkIdForD10 = 'jr0xpPU';
+    }
+
     this.getCountry();
 
     this.addStoreUserForm = this.formBuilder.group({
@@ -161,7 +187,6 @@ export class AccountManagementComponent implements OnInit {
           });
         }
       );
-
   }
 
   openSNThirdNode() {
@@ -173,7 +198,8 @@ export class AccountManagementComponent implements OnInit {
       Third_node_flg: true,
       Subacctid: this.subaccountid,
       Storeid: this.storeid,
-      B2b_id: "jr0xpPU"
+      // B2b_id: "jr0xpPU"
+      B2b_id: this.B2BLinkIdForD10
     }
 
     console.log("payload: ", payload)

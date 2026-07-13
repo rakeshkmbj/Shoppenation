@@ -28,6 +28,8 @@ export class BuyServicesComponent implements OnInit {
   discount = 10;
   gst = 18;
   validity = 1;
+  subaccountid: any;
+  storeid: any;
 
   servicesList = [
     { id: 1, name: 'MDR-Home-Store SKUs' },
@@ -202,7 +204,9 @@ export class BuyServicesComponent implements OnInit {
       Quantity: this.quantity,
       DiscountPercent: this.serviceDiscount?.Discount_Percntg,
       GstPercent: this.serviceDiscount?.GST_Percntg,
-      Currency: "INR"
+      Currency: "INR",
+      Login_Subacctid : this.subaccountid,
+      Login_Storeid : this.storeid
     }
 
     console.log("Payload: ", payload)

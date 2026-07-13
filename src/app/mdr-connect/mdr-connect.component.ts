@@ -74,6 +74,8 @@ export class MdrConnectComponent implements OnInit {
   showTooltip = false;
   refferedBy = "";
   childModalRef: any;
+  subaccountid: any;
+  storeid: any;
 
   MdrReg: MdrRegistrationRequest = {
     MDRS_CategoryId: 0,
@@ -626,7 +628,9 @@ export class MdrConnectComponent implements OnInit {
       Quantity: "1",
       DiscountPercent: this.serviceDiscount?.Discount_Percntg,
       GstPercent: this.serviceDiscount?.GST_Percntg,
-      Currency: "INR"
+      Currency: "INR",
+      Login_Subacctid : this.subaccountid,
+      Login_Storeid : this.storeid
     }
 
     console.log("Payload: ", payload)
