@@ -21,6 +21,8 @@ export class RefillMyCardComponent implements OnInit {
   paymentSub!: Subscription;
   modalRef?: BsModalRef;
   getlogindata: any;
+  subaccountid: any;
+  storeid: any;
 
   constructor(
     private apiService: ApiService,
@@ -34,6 +36,8 @@ export class RefillMyCardComponent implements OnInit {
   ) {
     this.getlogindata = localStorage.getItem('logindata');
     this.getlogindata = JSON.parse(this.getlogindata);
+    this.subaccountid = this.apiService.requiredLoginData.subaccountid;
+    this.storeid = this.apiService.requiredLoginData.storeid;
   }
 
   cardNo = 'CB67990';
@@ -133,7 +137,9 @@ export class RefillMyCardComponent implements OnInit {
       Quantity: 1,
       DiscountPercent: 0,
       GstPercent: this.gstPercent,
-      Currency: 'INR'
+      Currency: 'INR',
+      Login_Subacctid : this.subaccountid,
+      Login_Storeid : this.storeid
     }
 
     console.log("payload: ", payload)

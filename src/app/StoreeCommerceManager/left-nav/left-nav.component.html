@@ -379,7 +379,7 @@
             </ul>
         </li>
 
-        <li [ngClass]="status18 ? 'active' : ''" class="nav-item" routerLinkActive="active">
+        <li *ngIf="role == 51 || role == 52 || role == 53" [ngClass]="status18 ? 'active' : ''" class="nav-item" routerLinkActive="active">
 
             <a (click)="clickEvent18()" style="cursor:pointer;">
                 <label><i class="lni lni-stats-up"></i></label>
