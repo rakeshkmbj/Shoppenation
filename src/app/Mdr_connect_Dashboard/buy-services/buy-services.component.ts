@@ -74,10 +74,13 @@ export class BuyServicesComponent implements OnInit {
           try {
 
             const payload = {
-              cartId: this.openCart?.MDR_CONCT_SERVICE_CARTID,
+              cartId: this.openCart.MDR_CONCT_SERVICE_CARTID,
               storecode: "1001070099",
-              serviceId: this.openCart?.MDR_CONCT_CART_FOR_SERVICEID,
-              confirmPayFlg: true
+              serviceId: this.openCart.MDR_CONCT_CART_FOR_SERVICEID,
+              confirmPayFlg: true,
+              rzrpay_Pamnt_Id: status.paymentId,
+              rzrpay_Signature: status.paymentSignature,
+              rzrpay_Live_Flg: this.openCart.MDR_PG_LIVE_KEY_FLG
             }
 
             this.apiService.postCall(this.apiService.baseURL + '/MDR_Service_10and8_MakePayments', payload)
@@ -205,8 +208,8 @@ export class BuyServicesComponent implements OnInit {
       DiscountPercent: this.serviceDiscount?.Discount_Percntg,
       GstPercent: this.serviceDiscount?.GST_Percntg,
       Currency: "INR",
-      Login_Subacctid : this.subaccountid,
-      Login_Storeid : this.storeid
+      Login_Subacctid: this.subaccountid,
+      Login_Storeid: this.storeid
     }
 
     console.log("Payload: ", payload)
@@ -260,7 +263,15 @@ export class BuyServicesComponent implements OnInit {
 
     console.log("data for the cart: ", this.openCart);
 
-    this.razorpayService.payWithRazorpay(this.openCart.Id, this.openCart.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA);
+    this.razorpayService.payWithRazorpay(
+      this.openCart.Id,
+      this.openCart.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA,
+      this.openCart.MDR_PG_LIVE_KEY_FLG,
+      this.openCart.PlateformName,
+      this.openCart.email,
+      this.openCart.Contact);
+
+    // this.razorpayService.payWithRazorpay(this.openCart.Id, this.openCart.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA);
   }
 
 }

@@ -1,3 +1,6 @@
+import { envConfig } from './environment.generated';
+
 export const environment = {
-  production: true
+  production: true,
+  razorpay: envConfig.razorpay
 };

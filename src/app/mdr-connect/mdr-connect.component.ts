@@ -585,7 +585,14 @@ export class MdrConnectComponent implements OnInit {
 
 
   payment() {
-    this.razorpayService.payWithRazorpay(this.cartDetials.Id, this.cartDetials.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA);
+    // this.razorpayService.payWithRazorpay(this.cartDetials.Id, this.cartDetials.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA);
+    this.razorpayService.payWithRazorpay(
+      this.cartDetials.Id,
+      this.cartDetials.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA,
+      this.cartDetials.MDR_PG_LIVE_KEY_FLG,
+      this.cartDetials.PlateformName,
+      this.cartDetials.email,
+      this.cartDetials.Contact);
   }
 
   serviceDiscount: any;
