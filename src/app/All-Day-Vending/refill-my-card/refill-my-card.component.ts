@@ -67,7 +67,10 @@ export class RefillMyCardComponent implements OnInit {
                 cartId: this.openCart?.MDR_CONCT_SERVICE_CARTID,
                 storecode: this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
                 serviceId: this.openCart?.MDR_CONCT_CART_FOR_SERVICEID,
-                confirmPayFlg: true
+                confirmPayFlg: true,
+                rzrpay_Pamnt_Id: status.paymentId,
+                rzrpay_Signature: status.paymentSignature,
+                rzrpay_Live_Flg: this.openCart.MDR_PG_LIVE_KEY_FLG
               }
 
               console.log("payload: ", payload)
@@ -93,7 +96,7 @@ export class RefillMyCardComponent implements OnInit {
               console.log(error)
             }
           }
-          
+
           console.log('Payment status: ', status)
         }
 
@@ -117,7 +120,15 @@ export class RefillMyCardComponent implements OnInit {
       return;
     }
 
-    this.razorpayService.payWithRazorpay(this.openCart.Id, this.openCart.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA);
+    // this.openCart;
+
+    this.razorpayService.payWithRazorpay(
+      this.openCart.Id,
+      this.openCart.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA,
+      this.openCart.MDR_PG_LIVE_KEY_FLG,
+      this.openCart.PlateformName,
+      this.openCart.email,
+      this.openCart.Contact);
   }
 
   closeCheckout() {
@@ -138,8 +149,8 @@ export class RefillMyCardComponent implements OnInit {
       DiscountPercent: 0,
       GstPercent: this.gstPercent,
       Currency: 'INR',
-      Login_Subacctid : this.subaccountid,
-      Login_Storeid : this.storeid
+      Login_Subacctid: this.subaccountid,
+      Login_Storeid: this.storeid
     }
 
     console.log("payload: ", payload)
@@ -152,11 +163,40 @@ export class RefillMyCardComponent implements OnInit {
         this.modalRef = this.modalService.show(template, { class: 'modal-md' });
       },
         (error) => {
-          this.toastr.error(error.error?.Message || error, '', {
+          console.log("error: ", error);
+          this.toastr.error(error.error || error, '', {
             timeOut: 5000,
           });
         });
   }
+
+  diaplyCart(template: any) {
+
+    const payload = {
+      "Storecode": this.getlogindata.ADC_VEND_CARDHOLDR_REGID,
+      "Serviceid": "21"
+    }
+
+    this.apiService.postCall(this.apiService.baseURL + '/Display-OpenCart', payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message === "No Open cart Found for the Store") {
+          this.toastr.error(data.Message);
+        } else {
+          this.openCart = data;
+          this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+        }
+
+      },
+        (error) => {
+          this.toastr.error(error.error?.Message || error, '', {
+            timeOut: 5000,
+          });
+        });
+
+  }
+
 
   deleteCart() {
     const payload = {

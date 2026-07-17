@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../environments/environment';
 import { PaymentStatusService } from './services/payment-status.service';
 
 declare var Razorpay: any;
@@ -10,9 +11,11 @@ export class RazorpayService {
 
   constructor(private paymentStatusService: PaymentStatusService) {}
 
-  payWithRazorpay(orderId: string, amount: number) {
+  payWithRazorpay(orderId: string, amount: number, keyFlg: any, name: any, email: any, contact: any) {
+    const razorpayKey = keyFlg ? environment.razorpay.liveKey : environment.razorpay.testKey;
+
     const options = {
-        key: 'rzp_test_GqAs1q7wdge37g', // Replace with your Razorpay Key
+        key: razorpayKey,
         amount: amount * 100, // Convert amount to paise
         currency: "INR",
         name: "Shoppenation",
@@ -25,9 +28,9 @@ export class RazorpayService {
             console.log(response)
         },
         prefill: {
-          name: 'Shivank Sharma',
-          email: 'sharmashivank905@gmail.com',
-          contact: '8934909115'
+          name: name,
+          email: email,
+          contact: contact
         },
         notes: {
             address: "AD Connect Corporate Office"
