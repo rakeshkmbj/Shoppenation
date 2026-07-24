@@ -73,9 +73,14 @@
                         Add New Class/Department
                     </button>
 
-                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)"
+                    <button type="button" class="btn mr-2 custom-btn" (click)="addNewUserCard(addUserCardModal)"
                         [disabled]="!displayCardHolders.get('accId')?.value">
                         Add New User Card
+                    </button>
+
+                    <button type="button" class="btn custom-btn" (click)="backOfficeCardRefill(cardRefillModal)"
+                        [disabled]="!displayCardHolders.get('accId')?.value">
+                        Back Office Card Reffil
                     </button>
 
                 </div>
@@ -660,6 +665,177 @@
         <!-- Footer -->
         <div class="text-center mt-3">
             <button class="btn btn-danger px-4" (click)="modalRef.hide()">Close</button>
+        </div>
+
+    </div>
+
+</ng-template>
+
+<ng-template #cardRefillModal>
+
+    <!-- Header -->
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Back Office Card Refill
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+        <!-- ================= Search Credential ================= -->
+
+        <div class="mb-3">
+
+            <div class="row">
+
+                <div class="col-md-12 mb-3">
+                    <label><b>Select Search Type</b></label>
+                </div>
+
+                <div class="col-md-12 mb-3">
+
+                    <label class="mr-4">
+
+                        <input type="radio" name="searchType" value="manufacturer" [(ngModel)]="searchType">
+
+                        Card Manufacturer ID
+
+                    </label>
+
+                    <label>
+
+                        <input type="radio" name="searchType" value="mobile" [(ngModel)]="searchType">
+
+                        Registered Mobile Number
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <!-- Manufacturer -->
+
+            <div class="row" *ngIf="searchType=='manufacturer'">
+
+                <div class="col-md-4">
+
+                    <label>
+                        Card Manufacturer ID
+                    </label>
+
+                    <input type="text" class="form-control" [(ngModel)]="manufacturerId">
+
+                </div>
+
+            </div>
+
+            <!-- Mobile -->
+
+            <div class="row" *ngIf="searchType=='mobile'">
+
+                <div class="col-md-4">
+
+                    <label>
+                        Registered Mobile Number
+                    </label>
+
+                    <input type="text" class="form-control" [(ngModel)]="mobileNumber">
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-right">
+
+                    <button class="btn mr-2 custom-btn" (click)="searchCredential()">
+
+                        Search
+
+                    </button>
+
+                    <button class="btn mr-2 custom-btn" (click)="displayCart()">
+
+                        Display cart
+
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= After Search ================= -->
+
+        <div *ngIf="showDetails">
+
+            <div class="row mb-3">
+
+                <div class="col-md-12">
+
+                    <h5>
+                        <b>Registration ID :</b>
+                        {{regId}}
+                    </h5>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label><b>Wallet Type</b></label>
+                        <select class="form-control" [(ngModel)]="walletType" (change)="updateCartSummary()">
+                            <option value="Personal">Personal</option>
+                            <option value="Corporate">Corporate</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label><b>Refill Amount (₹)</b></label>
+                        <input type="number" class="form-control" [(ngModel)]="refillAmount"
+                            (keyup)="updateCartSummary()">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label><b>Payment Type</b></label>
+                        <select class="form-control" [(ngModel)]="paymentType" (change)="updateCartSummary()">
+                            <option value="Cash">Cash</option>
+                            <option value="Digital">Digital</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="row mt-4">
+
+                <div class="col-md-12 text-right mb-3">
+
+                    <button class="btn custom-btn" (click)="addToCart()">
+
+                        Add To Cart & Checkout
+
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>

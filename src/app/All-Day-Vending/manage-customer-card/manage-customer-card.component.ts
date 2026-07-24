@@ -67,6 +67,27 @@ export class ManageCustomerCardComponent implements OnInit {
   loadingRefill: boolean = false;
   selectedUer: any;
 
+  searchType: string = 'manufacturer';
+  manufacturerId: string = '';
+  mobileNumber: string = '';
+  showDetails: boolean = false;
+
+  // Registration
+  regId: number = 0;
+
+  // Wallet
+  walletType: string = 'Personal';
+  refillAmount: number = 50;
+  paymentType: string = 'Cash';
+
+  // Cart
+  cartSummary = {
+    wallet: 'Personal',
+    amount: 50,
+    payment: 'Cash',
+    total: 50
+  };
+
   constructor(
     private apiService: ApiService,
     private modalService: BsModalService,
@@ -790,6 +811,92 @@ export class ManageCustomerCardComponent implements OnInit {
           this.toastr.error('Failed to fetch refill data');
         }
       );
+  }
+
+  backOfficeCardRefill(template: any) {
+    this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'modal-lg' }));
+  }
+
+  // Search
+  searchCredential() {
+
+    if (this.searchType == 'manufacturer') {
+      if (!this.manufacturerId) {
+        alert('Please enter Card Manufacturer ID');
+        return;
+      }
+    }
+
+    if (this.searchType == 'mobile') {
+      if (!this.mobileNumber) {
+        alert('Please enter Registered Mobile Number');
+        return;
+      }
+    }
+
+    // Call your API here
+
+    this.regId = 658900;
+    this.showDetails = true;
+    this.updateCartSummary();
+  }
+
+
+  // Update Cart
+  updateCartSummary() {
+
+    this.cartSummary = {
+      wallet: this.walletType,
+      amount: this.refillAmount,
+      payment: this.paymentType,
+      total: this.refillAmount
+    };
+
+  }
+
+
+  // Add To Cart
+  addToCart() {
+
+    this.updateCartSummary();
+    console.log('Add To Cart');
+    console.log(this.cartSummary);
+
+    // Add To Cart API
+
+  }
+
+
+  // Checkout
+  checkout() {
+
+    this.updateCartSummary();
+    console.log('Checkout');
+    console.log(this.cartSummary);
+
+    // Checkout API
+
+  }
+
+
+  // Reset Form
+  resetForm() {
+
+    this.searchType = 'manufacturer';
+    this.manufacturerId = '';
+    this.mobileNumber = '';
+    this.showDetails = false;
+    this.regId = 0;
+    this.walletType = 'Personal';
+    this.refillAmount = 50;
+    this.paymentType = 'Cash';
+
+    this.updateCartSummary();
+
+  }
+
+  displayCart() {
+    
   }
 
 }

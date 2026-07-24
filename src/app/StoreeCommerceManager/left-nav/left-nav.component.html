@@ -308,6 +308,12 @@
                     </a>
                 </li>
 
+                <li *ngIf="role == 31 || role == 34">
+                    <a routerLink="cardAccessAndPosManagement" routerLinkActive="active">
+                        Card Access & POS Management
+                    </a>
+                </li>
+
                 <!-- Not in DB → Super Admin only -->
                 <li *ngIf="role == 31">
                     <a routerLink="batchUpload" routerLinkActive="active">

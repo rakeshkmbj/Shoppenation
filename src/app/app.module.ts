@@ -94,6 +94,7 @@ import { MyCardTransactionsComponent } from './All-Day-Vending/my-card-transacti
 import { RefillMyCardComponent } from './All-Day-Vending/refill-my-card/refill-my-card.component';
 import { MyInvoicesComponent } from './All-Day-Vending/my-invoices/my-invoices.component';
 import { AccountManagementComponent } from './All-Day-Vending/account-management/account-management.component';
+import { CardAccessAndPosManagementComponent } from './All-Day-Vending/card-access-and-pos-management/card-access-and-pos-management.component';
 import { DataAndPrivacyComponent } from './About/data-and-privacy/data-and-privacy.component';
 import { RefundComponent } from './About/refund/refund.component';
 import { PricingAndTMComponent } from './About/pricing-and-tm/pricing-and-tm.component';
@@ -208,6 +209,7 @@ import { DrugManagementComponent } from './DrugMlrManagement/drug-management/dru
     RefillMyCardComponent,
     MyInvoicesComponent,
     AccountManagementComponent,
+    CardAccessAndPosManagementComponent,
     DataAndPrivacyComponent,
     RefundComponent,
     PricingAndTMComponent,
