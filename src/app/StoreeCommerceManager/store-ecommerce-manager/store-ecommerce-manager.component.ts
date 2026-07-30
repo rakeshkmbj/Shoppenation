@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { PosModalComponent } from 'src/app/pos-system/components/pos-modal/pos-modal.component';
 
 @Component({
   selector: 'app-store-ecommerce-manager',

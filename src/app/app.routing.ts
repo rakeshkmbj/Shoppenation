@@ -63,6 +63,8 @@ import { MyInvoicesComponent } from './All-Day-Vending/my-invoices/my-invoices.c
 import { AccountManagementComponent } from './All-Day-Vending/account-management/account-management.component';
 import { DrugManagementComponent } from './DrugMlrManagement/drug-management/drug-management.component';
 import { DeviceManagementComponent } from './DrugMlrManagement/device-management/device-management.component';
+import { CardAccessAndPosManagementComponent } from './All-Day-Vending/card-access-and-pos-management/card-access-and-pos-management.component';
+import { PosMainComponent } from './pos-system/components/pos-main/pos-main.component';
 
 const appRoutes: Routes = [
   {
@@ -75,6 +77,7 @@ const appRoutes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'pos', component: PosMainComponent },
   {
     path: '',
     component: StoreEcommerceManagerComponent,
@@ -139,6 +142,7 @@ const appRoutes: Routes = [
       { path: 'accountManagement', component: AccountManagementComponent },
       { path: 'deviceDataReview', component: DeviceManagementComponent },
       { path: 'drugDataReview', component: DrugManagementComponent },
+      { path: 'cardAccessAndPosManagement', component: CardAccessAndPosManagementComponent }
 
     ]
   },

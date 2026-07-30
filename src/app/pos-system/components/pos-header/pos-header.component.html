@@ -1,0 +1,54 @@
+<header class="pos-header">
+  <div class="header-left">
+    <div class="logo">
+      <span class="logo-text">AD</span>
+      <span class="logo-subtext">VENDING</span>
+    </div>
+    <span class="header-divider">|</span>
+    <div class="pos-label">POS</div>
+  </div>
+
+  <div class="header-center">
+    <div class="store-info">
+      <div class="store-name-section">
+        <label>Store Name:</label>
+        <select class="store-dropdown">
+          <option>{{ storeInfo.name }}</option>
+        </select>
+      </div>
+      <div class="terminal-info">
+        <div class="info-item">
+          <span class="label">Terminal ID:</span>
+          <span class="value">{{ storeInfo.terminalId }}</span>
+          <span class="status online">● Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="date-time">
+      <div>Date: {{ currentDate | date: 'dd MMM yyyy' }}</div>
+      <div>{{ currentTime | date: 'hh:mm a' }}</div>
+    </div>
+
+    <div class="notifications">
+      <button class="notification-btn" (click)="notificationClick.emit()">
+        <span class="notification-icon">🔔</span>
+        <span class="notification-badge">1</span>
+      </button>
+    </div>
+
+    <div class="user-profile">
+      <button class="settings-btn">⚙️</button>
+      <div class="user-info">
+        <img [src]="userAvatar" alt="User" class="user-avatar">
+        <div class="user-details">
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-status">GOLD MEMBER</div>
+        </div>
+      </div>
+      <button class="dropdown-btn">▼</button>
+    </div>
+  </div>
+</header>

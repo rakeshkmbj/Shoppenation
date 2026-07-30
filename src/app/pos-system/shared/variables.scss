@@ -1,0 +1,145 @@
+// POS System Global Variables and Shared Styles
+
+// Colors
+$primary-color: #ff6b35;
+$primary-dark: #e55a2b;
+$secondary-color: #2d3436;
+$secondary-light: #636e72;
+
+// Status Colors
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+
+// Gray Shades
+$gray-100: #f9f9f9;
+$gray-200: #f0f0f0;
+$gray-300: #e0e0e0;
+$gray-400: #d0d0d0;
+$gray-500: #999;
+$gray-600: #666;
+$gray-700: #333;
+$gray-800: #1e1e1e;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-xxl: 24px;
+
+// Border Radius
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$radius-xl: 12px;
+
+// Font Sizes
+$font-size-xs: 10px;
+$font-size-sm: 11px;
+$font-size-base: 12px;
+$font-size-lg: 14px;
+$font-size-xl: 16px;
+$font-size-2xl: 18px;
+
+// Font Weights
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+// Transitions
+$transition-fast: all 0.2s ease;
+$transition-normal: all 0.3s ease;
+$transition-slow: all 0.5s ease;
+
+// Breakpoints
+$breakpoint-xs: 480px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin scrollbar-thin {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: $gray-100;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $gray-400;
+    border-radius: 3px;
+    &:hover {
+      background: $gray-500;
+    }
+  }
+}
+
+// Utilities
+.text-truncate {
+  @include truncate;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.shadow-sm {
+  box-shadow: $shadow-sm;
+}
+
+.shadow-md {
+  box-shadow: $shadow-md;
+}
+
+.shadow-lg {
+  box-shadow: $shadow-lg;
+}

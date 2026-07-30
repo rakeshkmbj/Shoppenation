@@ -68,14 +68,19 @@
                         Display Acc. Card User
                     </button>
 
+                    <button type="button" class="btn mr-2 custom-btn" (click)="addNewUserCard(addUserCardModal)"
+                        [disabled]="!displayCardHolders.get('classId')?.value">
+                        Add New User Card
+                    </button>
+
                     <button type="button" class="btn mr-2 custom-btn" (click)="addNewClassDep(addNewClassDepartment)"
                         [disabled]="!displayCardHolders.get('accId')?.value">
                         Add New Class/Department
                     </button>
 
-                    <button type="button" class="btn custom-btn" (click)="addNewUserCard(addUserCardModal)"
+                    <button type="button" class="btn custom-btn" (click)="backOfficeCardRefill(cardRefillModal)"
                         [disabled]="!displayCardHolders.get('accId')?.value">
-                        Add New User Card
+                        Back Office Card Reffil
                     </button>
 
                 </div>
@@ -660,6 +665,366 @@
         <!-- Footer -->
         <div class="text-center mt-3">
             <button class="btn btn-danger px-4" (click)="modalRef.hide()">Close</button>
+        </div>
+
+    </div>
+
+</ng-template>
+
+<ng-template #cardRefillModal>
+
+    <!-- Header -->
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Back Office Card Refill
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <!-- ================= Search Form ================= -->
+
+        <form #searchForm="ngForm" (ngSubmit)="searchCredential(searchForm)">
+
+            <div class="mb-3">
+
+                <div class="row">
+
+                    <div class="col-md-12 mb-3">
+                        <label><b>Select Search Type</b></label>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+
+                        <label class="mr-4">
+
+                            <input type="radio" name="searchType" value="manufacturer" [(ngModel)]="searchType" required
+                                #searchTypeRef="ngModel">
+
+                            Card Manufacturer ID
+
+                        </label>
+
+                        <label>
+
+                            <input type="radio" name="searchType" value="mobile" [(ngModel)]="searchType" required>
+
+                            Registered Mobile Number
+
+                        </label>
+
+                        <div class="text-danger" *ngIf="searchForm.submitted && searchTypeRef.invalid">
+                            Search Type is required.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Manufacturer -->
+
+                <div class="row" *ngIf="searchType=='manufacturer'">
+
+                    <div class="col-md-4">
+
+                        <label>Card Manufacturer ID</label>
+
+                        <input type="text" class="form-control" name="manufacturerId" [(ngModel)]="manufacturerId"
+                            required #manufacturerIdRef="ngModel">
+
+                        <small class="text-danger" *ngIf="searchForm.submitted && manufacturerIdRef.invalid">
+                            Manufacturer ID is required.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- Mobile -->
+
+                <div class="row" *ngIf="searchType=='mobile'">
+
+                    <div class="col-md-4">
+
+                        <label>Registered Mobile Number</label>
+
+                        <input type="text" class="form-control" name="mobileNumber" [(ngModel)]="mobileNumber" required
+                            minlength="10" maxlength="10" pattern="^[0-9]{10}$" #mobileNumberRef="ngModel">
+
+                        <small class="text-danger" *ngIf="searchForm.submitted && mobileNumberRef.errors?.required">
+                            Mobile Number is required.
+                        </small>
+
+                        <small class="text-danger" *ngIf="searchForm.submitted && mobileNumberRef.errors?.pattern">
+                            Enter a valid 10 digit mobile number.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12 text-right">
+
+                        <button class="btn custom-btn" type="submit" [disabled]="searchForm.invalid">
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <!-- ================= Cart Form ================= -->
+
+        <form #cartForm="ngForm" *ngIf="showDetails" (ngSubmit)="openAddToCart(cartForm, checkoutModal, checkoutConfirmationModal)">
+
+            <div class="row mb-3">
+
+                <div class="col-md-12">
+
+                    <h5>
+                        <b>Registration ID :</b>
+                        {{ regId }}
+                    </h5>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <!-- Wallet Type -->
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label><b>Wallet Type</b></label>
+
+                        <select class="form-control" name="walletType" [(ngModel)]="walletType" required
+                            #walletTypeRef="ngModel">
+
+                            <option value="">Select Wallet</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Corporate">Corporate</option>
+
+                        </select>
+
+                        <small class="text-danger" *ngIf="cartForm.submitted && walletTypeRef.invalid">
+                            Wallet Type is required.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- Payment Type -->
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label><b>Payment Type</b></label>
+
+                        <select class="form-control" name="paymentType" [(ngModel)]="paymentType"
+                            (ngModelChange)="onPaymentTypeChange()" required #paymentTypeRef="ngModel">
+
+                            <option value="">Select Payment</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Digital">Digital</option>
+
+                        </select>
+
+                        <small class="text-danger" *ngIf="cartForm.submitted && paymentTypeRef.invalid">
+                            Payment Type is required.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- Refill Amount -->
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label><b>Refill Amount (₹)</b></label>
+
+                        <input type="number" class="form-control" name="refillAmount" [(ngModel)]="refillAmount"
+                            required [min]="1" [max]="paymentType === 'Cash' ? maxCashAmount : null"
+                            [placeholder]="paymentType === 'Cash' ? 'Fixed Amount ₹' + maxCashAmount : 'Enter Amount'"
+                            [readonly]="paymentType === 'Cash'" #refillAmountRef="ngModel">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row mt-4">
+
+                <div class="col-md-12 text-right mb-3">
+
+                    <button type="submit" class="btn mr-2 custom-btn" [disabled]="cartForm.invalid">
+
+                        Add To Cart & Checkout
+
+                    </button>
+
+                    <button type="button" class="btn custom-btn" (click)="diaplyCart(checkoutModal)">
+
+                        Display Cart
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</ng-template>
+
+<ng-template #checkoutModal>
+
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Cart Summary</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeCheckout()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="cart-summary p-3 rounded">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <p><strong>Cart Id :</strong> {{ openCart?.MDR_CONCT_SERVICE_CARTID || '—' }}</p>
+                    <p><strong>Service Id :</strong> {{ openCart?.MDR_CONCT_CART_FOR_SERVICEID || '—' }}</p>
+                    <p><strong>Service Name :</strong> {{ openCart?.MDR_CONCT_CART_SERVICE_NAME || '—' }}</p>
+                </div>
+                <button (click)="deleteCart()" class="btn btn-danger btn-sm px-3">Delete CART</button>
+            </div>
+
+            <div class="border p-2 rounded bg-light">
+                <p><strong>Per Unit Cost :</strong>
+                    <span class="text-danger">{{ openCart?.MDR_CONCT_SPP_UNIT_SERVICE_COST | number:'1.2-2' }}</span>
+                </p>
+                <p><strong>Quantity :</strong> {{ openCart?.MDR_CONCT_SERVICE_QUANTITY }}</p>
+                <p><strong>Currency :</strong> {{ openCart?.MDR_CONCT_SERVICE_CURRENCY }}</p>
+                <p><strong>Discount % :</strong> {{ openCart?.MDR_CONCT_SERVICE_DISCNT_PERCENTG }}%</p>
+            </div>
+
+            <div class="mt-3">
+                <p><strong>GST Charged :</strong>
+                    {{ openCart?.MDR_CONCT_CART_GST_CHARGED_AMT | number:'1.2-2' }}
+                </p>
+            </div>
+
+            <h5 class="text-danger mt-3">
+                <strong>Total to Pay Amount :</strong>
+                <span class="text-dark">
+                    {{ openCart?.MDR_CONCT_CART_TOTAL_TO_PAY_AMT | number:'1.2-2' }}
+                    {{ openCart?.MDR_CONCT_SERVICE_CURRENCY }}
+                </span>
+            </h5>
+
+            <div class="text-center mt-3">
+                <button (click)="payAmount()" class="btn btn-danger px-4 py-2 font-weight-bold">PAY</button>
+            </div>
+
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template #checkoutConfirmationModal>
+
+    <!-- Header -->
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Cash Checkout Confirmation
+        </h4>
+
+        <button type="button"
+                class="btn-close close pull-right"
+                aria-label="Close"
+                (click)="modalRef.hide()">
+
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+
+        </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+        <div class="cart-summary p-3 rounded">
+
+            <div class="border p-3 rounded bg-light">
+
+                <p>
+                    <strong>Registration ID :</strong>
+                    {{ regId }}
+                </p>
+
+                <p>
+                    <strong>Refill Amount :</strong>
+                    ₹ {{refillAmount}}
+                </p>
+
+                <p>
+                    <strong>GST (5%) :</strong>
+                    ₹ 23.81
+                </p>
+
+                <hr>
+
+                <h5 class="text-danger mb-0">
+                    <strong>Total Amount :</strong>
+                    <span class="text-dark">
+                        ₹ 500.00
+                    </span>
+                </h5>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="text-center mt-4">
+
+                <button
+                    class="btn btn-success px-4 mr-2"
+                    (click)="confirmCheckout(checkoutModal)">
+
+                    Confirm
+
+                </button>
+
+                <button
+                    class="btn btn-secondary px-4"
+                    (click)="modalRef.hide()">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
         </div>
 
     </div>

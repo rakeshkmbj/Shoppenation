@@ -1,0 +1,77 @@
+<div class="cart-summary-container">
+  <div class="summary-header">
+    <h4>CART SUMMARY</h4>
+  </div>
+
+  <div class="summary-content" *ngIf="summary">
+    <div class="summary-row">
+      <span class="label">Items</span>
+      <span class="value">{{ summary.totalItems }}</span>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">Total QTY</span>
+      <span class="value">{{ summary.totalQty }}</span>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">MRP Total</span>
+      <span class="value">₹{{ summary.mrpTotal | number: '1.2-2' }}</span>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">Discount</span>
+      <span class="value discount">-₹{{ summary.discountAmount | number: '1.2-2' }}</span>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">Cashback</span>
+      <span class="value cashback">+₹{{ summary.cashbackAmount | number: '1.2-2' }}</span>
+    </div>
+
+    <div class="summary-row">
+      <span class="label">Tax (5%)</span>
+      <span class="value">₹{{ summary.taxAmount | number: '1.2-2' }}</span>
+    </div>
+
+    <div class="summary-divider"></div>
+
+    <div class="summary-row total">
+      <span class="label">NET PAYABLE</span>
+      <span class="value">₹{{ summary.netPayable | number: '1.2-2' }}</span>
+    </div>
+  </div>
+
+  <div class="empty-summary" *ngIf="!summary || summary.totalItems === 0">
+    <p>No items in cart</p>
+  </div>
+
+  <div class="summary-actions">
+    <button class="btn btn-deliver" (click)="deliverSettle.emit()">
+      <span class="icon">📦</span>
+      <span>Deliver & Settle</span>
+    </button>
+
+    <button class="btn btn-delete" (click)="deleteCart.emit()">
+      <span class="icon">🗑️</span>
+      <span>Delete Cart</span>
+    </button>
+
+    <button class="btn btn-pending" (click)="makePending.emit()">
+      <span class="icon">⏳</span>
+      <span>Make Pending</span>
+    </button>
+  </div>
+
+  <div class="additional-actions">
+    <button class="action-link">
+      <span>💰</span> Apply Offers
+    </button>
+    <button class="action-link">
+      <span>📋</span> Return / Exchange
+    </button>
+    <button class="action-link">
+      <span>💳</span> Price Check
+    </button>
+  </div>
+</div>

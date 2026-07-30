@@ -1,0 +1,24 @@
+<div class="pos-page">
+  <div class="pos-container">
+    <app-pos-header [storeInfo]="storeInfo" [userName]="userName"
+      (notificationClick)="onNotificationClick()"></app-pos-header>
+
+    <div class="pos-main-content">
+      <app-pos-sidebar [categories]="(categories$ | async) || []" [selectedCategory]="(selectedCategory$ | async) || ''"
+        (categorySelect)="onCategorySelect($event)"></app-pos-sidebar>
+
+      <div class="pos-center-content">
+        <app-pos-product-list [products]="(filteredProducts$ | async) || []"
+          (addToCart)="onAddToCart($event)"></app-pos-product-list>
+      </div>
+
+      <div class="pos-right-sidebar">
+        <app-pos-shopping-cart [items]="(cartItems$ | async) || []" (updateQuantity)="onUpdateQuantity($event)"
+          (removeItem)="onRemoveItem($event)"></app-pos-shopping-cart>
+
+        <app-pos-cart-summary [summary]="(cartSummary$ | async)" (deliverSettle)="onDeliverSettle()"
+          (deleteCart)="onDeleteCart()" (makePending)="onMakePending()"></app-pos-cart-summary>
+      </div>
+    </div>
+  </div>
+</div>
