@@ -40,10 +40,6 @@ export class RefillMyCardComponent implements OnInit {
     this.storeid = this.apiService.requiredLoginData.storeid;
   }
 
-  cardNo = 'CB67990';
-  cardId = 18900;
-  currentBalance = 39;
-
   refillAmount = 200;
   gstPercent = 5;
   gstAmount = 0;
@@ -150,7 +146,11 @@ export class RefillMyCardComponent implements OnInit {
       GstPercent: this.gstPercent,
       Currency: 'INR',
       Login_Subacctid: this.subaccountid,
-      Login_Storeid: this.storeid
+      Login_Storeid: this.storeid,
+      Persnl_Walt_Flg: this.getlogindata.RETAIL_D2C_ACCT_INTRNL_CUSTMR_ROLE_ALCTD === '37' ? true : false,
+      Corp_Walt_Flg: false,
+      Cash_Flg: false,
+      Digital_Paymnt_Flg: true
     }
 
     console.log("payload: ", payload)

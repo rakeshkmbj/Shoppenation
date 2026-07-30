@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { NavigationExtras, Router } from '@angular/router';
 import { RazorpayService } from '../../razorpay.service';
+import { ModalService } from 'src/app/pos-system/services/modal.service';
 
 @Component({
   selector: 'app-card-access-and-pos-management',
@@ -28,6 +29,7 @@ export class CardAccessAndPosManagementComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private razorpayService: RazorpayService,
+    private posModalService: ModalService,
   ) {
     this.accountid = this.apiService.requiredLoginData.accountid;
     this.subaccountid = this.apiService.requiredLoginData.subaccountid;
@@ -58,6 +60,23 @@ export class CardAccessAndPosManagementComponent implements OnInit {
 
   getCardIdentification() {
     // Call API using cardTagId
+  }
+
+  // openBrandCommercePOS(): void {
+  //   this.router.navigate(['/pos']);
+  // }
+
+  openBrandCommercePOS() {
+
+    this.router.navigate(['/pos']);
+
+    setTimeout(() => {
+
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      }
+
+    }, 200);
   }
 
 }

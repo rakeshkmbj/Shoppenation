@@ -1,11 +1,14 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl, NgForm } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { NavigationExtras, Router } from '@angular/router';
 import { RazorpayService } from '../../razorpay.service';
+import { PaymentStatusService } from 'src/app/services/payment-status.service';
+import { takeUntil, filter } from 'rxjs/operators';
+import { Subscription, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-manage-customer-card',
@@ -66,6 +69,12 @@ export class ManageCustomerCardComponent implements OnInit {
   loadingSpend: boolean = false;
   loadingRefill: boolean = false;
   selectedUer: any;
+  gstPercent = 5;
+  openCart: any;
+  gstAmount = 0;
+  totalAmount = 0;
+  maxCashAmount = 476.19;
+  memberIdentity: any;
 
   searchType: string = 'manufacturer';
   manufacturerId: string = '';
@@ -73,12 +82,12 @@ export class ManageCustomerCardComponent implements OnInit {
   showDetails: boolean = false;
 
   // Registration
-  regId: number = 0;
+  regId: any;
 
   // Wallet
-  walletType: string = 'Personal';
-  refillAmount: number = 50;
-  paymentType: string = 'Cash';
+  walletType: string = '';
+  refillAmount: number | null = null;
+  paymentType: string = '';
 
   // Cart
   cartSummary = {
@@ -96,6 +105,7 @@ export class ManageCustomerCardComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private razorpayService: RazorpayService,
+    private paymentStatusService: PaymentStatusService,
   ) {
     this.accountid = this.apiService.requiredLoginData.accountid;
     this.subaccountid = this.apiService.requiredLoginData.subaccountid;
@@ -132,6 +142,8 @@ export class ManageCustomerCardComponent implements OnInit {
 
   }
 
+  private destroy$ = new Subject<void>();
+
   ngOnInit(): void {
 
     this.onTabChange('tab2');
@@ -153,6 +165,56 @@ export class ManageCustomerCardComponent implements OnInit {
 
       this.getClassDep(this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID, this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID);
     }
+
+    this.calculateAmount();
+    this.paymentStatusService.paymentStatus$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(status => status?.success)
+      )
+      .subscribe(status => {
+
+        if (status) {
+          if (status.success) {
+            try {
+              const payload = {
+                cartId: this.openCart?.MDR_CONCT_SERVICE_CARTID,
+                storecode: this.regId,
+                serviceId: this.openCart?.MDR_CONCT_CART_FOR_SERVICEID,
+                confirmPayFlg: true,
+                rzrpay_Pamnt_Id: status.paymentId,
+                rzrpay_Signature: status.paymentSignature,
+                rzrpay_Live_Flg: this.openCart.MDR_PG_LIVE_KEY_FLG
+              }
+
+              console.log("payload: ", payload)
+
+              this.apiService.postCall(this.apiService.baseURL + '/MDR_Service_10and8_MakePayments', payload)
+                .subscribe(data => {
+                  console.log(data);
+                  this.toastr.success(data.Message, '', {
+                    timeOut: 5000,
+                  });
+                  this.modalRef?.hide();
+                },
+                  (error) => {
+                    console.log(error)
+                    this.toastr.error(error, '', {
+                      timeOut: 5000,
+                    });
+                  });
+
+              this.paymentStatusService.updatePaymentStatus(null);
+
+            } catch (error: any) {
+              console.log(error)
+            }
+          }
+
+          console.log('Payment status: ', status)
+        }
+
+      });
 
   }
 
@@ -814,11 +876,23 @@ export class ManageCustomerCardComponent implements OnInit {
   }
 
   backOfficeCardRefill(template: any) {
+
+    this.showDetails = false;
+    this.mobileNumber = '';
+    this.manufacturerId = '';
+    this.regId = '';
+
+    this.resetForm();
+
     this.modalRef = this.modalService.show(template, Object.assign({}, { class: 'modal-lg' }));
   }
 
   // Search
-  searchCredential() {
+  searchCredential(form: NgForm) {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
 
     if (this.searchType == 'manufacturer') {
       if (!this.manufacturerId) {
@@ -834,43 +908,125 @@ export class ManageCustomerCardComponent implements OnInit {
       }
     }
 
-    // Call your API here
+    const payload = {
+      Card_Manf_UID_Flg: this.searchType === 'manufacturer' ? true : false,
+      Card_Primry_MobIle_FLg: this.searchType === 'mobile' ? true : false,
+      Card_UID: this.manufacturerId,
+      Card_Mob_Numbr: this.mobileNumber
+    }
 
-    this.regId = 658900;
-    this.showDetails = true;
-    this.updateCartSummary();
+    this.apiService.postCall(this.apiService.baseURL + '/GetMemberIdentity', payload)
+      .subscribe(
+        (data: any) => {
+          console.log("Data: ", data);
+          this.memberIdentity = data;
+          this.regId = data.ADC_VEND_CARDHOLDR_REGID;
+          this.showDetails = true;
+        },
+        (error) => {
+          this.spinner.hide();
+          this.loadingRefill = false;
+          this.toastr.error('Failed to fetch data');
+        }
+      );
   }
-
-
-  // Update Cart
-  updateCartSummary() {
-
-    this.cartSummary = {
-      wallet: this.walletType,
-      amount: this.refillAmount,
-      payment: this.paymentType,
-      total: this.refillAmount
-    };
-
-  }
-
 
   // Add To Cart
-  addToCart() {
+  addToCart(form: NgForm, template: any) {
 
-    this.updateCartSummary();
-    console.log('Add To Cart');
-    console.log(this.cartSummary);
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
 
-    // Add To Cart API
+    if (this.refillAmount! < 1 || this.refillAmount! > 500) {
+      return;
+    }
 
+    const payload = {
+      Storecode: this.regId,
+      MemberPlanId: "999",
+      PlanName: 'Vending Plan',
+      ServiceId: '21',
+      ServicePrice: this.refillAmount.toFixed(2),
+      Quantity: 1,
+      DiscountPercent: 0,
+      GstPercent: this.gstPercent,
+      Currency: 'INR',
+      Login_Subacctid: this.subaccountid,
+      Login_Storeid: this.storeid,
+      Persnl_Walt_Flg: this.walletType === 'Personal' ? true : false,
+      Corp_Walt_Flg: this.walletType === 'Corporate' ? true : false,
+      Cash_Flg: this.paymentType === 'Cash' ? true : false,
+      Digital_Paymnt_Flg: this.paymentType === 'Digital' ? true : false,
+    }
+
+    console.log("payload: ", payload)
+
+    this.apiService.postCall(this.apiService.baseURL + '/MDRCheckout', payload)
+      .subscribe(data => {
+        console.log(data);
+        this.openCart = data;
+
+        this.modalRef.hide();
+
+        this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+      },
+        (error) => {
+          console.log("error: ", error);
+          this.toastr.error(error.error || error, '', {
+            timeOut: 5000,
+          });
+        });
   }
 
+  cartFormPreserve: any;
+
+  openAddToCart(cartForm: NgForm, checkouTemplate: any, confirmCheckoutTemplate: any) {
+    if(this.walletType === 'Corporate') {
+      this.toastr.error("This feature is unavailable");
+    }
+    else if (this.paymentType === 'Cash') {
+      this.cartFormPreserve = cartForm;
+      this.modalRef.hide();
+      this.modalRef = this.modalService.show(confirmCheckoutTemplate, { class: 'modal-md' });
+    } else {
+      this.addToCart(cartForm, checkouTemplate);
+    }
+  }
+
+  diaplyCart(template: any) {
+
+    const payload = {
+      "Storecode": this.regId,
+      "Serviceid": "21"
+    }
+
+    console.log("Display cart: ", payload);
+
+    this.apiService.postCall(this.apiService.baseURL + '/Display-OpenCart', payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message === "No Open cart Found for the Store") {
+          this.toastr.error(data.Message);
+        } else {
+          this.openCart = data;
+          this.modalRef.hide();
+          this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+        }
+
+      },
+        (error) => {
+          this.toastr.error(error.error?.Message || error, '', {
+            timeOut: 5000,
+          });
+        });
+
+  }
 
   // Checkout
   checkout() {
-
-    this.updateCartSummary();
     console.log('Checkout');
     console.log(this.cartSummary);
 
@@ -878,25 +1034,121 @@ export class ManageCustomerCardComponent implements OnInit {
 
   }
 
+  onPaymentTypeChange(): void {
+
+    if (this.paymentType === 'Cash') {
+      // Fixed amount for cash
+      this.refillAmount = this.maxCashAmount;
+    } else {
+      // Clear amount for digital so user can enter any value
+      this.refillAmount = null;
+    }
+
+  }
 
   // Reset Form
   resetForm() {
-
     this.searchType = 'manufacturer';
     this.manufacturerId = '';
     this.mobileNumber = '';
     this.showDetails = false;
-    this.regId = 0;
-    this.walletType = 'Personal';
-    this.refillAmount = 50;
-    this.paymentType = 'Cash';
+    this.regId = '';
 
-    this.updateCartSummary();
+    this.walletType = '';
+    this.refillAmount = null;
+    this.paymentType = '';
+  }
+
+  closeCheckout() {
+    this.modalRef?.hide();
+  }
+
+  deleteCart() {
+    const payload = {
+      Storecode: this.regId,
+      ServiceId: this.openCart?.MDR_CONCT_CART_FOR_SERVICEID,
+      CartId: this.openCart?.MDR_CONCT_SERVICE_CARTID
+    }
+
+    console.log("delete payload: ", payload);
+
+    this.apiService.postCall(this.apiService.baseURL + '/Delete_MDR_ServiceCart', payload)
+      .subscribe(data => {
+        console.log(data);
+        this.toastr.success(data.Message)
+
+        this.modalRef?.hide();
+        this.openCart = null;
+      },
+        (error) => {
+          console.log('Error: ', error)
+          this.toastr.error(error.error?.Message || error, '', {
+            timeOut: 5000,
+          });
+        });
+  }
+
+  calculateAmount() {
+    this.gstAmount = +(this.refillAmount * this.gstPercent / 100).toFixed(2);
+    this.totalAmount = +(this.refillAmount + this.gstAmount).toFixed(2);
+  }
+
+  payAmount() {
+    if (!this.openCart) {
+      this.toastr.error('No checkout found. Please Add to Cart first.');
+      return;
+    }
+
+    if (this.paymentType === 'Cash') {
+
+      const payload = {
+        CartId: this.openCart.MDR_CONCT_SERVICE_CARTID,
+        Storecode: this.regId,
+        ServiceId: "21",
+        ConfirmPayFlg: true,
+        Persnl_Wallet_Flg: this.walletType === 'Personal' ? true : false,
+        Corp_Wallet_Flg: this.walletType === 'Corporate' ? true : false,
+        Corp_Wallet_Subacctid: this.memberIdentity.ADC_VEND_THIRD_NODE_SUBACCTID,
+        Corp_Wallet_Storeid: this.memberIdentity.ADC_VEND_THIRD_NODE_STOREID,
+        Cash_Flg: true
+      }
+
+      console.log("Cash payment payload: ", payload);
+
+      this.apiService.postCall(this.apiService.baseURL + '/BackofficeCashPayment', payload)
+        .subscribe(data => {
+          console.log(data);
+
+          if(data.Message === ' Corporate Wallets are not associated with your account '){
+            this.toastr.error(data.Message);
+          } else {
+            this.toastr.success(data.Message);
+          }
+
+          this.modalRef?.hide();
+          this.openCart = null;
+        },
+          (error) => {
+            console.log('Error: ', error)
+            this.toastr.error(error.error?.Message || error, '', {
+              timeOut: 5000,
+            });
+          });
+
+    } else {
+      this.razorpayService.payWithRazorpay(
+        this.openCart.Id,
+        this.openCart.MDR_CONCT_CART_TOTAL_TO_PAY_AMT_IN_PAISA,
+        this.openCart.MDR_PG_LIVE_KEY_FLG,
+        this.openCart.PlateformName,
+        this.openCart.email,
+        this.openCart.Contact);
+    }
 
   }
 
-  displayCart() {
-    
+  confirmCheckout(checkoutModal: any) {
+    this.addToCart(this.cartFormPreserve, checkoutModal);
   }
 
 }

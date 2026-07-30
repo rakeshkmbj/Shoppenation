@@ -16,16 +16,10 @@
 
                         <label><b>Card Tag Id</b></label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            formControlName="cardTagId"
+                        <input type="text" class="form-control" formControlName="cardTagId"
                             placeholder="Place Card on Reader">
 
-                        <button
-                            type="button"
-                            class="btn custom-btn mt-3"
-                            (click)="getCardIdentification()">
+                        <button type="button" class="btn custom-btn mt-3" (click)="getCardIdentification()">
                             Get Card Identification
                         </button>
 
@@ -44,15 +38,11 @@
                     <!-- QR -->
                     <div class="col-md-5 text-center">
 
-                        <img
-                            src="assets/images/sampleQR.png"
-                            class="qr-image">
+                        <img src="assets/images/sampleQR.png" class="qr-image">
 
                         <br><br>
 
-                        <button
-                            type="button"
-                            class="btn custom-btn">
+                        <button type="button" class="btn custom-btn">
                             Scan QR for Identification
                         </button>
 
@@ -143,9 +133,7 @@
 
                             <div class="holder-image">
 
-                                <img
-                                    *ngIf="cardDetails.IMAGE"
-                                    [src]="cardDetails.IMAGE">
+                                <img *ngIf="cardDetails.IMAGE" [src]="cardDetails.IMAGE">
 
                             </div>
 
@@ -159,6 +147,19 @@
 
                 </div>
 
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+
+                    <button type="button" class="btn brand-pos-btn" (click)="openBrandCommercePOS()">
+
+                        <i class="fa fa-shopping-cart me-2"></i>
+                        Brand Commerce POS
+
+                    </button>
+
+                </div>
             </div>
 
         </form>
