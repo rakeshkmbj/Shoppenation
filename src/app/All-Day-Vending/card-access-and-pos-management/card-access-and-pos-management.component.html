@@ -2,32 +2,44 @@
 
     <h1 class="heading-title">Card Access Management</h1>
 
-    <div class="toplevel">
+    <form [formGroup]="cardAccessForm">
 
-        <form [formGroup]="cardAccessForm">
+        <!-- ======================= -->
+        <!-- Identification Section -->
+        <!-- ======================= -->
 
-            <!-- Top Section -->
-            <div class="card p-3 mb-4">
+        <div class="card mb-4">
+
+            <div class="card-body">
 
                 <div class="row align-items-center">
 
                     <!-- RFID -->
-                    <div class="col-md-5">
 
-                        <label><b>Card Tag Id</b></label>
+                    <div class="col-lg-5">
 
-                        <input type="text" class="form-control" formControlName="cardTagId"
-                            placeholder="Place Card on Reader">
+                        <h5 class="sub-title">
+                            Registered User Mobile
+                        </h5>
 
-                        <button type="button" class="btn custom-btn mt-3" (click)="getCardIdentification()">
+                        <input type="text" class="form-control form-control-lg" placeholder="Enter Mobile Number"
+                            formControlName="mobilenumber">
+
+                        <button type="button" class="btn custom-btnn w-100 mt-4" (click)="getCardIdentification()">
+
+                            <i class="fa fa-credit-card me-2"></i>
+
                             Get Card Identification
+
                         </button>
 
                     </div>
 
-                    <div class="col-md-2 text-center">
+                    <!-- Divider -->
 
-                        <div class="divider">
+                    <div class="col-lg-2 text-center">
+
+                        <div class="or-divider">
 
                             <span>OR</span>
 
@@ -36,14 +48,27 @@
                     </div>
 
                     <!-- QR -->
-                    <div class="col-md-5 text-center">
 
-                        <img src="assets/images/sampleQR.png" class="qr-image">
+                    <div class="col-lg-5 text-center">
 
-                        <br><br>
+                        <h5 class="sub-title">
 
-                        <button type="button" class="btn custom-btn">
+                            Scan QR Code
+
+                        </h5>
+
+                        <div class="qr-box">
+
+                            <img src="assets/images/sampleQR.png" class="img-fluid">
+
+                        </div>
+
+                        <button type="button" class="btn custom-btnn mt-4">
+
+                            <i class="fa fa-qrcode me-2"></i>
+
                             Scan QR for Identification
+
                         </button>
 
                     </div>
@@ -52,94 +77,183 @@
 
             </div>
 
-            <!-- Card Details -->
+        </div>
 
-            <div class="card">
+        <!-- ======================= -->
+        <!-- User Details -->
+        <!-- ======================= -->
 
-                <div class="card-body">
+        <div class="card mt-4">
 
-                    <div class="row">
+            <div class="card-header section-header">
+                <i class="fa fa-user-circle me-2"></i>
+                User Identity Details
+            </div>
 
-                        <!-- Left -->
+            <div class="card-body">
 
-                        <div class="col-md-8">
+                <div class="row">
 
-                            <div class="detail-row">
+                    <!-- Left Details -->
 
-                                <span><b>Regid :</b></span>
-                                {{cardDetails.REGID}}
+                    <div class="col-lg-8">
 
-                                &nbsp;&nbsp;
+                        <div class="row">
 
-                                <span><b>Validity :</b></span>
-
-                                <span *ngIf="cardDetails.VALID">
-                                    <img src="assets/images/active_icon1.png" width="22">
-                                </span>
-
-                                <span *ngIf="!cardDetails.VALID">
-                                    <img src="assets/images/deactive_icon.png" width="22">
-                                </span>
-
-                                &nbsp;&nbsp;
-
-                                <span><b>Suspended</b></span>
-
-                                <span *ngIf="cardDetails.SUSPENDED">
-                                    ❌
-                                </span>
-
-                                <span *ngIf="!cardDetails.SUSPENDED">
-                                    ✔
-                                </span>
-
+                            <div class="col-md-6 mb-4">
+                                <label>Reg ID</label>
+                                <h6>{{cardDetails.REGID}}</h6>
                             </div>
 
-                            <br>
+                            <div class="col-md-6 mb-4">
+                                <label>Passport ID</label>
+                                <h6>{{cardDetails.PASSPORT_ID}}</h6>
+                            </div>
 
-                            <p>
-                                <b>Card Generated From :</b>
+                            <div class="col-md-6 mb-4">
+                                <label>First Name</label>
+                                <h6>{{cardDetails.FIRST_NAME}}</h6>
+                            </div>
 
-                                {{cardDetails.GENERATED_FROM}}
-                            </p>
+                            <div class="col-md-6 mb-4">
+                                <label>Last Name</label>
+                                <h6>{{cardDetails.LAST_NAME}}</h6>
+                            </div>
 
-                            <p>
+                            <div class="col-md-6 mb-4">
+                                <label>Mobile Number</label>
+                                <h6>{{cardDetails.MOBILE}}</h6>
+                            </div>
 
-                                <b>First Name :</b>
-
-                                {{cardDetails.FIRST_NAME}}
-
-                                &nbsp;&nbsp;
-
-                                <b>Last Name :</b>
-
-                                {{cardDetails.LAST_NAME}}
-
-                            </p>
-
-                            <p>
-
-                                <b>Primary Mobile # :</b>
-
-                                {{cardDetails.MOBILE}}
-
-                            </p>
+                            <div class="col-md-6 mb-4">
+                                <label>Generated From</label>
+                                <h6>{{cardDetails.GENERATED_FROM}}</h6>
+                            </div>
 
                         </div>
 
-                        <!-- Right -->
+                        <hr>
 
-                        <div class="col-md-4 text-center">
+                        <div class="status-container">
 
-                            <div class="holder-image">
+                            <!-- Validity -->
+                            <div class="status-item">
 
-                                <img *ngIf="cardDetails.IMAGE" [src]="cardDetails.IMAGE">
+                                <label>Validity</label>
+
+                                <span class="status-badge success">
+                                    <i class="fa fa-check"></i>
+                                    Active
+                                </span>
 
                             </div>
 
-                            <h5 class="mt-2">
-                                Card Holder Image
-                            </h5>
+                            <!-- Suspended -->
+                            <div class="status-item">
+
+                                <label>Suspended</label>
+
+                                <span class="status-badge success">
+                                    No
+                                </span>
+
+                            </div>
+
+                            <!-- Verification -->
+                            <div class="status-item">
+
+                                <label>Verification</label>
+
+                                <span class="status-badge success">
+                                    <i class="fa fa-check-circle"></i>
+                                    Verified User
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Right Image -->
+
+                    <div class="col-lg-4 text-center">
+
+                        <div class="holder-image">
+
+                            <img *ngIf="cardDetails.IMAGE" [src]="cardDetails.IMAGE">
+
+                            <div *ngIf="!cardDetails.IMAGE" class="placeholder-image">
+
+                                <i class="fa fa-user fa-5x"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row mt-4 align-items-start">
+
+                    <!-- Left Side -->
+                    <div class="col-lg-4">
+
+                        <button class="btn btn-dark authenticate-btn" type="button">
+
+                            <i class="fa fa-user-check me-2"></i>
+                            Authenticate User
+
+                        </button>
+
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="col-lg-8">
+
+                        <!-- OTP Row -->
+
+                        <div class="validation-section">
+
+                            <label class="validation-label">
+
+                                Validation Reference
+
+                            </label>
+
+                            <div class="otp-box mt-2">
+
+                                <input maxlength="1" class="otp-input">
+
+                                <input maxlength="1" class="otp-input">
+
+                                <input maxlength="1" class="otp-input">
+
+                                <input maxlength="1" class="otp-input">
+
+                            </div>
+
+                            <button class="btn custom-btnn ms-2 mt-4" type="button">
+
+                                Validate
+
+                            </button>
+
+
+                        </div>
+
+                        <!-- Buttons Row -->
+
+                        <div class="d-flex justify-content-end gap-8 mt-4">
+
+                            <button class="btn custom-btnn" type="button" (click)="openBrandCommercePOS()">
+
+                                Take user order on terminal
+
+                            </button>
 
                         </div>
 
@@ -149,21 +263,7 @@
 
             </div>
 
-            <div class="row mt-4">
-                <div class="col-md-12 text-center">
-
-                    <button type="button" class="btn brand-pos-btn" (click)="openBrandCommercePOS()">
-
-                        <i class="fa fa-shopping-cart me-2"></i>
-                        Brand Commerce POS
-
-                    </button>
-
-                </div>
-            </div>
-
-        </form>
-
-    </div>
+        </div>
+    </form>
 
 </div>

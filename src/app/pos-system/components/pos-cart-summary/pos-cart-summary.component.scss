@@ -62,6 +62,7 @@
         padding: 12px 16px;
         border-radius: 6px;
         margin-top: 8px;
+        margin: 0px;
 
         .label,
         .value {
@@ -188,4 +189,47 @@
       }
     }
   }
+}
+
+.summary-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.summary-actions .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 160px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 18px;
+  transition: all 0.25s ease;
+}
+
+.btn-delete {
+  background: #dc3545;
+  color: #fff;
+  border: 1px solid #dc3545;
+}
+
+.btn-delete:hover {
+  background: #bb2d3b;
+  border-color: #b02a37;
+}
+
+.btn-pending {
+  background: #198754;
+  color: #fff;
+  border: 1px solid #198754;
+}
+
+.btn-pending:hover {
+  background: #157347;
+  border-color: #146c43;
+}
+
+.summary-actions i {
+  font-size: 1rem;
 }

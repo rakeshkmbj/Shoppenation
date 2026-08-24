@@ -47,31 +47,17 @@
   </div>
 
   <div class="summary-actions">
-    <button class="btn btn-deliver" (click)="deliverSettle.emit()">
-      <span class="icon">📦</span>
-      <span>Deliver & Settle</span>
-    </button>
 
     <button class="btn btn-delete" (click)="deleteCart.emit()">
-      <span class="icon">🗑️</span>
+      <i class="bi bi-trash3-fill me-2"></i>
       <span>Delete Cart</span>
     </button>
 
     <button class="btn btn-pending" (click)="makePending.emit()">
-      <span class="icon">⏳</span>
-      <span>Make Pending</span>
+      <i class="bi bi-credit-card-fill me-2"></i>
+      <span>Make Payment</span>
     </button>
+
   </div>
 
-  <div class="additional-actions">
-    <button class="action-link">
-      <span>💰</span> Apply Offers
-    </button>
-    <button class="action-link">
-      <span>📋</span> Return / Exchange
-    </button>
-    <button class="action-link">
-      <span>💳</span> Price Check
-    </button>
-  </div>
 </div>

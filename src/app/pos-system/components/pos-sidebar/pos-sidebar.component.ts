@@ -14,7 +14,7 @@ export class PosSidebarComponent {
   @Input() selectedCategory: string = 'all';
   @Output() categorySelect = new EventEmitter<string>();
 
-  activeNav: string = 'products';
+  activeNav: string = 'terminal';
 
   selectCategory(categoryId: string): void {
     this.categorySelect.emit(categoryId);

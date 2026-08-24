@@ -9,29 +9,14 @@
       <span class="nav-label">DASHBOARD</span>
     </div>
 
-    <div class="nav-item" [class.active]="activeNav === 'products'" (click)="setActiveNav('products')">
-      <span class="nav-icon">📦</span>
-      <span class="nav-label">PRODUCTS</span>
-    </div>
-
-    <div class="nav-item" [class.active]="activeNav === 'bills'" (click)="setActiveNav('bills')">
-      <span class="nav-icon">📋</span>
-      <span class="nav-label">HOLD BILLS</span>
+    <div class="nav-item" [class.active]="activeNav === 'terminal'" (click)="setActiveNav('terminal')">
+      <span class="nav-icon">🖥️</span>
+      <span class="nav-label">TERMINAL POS</span>
     </div>
 
     <div class="nav-item" [class.active]="activeNav === 'orders'" (click)="setActiveNav('orders')">
       <span class="nav-icon">🛒</span>
       <span class="nav-label">ORDERS</span>
-    </div>
-
-    <div class="nav-item" [class.active]="activeNav === 'campaigns'" (click)="setActiveNav('campaigns')">
-      <span class="nav-icon">🎯</span>
-      <span class="nav-label">CAMPAIGNS</span>
-    </div>
-
-    <div class="nav-item" [class.active]="activeNav === 'reports'" (click)="setActiveNav('reports')">
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">REPORTS</span>
     </div>
 
     <div class="nav-item" [class.active]="activeNav === 'sync'" (click)="setActiveNav('sync')">

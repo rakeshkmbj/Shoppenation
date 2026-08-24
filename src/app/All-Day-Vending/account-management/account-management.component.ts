@@ -1,10 +1,11 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services/api.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { NavigationExtras, Router } from '@angular/router';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-account-management',
@@ -62,6 +63,14 @@ export class AccountManagementComponent implements OnInit {
   imagePreview: any;
   imagePreview2: any;
   B2BLinkIdForD10: any;
+  macroSetupForm: FormGroup;
+  selectedMacroParentTab = 'tab1';
+  selectedMacroChildTab = 'tab11';
+  isMacroDisplayMode = false;
+  isMacroDisplayLoading = false;
+  hasMacroSetup = false;
+
+  @ViewChild('macroChildTabset') macroChildTabset!: TabsetComponent;
 
   constructor(
     private apiService: ApiService,
@@ -121,6 +130,41 @@ export class AccountManagementComponent implements OnInit {
       RETAIL_D2C_ACCT_INTRNL_CUSTMR_KYC_PHOTO_ID: ['', Validators.required],
       RETAIL_D2C_ACCT_INTRNL_TEAM_MOBL_NUMBR: ['', [Validators.required, Validators.minLength(10)]],
       RETAIL_D2C_ACCT_INTRNL_CSTMR_RCNT_PWD: ['']
+    });
+
+    this.macroSetupForm = this.formBuilder.group({
+
+      associatedIndustry: [{ value: '0' }],
+
+      duration: ['0'],
+
+      validityStartDate: [
+        { value: '' }
+      ],
+
+      personalWalletAvailability: [false],
+      corporateWalletAvailability: [false],
+
+      onNetworkCommerceFlag: [false],
+      campusTerminalPOS: [false],
+      fullTerminalNetwork: [false],
+
+      internalEmployees: [false],
+      channelNetwork: [false],
+      securityStaff: [false],
+      b2bCustomers: [false],
+      productConsumers: [false],
+      serviceProviders: [false],
+
+      banksInsurance: [false],
+      csrProviders: [false],
+      eventsBasedUsers: [false],
+      guestsVisitors: [false],
+      assetOwners: [false],
+      socialGroupUsers: [false],
+
+      cashCharging: [false],
+      brandCardMultipleWallet: [false]
     });
   }
 
@@ -287,10 +331,6 @@ export class AccountManagementComponent implements OnInit {
 
   acctUserMgmt(acc: any) {
     console.log('Acct User Mgmt:', acc);
-  }
-
-  contractMgmt(acc: any) {
-    console.log('Contract Mgmt:', acc);
   }
 
   editThirdNodeAcc(acc: any) {
@@ -522,6 +562,322 @@ export class AccountManagementComponent implements OnInit {
         });
 
     this.getUserStoreList(this.selectedThirdNode)
+  }
+
+  contractMgmt(acc: any, template?: any) {
+
+    this.resetMacroSetupForm();
+
+    this.selectedThirdNode = acc;
+    this.selectedMacroParentTab = 'tab1';
+    this.selectedMacroChildTab = 'tab11';
+    if (template) {
+      this.modalRef = this.modalService.show(template, {
+        class: 'modal-xl'
+      });
+    }
+
+    this.displayMacros();
+  }
+
+  onMacroParentTabSelected(tab: TabDirective): void {
+    this.selectedMacroParentTab = tab.id || '';
+
+    if (tab.id === 'tab1') {
+      this.selectedMacroChildTab = 'tab11';
+      const childTabset = this.macroChildTabset;
+      const displayTab = childTabset && childTabset.tabs
+        .find(childTab => childTab.id === 'tab11');
+
+      if (displayTab) {
+        displayTab.active = true;
+      }
+    }
+  }
+
+  onMacroChildTabSelected(tab: TabDirective): void {
+    this.selectedMacroChildTab = tab.id || '';
+
+    console.log("Selected TAB: ", tab.id);
+    if (this.selectedMacroChildTab === 'tab11') {
+      this.displayMacros();
+    } else if (this.selectedMacroChildTab === 'tab12') {
+      this.prepareMacroSetupForAdd();
+    }
+  }
+
+  switchToAddMacroSetup(): void {
+    this.selectedMacroChildTab = 'tab12';
+    this.prepareMacroSetupForAdd();
+
+    const addTab = this.macroChildTabset?.tabs.find(tab => tab.id === 'tab12');
+    if (addTab) {
+      addTab.active = true;
+    }
+  }
+
+  onAddPartnerChildTabSelected(tab: TabDirective): void {
+    this.selectedMacroChildTab = tab.id || '';
+
+    console.log("Selected TAB: ", tab.id);
+    if (this.selectedMacroChildTab === 'tab21') {
+      // this.displayMacros();
+    } else if (this.selectedMacroChildTab === 'tab22') {
+      // this.prepareMacroSetupForAdd();
+    }
+  }
+
+  switchToNetPartnerSetup(): void {
+    this.selectedMacroChildTab = 'tab22';
+    this.prepareMacroSetupForAdd();
+
+    const addTab = this.macroChildTabset?.tabs.find(tab => tab.id === 'tab22');
+    if (addTab) {
+      addTab.active = true;
+    }
+  }
+
+  activateWallet(type: string): void {
+    console.log('Activate wallet:', type);
+  }
+
+  activateCommercialAccess(type: string): void {
+    console.log('Activate commercial access:', type);
+  }
+
+  activateUserCategory(type: string): void {
+    console.log('Activate user category:', type);
+  }
+
+  activateGeneralSetting(type: string): void {
+    console.log('Activate general setting:', type);
+  }
+
+  displayMacros(): void {
+
+    this.isMacroDisplayMode = true;
+    this.isMacroDisplayLoading = true;
+    this.hasMacroSetup = false;
+    this.macroSetupForm.disable({ emitEvent: false });
+
+    const payload = {
+      "Subacctid": this.subaccountid,
+      "Storeid": this.storeid
+    }
+
+    this.apiService
+      .postCall(this.apiService.baseURL + '/GetAdVendAcctMacroSetup', payload)
+      .subscribe(
+        data => {
+          console.log('Res:', data);
+          const macroSetup = this.getMacroSetupFromResponse(data);
+          this.hasMacroSetup = !!macroSetup;
+
+          if (macroSetup) {
+            this.patchMacroSetupForm(macroSetup);
+          }
+
+          this.isMacroDisplayLoading = false;
+        },
+        error => {
+          console.error('Unable to load macro setup:', error);
+          this.hasMacroSetup = false;
+          this.isMacroDisplayLoading = false;
+        }
+      );
+
+  }
+
+  private prepareMacroSetupForAdd(): void {
+    this.isMacroDisplayMode = false;
+    this.hasMacroSetup = false;
+    this.resetMacroSetupForm();
+    this.macroSetupForm.enable({ emitEvent: false });
+  }
+
+  private resetMacroSetupForm(): void {
+    this.macroSetupForm.reset({
+      associatedIndustry: '0',
+      duration: '0',
+      validityStartDate: '',
+      personalWalletAvailability: false,
+      corporateWalletAvailability: false,
+      onNetworkCommerceFlag: false,
+      campusTerminalPOS: false,
+      fullTerminalNetwork: false,
+      internalEmployees: false,
+      channelNetwork: false,
+      securityStaff: false,
+      b2bCustomers: false,
+      productConsumers: false,
+      serviceProviders: false,
+      banksInsurance: false,
+      csrProviders: false,
+      eventsBasedUsers: false,
+      guestsVisitors: false,
+      assetOwners: false,
+      socialGroupUsers: false,
+      cashCharging: false,
+      brandCardMultipleWallet: false
+    }, { emitEvent: false });
+  }
+
+  private getMacroSetupFromResponse(response: any): any | null {
+    const candidates = [response, response?.Data, response?.data, response?.Result, response?.result];
+
+    for (const candidate of candidates) {
+      const setup = Array.isArray(candidate) ? candidate[0] : candidate;
+      if (setup && typeof setup === 'object' && !Array.isArray(setup) &&
+        Object.keys(setup).some(key => /industry|year[135]|start.?date|corp|netwrk/i.test(key))) {
+        return setup;
+      }
+    }
+
+    return null;
+  }
+
+  private patchMacroSetupForm(setup: any): void {
+    const value = (keys: string[], fallback: any = false): any => {
+      const key = Object.keys(setup).find(item => keys.includes(item.toLowerCase()));
+      return key === undefined ? fallback : setup[key];
+    };
+    const flag = (keys: string[]): boolean => this.toBoolean(value(keys));
+    const duration = this.toBoolean(value([
+      'year1_flg', 'year1flg', 'ad_vend_brnd_cards_1yr_valdty_flg'
+    ])) ? '1'
+      : this.toBoolean(value([
+        'year3_flg', 'year3flg', 'ad_vend_brnd_cards_3yr_valdty_flg'
+      ])) ? '3'
+        : this.toBoolean(value([
+          'year5_flg', 'year5flg', 'ad_vend_brnd_cards_5yr_valdty_flg'
+        ])) ? '5' : '0';
+
+    this.macroSetupForm.patchValue({
+      associatedIndustry: String(value([
+        'industryid', 'industry_id', 'industry_id_fk', 'ad_vend_brnd_industry_id'
+      ], '0')),
+      duration,
+      validityStartDate: this.toDateInputValue(value([
+        'start_date', 'startdate', 'validitystartdate', 'ad_vend_brnd_cards_valdty_start_date'
+      ], '')),
+      personalWalletAvailability: flag([
+        'personal_flg', 'personalflg', 'ad_vend_brnd_cards_prsnl_wallt_flg'
+      ]),
+      corporateWalletAvailability: flag([
+        'corp_flg', 'corpflg', 'ad_vend_brnd_cards_corp_wallt_flg'
+      ]),
+      onNetworkCommerceFlag: flag([
+        'onnetwork_flg', 'onnetwrk_flg', 'onnetworkcommerceflag', 'ad_vend_brnd_cards_on_commerce_flg'
+      ]),
+      campusTerminalPOS: flag([
+        'campus_flg', 'campusflg', 'ad_vend_brnd_cards_campus_pos_flg'
+      ]),
+      fullTerminalNetwork: flag([
+        'netwrk_flg', 'netwrkflg', 'network_flg', 'ad_vend_brnd_cards_netwrk_pos_flg'
+      ]),
+      internalEmployees: flag([
+        'internal_flg', 'internalflg', 'ad_vend_brnd_cards_intrnl_flg'
+      ]),
+      channelNetwork: flag(['chnl_flg', 'chnlflg', 'ad_vend_brnd_cards_chnl_flg']),
+      securityStaff: flag([
+        'contractr_flg', 'contractrflg', 'ad_vend_brnd_cards_contrctr_flg'
+      ]),
+      b2bCustomers: flag(['b2b_cust_flg', 'b2bcustflg', 'ad_vend_brnd_cards_b2b_cstmr_flg']),
+      productConsumers: flag(['consumer_flg', 'consumerflg', 'ad_vend_brnd_cards_consumr_flg']),
+      serviceProviders: flag([
+        'srvc_prvdr_flg', 'srvcprvdrflg', 'ad_vend_brnd_cards_srvc_prvdr_flg'
+      ]),
+      banksInsurance: flag([
+        'bnkr_flg', 'bnkrflg', 'ad_vend_brnd_cards_bnkr_insurr_flg'
+      ]),
+      csrProviders: flag(['csr_flg', 'csrflg', 'ad_vend_brnd_cards_csr_prvdr_flg']),
+      eventsBasedUsers: flag(['event_flg', 'eventflg', 'ad_vend_brnd_cards_evnt_usr_flg']),
+      guestsVisitors: flag(['guest_flg', 'guestflg', 'ad_vend_brnd_cards_guest_flg']),
+      assetOwners: flag(['asset_owner_flg', 'assetownerflg']),
+      socialGroupUsers: flag(['social_flg', 'socialflg', 'ad_vend_brnd_cards_social_usr_flg']),
+      cashCharging: flag(['bo_cash_flg', 'bocashflg', 'ad_vend_brnd_cards_bo_cash_chrg_flg']),
+      brandCardMultipleWallet: flag([
+        'mult_acct_flg', 'multacctflg', 'ad_vend_brnd_cards_mult_acct_allwd_flg'
+      ])
+    }, { emitEvent: false });
+  }
+
+  private toBoolean(value: any): boolean {
+    return value === true || value === 1 || value === '1' ||
+      (typeof value === 'string' && ['true', 'y', 'yes'].includes(value.toLowerCase()));
+  }
+
+  private toDateInputValue(value: any): string {
+    if (!value) {
+      return '';
+    }
+
+    const datePart = String(value).match(/^\d{4}-\d{2}-\d{2}/);
+    if (datePart) {
+      return datePart[0];
+    }
+
+    const parsedDate = new Date(value);
+    return isNaN(parsedDate.getTime()) ? '' : parsedDate.toISOString().slice(0, 10);
+  }
+
+  addMacroSetup(): void {
+
+    const formValue = this.macroSetupForm.getRawValue();
+
+    const payload = {
+
+      "Subacctid": this.subaccountid,
+      "Storeid": this.storeid,
+
+      "Industryid": formValue.associatedIndustry,
+
+      "Year1_Flg": formValue.duration === '1',
+      "Year3_Flg": formValue.duration === '3',
+      "Year5_Flg": formValue.duration === '5',
+
+      "Start_Date": formValue.validityStartDate,
+
+      "Corp_Flg": formValue.corporateWalletAvailability,
+      "Campus_Flg": formValue.campusTerminalPOS,
+      "Netwrk_Flg": formValue.fullTerminalNetwork,
+
+      "Internal_Flg": formValue.internalEmployees,
+      "Chnl_Flg": formValue.channelNetwork,
+      "Contractr_Flg": formValue.securityStaff,
+      "B2B_Cust_Flg": formValue.b2bCustomers,
+      "Consumer_Flg": formValue.productConsumers,
+      "Srvc_Prvdr_Flg": formValue.serviceProviders,
+
+      "Bnkr_Flg": formValue.banksInsurance,
+      "CSR_Flg": formValue.csrProviders,
+      "Event_Flg": formValue.eventsBasedUsers,
+      "Guest_Flg": formValue.guestsVisitors,
+      "Social_Flg": formValue.socialGroupUsers,
+
+      "BO_Cash_Flg": formValue.cashCharging,
+      "Mult_Acct_Flg": formValue.brandCardMultipleWallet
+    };
+
+    console.log('Macro Setup Payload:', payload);
+
+    this.apiService
+      .postCall(this.apiService.baseURL + '/AddAdVendAccountMacroSetup', payload)
+      .subscribe(
+        data => {
+          console.log('Macro setup added successfully:', data);
+          this.toastr.success(data.Message);
+        },
+        error => {
+          this.toastr.error(
+            error.error?.Message || error,
+            '',
+            {
+              timeOut: 5000
+            }
+          );
+        }
+      );
   }
 
 }

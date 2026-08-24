@@ -6,6 +6,7 @@ interface StoreInfo {
   name: string;
   terminalId: string;
   location: string;
+  gstin?: string;
 }
 
 @Component({
@@ -25,7 +26,6 @@ export class PosHeaderComponent implements OnInit {
   userAvatar = 'https://via.placeholder.com/40?text=RH';
 
   ngOnInit(): void {
-    // Update time every second
     setInterval(() => {
       this.currentTime = new Date();
     }, 1000);

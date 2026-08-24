@@ -44,7 +44,7 @@ export class CardAccessAndPosManagementComponent implements OnInit {
   }
 
   cardAccessForm = this.formBuilder.group({
-    cardTagId: ['']
+    mobilenumber: ['']
   });
 
   cardDetails = {
@@ -55,7 +55,8 @@ export class CardAccessAndPosManagementComponent implements OnInit {
     FIRST_NAME: '',
     LAST_NAME: '',
     MOBILE: '',
-    IMAGE: ''
+    IMAGE: '',
+    PASSPORT_ID: ''
   };
 
   getCardIdentification() {

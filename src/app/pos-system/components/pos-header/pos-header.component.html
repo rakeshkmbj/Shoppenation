@@ -10,11 +10,15 @@
 
   <div class="header-center">
     <div class="store-info">
-      <div class="store-name-section">
-        <label>Store Name:</label>
-        <select class="store-dropdown">
-          <option>{{ storeInfo.name }}</option>
-        </select>
+      <div class="store-main">
+        <div class="store-name-section">
+          <label>Store Name:</label>
+          <div class="store-name">{{ storeInfo.name }}</div>
+        </div>
+        <div class="store-gstin">
+          <span class="gst-label">GSTIN :</span>
+          <span class="gst-value">{{ storeInfo.gstin || 'ABHgf134666xx' }}</span>
+        </div>
       </div>
       <div class="terminal-info">
         <div class="info-item">
