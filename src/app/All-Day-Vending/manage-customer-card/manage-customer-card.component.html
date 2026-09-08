@@ -167,6 +167,11 @@
                                     Delete Card
                                 </button>
 
+                                <button (click)="brandCommerce(brandCommercemodal,user)"
+                                    class="btn btn-primary btn-sm mr-1">
+                                    Brand Comm.
+                                </button>
+
                                 <span class="icon ml-1">
                                     <i (click)="editUserCard(addUserCardModal, user)" class="fa fa-edit mt-2"></i>
                                 </span>
@@ -787,7 +792,8 @@
 
         <!-- ================= Cart Form ================= -->
 
-        <form #cartForm="ngForm" *ngIf="showDetails" (ngSubmit)="openAddToCart(cartForm, checkoutModal, checkoutConfirmationModal)">
+        <form #cartForm="ngForm" *ngIf="showDetails"
+            (ngSubmit)="openAddToCart(cartForm, checkoutModal, checkoutConfirmationModal)">
 
             <div class="row mb-3">
 
@@ -961,10 +967,7 @@
             Cash Checkout Confirmation
         </h4>
 
-        <button type="button"
-                class="btn-close close pull-right"
-                aria-label="Close"
-                (click)="modalRef.hide()">
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef.hide()">
 
             <span aria-hidden="true" class="visually-hidden">&times;</span>
 
@@ -1007,17 +1010,13 @@
             <!-- Buttons -->
             <div class="text-center mt-4">
 
-                <button
-                    class="btn btn-success px-4 mr-2"
-                    (click)="confirmCheckout(checkoutModal)">
+                <button class="btn btn-success px-4 mr-2" (click)="confirmCheckout(checkoutModal)">
 
                     Confirm
 
                 </button>
 
-                <button
-                    class="btn btn-secondary px-4"
-                    (click)="modalRef.hide()">
+                <button class="btn btn-secondary px-4" (click)="modalRef.hide()">
 
                     Cancel
 
@@ -1028,5 +1027,236 @@
         </div>
 
     </div>
+
+</ng-template>
+
+<ng-template #brandCommercemodal>
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+
+        <h4 class="modal-title pull-left">
+            Brand Commerce
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+
+            <span aria-hidden="true">&times;</span>
+
+        </button>
+
+    </div>
+
+    <tabset #brandcomm class="p-3">
+
+        <tab heading="Add User on Brand Commerce" id="tab1" (selectTab)="onBrandCommerceTabSelected($event)">
+
+            <form [formGroup]="addBrandCommerceForm">
+
+                <div class="row mt-3">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+
+                            <label>
+                                User Type
+                            </label>
+
+                            <select class="form-control" formControlName="user">
+
+                                <option value="">
+                                    Select User
+                                </option>
+
+                                <option value="1">Organization Promoters &amp; Directors</option>
+                                <option value="2">CEO &amp; Managing Director</option>
+                                <option value="3">CXO - Higher Management</option>
+                                <option value="4">VP-GM Mid Level Management</option>
+                                <option value="5">Operation Manager-Supervisor Level Management</option>
+                                <option value="6">Sales &amp; Customer Manager</option>
+                                <option value="7">Operation Level &amp; HR/ Admin Staff</option>
+                                <option value="8">Technology Support Staff</option>
+                                <option value="9">Customer Support &amp; Contact Centre Staff</option>
+                                <option value="10">Legal Support Team</option>
+                                <option value="11">Training &amp; Teaching Staff</option>
+                                <option value="12">Security Staff</option>
+                                <option value="13">Office Support Staff</option>
+                                <option value="14">Staff on Contract</option>
+                                <option value="15">Sales Force Staff</option>
+                                <option value="16">Delivery Runners</option>
+                                <option value="17">Line Production Staff</option>
+                                <option value="18">Quality and Compliances Staff</option>
+                                <option value="19">Production Manager</option>
+                                <option value="20">Procurement Staff</option>
+                                <option value="21">Doctors &amp; Surgeons</option>
+                                <option value="22">Paramedics &amp; Nursing Staff</option>
+                                <option value="23">Chief Medical Officer</option>
+                                <option value="24">Registrar and Procurement Head</option>
+                                <option value="25">Reception and Customer attendants</option>
+                                <option value="26">Operation Theatre Staff</option>
+                                <option value="27">Patients</option>
+                                <option value="28">D2C Customers</option>
+                                <option value="29">B2B Customers</option>
+                                <option value="30">Retailer Network Channel</option>
+                                <option value="31">Distributor Network Channel</option>
+                                <option value="32">Service Providers</option>
+                                <option value="33">Stockists</option>
+                                <option value="34">C&amp;FS Users</option>
+                                <option value="35">Logistics Support Staff</option>
+                                <option value="36">Drivers &amp; Delivery Staffs</option>
+                                <option value="37">Principal &amp; Vice Principal</option>
+                                <option value="38">Chancellors</option>
+                                <option value="39">Vice-Chancellors</option>
+                                <option value="40">Bank - Financial Services Branch Manager</option>
+                                <option value="41">Cashiers and Banking Staff</option>
+                                <option value="42">TPAs</option>
+                                <option value="43">Dealers &amp; Retail Stores</option>
+                                <option value="44">Relation Ship Managers &amp; Client Account Managers
+                                </option>
+                                <option value="45">Warehouse Supervisor</option>
+                                <option value="46">Collection Executive</option>
+                                <option value="47">Hospital Admin Staff</option>
+                                <option value="48">Teacher</option>
+                                <option value="49">Professors &amp; Senior Professors</option>
+                                <option value="50">Faculty Deans</option>
+                                <option value="51">Hostel Wardens</option>
+                                <option value="52">Students</option>
+                                <option value="53">Visitors and Guests</option>
+                                <option value="54">Parents &amp; Guardians</option>
+                                <option value="55">Project Manager</option>
+                                <option value="56">Site Manager</option>
+                                <option value="57">Surveyor</option>
+                                <option value="58">Hotel Manager</option>
+                                <option value="59">Lobby Manager</option>
+                                <option value="60">Chef &amp; Restaurateur</option>
+                                <option value="61">Event Manager</option>
+                                <option value="62">Field Service Engineers</option>
+                                <option value="63">Technology Support Staff</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12 mt-2">
+
+                        <button type="button" class="btn custom-btn float-right"
+                            [disabled]="addBrandCommerceForm.invalid" (click)="addBrandCommerceUser()">
+
+                            Add User
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </tab>
+
+        <tab heading="Expencse Governance" id="tab2" (selectTab)="onBrandCommerceTabSelected($event)">
+
+            <form [formGroup]="addBrandCommerceForm">
+
+                <div class="row mt-3">
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Country</label>
+                            <select class="form-control" (change)="changeCountry($event)">
+                                <option value="">Select</option>
+                                <option *ngFor="let country of countryList" [value]="country.CNTRY_ID">
+                                    {{country.CNTRY_NM}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>State</label>
+                            <select class="form-control" (change)="changeState($event)">
+                                <option value="">Select</option>
+                                <option *ngFor="let state of stateList" [value]="state.STATE_ID">
+                                    {{state.STATE_NM}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>User Type</label>
+
+                            <select class="form-control" formControlName="user">
+                                <option value="0">
+                                    Select Associated Industry
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <tabset #expenceGovernence class="p-3">
+
+                    <tab heading="Expencse Policy" id="tab1"></tab>
+                    <tab heading="Spending Rules" id="tab1"></tab>
+                    <tab heading="Entitlements" id="tab1"></tab>
+                    <tab heading="Approval W/Flw" id="tab1"></tab>
+                    <tab heading="Trans control" id="tab1"></tab>
+                    <tab heading="Audit control" id="tab1"></tab>
+
+                </tabset>
+
+                <!-- <div class="row mt-3">
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn custom-btn float-left">
+                            Expencse Policy
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn custom-btn float-left">
+                            Spending Rules
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn custom-btn float-left">
+                            Entitlements
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn custom-btn float-left">
+                            Approval W/Flw
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn custom-btn float-left">
+                            Trans control
+                        </button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn custom-btn float-left">
+                            Audit control
+                        </button>
+                    </div>
+
+                </div> -->
+
+            </form>
+
+        </tab>
+
+    </tabset>
 
 </ng-template>

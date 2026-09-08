@@ -59,9 +59,28 @@ export class CardAccessAndPosManagementComponent implements OnInit {
     PASSPORT_ID: ''
   };
 
-  getCardIdentification() {
-    // Call API using cardTagId
+ getCardIdentification() {
+
+  const formValue = this.cardAccessForm.getRawValue();
+
+  const payload = {
+    "Card_Manf_UID_Flg": false,
+    "Card_Primry_MobIle_FLg": true,
+    "Card_UID": "",
+    "Card_Mob_Numbr": formValue.mobilenumber
   }
+
+  this.apiService.postCall(this.apiService.baseURL + '/GetMemberIdentity', payload)
+    .subscribe(data => {
+      console.log(data);
+    },
+        (error) => {
+           console.log('Error: ', error)
+          this.toastr.error(error.error?.Message || error, '', {
+            timeOut: 5000,
+          });
+        });
+ }
 
   // openBrandCommercePOS(): void {
   //   this.router.navigate(['/pos']);
@@ -78,6 +97,45 @@ export class CardAccessAndPosManagementComponent implements OnInit {
       }
 
     }, 200);
+  }
+
+  aurthenticateUser() {
+    // http://www.shripatigroup.com/alcoolretail/carryr/retail/AuthenticateUserForPOS
+    const payload = {
+      "User_Regid": "string",
+      "Partnerid": "string",
+      "Terminlid": "string",
+      "POSid": "string" 
+  }
+
+  this.apiService.postCall(this.apiService.baseURL + '/AuthenticateUserForPOS', payload)
+        .subscribe(data => {
+          console.log(data);
+
+          if(data.Message === 'User Type is Not Added to Brand Commerce'){
+            this.toastr.error(data.Message);
+          } else{
+            this.toastr.success(data.Message);
+          }
+
+        },
+          (error) => {
+            console.log('Error: ', error)
+            this.toastr.error(error.error?.Message || error, '', {
+              timeOut: 5000,
+            });
+          });
+
+// http://www.shripatigroup.com/alcoolretail/carryr/retail/DisplayUserAppMsg
+// {
+//   "User_Regid": "string"
+// }
+// http://www.shripatigroup.com/alcoolretail/carryr/retail/VerifyUserCode
+// {
+//   "User_Regid": "string",
+//   "Authentication_id": "string",
+//   "User_Code": "string"
+// }
   }
 
 }

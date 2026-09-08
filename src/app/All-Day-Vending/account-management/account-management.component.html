@@ -56,7 +56,7 @@
                                     <th class="font">Subacctid</th>
                                     <th class="font">Storeid</th>
                                     <th class="font">Account Name</th>
-                                    <th class="font">Manufacturer</th>
+                                    <th class="font">Category Name</th>
                                     <th class="font text-center">Action</th>
                                 </tr>
                             </thead>
@@ -79,7 +79,7 @@
                                     <td class="font">{{ acc.RETAIL_D2C_SUBACCT_OFFICE_NAME }}</td>
 
                                     <!-- Manuafacturer type -->
-                                    <td class="font">Product Retailer</td>
+                                    <td class="font">{{ acc.CategoryName }}</td>
 
                                     <!-- Actions -->
                                     <td>
@@ -375,7 +375,7 @@
     <div class="modal-header">
 
         <h4 class="modal-title pull-left">
-            Enterprise Macro Setup
+            {{ selectedThirdNode.CategoryName === 'Manufacturer' ? 'Enterprise Macro Setup' : 'Net. Commerce Partnersetup' }}
         </h4>
 
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -386,1491 +386,2051 @@
 
     </div>
 
-    <tabset #macroParentTabset class="p-3">
+    <!-- Enterprise -->
+    <div *ngIf="selectedThirdNode.CategoryName === 'Manufacturer'" class="modal-body">
 
-        <tab heading="Enterprise Macro Setup" id="tab1" (selectTab)="onMacroParentTabSelected($event)">
+        <tabset #macroChildTabset class="">
 
-            <div class="modal-body">
+            <tab heading="Display Mac. Setup" id="tab11" (selectTab)="onMacroChildTabSelected($event)">
 
-                <tabset #macroChildTabset class="">
+                <div *ngIf="isMacroDisplayLoading" class="text-center mt-3">
+                    Loading macro setup...
+                </div>
 
-                    <tab heading="Display Mac. Setup" id="tab11" (selectTab)="onMacroChildTabSelected($event)">
+                <div *ngIf="!isMacroDisplayLoading && !hasMacroSetup" class="alert alert-info mt-3 mb-0" role="alert">
+                    No macro setup is available. Please add a macro setup first.
+                </div>
 
-                        <div *ngIf="isMacroDisplayLoading" class="text-center mt-3">
-                            Loading macro setup...
+                <form *ngIf="hasMacroSetup" [formGroup]="macroSetupForm">
+
+                    <div class="row mt-3">
+
+                        <!-- Associated Industry -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label>
+                                    Associated Industry
+                                </label>
+
+                                <select class="form-control" formControlName="associatedIndustry">
+
+                                    <option value="0">
+                                        Select Associated Industry
+                                    </option>
+
+                                    <option value="1">Automobile</option>
+                                    <option value="2">FMCG</option>
+                                    <option value="3">Electronics &amp; Consumers Items</option>
+                                    <option value="4">Pharmaceutical &amp; Medicos</option>
+                                    <option value="5">Hospital &amp; Clinical Labs</option>
+                                    <option value="6">K-12 Education &amp; Other Basic</option>
+                                    <option value="7">Higher Education &amp; University</option>
+                                    <option value="8">Electrical</option>
+                                    <option value="9">Hospitality &amp; Hotels</option>
+                                    <option value="10">Restaurants - CAFÉ &amp; Clubs</option>
+                                    <option value="11">Paints &amp; Hardware</option>
+                                    <option value="12">Cement</option>
+                                    <option value="13">Real Estate &amp; Building</option>
+                                    <option value="14">Technology Services</option>
+                                    <option value="15">Technology Harware</option>
+                                    <option value="16">Logistics &amp; Supply Chain</option>
+                                    <option value="17">Banking &amp; Financial Services</option>
+                                    <option value="18">Beauty Products</option>
+                                    <option value="19">Fashion &amp; Style</option>
+                                    <option value="20">Retail</option>
+                                    <option value="21">Gas &amp; Fuel</option>
+                                    <option value="22">Stationary &amp; Office Items</option>
+                                    <option value="23">Interiors &amp; Furnitures</option>
+                                    <option value="24">Entertainment &amp; Cinemas</option>
+                                    <option value="25">Household &amp; Décor</option>
+                                    <option value="26">Travel &amp; Outdoors</option>
+                                    <option value="27">Seminars &amp; Professional Trainings</option>
+                                    <option value="28">Life Style &amp; GYMs</option>
+                                    <option value="29">Media &amp; Advertisements</option>
+                                    <option value="30">Guest house - B&amp;B</option>
+                                    <option value="31">Professional Trainings</option>
+
+                                </select>
+
+                            </div>
                         </div>
 
-                        <div *ngIf="!isMacroDisplayLoading && !hasMacroSetup" class="alert alert-info mt-3 mb-0"
-                            role="alert">
-                            No macro setup is available. Please add a macro setup first.
-                            <button type="button" class="btn btn-link p-0 ml-1 align-baseline"
-                                (click)="switchToAddMacroSetup()">
+                        <!-- Brand Asset -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Brand Asset (Card) Duration
+                                </label>
+
+                                <select class="form-control" formControlName="duration">
+
+                                    <option value="0">
+                                        Select Brand Asset Duration
+                                    </option>
+
+                                    <option value="1">1 year</option>
+                                    <option value="3">3 years</option>
+                                    <option value="5">5 years</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Validity Start Date -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Validity Start Date
+                                </label>
+
+                                <input type="date" class="form-control" formControlName="validityStartDate">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-2">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Wallet Types
+                                </legend>
+
+
+                                <div class="row">
+
+                                    <!-- Personal Wallet -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Personal Wallet Availability
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="personalWalletAvailability">
+
+                                                <label class="form-check-label">
+                                                    Default
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Corporate Wallet -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Corporate Wallet Availability
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="corporateWalletAvailability">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- COMMERCIAL ACCESS -->
+                    <!-- ========================= -->
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Commercial Access
+                                </legend>
+
+
+                                <div class="row">
+
+                                    <!-- On Network Commerce Flag -->
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                On Network Commerce Flag
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="onNetworkCommerceFlag">
+
+                                                <label class="form-check-label">
+                                                    Default
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Campus Terminal POS -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Access to Campus Terminal POS
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="campusTerminalPOS">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Full Terminal Network -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Access to Full Terminal Network
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="fullTerminalNetwork">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- USERS CATEGORIES -->
+                    <!-- ========================= -->
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Users Categories
+                                </legend>
+
+
+                                <div class="row">
+
+                                    <!-- Internal / Employees -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+
+                                            <label>
+                                                Internal / Employees
+                                            </label>
+
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="internalEmployees">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Banks / Insurance -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Banks / Insurance
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="banksInsurance">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Channel Network -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Channel Network / Sup. Chain
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="channelNetwork">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- CSR Providers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                CSR Providers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="csrProviders">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Security Staff -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Security Staff / Contractors
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="securityStaff">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Events Based Users -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Events Based Users
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="eventsBasedUsers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- B2B Customers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                B2B Customers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="b2bCustomers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Guests / Visitors -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Guests / Visitors
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="guestsVisitors">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Product / Service Consumers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Product / Service Consumers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="productConsumers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Asset Owners / Users -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Asset Owners / Users
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="assetOwners">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Service Providers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Service Providers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="serviceProviders">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Social Group Users -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Social Group Users
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="socialGroupUsers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- GENERAL SETUP -->
+                    <!-- ========================= -->
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    General Setup
+                                </legend>
+
+
+                                <!-- Cash Charging -->
+                                <div class="form-group">
+
+                                    <label>
+                                        Cash Charging Back office Availability
+                                        with Fixed amt 500.00 INR
+                                    </label>
+
+                                    <div class="form-check">
+
+                                        <input type="checkbox" class="form-check-input" formControlName="cashCharging">
+
+                                        <label class="form-check-label">
+                                            Activate
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Brand Card -->
+                                <div class="form-group">
+
+                                    <label>
+                                        Brand Card on Multiple Account Wallet
+                                    </label>
+
+                                    <div class="form-check">
+
+                                        <input type="checkbox" class="form-check-input"
+                                            formControlName="brandCardMultipleWallet">
+
+                                        <label class="form-check-label">
+                                            Activate
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </tab>
+
+            <tab [heading]="hasMacroSetup ? 'Edit Mac. Setup' : 'Add Mac. Setup'" id="tab12"
+                (selectTab)="onMacroChildTabSelected($event)">
+
+                <form [formGroup]="macroSetupForm">
+
+
+                    <div class="row mt-3">
+
+                        <!-- Associated Industry -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Associated Industry
+                                </label>
+
+                                <select class="form-control" formControlName="associatedIndustry">
+
+                                    <option value="0">
+                                        Select Associated Industry
+                                    </option>
+
+                                    <option value="1">Automobile</option>
+                                    <option value="2">FMCG</option>
+                                    <option value="3">Electronics &amp; Consumers Items</option>
+                                    <option value="4">Pharmaceutical &amp; Medicos</option>
+                                    <option value="5">Hospital &amp; Clinical Labs</option>
+                                    <option value="6">K-12 Education &amp; Other Basic</option>
+                                    <option value="7">Higher Education &amp; University</option>
+                                    <option value="8">Electrical</option>
+                                    <option value="9">Hospitality &amp; Hotels</option>
+                                    <option value="10">Restaurants - CAFÉ &amp; Clubs</option>
+                                    <option value="11">Paints &amp; Hardware</option>
+                                    <option value="12">Cement</option>
+                                    <option value="13">Real Estate &amp; Building</option>
+                                    <option value="14">Technology Services</option>
+                                    <option value="15">Technology Harware</option>
+                                    <option value="16">Logistics &amp; Supply Chain</option>
+                                    <option value="17">Banking &amp; Financial Services</option>
+                                    <option value="18">Beauty Products</option>
+                                    <option value="19">Fashion &amp; Style</option>
+                                    <option value="20">Retail</option>
+                                    <option value="21">Gas &amp; Fuel</option>
+                                    <option value="22">Stationary &amp; Office Items</option>
+                                    <option value="23">Interiors &amp; Furnitures</option>
+                                    <option value="24">Entertainment &amp; Cinemas</option>
+                                    <option value="25">Household &amp; Décor</option>
+                                    <option value="26">Travel &amp; Outdoors</option>
+                                    <option value="27">Seminars &amp; Professional Trainings</option>
+                                    <option value="28">Life Style &amp; GYMs</option>
+                                    <option value="29">Media &amp; Advertisements</option>
+                                    <option value="30">Guest house - B&amp;B</option>
+                                    <option value="31">Professional Trainings</option>
+
+                                </select>
+
+                                <div class="text-danger mt-1" *ngIf="
+                                                !isMacroEditMode &&
+                                                macroSetupForm.get('associatedIndustry')?.value === '0' &&
+                                                submitted1
+                                            ">
+                                    Please select an industry.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Brand Card Duration -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Brand Asset (Card) Duration
+                                </label>
+
+                                <select class="form-control" formControlName="duration">
+
+                                    <option value="0">
+                                        Select Brand Asset Duration
+                                    </option>
+
+                                    <option value="1">1 year</option>
+                                    <option value="3">3 years</option>
+                                    <option value="5">5 years</option>
+
+                                </select>
+
+                                <div class="text-danger mt-1" *ngIf="
+                            !isMacroEditMode &&
+                            macroSetupForm.get('duration')?.value === '0' &&
+                            submitted1
+                        ">
+                                    Please select duration.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Validity Start Date -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Validity Start Date
+                                </label>
+
+                                <input type="date" class="form-control" formControlName="validityStartDate">
+
+                                <div class="text-danger mt-1" *ngIf="
+                            !isMacroEditMode &&
+                            !macroSetupForm.get('validityStartDate')?.value &&
+                            submitted1
+                        ">
+                                    Please select validity start date.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- WALLET TYPES               -->
+                    <!-- ========================= -->
+
+                    <div class="row mt-2">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Wallet Types
+                                </legend>
+
+                                <div class="row">
+
+                                    <!-- Personal Wallet -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Personal Wallet Availability
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="personalWalletAvailability">
+
+                                                <label class="form-check-label">
+                                                    Default
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Corporate Wallet -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Corporate Wallet Availability
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="corporateWalletAvailability">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <!-- Activate button only in Edit mode -->
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('corporateWalletAvailability')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('corporateWalletAvailability')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Commercial Access
+                                </legend>
+
+                                <div class="row">
+
+                                    <!-- On Network Commerce -->
+                                    <div class="col-md-12">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                On Network Commerce Flag
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="onNetworkCommerceFlag">
+
+                                                <label class="form-check-label">
+                                                    Default
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Campus Terminal POS -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Access to Campus Terminal POS
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="campusTerminalPOS">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('campusTerminalPOS')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('campusTerminalPOS')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Full Terminal Network -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Access to Full Terminal Network
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="fullTerminalNetwork">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('fullTerminalNetwork')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('fullTerminalNetwork')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Terminal validation -->
+                                <div class="text-danger mt-2" *ngIf="
+                            !isMacroEditMode &&
+                            macroSetupForm.errors?.terminalAccessRequired &&
+                            submitted1
+                        ">
+
+                                    Please select at least one Terminal Access option.
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Users Categories
+                                </legend>
+
+                                <div class="row">
+
+                                    <!-- Internal / Employees -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Internal / Employees
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="internalEmployees">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('internalEmployees')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('internalEmployees')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Channel Network -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Channel / Network
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="channelNetwork">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('channelNetwork')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('channelNetwork')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Security Staff -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Security Staff / Contractors
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="securityStaff">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('securityStaff')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('securityStaff')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- B2B Customers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                B2B Customers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="b2bCustomers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('b2bCustomers')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('b2bCustomers')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Product / Service Consumers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Product / Service Consumers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="productConsumers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('productConsumers')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('productConsumers')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Service Providers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Service Providers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="serviceProviders">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('serviceProviders')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('serviceProviders')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Banks / Insurance -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Banks / Insurance
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="banksInsurance">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('banksInsurance')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('banksInsurance')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- CSR Providers -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                CSR Providers
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="csrProviders">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('csrProviders')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('csrProviders')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Events -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Events Based Users
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="eventsBasedUsers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('eventsBasedUsers')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('eventsBasedUsers')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Guests -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Guests / Visitors
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="guestsVisitors">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('guestsVisitors')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('guestsVisitors')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Asset Owners -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Asset Owners / Users
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="assetOwners">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('assetOwners')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('assetOwners')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Social Groups -->
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Social Group Users
+                                            </label>
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox" class="form-check-input"
+                                                    formControlName="socialGroupUsers">
+
+                                                <label class="form-check-label">
+                                                    Activate
+                                                </label>
+
+                                            </div>
+
+                                            <button *ngIf="
+                                        isMacroEditMode &&
+                                        isInactiveMacroField('socialGroupUsers')
+                                    " type="button" class="btn btn-sm btn-primary mt-1"
+                                                (click)="activateMacroSetup('socialGroupUsers')">
+
+                                                Activate
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- User category validation -->
+                                <div class="text-danger mt-2" *ngIf="
+                            !isMacroEditMode &&
+                            macroSetupForm.errors?.userCategoryRequired &&
+                            submitted1
+                        ">
+
+                                    Please select at least one User Category.
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    General Setup
+                                </legend>
+
+
+                                <!-- Cash Charging -->
+                                <div class="form-group">
+
+                                    <label>
+                                        Cash Charging Back office Availability
+                                        with Fixed amt 500.00 INR
+                                    </label>
+
+                                    <div class="form-check">
+
+                                        <input type="checkbox" class="form-check-input" formControlName="cashCharging">
+
+                                        <label class="form-check-label">
+                                            Activate
+                                        </label>
+
+                                    </div>
+
+                                    <button *ngIf="
+                                isMacroEditMode &&
+                                isInactiveMacroField('cashCharging')
+                            " type="button" class="btn btn-sm btn-primary mt-1"
+                                        (click)="activateMacroSetup('cashCharging')">
+
+                                        Activate
+
+                                    </button>
+
+                                </div>
+
+
+                                <!-- Multiple Account Wallet -->
+                                <div class="form-group">
+
+                                    <label>
+                                        Brand Card on Multiple Account Wallet
+                                    </label>
+
+                                    <div class="form-check">
+
+                                        <input type="checkbox" class="form-check-input"
+                                            formControlName="brandCardMultipleWallet">
+
+                                        <label class="form-check-label">
+                                            Activate
+                                        </label>
+
+                                    </div>
+
+                                    <button *ngIf="
+                                isMacroEditMode &&
+                                isInactiveMacroField('brandCardMultipleWallet')
+                            " type="button" class="btn btn-sm btn-primary mt-1"
+                                        (click)="activateMacroSetup('brandCardMultipleWallet')">
+
+                                        Activate
+
+                                    </button>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row" *ngIf="
+                                    selectedMacroChildTab === 'tab12' &&
+                                    !isMacroEditMode
+                                ">
+                        <div class="col-md-12 mt-2">
+                            <button type="button" class="btn custom-btn float-right" (click)="addMacroSetup()">
                                 Add Mac. Setup
                             </button>
                         </div>
+                    </div>
 
-                        <form *ngIf="hasMacroSetup" [formGroup]="macroSetupForm">
+                </form>
 
-                            <!-- ========================= -->
-                            <!-- BASIC DETAILS -->
-                            <!-- ========================= -->
+            </tab>
 
-                            <div class="row mt-3">
+        </tabset>
 
-                                <!-- Associated Industry -->
-                                <div class="col-md-4">
-                                    <div class="form-group">
+    </div>
 
-                                        <label>
-                                            Associated Industry
-                                        </label>
+    <!-- Net Commerce -->
+    <div *ngIf="selectedThirdNode.CategoryName !== 'Manufacturer'" class="modal-body">
 
-                                        <select class="form-control" formControlName="associatedIndustry">
+        <tabset #macroChildTabset class="">
 
-                                            <option value="0">
-                                                Select Associated Industry
-                                            </option>
+            <tab heading="Display Net. Partner Setup" id="tab21" (selectTab)="onAddPartnerChildTabSelected($event)">
 
-                                            <option value="1">Organization Promoters &amp; Directors</option>
-                                            <option value="2">CEO &amp; Managing Director</option>
-                                            <option value="3">CXO - Higher Management</option>
-                                            <option value="4">VP-GM Mid Level Management</option>
-                                            <option value="5">Operation Manager-Supervisor Level Management</option>
-                                            <option value="6">Sales &amp; Customer Manager</option>
-                                            <option value="7">Operation Level &amp; HR/ Admin Staff</option>
-                                            <option value="8">Technology Support Staff</option>
-                                            <option value="9">Customer Support &amp; Contact Centre Staff</option>
-                                            <option value="10">Legal Support Team</option>
-                                            <option value="11">Training &amp; Teaching Staff</option>
-                                            <option value="12">Security Staff</option>
-                                            <option value="13">Office Support Staff</option>
-                                            <option value="14">Staff on Contract</option>
-                                            <option value="15">Sales Force Staff</option>
-                                            <option value="16">Delivery Runners</option>
-                                            <option value="17">Line Production Staff</option>
-                                            <option value="18">Quality and Compliances Staff</option>
-                                            <option value="19">Production Manager</option>
-                                            <option value="20">Procurement Staff</option>
-                                            <option value="21">Doctors &amp; Surgeons</option>
-                                            <option value="22">Paramedics &amp; Nursing Staff</option>
-                                            <option value="23">Chief Medical Officer</option>
-                                            <option value="24">Registrar and Procurement Head</option>
-                                            <option value="25">Reception and Customer attendants</option>
-                                            <option value="26">Operation Theatre Staff</option>
-                                            <option value="27">Patients</option>
-                                            <option value="28">D2C Customers</option>
-                                            <option value="29">B2B Customers</option>
-                                            <option value="30">Retailer Network Channel</option>
-                                            <option value="31">Distributor Network Channel</option>
-                                            <option value="32">Service Providers</option>
-                                            <option value="33">Stockists</option>
-                                            <option value="34">C&amp;FS Users</option>
-                                            <option value="35">Logistics Support Staff</option>
-                                            <option value="36">Drivers &amp; Delivery Staffs</option>
-                                            <option value="37">Principal &amp; Vice Principal</option>
-                                            <option value="38">Chancellors</option>
-                                            <option value="39">Vice-Chancellors</option>
-                                            <option value="40">Bank - Financial Services Branch Manager</option>
-                                            <option value="41">Cashiers and Banking Staff</option>
-                                            <option value="42">TPAs</option>
-                                            <option value="43">Dealers &amp; Retail Stores</option>
-                                            <option value="44">Relation Ship Managers &amp; Client Account Managers
-                                            </option>
-                                            <option value="45">Warehouse Supervisor</option>
-                                            <option value="46">Collection Executive</option>
-                                            <option value="47">Hospital Admin Staff</option>
-                                            <option value="48">Teacher</option>
-                                            <option value="49">Professors &amp; Senior Professors</option>
-                                            <option value="50">Faculty Deans</option>
-                                            <option value="51">Hostel Wardens</option>
-                                            <option value="52">Students</option>
-                                            <option value="53">Visitors and Guests</option>
-                                            <option value="54">Parents &amp; Guardians</option>
-                                            <option value="55">Project Manager</option>
-                                            <option value="56">Site Manager</option>
-                                            <option value="57">Surveyor</option>
-                                            <option value="58">Hotel Manager</option>
-                                            <option value="59">Lobby Manager</option>
-                                            <option value="60">Chef &amp; Restaurateur</option>
-                                            <option value="61">Event Manager</option>
-                                            <option value="62">Field Service Engineers</option>
-                                            <option value="63">Technology Support Staff</option>
+                <div *ngIf="isPartnerDisplayLoading" class="text-center mt-3">
+                    Loading partner setup...
+                </div>
 
-                                        </select>
+                <div *ngIf="!isPartnerDisplayLoading && !hasPartnerSetup" class="alert alert-info mt-3 mb-0"
+                    role="alert">
+                    No Net. Commerce Partner setup is available. Please add a Net. Commerce Partner setup first.
+                </div>
 
-                                    </div>
-                                </div>
+                <div *ngIf="hasPartnerSetup" class="card exiting-office-table mt-2 pb-0">
+                    <div class="card-body pa-0">
 
-                                <!-- Brand Asset -->
-                                <div class="col-md-4">
+                        <table class="table">
 
-                                    <div class="form-group">
+                            <thead>
+                                <tr>
+                                    <th>Partnerid</th>
+                                    <th>Industry</th>
+                                    <th>Subacctid</th>
+                                    <th>Storeid</th>
+                                    <th>Name</th>
+                                    <th>Fee(%)</th>
+                                    <th>Details</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
 
-                                        <label>
-                                            Brand Asset (Card) Duration
-                                        </label>
+                            <tbody>
 
-                                        <select class="form-control" formControlName="duration">
+                                <tr *ngFor="let partner of partnerSetupList; index as i">
 
-                                            <option value="0">
-                                                Select Brand Asset Duration
-                                            </option>
+                                    <!-- Partner ID -->
+                                    <td>
+                                        {{ partner.ADC_VEND_BRND_NETWRK_PARTNR_ID }}
+                                    </td>
 
-                                            <option value="1">1 year</option>
-                                            <option value="3">3 years</option>
-                                            <option value="5">5 years</option>
+                                    <!-- Industry -->
+                                    <td>
+                                        {{ partner.ADC_VEND_PARTNR_INDSTRY_ID }}
+                                    </td>
 
-                                        </select>
+                                    <!-- Sub Account ID -->
+                                    <td>
+                                        {{ partner.ADC_VEND_PARTNR_SUBACCT_ID }}
+                                    </td>
 
-                                    </div>
+                                    <!-- Store ID -->
+                                    <td>
+                                        {{ partner.ADC_VEND_PARTNR_STORE_ID }}
+                                    </td>
 
-                                </div>
+                                    <!-- Name -->
+                                    <td>
+                                        {{ partner.ADC_VEND_PARTNER_NAME }}
+                                    </td>
 
-                                <!-- Validity Start Date -->
-                                <div class="col-md-4">
+                                    <!-- Settlement Fee -->
+                                    <td>
+                                        {{ partner.ADC_VEND_PARTNR_SETLMNT_FEE_PERCNTG }}%
+                                    </td>
 
-                                    <div class="form-group">
+                                    <!-- Details -->
+                                    <td>
+                                        <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                            class="cursor: pointer; badge bg-primary text-white"
+                                            (click)="openPartnerDetails(partner)">
+                                            Details
+                                        </span>
+                                    </td>
 
-                                        <label>
-                                            Validity Start Date
-                                        </label>
+                                    <!-- Add Terminal POS -->
+                                    <td>
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: center; gap: 6px;">
 
-                                        <input type="date" class="form-control" formControlName="validityStartDate">
+                                            <span class="cursor: pointer; badge bg-primary text-white"
+                                                style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                                (click)="addTerminalPOS(partner, addTerminalModal)">
+                                                Add Terminal POS
+                                            </span>
 
-                                    </div>
+                                            <span class="cursor: pointer; badge bg-primary text-white"
+                                                style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                                (click)="displayTerminalPOS(partner, displayTerminalModal)">
+                                                Display Terminal POS
+                                            </span>
 
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- WALLET TYPES -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-2">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            Wallet Types
-                                        </legend>
-
-
-                                        <div class="row">
-
-                                            <!-- Personal Wallet -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Personal Wallet Availability
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="personalWalletAvailability">
-
-                                                        <label class="form-check-label">
-                                                            Default
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Corporate Wallet -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Corporate Wallet Availability
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="corporateWalletAvailability">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
+                                            <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                                class="cursor: pointer; icon" (click)="editPartnerSetup(partner)">
+                                                <i class="fa fa-edit"></i>
+                                            </span>
 
                                         </div>
 
-                                    </fieldset>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+
+            </tab>
+
+            <tab heading="Add Partner Setup" id="tab22" (selectTab)="onAddPartnerChildTabSelected($event)">
+
+                <form [formGroup]="partnerSetupForm">
+
+                    <div class="row mt-3 align-items-end">
+
+                        <!-- Industry -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Industry
+                                </label>
+
+                                <select class="form-control" formControlName="industry">
+
+                                    <option value="0">
+                                        Select Industry
+                                    </option>
+
+                                    <!-- Add your industry options here -->
+                                    <option value="1">Automobile</option>
+                                    <option value="2">FMCG</option>
+                                    <option value="3">Electronics &amp; Consumers Items</option>
+                                    <option value="4">Pharmaceutical &amp; Medicos</option>
+                                    <option value="5">Hospital &amp; Clinical Labs</option>
+                                    <option value="6">K-12 Education &amp; Other Basic</option>
+                                    <option value="7">Higher Education &amp; University</option>
+                                    <option value="8">Electrical</option>
+                                    <option value="9">Hospitality &amp; Hotels</option>
+                                    <option value="10">Restaurants - CAFÉ &amp; Clubs</option>
+                                    <option value="11">Paints &amp; Hardware</option>
+                                    <option value="12">Cement</option>
+                                    <option value="13">Real Estate &amp; Building</option>
+                                    <option value="14">Technology Services</option>
+                                    <option value="15">Technology Harware</option>
+                                    <option value="16">Logistics &amp; Supply Chain</option>
+                                    <option value="17">Banking &amp; Financial Services</option>
+                                    <option value="18">Beauty Products</option>
+                                    <option value="19">Fashion &amp; Style</option>
+                                    <option value="20">Retail</option>
+                                    <option value="21">Gas &amp; Fuel</option>
+                                    <option value="22">Stationary &amp; Office Items</option>
+                                    <option value="23">Interiors &amp; Furnitures</option>
+                                    <option value="24">Entertainment &amp; Cinemas</option>
+                                    <option value="25">Household &amp; Décor</option>
+                                    <option value="26">Travel &amp; Outdoors</option>
+                                    <option value="27">Seminars &amp; Professional Trainings</option>
+                                    <option value="28">Life Style &amp; GYMs</option>
+                                    <option value="29">Media &amp; Advertisements</option>
+                                    <option value="30">Guest house - B&amp;B</option>
+                                    <option value="31">Professional Trainings</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Settlement Fee -->
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Settlement Fee
+                                </label>
+
+                                <div class="d-flex align-items-center">
+
+                                    <input type="number" class="form-control" formControlName="settelmentFee"
+                                        placeholder="XX.XX" step="0.01" min="0" max="100" style="width: 120px;">
+
+                                    <span class="ml-2 font-weight-bold">
+                                        %
+                                    </span>
 
                                 </div>
 
                             </div>
 
+                        </div>
 
-                            <!-- ========================= -->
-                            <!-- COMMERCIAL ACCESS -->
-                            <!-- ========================= -->
+                    </div>
 
-                            <div class="row mt-3">
 
-                                <div class="col-md-12">
+                    <!-- Add Partner Setup -->
+                    <div class="row">
 
-                                    <fieldset>
+                        <div class="col-md-12 text-end">
 
-                                        <legend>
-                                            Commercial Access
-                                        </legend>
+                            <button type="button" class="btn float-right custom-btn" (click)="addPartnerSetup()"
+                                [disabled]="partnerSetupForm.invalid">
 
+                                Add Partner Setup
 
-                                        <div class="row">
+                            </button>
 
-                                            <!-- On Network Commerce Flag -->
-                                            <div class="col-md-12">
+                        </div>
 
-                                                <div class="form-group">
+                    </div>
 
-                                                    <label>
-                                                        On Network Commerce Flag
-                                                    </label>
+                </form>
 
-                                                    <div class="form-check">
+            </tab>
 
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="onNetworkCommerceFlag">
+        </tabset>
 
-                                                        <label class="form-check-label">
-                                                            Default
-                                                        </label>
+    </div>
 
-                                                    </div>
+</ng-template>
 
-                                                </div>
+<ng-template #addTerminalModal>
 
-                                            </div>
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Add Terminal
+        </h4>
 
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-                                            <!-- Campus Terminal POS -->
-                                            <div class="col-md-6">
+    <!-- Modal Body -->
+    <div class="modal-body">
 
-                                                <div class="form-group">
+        <form [formGroup]="addTerminalForm">
 
-                                                    <label>
-                                                        Access to Campus Terminal POS
-                                                    </label>
+            <div class="row">
 
-                                                    <div class="form-check">
+                <!-- Latitude -->
+                <div class="col-md-3">
+                    <div class="form-group">
 
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="campusTerminalPOS">
+                        <label for="latitude">
+                            Latitude
+                        </label>
 
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
+                        <input type="text" id="latitude" class="form-control" formControlName="latitude"
+                            placeholder="Enter Latitude">
 
-                                                    </div>
+                        <small class="text-danger" *ngIf="addTerminalForm.get('latitude')?.touched &&
+                                      addTerminalForm.get('latitude')?.invalid">
+                            Latitude is required
+                        </small>
 
-                                                </div>
+                    </div>
+                </div>
 
-                                            </div>
+                <!-- Longitude -->
+                <div class="col-md-3">
+                    <div class="form-group">
 
+                        <label for="longitude">
+                            Longitude
+                        </label>
 
-                                            <!-- Full Terminal Network -->
-                                            <div class="col-md-6">
+                        <input type="text" id="longitude" class="form-control" formControlName="longitude"
+                            placeholder="Enter Longitude">
 
-                                                <div class="form-group">
+                        <small class="text-danger" *ngIf="addTerminalForm.get('longitude')?.touched &&
+                                      addTerminalForm.get('longitude')?.invalid">
+                            Longitude is required
+                        </small>
 
-                                                    <label>
-                                                        Access to Full Terminal Network
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="fullTerminalNetwork">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- USERS CATEGORIES -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-3">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            Users Categories
-                                        </legend>
-
-
-                                        <div class="row">
-
-                                            <!-- Internal / Employees -->
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Internal / Employees
-                                                    </label>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="internalEmployees">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-
-                                            <!-- Banks / Insurance -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Banks / Insurance
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="banksInsurance">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Channel Network -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Channel Network / Sup. Chain
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="channelNetwork">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- CSR Providers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        CSR Providers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="csrProviders">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Security Staff -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Security Staff / Contractors
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="securityStaff">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Events Based Users -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Events Based Users
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="eventsBasedUsers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- B2B Customers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        B2B Customers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="b2bCustomers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Guests / Visitors -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Guests / Visitors
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="guestsVisitors">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Product / Service Consumers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Product / Service Consumers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="productConsumers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Asset Owners / Users -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Asset Owners / Users
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="assetOwners">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Service Providers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Service Providers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="serviceProviders">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Social Group Users -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Social Group Users
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="socialGroupUsers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- GENERAL SETUP -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-3">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            General Setup
-                                        </legend>
-
-
-                                        <!-- Cash Charging -->
-                                        <div class="form-group">
-
-                                            <label>
-                                                Cash Charging Back office Availability
-                                                with Fixed amt 500.00 INR
-                                            </label>
-
-                                            <div class="form-check">
-
-                                                <input type="checkbox" class="form-check-input"
-                                                    formControlName="cashCharging">
-
-                                                <label class="form-check-label">
-                                                    Activate
-                                                </label>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <!-- Brand Card -->
-                                        <div class="form-group">
-
-                                            <label>
-                                                Brand Card on Multiple Account Wallet
-                                            </label>
-
-                                            <div class="form-check">
-
-                                                <input type="checkbox" class="form-check-input"
-                                                    formControlName="brandCardMultipleWallet">
-
-                                                <label class="form-check-label">
-                                                    Activate
-                                                </label>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- ACTION -->
-                            <!-- ========================= -->
-
-                            <div class="row" *ngIf="selectedMacroChildTab === 'tab12'">
-
-                                <div class="col-md-12 mt-2">
-
-                                    <button type="button" class="btn custom-btn float-right" (click)="addMacroSetup()">
-
-                                        Add Mac. Setup
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-
-                    </tab>
-
-                    <tab heading="Add Mac. setup" id="tab12" (selectTab)="onMacroChildTabSelected($event)">
-
-                        <form [formGroup]="macroSetupForm">
-
-                            <!-- ========================= -->
-                            <!-- BASIC DETAILS -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-3">
-
-                                <!-- Associated Industry -->
-                                <div class="col-md-4">
-                                    <div class="form-group">
-
-                                        <label>
-                                            Associated Industry
-                                        </label>
-
-                                        <select class="form-control" formControlName="associatedIndustry">
-
-                                            <option value="0">
-                                                Select Associated Industry
-                                            </option>
-
-                                            <option value="1">Organization Promoters &amp; Directors</option>
-                                            <option value="2">CEO &amp; Managing Director</option>
-                                            <option value="3">CXO - Higher Management</option>
-                                            <option value="4">VP-GM Mid Level Management</option>
-                                            <option value="5">Operation Manager-Supervisor Level Management</option>
-                                            <option value="6">Sales &amp; Customer Manager</option>
-                                            <option value="7">Operation Level &amp; HR/ Admin Staff</option>
-                                            <option value="8">Technology Support Staff</option>
-                                            <option value="9">Customer Support &amp; Contact Centre Staff</option>
-                                            <option value="10">Legal Support Team</option>
-                                            <option value="11">Training &amp; Teaching Staff</option>
-                                            <option value="12">Security Staff</option>
-                                            <option value="13">Office Support Staff</option>
-                                            <option value="14">Staff on Contract</option>
-                                            <option value="15">Sales Force Staff</option>
-                                            <option value="16">Delivery Runners</option>
-                                            <option value="17">Line Production Staff</option>
-                                            <option value="18">Quality and Compliances Staff</option>
-                                            <option value="19">Production Manager</option>
-                                            <option value="20">Procurement Staff</option>
-                                            <option value="21">Doctors &amp; Surgeons</option>
-                                            <option value="22">Paramedics &amp; Nursing Staff</option>
-                                            <option value="23">Chief Medical Officer</option>
-                                            <option value="24">Registrar and Procurement Head</option>
-                                            <option value="25">Reception and Customer attendants</option>
-                                            <option value="26">Operation Theatre Staff</option>
-                                            <option value="27">Patients</option>
-                                            <option value="28">D2C Customers</option>
-                                            <option value="29">B2B Customers</option>
-                                            <option value="30">Retailer Network Channel</option>
-                                            <option value="31">Distributor Network Channel</option>
-                                            <option value="32">Service Providers</option>
-                                            <option value="33">Stockists</option>
-                                            <option value="34">C&amp;FS Users</option>
-                                            <option value="35">Logistics Support Staff</option>
-                                            <option value="36">Drivers &amp; Delivery Staffs</option>
-                                            <option value="37">Principal &amp; Vice Principal</option>
-                                            <option value="38">Chancellors</option>
-                                            <option value="39">Vice-Chancellors</option>
-                                            <option value="40">Bank - Financial Services Branch Manager</option>
-                                            <option value="41">Cashiers and Banking Staff</option>
-                                            <option value="42">TPAs</option>
-                                            <option value="43">Dealers &amp; Retail Stores</option>
-                                            <option value="44">Relation Ship Managers &amp; Client Account Managers
-                                            </option>
-                                            <option value="45">Warehouse Supervisor</option>
-                                            <option value="46">Collection Executive</option>
-                                            <option value="47">Hospital Admin Staff</option>
-                                            <option value="48">Teacher</option>
-                                            <option value="49">Professors &amp; Senior Professors</option>
-                                            <option value="50">Faculty Deans</option>
-                                            <option value="51">Hostel Wardens</option>
-                                            <option value="52">Students</option>
-                                            <option value="53">Visitors and Guests</option>
-                                            <option value="54">Parents &amp; Guardians</option>
-                                            <option value="55">Project Manager</option>
-                                            <option value="56">Site Manager</option>
-                                            <option value="57">Surveyor</option>
-                                            <option value="58">Hotel Manager</option>
-                                            <option value="59">Lobby Manager</option>
-                                            <option value="60">Chef &amp; Restaurateur</option>
-                                            <option value="61">Event Manager</option>
-                                            <option value="62">Field Service Engineers</option>
-                                            <option value="63">Technology Support Staff</option>
-
-                                        </select>
-
-                                    </div>
-                                </div>
-
-                                <!-- Brand Asset -->
-                                <div class="col-md-4">
-
-                                    <div class="form-group">
-
-                                        <label>
-                                            Brand Asset (Card) Duration
-                                        </label>
-
-                                        <select class="form-control" formControlName="duration">
-
-                                            <option value="0">
-                                                Select Brand Asset Duration
-                                            </option>
-
-                                            <option value="1">1 year</option>
-                                            <option value="3">3 years</option>
-                                            <option value="5">5 years</option>
-
-                                        </select>
-
-                                    </div>
-
-                                </div>
-
-                                <!-- Validity Start Date -->
-                                <div class="col-md-4">
-
-                                    <div class="form-group">
-
-                                        <label>
-                                            Validity Start Date
-                                        </label>
-
-                                        <input type="date" class="form-control" formControlName="validityStartDate">
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- WALLET TYPES -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-2">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            Wallet Types
-                                        </legend>
-
-
-                                        <div class="row">
-
-                                            <!-- Personal Wallet -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Personal Wallet Availability
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="personalWalletAvailability">
-
-                                                        <label class="form-check-label">
-                                                            Default
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Corporate Wallet -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Corporate Wallet Availability
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="corporateWalletAvailability">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- COMMERCIAL ACCESS -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-3">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            Commercial Access
-                                        </legend>
-
-
-                                        <div class="row">
-
-                                            <!-- On Network Commerce Flag -->
-                                            <div class="col-md-12">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        On Network Commerce Flag
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="onNetworkCommerceFlag">
-
-                                                        <label class="form-check-label">
-                                                            Default
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Campus Terminal POS -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Access to Campus Terminal POS
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="campusTerminalPOS">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Full Terminal Network -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Access to Full Terminal Network
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="fullTerminalNetwork">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- USERS CATEGORIES -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-3">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            Users Categories
-                                        </legend>
-
-
-                                        <div class="row">
-
-                                            <!-- Internal / Employees -->
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Internal / Employees
-                                                    </label>
-
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="internalEmployees">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-
-                                            <!-- Banks / Insurance -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Banks / Insurance
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="banksInsurance">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Channel Network -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Channel Network / Sup. Chain
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="channelNetwork">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- CSR Providers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        CSR Providers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="csrProviders">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Security Staff -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Security Staff / Contractors
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="securityStaff">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Events Based Users -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Events Based Users
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="eventsBasedUsers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- B2B Customers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        B2B Customers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="b2bCustomers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Guests / Visitors -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Guests / Visitors
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="guestsVisitors">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Product / Service Consumers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Product / Service Consumers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="productConsumers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Asset Owners / Users -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Asset Owners / Users
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="assetOwners">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Service Providers -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Service Providers
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="serviceProviders">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                            <!-- Social Group Users -->
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-
-                                                    <label>
-                                                        Social Group Users
-                                                    </label>
-
-                                                    <div class="form-check">
-
-                                                        <input type="checkbox" class="form-check-input"
-                                                            formControlName="socialGroupUsers">
-
-                                                        <label class="form-check-label">
-                                                            Activate
-                                                        </label>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- GENERAL SETUP -->
-                            <!-- ========================= -->
-
-                            <div class="row mt-3">
-
-                                <div class="col-md-12">
-
-                                    <fieldset>
-
-                                        <legend>
-                                            General Setup
-                                        </legend>
-
-
-                                        <!-- Cash Charging -->
-                                        <div class="form-group">
-
-                                            <label>
-                                                Cash Charging Back office Availability
-                                                with Fixed amt 500.00 INR
-                                            </label>
-
-                                            <div class="form-check">
-
-                                                <input type="checkbox" class="form-check-input"
-                                                    formControlName="cashCharging">
-
-                                                <label class="form-check-label">
-                                                    Activate
-                                                </label>
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <!-- Brand Card -->
-                                        <div class="form-group">
-
-                                            <label>
-                                                Brand Card on Multiple Account Wallet
-                                            </label>
-
-                                            <div class="form-check">
-
-                                                <input type="checkbox" class="form-check-input"
-                                                    formControlName="brandCardMultipleWallet">
-
-                                                <label class="form-check-label">
-                                                    Activate
-                                                </label>
-
-                                            </div>
-
-                                        </div>
-
-                                    </fieldset>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ========================= -->
-                            <!-- ACTION -->
-                            <!-- ========================= -->
-
-                            <div class="row" *ngIf="selectedMacroChildTab === 'tab12'">
-
-                                <div class="col-md-12 mt-2">
-
-                                    <button type="button" class="btn custom-btn float-right" (click)="addMacroSetup()">
-
-                                        Add Mac. Setup
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-
-                    </tab>
-
-                </tabset>
+                    </div>
+                </div>
 
             </div>
 
-        </tab>
 
-        <tab heading=" Net. Comm. Partner Setup" id="tab2">
+            <!-- Terminal Type -->
+            <div class="row">
 
-            <div class="modal-body">
+                <div class="col-md-12">
 
-                <tabset #macroChildTabset class="">
+                    <div class="form-group">
 
-                    <tab heading="Display Net. Partner Setup" id="tab21" (selectTab)="onAddPartnerChildTabSelected($event)">
+                        <label class="d-block">
+                            Terminal Type
+                        </label>
 
-                    </tab>
+                        <div class="d-flex align-items-center">
 
-                    <tab heading="Add Partner Setup" id="tab22" (selectTab)="onAddPartnerChildTabSelected($event)">
-                        
-                    </tab>
+                            <!-- Attended POS -->
+                            <div class="form-check mr-4">
 
-                </tabset>
+                                <input type="radio" id="attendedPOS" class="form-check-input"
+                                    formControlName="terminalType" value="ATTENDED">
+
+                                <label class="form-check-label" for="attendedPOS">
+                                    Attended POS
+                                </label>
+
+                            </div>
+
+
+                            <!-- Unattended POS -->
+                            <div class="form-check">
+
+                                <input type="radio" id="unattendedPOS" class="form-check-input"
+                                    formControlName="terminalType" value="UNATTENDED">
+
+                                <label class="form-check-label" for="unattendedPOS">
+                                    Unattended POS
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </tab>
 
-    </tabset>
+            <!-- Add Terminal Button -->
+            <div class="row">
 
+                <div class="col-md-12 text-center">
+
+                    <button type="button" class="btn float-right custom-btn" [disabled]="addTerminalForm.invalid"
+                        (click)="addTerminal()">
+                        Add Terminal
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</ng-template>
+
+<ng-template #displayTerminalModal>
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Display Terminal
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="card exiting-office-table mt-2 pb-0">
+        <div class="card-body pa-0">
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Sr no.</th>
+                        <th>Terminal Id</th>
+                        <th>POS Id</th>
+                        <th>Details</th>
+                        <th>Verified</th>
+                        <th>Active</th>
+                        <th>Show QR</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let terminal of partnerTerminals; let i = index">
+
+                        <!-- Sr No -->
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+
+                        <!-- Terminal Id -->
+                        <td>
+                            {{ terminal.ADC_VEND_PARTNR_TERMINL_ID }}
+                        </td>
+
+                        <!-- POS Id -->
+                        <td>
+                            {{ terminal.ADC_VEND_PARTNR_POSID }}
+                        </td>
+
+                        <!-- Details -->
+                        <td>
+                            <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                class="badge bg-primary text-white" (click)="viewTerminalDetails(terminal)">
+                                Details
+                            </span>
+                        </td>
+
+                        <!-- Verified -->
+                        <td class="text-center">
+                            <i *ngIf="terminal.ADC_VEND_TERMINL_VERIFYD_FLG" class="fa fa-check-circle text-success"
+                                title="Verified"
+                                style="font-size: 20px; width: 20px; height: 20px;">
+                            </i>
+
+                            <i *ngIf="!terminal.ADC_VEND_TERMINL_VERIFYD_FLG" class="fa fa-times-circle text-danger"
+                                title="Not Verified"
+                                style="font-size: 20px; width: 20px; height: 20px;">
+                            </i>
+                        </td>
+
+                        <!-- Active -->
+                        <td class="text-center">
+                            <i *ngIf="terminal.ADC_VEND_PARTNR_POS_ACTIV_FLG" class="fa fa-check-circle text-success"
+                                title="Active"
+                                style="font-size: 20px; width: 20px; height: 20px;">
+                            </i>
+
+                            <i *ngIf="!terminal.ADC_VEND_PARTNR_POS_ACTIV_FLG" class="fa fa-times-circle text-danger"
+                                title="Inactive"
+                                style="font-size: 20px; width: 20px; height: 20px;">
+                            </i>
+                        </td>
+
+                        <!-- Show QR -->
+                        <td>
+                            <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                class="badge bg-primary text-white" (click)="viewTerminalQr(terminal)">
+                                View QR
+                            </span>
+                        </td>
+
+                        <!-- Actions -->
+                        <td>
+
+                            <div style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+                ">
+
+                                <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                    class="badge bg-primary text-white" (click)="mapSLHeads(terminal)">
+                                    Map SL Heads
+                                </span>
+
+                                <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;" class="icon"
+                                    (click)="editTerminal(terminal)">
+                                    <i class="fa fa-edit"></i>
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- No Data -->
+                    <tr *ngIf="!partnerTerminals || partnerTerminals.length === 0">
+
+                        <td colspan="8" class="text-center">
+                            No terminals found
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
 </ng-template>

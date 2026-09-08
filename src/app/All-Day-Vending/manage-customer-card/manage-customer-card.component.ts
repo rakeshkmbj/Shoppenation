@@ -18,16 +18,16 @@ import { Subscription, Subject } from 'rxjs';
 export class ManageCustomerCardComponent implements OnInit {
 
   modalRef: BsModalRef;
-  countryList: {};
+  countryList: any[] = [];
   countryID: any;
   countryName: any;
   searchCenterForm: any;
-  cityList: {};
-  stateList: {};
+  cityList: any[] = [];
+  stateList: any[] = [];
   stateID: any;
   stateName: any;
   cityName: any;
-  zipList: {};
+  zipList: any[] = [];
   cityID: any;
   pinID: any;
   showAccHolders = false
@@ -75,12 +75,13 @@ export class ManageCustomerCardComponent implements OnInit {
   totalAmount = 0;
   maxCashAmount = 476.19;
   memberIdentity: any;
-
+  selectedBrandCommerceTab: any;
   searchType: string = 'manufacturer';
   manufacturerId: string = '';
   mobileNumber: string = '';
   showDetails: boolean = false;
-  B2BLinkIdForD10 : any;
+  B2BLinkIdForD10: any;
+  addBrandCommerceForm: FormGroup;
 
   // Registration
   regId: any;
@@ -130,6 +131,10 @@ export class ManageCustomerCardComponent implements OnInit {
       photo: [null]
     });
 
+    this.addBrandCommerceForm = this.formBuilder.group({
+      user: ['', Validators.required]
+    })
+
     this.displayCardHolders = this.formBuilder.group({
       classId: ['', Validators.required],
       accId: ['', Validators.required]
@@ -147,7 +152,7 @@ export class ManageCustomerCardComponent implements OnInit {
 
   ngOnInit(): void {
 
-     if (this.getlogindata.DOMAIN_ID == 10 && this.getlogindata.SECND_NODE_SUBACCT_FLG == true) {
+    if (this.getlogindata.DOMAIN_ID == 10 && this.getlogindata.SECND_NODE_SUBACCT_FLG == true) {
 
       const payload = {
         "Domainid": this.getlogindata.DOMAIN_ID,
@@ -307,6 +312,23 @@ export class ManageCustomerCardComponent implements OnInit {
     this.SelectedUser = user;
     this.confirmation = "";
     this.modalRef = this.modalService.show(template, { class: 'modal-md' });
+  }
+
+  brandCommerce(template: any, user: any) {
+    this.SelectedUser = user;
+    this.confirmation = "";
+    this.modalRef = this.modalService.show(template, { class: 'modal-xl' });
+  }
+
+  onBrandCommerceTabSelected(tab: any): void {
+    this.selectedBrandCommerceTab = tab.id || '';
+
+    console.log("Selected TAB: ", tab.id);
+    if (this.selectedBrandCommerceTab === 'tab1') {
+
+    } else if (this.selectedBrandCommerceTab === 'tab2') {
+
+    }
   }
 
   deleteCard() {
@@ -1008,7 +1030,7 @@ export class ManageCustomerCardComponent implements OnInit {
   cartFormPreserve: any;
 
   openAddToCart(cartForm: NgForm, checkouTemplate: any, confirmCheckoutTemplate: any) {
-    if(this.walletType === 'Corporate') {
+    if (this.walletType === 'Corporate') {
       this.toastr.error("This feature is unavailable");
     }
     else if (this.paymentType === 'Cash') {
@@ -1144,7 +1166,7 @@ export class ManageCustomerCardComponent implements OnInit {
         .subscribe(data => {
           console.log(data);
 
-          if(data.Message === ' Corporate Wallets are not associated with your account '){
+          if (data.Message === ' Corporate Wallets are not associated with your account ') {
             this.toastr.error(data.Message);
           } else {
             this.toastr.success(data.Message);
@@ -1174,6 +1196,38 @@ export class ManageCustomerCardComponent implements OnInit {
 
   confirmCheckout(checkoutModal: any) {
     this.addToCart(this.cartFormPreserve, checkoutModal);
+  }
+
+  addBrandCommerceUser(){
+
+    const formValue = this.addBrandCommerceForm.getRawValue();
+
+    const payload = {
+      "User_Regid": this.SelectedUser.ADC_VEND_CARDHOLDR_REGID,
+      "User_Type": formValue.user,
+      "Login_Subacctid": this.subaccountid,
+      "Login_Storeid": this.storeid
+    }
+
+    console.log("Payload for add user: ", payload);
+
+    this.apiService.postCall(this.apiService.baseURL + '/AddUserOnBrandCommerce', payload)
+        .subscribe(data => {
+          console.log(data);
+
+          if(data.Message === 'User Type is Not Added to Brand Commerce'){
+            this.toastr.error(data.Message);
+          } else{
+            this.toastr.success(data.Message);
+          }
+
+        },
+          (error) => {
+            console.log('Error: ', error)
+            this.toastr.error(error.error?.Message || error, '', {
+              timeOut: 5000,
+            });
+          });
   }
 
 }
