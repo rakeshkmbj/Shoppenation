@@ -152,7 +152,17 @@ export class AccountManagementComponent implements OnInit {
       terminalType: ['ATTENDED', Validators.required]
     });
 
+    this.initializeMacroSetupForm();
+  }
+
+  private initializeMacroSetupForm(): void {
+    if (this.macroSetupForm) {
+      return;
+    }
+
     this.macroSetupForm = this.formBuilder.group({
+
+      firstNodeAccount: ['0', Validators.required],
 
       associatedIndustry: ['0'],
 
@@ -280,6 +290,37 @@ export class AccountManagementComponent implements OnInit {
           });
         }
       );
+  }
+
+  selectedEcommStores: any[] = [];
+  selectedAccount: any;
+
+  onchangeFirstNode(event: any) {
+
+    const selectedSubAccountId = event.target.value;
+
+    if (selectedSubAccountId === '0') {
+      this.selectedEcommStores = [];
+      return;
+    }
+
+    this.selectedAccount = this.firstNodeAcc.find(
+      (account: any) => account.SubaccountId == selectedSubAccountId
+    );
+
+    if (this.selectedAccount) {
+
+      this.selectedEcommStores = [{
+        domainId: this.selectedAccount.CategoryId,
+        accountId: this.selectedAccount.StoreId,
+        subAccountId: this.selectedAccount.SubaccountId,
+        storeId: this.selectedAccount.StoreId,
+        name: this.selectedAccount.OfficeName
+      }];
+
+    } else {
+      this.selectedEcommStores = [];
+    }
   }
 
   openSNThirdNode() {
@@ -645,6 +686,9 @@ export class AccountManagementComponent implements OnInit {
 
   contractMgmt(acc: any, template?: any) {
 
+    this.getFirstNodeAcc();
+
+    this.initializeMacroSetupForm();
     this.resetMacroSetupForm();
 
     this.selectedThirdNode = acc;
@@ -1016,6 +1060,8 @@ export class AccountManagementComponent implements OnInit {
       Storeid: this.selectedThirdNode.THIRD_NODE_ACCT_STORE_ID
     };
 
+    console.log("Third node acc payload: ", payload);
+
     this.apiService
       .postCall(
         this.apiService.baseURL +
@@ -1179,6 +1225,10 @@ export class AccountManagementComponent implements OnInit {
   private resetMacroSetupForm(): void {
 
     this.macroSetupForm.reset({
+
+      associatedEcommDomain: '0',
+
+      firstNodeAccount: '0',
 
       associatedIndustry: '0',
 
@@ -1451,15 +1501,25 @@ export class AccountManagementComponent implements OnInit {
         formValue.cashCharging,
 
       Mult_Acct_Flg:
-        formValue.brandCardMultipleWallet
-    };
+        formValue.brandCardMultipleWallet,
 
+      Assoc_Ecom_Acctid: "17",
+
+      Assoc_Ecom_Subacctid: this.selectedAccount.SubaccountId,
+
+      Assoc_Ecom_Storeid: this.selectedAccount.StoreId,
+
+      Assoc_Ecom_Domnid: "8",
+
+      Assoc_Ecom_Org_Name: this.selectedAccount.OfficeName
+    };
 
     console.log(
       'Macro Setup Add Payload:',
       payload
     );
 
+    console.log("payload: ", payload);
 
     this.apiService
       .postCall(
@@ -1566,6 +1626,23 @@ export class AccountManagementComponent implements OnInit {
 
   }
 
+  firstNodeAcc: any;
+
+  getFirstNodeAcc() {
+
+    this.apiService.getCall(this.apiService.baseURL + `/GetPrimaryAccounts/2`)
+      .subscribe(data => {
+        console.log("Responce: ", data);
+        const Responce = data;
+
+        this.firstNodeAcc = data;
+
+      },
+        (error) => {
+          console.log(error);
+        });
+  }
+
   openPartnerDetails(partner: any) {
 
   }
@@ -1581,6 +1658,47 @@ export class AccountManagementComponent implements OnInit {
     this.modalRef = this.modalService.show(template, {
       class: 'modal-lg'
     });
+  }
+
+  manufacturerAccArr: any[] = [];
+
+  displayManufacturer(partner: any, template: any) {
+
+    this.modalRef.hide();
+
+    this.selectedPartner = partner;
+
+    this.manufacturerAccArr = this.thirdNodeAccArr.filter(
+      (item: any) => item.CategoryName === 'Manufacturer'
+    );
+
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-xl'
+    });
+
+  }
+
+  mapWithNetworkPartner(manufacturer: any) {
+
+    const payload = {
+      "Merchant_Subacctid": this.selectedPartner.ADC_VEND_PARTNR_SUBACCT_ID,
+      "Merchant_Storeid": this.selectedPartner.ADC_VEND_PARTNR_STORE_ID,
+      "Merchant_Typeid": this.selectedPartner.ADC_VEND_BRND_NETWRK_PARTNR_ID,
+      "Enterprise_Subacctid": manufacturer.THIRD_NODE_ACCT_SUBACCT_ID,
+      "Enterprise_Storeid": manufacturer.THIRD_NODE_ACCT_STORE_ID
+    }
+
+    console.log("payload: ", payload);
+
+    this.apiService.postCall(this.apiService.baseURL + `/AddOrg2OrgB2BMatrix`, payload)
+      .subscribe(data => {
+        console.log("Responce: ", data);
+        const Responce = data;
+      },
+        (error) => {
+          console.log(error);
+        });
+
   }
 
   displayTerminalPOS(partner: any, template: any) {
@@ -1660,19 +1778,19 @@ export class AccountManagementComponent implements OnInit {
 
   }
 
-  viewTerminalDetails(terminal: any){
+  viewTerminalDetails(terminal: any) {
 
   }
 
-  viewTerminalQr(terminal: any){
+  viewTerminalQr(terminal: any) {
 
   }
 
-  mapSLHeads(terminal: any){
+  mapSLHeads(terminal: any) {
 
   }
 
-  editTerminal(terminal: any){
+  editTerminal(terminal: any) {
 
   }
 

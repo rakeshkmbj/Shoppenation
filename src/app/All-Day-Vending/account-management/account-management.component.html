@@ -1052,6 +1052,185 @@
 
                     </div>
 
+                    <!-- ========================= -->
+                    <!-- ASSOCIATED ECOMM. STORE -->
+                    <!-- ========================= -->
+
+                    <div class="row mt-3">
+
+                        <fieldset>
+
+                            <legend>
+                                Associated Ecomm. Store
+                            </legend>
+
+                            <!-- Store Selection -->
+                            <div class="row">
+
+                                <!-- Platform Name -->
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <label>
+                                            Platform Name
+                                        </label>
+
+                                        <input type="text" class="form-control"
+                                            formControlName="associatedEcommPlatform" placeholder="Platform Name">
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Domain -->
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <label>
+                                            Domain
+                                        </label>
+
+                                        <select class="form-control" formControlName="associatedEcommDomain">
+
+                                            <option value="0">
+                                                Select Domain
+                                            </option>
+
+                                            <!-- Add your domain options here -->
+                                            <option value="1">Domain 1</option>
+                                            <option value="2">Domain 2</option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- First Node Account -->
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <label>
+                                            First Node Account
+                                        </label>
+
+                                        <select class="form-control" formControlName="firstNodeAccount">
+
+                                            <option value="0">
+                                                Select First Node Account
+                                            </option>
+
+                                            <!-- Add your account options here -->
+                                            <option value="1">Account 1</option>
+                                            <option value="2">Account 2</option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Add Selected Store Button -->
+                            <div class="row mt-2">
+
+                                <div class="col-md-12 text-center">
+
+                                    <button type="button" class="btn btn-dark" (click)="addSelectedEcommStore()">
+
+                                        Add Selected Store
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Selected Store Table -->
+                            <div class="row mt-3">
+
+                                <div class="col-md-12">
+
+                                    <div class="table-responsive">
+
+                                        <table class="table table-borderless">
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>
+                                                        Dom.id
+                                                    </th>
+
+                                                    <th>
+                                                        Acctid
+                                                    </th>
+
+                                                    <th>
+                                                        Subacct id
+                                                    </th>
+
+                                                    <th>
+                                                        Storeid
+                                                    </th>
+
+                                                    <th>
+                                                        Name
+                                                    </th>
+
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr *ngFor="let store of selectedEcommStores">
+
+                                                    <td>
+                                                        {{ store.domainId }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ store.accountId }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ store.subAccountId }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ store.storeId }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ store.name }}
+                                                    </td>
+
+                                                </tr>
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
                 </form>
 
             </tab>
@@ -1184,11 +1363,6 @@
                         </div>
 
                     </div>
-
-
-                    <!-- ========================= -->
-                    <!-- WALLET TYPES               -->
-                    <!-- ========================= -->
 
                     <div class="row mt-2">
 
@@ -1925,6 +2099,145 @@
 
                     </div>
 
+                    <!-- ========================= -->
+                    <!-- ASSOCIATED ECOMM. STORE -->
+                    <!-- ========================= -->
+
+                    <div class="row mt-3 associated-ecomm-section">
+
+                        <div class="col-md-12">
+
+                            <fieldset>
+
+                                <legend>
+                                    Associated Ecomm. Store
+                                </legend>
+
+                                <!-- Store Selection -->
+                                <div class="row">
+
+                                    <!-- Platform Name -->
+                                    <div class="col-md-4">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                Platform Name
+                                            </label>
+
+                                            <input type="text" class="form-control"
+                                                formControlName="associatedEcommPlatform" readonly
+                                                placeholder="All Day Distribution">
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- First Node Account -->
+                                    <div class="col-md-4">
+
+                                        <div class="form-group">
+
+                                            <label>
+                                                First Node Account
+                                            </label>
+
+                                            <select (change)="onchangeFirstNode($event)" class="form-control"
+                                                formControlName="firstNodeAccount">
+
+                                                <option value="0">
+                                                    Select First Node Account
+                                                </option>
+
+                                                <option *ngFor="let account of firstNodeAcc"
+                                                    [value]="account.SubaccountId">
+                                                    {{ account.OfficeName }}
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Selected Store -->
+                                <div *ngIf="selectedEcommStores?.length > 0" class="row mt-2">
+
+                                    <div class="col-md-12">
+
+                                        <div class="table-responsive associated-store-table">
+
+                                            <table class="table">
+
+                                                <thead>
+                                                    <tr>
+
+                                                        <th>
+                                                            Dom.id
+                                                        </th>
+
+                                                        <th>
+                                                            Acctid
+                                                        </th>
+
+                                                        <th>
+                                                            Subacct id
+                                                        </th>
+
+                                                        <th>
+                                                            Storeid
+                                                        </th>
+
+                                                        <th>
+                                                            Name
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr *ngFor="let store of selectedEcommStores">
+
+                                                        <td>
+                                                        </td>
+
+                                                        <td>
+                                                        </td>
+
+                                                        <td>
+                                                        </td>
+
+                                                        <td>
+                                                            {{ store.storeId }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ store.name }}
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
+                    </div>
+
+
                     <div class="row" *ngIf="
                                     selectedMacroChildTab === 'tab12' &&
                                     !isMacroEditMode
@@ -2036,6 +2349,12 @@
                                                 style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
                                                 (click)="displayTerminalPOS(partner, displayTerminalModal)">
                                                 Display Terminal POS
+                                            </span>
+
+                                            <span class="cursor: pointer; badge bg-primary text-white"
+                                                style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                                (click)="displayManufacturer(partner, getManufacturerDisplay)">
+                                                Get Mfr. mapping
                                             </span>
 
                                             <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
@@ -2360,26 +2679,22 @@
                         <!-- Verified -->
                         <td class="text-center">
                             <i *ngIf="terminal.ADC_VEND_TERMINL_VERIFYD_FLG" class="fa fa-check-circle text-success"
-                                title="Verified"
-                                style="font-size: 20px; width: 20px; height: 20px;">
+                                title="Verified" style="font-size: 20px; width: 20px; height: 20px;">
                             </i>
 
                             <i *ngIf="!terminal.ADC_VEND_TERMINL_VERIFYD_FLG" class="fa fa-times-circle text-danger"
-                                title="Not Verified"
-                                style="font-size: 20px; width: 20px; height: 20px;">
+                                title="Not Verified" style="font-size: 20px; width: 20px; height: 20px;">
                             </i>
                         </td>
 
                         <!-- Active -->
                         <td class="text-center">
                             <i *ngIf="terminal.ADC_VEND_PARTNR_POS_ACTIV_FLG" class="fa fa-check-circle text-success"
-                                title="Active"
-                                style="font-size: 20px; width: 20px; height: 20px;">
+                                title="Active" style="font-size: 20px; width: 20px; height: 20px;">
                             </i>
 
                             <i *ngIf="!terminal.ADC_VEND_PARTNR_POS_ACTIV_FLG" class="fa fa-times-circle text-danger"
-                                title="Inactive"
-                                style="font-size: 20px; width: 20px; height: 20px;">
+                                title="Inactive" style="font-size: 20px; width: 20px; height: 20px;">
                             </i>
                         </td>
 
@@ -2423,6 +2738,80 @@
 
                         <td colspan="8" class="text-center">
                             No terminals found
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #getManufacturerDisplay>
+    <!-- Modal Header -->
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Manufacturer for mapping
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="card exiting-office-table mt-2 pb-0">
+        <div class="card-body pa-0">
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Sr no.</th>
+                        <th>Type</th>
+                        <th>Subacctid</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let manufacturer of manufacturerAccArr; let i = index">
+
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+
+                        <td>
+                            {{ manufacturer.CategoryName }}
+                        </td>
+
+                        <td>
+                            {{ manufacturer.THIRD_NODE_ACCT_SUBACCT_ID }}
+                        </td>
+
+                        <td>
+                            {{ manufacturer.RETAIL_D2C_SUBACCT_OFFICE_NAME }}
+                        </td>
+
+                        <td>
+                            <span style="cursor: pointer; font-size: 0.7rem; padding: 8px;"
+                                class="badge bg-primary text-white" (click)="mapWithNetworkPartner(manufacturer)">
+                                Map with network partner
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <!-- No Data -->
+                    <tr *ngIf="!manufacturerAccArr || manufacturerAccArr.length === 0">
+
+                        <td colspan="5" class="text-center">
+                            No manufacturers found
                         </td>
 
                     </tr>

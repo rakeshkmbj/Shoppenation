@@ -110,6 +110,9 @@ import { DeliveryLoginComponent } from './delivery-login/delivery-login.componen
 import { HelpDeskComponent } from './help-desk/help-desk.component';
 import { DeviceManagementComponent } from './DrugMlrManagement/device-management/device-management.component';
 import { DrugManagementComponent } from './DrugMlrManagement/drug-management/drug-management.component';
+import { ManageCampaignsVouchersComponent } from './Voucher-Commerce/manage-campaigns-vouchers/manage-campaigns-vouchers.component';
+import { ManageMarketSkuComponent } from './Voucher-Commerce/manage-market-sku/manage-market-sku.component';
+import { PerformanceManagementComponent } from './Voucher-Commerce/performance-management/performance-management.component';
 
 @NgModule({
   imports: [
@@ -225,6 +228,9 @@ import { DrugManagementComponent } from './DrugMlrManagement/drug-management/dru
     HelpDeskComponent,
     DeviceManagementComponent,
     DrugManagementComponent,
+    ManageCampaignsVouchersComponent,
+    ManageMarketSkuComponent,
+    PerformanceManagementComponent,
   ],
   providers: [
     LoaderService,
