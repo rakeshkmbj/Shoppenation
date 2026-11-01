@@ -20,11 +20,15 @@ export class ManageCampaignsVouchersComponent implements OnInit {
   selectedTab: string = 'vouchers';
 
   voucherForm!: FormGroup;
+  addcouponForm!: FormGroup;
+  couponRuleForm!: FormGroup;
+  couponsForm!: FormGroup;
   addVoucherForm!: FormGroup;
   giftCommerceForm!: FormGroup;
   addToCampaignForm!: FormGroup;
   addCouponToVoucherForm!: FormGroup;
   attachSkuForm!: FormGroup;
+  selectedCouponType: any;
 
   vouchers: any[] = [];
   campaigns: any[] = [];
@@ -55,7 +59,10 @@ export class ManageCampaignsVouchersComponent implements OnInit {
   showSkuFlg: any;
   productLineList: any;
   selectedProductLine: any;
+  selectedCategoryLine: any;
   itemList: any;
+  SKUs: any;
+  coupons: any[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -80,6 +87,21 @@ export class ManageCampaignsVouchersComponent implements OnInit {
   ngOnInit(): void {
 
     this.getCountry();
+
+    this.couponRuleForm = this.formBuilder.group({
+      userType: ['individual', Validators.required],
+      minCart: [1, [Validators.required, Validators.min(1)]],
+      valueType: ['amount', Validators.required],
+      amount: [150, [Validators.required, Validators.min(0.01)]],
+      currency: ['INR', Validators.required],
+      percentage: [null, [
+        Validators.required,
+        Validators.min(0.01),
+        Validators.max(100)
+      ]]
+    });
+
+    this.updateValueValidators();
 
     this.addVoucherForm = this.formBuilder.group({
 
@@ -124,7 +146,8 @@ export class ManageCampaignsVouchersComponent implements OnInit {
 
       // Phygital Voucher
       productLine: [''],
-      categoryLine: ['']
+      categoryLine: [''],
+      ecomstore: ['']
 
     });
 
@@ -168,6 +191,22 @@ export class ManageCampaignsVouchersComponent implements OnInit {
       voucherSubCategory: ['', Validators.required],
 
       fromDate: ['', Validators.required]
+
+    });
+
+    this.couponsForm = this.formBuilder.group({
+
+      couponCategory: ['', Validators.required],
+
+      couponSubCategory: ['', Validators.required],
+
+      fromDate: ['', Validators.required]
+
+    });
+
+    this.addcouponForm = this.formBuilder.group({
+
+      couponname: ['', Validators.required]
 
     });
 
@@ -340,7 +379,7 @@ export class ManageCampaignsVouchersComponent implements OnInit {
 
   getProductLine() {
 
-    this.apiService.getCall(this.apiService.baseURL + '/GetSuperStoreProductLineById/' + 16)
+    this.apiService.getCall(this.apiService.baseURL + '/GetSuperStoreProductLineById/' + this.AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_DOMNID)
       .subscribe((res: any) => {
 
         console.log("resonce: ", res)
@@ -357,12 +396,16 @@ export class ManageCampaignsVouchersComponent implements OnInit {
         });
   }
 
+  onCategoryLineChange(e: any) {
+    this.selectedCategoryLine = e.target.value;
+  }
+
   onProductLineChange(e: any) {
 
     this.selectedProductLine = e.target.value;
 
     this.apiService.getCall(
-      this.apiService.baseURL + '/GetSuperStoreDropShipItems/' + 7 + '/' + this.selectedProductLine)
+      this.apiService.baseURL + '/GetSuperStoreDropShipItems/' + this.AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_DOMNID + '/' + this.selectedProductLine)
       .subscribe((res: any) => {
         console.log("responce: ", res)
         this.itemList = res;
@@ -376,9 +419,36 @@ export class ManageCampaignsVouchersComponent implements OnInit {
         });
   }
 
+  AssociatedEcomStore: any
+
+  getEcomStores() {
+
+    const payload = {
+      "Subacctid": this.subaccountid,
+      "Storeid": this.storeid
+    }
+
+    this.apiService.postCall(this.apiService.baseURL + '/GetAdVendAcctMacroSetup', payload)
+      .subscribe((res: any) => {
+
+        console.log("Ecom store resonce: ", res);
+        this.AssociatedEcomStore = res;
+
+        this.getProductLine();
+      },
+        (error) => {
+          console.log(error);
+          this.productLineList = [];
+          this.toastr.error(error.error.Message, '', {
+            timeOut: 5000,
+          });
+        });
+
+  }
+
   openAddVoucher(template: any): void {
 
-    this.getProductLine();
+    this.getEcomStores();
 
     this.addVoucherForm.reset({
       name: '',
@@ -401,14 +471,21 @@ export class ManageCampaignsVouchersComponent implements OnInit {
       giftPackVouchers: '',
       redemptionByChannelPartners: '',
       productLine: '',
-      categoryLine: ''
+      categoryLine: '',
+      ecomstore: '',
+      redemptionAt: ''
     });
 
     this.modalRef = this.modalService.show(template, {
       class: 'modal-xl'
     });
 
+  }
 
+  openCouponModel(template: any) {
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-xl'
+    });
   }
 
 
@@ -543,6 +620,18 @@ export class ManageCampaignsVouchersComponent implements OnInit {
   }
 
   onTabChange(tab: any) {
+
+    this.showNoData = false;
+
+    if (tab === 'tab1') {
+      this.selectedTab = 'vouchers';
+    } else if (tab === 'tab2') {
+      this.selectedTab = 'campaigns';
+    } else if (tab === 'tab3') {
+      this.selectedTab = 'coupons';
+    } else {
+      console.log("Wrong tab selected")
+    }
 
   }
 
@@ -771,6 +860,123 @@ export class ManageCampaignsVouchersComponent implements OnInit {
 
     }
 
+  }
+
+  displayPhygitalVouchers() {
+
+    const payload = {
+      "ProductId": this.selectedProductLine,
+      "Itemid": this.selectedCategoryLine,
+      "Domainld": this.AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_DOMNID,
+      "AccountId": this.AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_ACCTID,
+      "SubAccountId": this.AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_SUBACCTID,
+      "Storeld": this.AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_STOREID
+    }
+
+    console.log("Payload: ", payload);
+
+    this.apiService.postCall(this.apiService.baseURL + '/DisplaySubitemsByltem', payload)
+      .subscribe((res: any) => {
+
+        console.log("SKU resonce: ", res);
+
+        this.SKUs = res;
+
+      },
+        (error) => {
+          console.log(error);
+          this.productLineList = [];
+          this.toastr.error(error.error.Message, '', {
+            timeOut: 5000,
+          });
+        });
+
+  }
+
+  displayCoupons() {
+
+    if (this.couponsForm.invalid) {
+
+      this.couponsForm.markAllAsTouched();
+
+      return;
+
+    }
+
+    this.coupons = [{
+      couponId: 4787854,
+      categoryId: '0012',
+      category: 'Discount',
+      subCategory: 'Bulk Disc.',
+      name: 'Corporate Based 10%'
+    }];
+
+    this.showNoData = false;
+
+    if (this.coupons.length === 0) {
+
+      this.showNoData = true;
+
+    }
+
+  }
+
+  onCouponNameChange(event: any): void {
+
+    this.selectedCouponType = event.target.value;
+
+  }
+
+
+  updateValueValidators(): void {
+    const amount = this.couponRuleForm.get('amount')!;
+    const percentage = this.couponRuleForm.get('percentage')!;
+
+    if (this.couponRuleForm.get('valueType')?.value === 'amount') {
+      amount.setValidators([
+        Validators.required,
+        Validators.min(0.01)
+      ]);
+      percentage.clearValidators();
+    } else {
+      percentage.setValidators([
+        Validators.required,
+        Validators.min(0.01),
+        Validators.max(100)
+      ]);
+      amount.clearValidators();
+    }
+
+    amount.updateValueAndValidity({ emitEvent: false });
+    percentage.updateValueAndValidity({ emitEvent: false });
+  }
+
+  addCouponRule(): void {
+    if (this.couponRuleForm.invalid) {
+      this.couponRuleForm.markAllAsTouched();
+      return;
+    }
+
+    const formValue = this.couponRuleForm.value;
+
+    const payload = {
+      userType: formValue.userType,
+      minCart: Number(formValue.minCart),
+      valueType: formValue.valueType,
+      amount: formValue.valueType === 'amount'
+        ? Number(formValue.amount)
+        : null,
+      currency: formValue.valueType === 'amount'
+        ? formValue.currency
+        : null,
+      percentage: formValue.valueType === 'percentage'
+        ? Number(formValue.percentage)
+        : null
+    };
+
+    console.log('Coupon Rule:', payload);
+
+    // Call your API here.
   }
 
 }

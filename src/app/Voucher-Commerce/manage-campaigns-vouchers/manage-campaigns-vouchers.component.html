@@ -123,7 +123,7 @@
 
                                     <!-- Add Voucher -->
                                     <button type="button" class="btn custom-btn"
-                                        (click)="openAddVoucher(addVoucherModal)" [disabled]="voucherForm.invalid">
+                                        (click)="openAddVoucher(addVoucherModal)">
 
                                         Add Voucher
 
@@ -435,13 +435,216 @@
 
                 </tab>
 
-            </tabset>
+                <tab heading="Manage Coupons" id="tab3" (selectTab)="onTabChange('tab3')">
 
+                    <div *ngIf="selectedTab === 'coupons'">
+
+                        <form [formGroup]="couponsForm">
+
+                            <!-- ================= FILTER ROW ================= -->
+
+                            <div class="row">
+
+                                <!-- Coupon Category -->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Coupon Category</label>
+
+                                        <select class="form-control" formControlName="couponCategory"
+                                            (change)="onCategoryChange($event)">
+
+                                            <option value="">Select</option>
+
+                                            <option value="discount">
+                                                Discount
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Coupon Sub-Category -->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Coupon Sub-Category</label>
+
+                                        <select class="form-control" formControlName="couponSubCategory">
+
+                                            <option value="">Select</option>
+
+                                            <option value="flat-sale-discount">
+                                                Flat Sale Discount
+                                            </option>
+
+                                            <option value="bulk-sale-discount">
+                                                Bulk Sale Discount
+                                            </option>
+
+                                            <option value="student-based-discount">
+                                                Student Based Discount
+                                            </option>
+
+                                            <option value="gender-based-discount">
+                                                Gender Based Discount
+                                            </option>
+
+                                            <option value="senior-citizen-discount">
+                                                Senior Citizen Discount
+                                            </option>
+
+                                            <option value="special-day-discount">
+                                                Special Day/Week/Month Based Discount
+                                            </option>
+
+                                            <option value="festival-based-discounts">
+                                                Festival Based Discounts
+                                            </option>
+
+                                            <option value="general-discounts">
+                                                General Discounts
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- From Date -->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+
+                                        <input type="date" class="form-control" formControlName="fromDate">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- ================= BUTTONS ================= -->
+
+                            <div class="row">
+                                <div class="col-md-12 d-flex justify-content-end align-items-center">
+
+                                    <button type="button" class="btn custom-btn mr-2" (click)="displayCoupons()"
+                                        [disabled]="couponsForm.invalid">
+
+                                        Display Coupons
+
+                                    </button>
+
+                                    <button type="button" class="btn custom-btn"
+                                        (click)="openCouponModel(addCouponModal)">
+
+                                        Add Coupon
+
+                                    </button>
+
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <!-- ================= COUPONS TABLE ================= -->
+
+                        <div *ngIf="coupons?.length > 0" class="card exiting-office-table mt-2 pb-0">
+
+                            <div class="card-header">
+                                Manage Coupons
+                            </div>
+
+                            <div class="card-body pa-0 table-responsive">
+
+                                <table class="table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Ser#</th>
+                                            <th>CouponId</th>
+                                            <th>CategoryId</th>
+                                            <th>Category</th>
+                                            <th>Sub-cat</th>
+                                            <th>Name</th>
+                                            <th>Assoc. rules detail</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr *ngFor="let coupon of coupons; let i = index">
+
+                                            <!-- Serial Number -->
+                                            <td>
+                                                {{ (i + 1) | number:'2.0' }}
+                                            </td>
+
+                                            <!-- Coupon ID -->
+                                            <td>
+                                                {{ coupon.couponId }}
+                                            </td>
+
+                                            <!-- Category ID -->
+                                            <td>
+                                                {{ coupon.categoryId }}
+                                            </td>
+
+                                            <!-- Category -->
+                                            <td>
+                                                {{ coupon.category }}
+                                            </td>
+
+                                            <!-- Sub-category -->
+                                            <td>
+                                                {{ coupon.subCategory }}
+                                            </td>
+
+                                            <!-- Coupon Name -->
+                                            <td>
+                                                {{ coupon.name }}
+                                            </td>
+
+                                            <!-- Associated Rules -->
+                                            <td>
+                                                <button type="button" class="btn custom-btn btn-sm"
+                                                    (click)="associateRules(voucher)">
+
+                                                    Associate rules
+
+                                                </button>
+                                            </td>
+
+                                            <!-- Action -->
+                                            <td class="text-center">
+
+                                                <i class="fa fa-edit mt-2" style="cursor: pointer;" title="Edit Coupon"
+                                                    (click)="editVoucher(voucher)">
+                                                </i>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <!-- No Data -->
+                        <div *ngIf="showNoData" class="no-data">
+                            No coupons found.
+                        </div>
+
+                    </div>
+
+                </tab>
+
+            </tabset>
 
         </div>
 
     </div>
-
 
     <ng-template #giftCommerceFulfillmentModal>
 
@@ -2329,721 +2532,6 @@
 
     </ng-template>
 
-
-    <ng-template #addVoucherModal1>
-
-        <form [formGroup]="addVoucherForm" (ngSubmit)="createVoucher()">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-
-                <h4 class="modal-title">
-                    Add Voucher
-                </h4>
-
-                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-
-                    <span aria-hidden="true">
-                        &times;
-                    </span>
-
-                </button>
-
-            </div>
-
-
-            <!-- Modal Body -->
-            <div class="modal-body campaign-modal-body">
-
-                <div class="row">
-
-                    <!-- Name -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Name
-                            </label>
-
-                            <input type="text" class="form-control" formControlName="name" placeholder="Enter Name">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Short Code -->
-                    <div class="col-md-2">
-
-                        <div class="form-group">
-
-                            <label>
-                                Short Code
-                            </label>
-
-                            <input type="text" class="form-control" formControlName="shortCode"
-                                placeholder="Enter Short Code">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- For User Type -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                For User Type
-                            </label>
-
-                            <select class="form-control" formControlName="userType">
-
-                                <option value="">
-                                    Select
-                                </option>
-
-                                <option value="D2C">
-                                    D2C Users
-                                </option>
-
-                                <option value="B2B">
-                                    B2B Users
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="row mt-2">
-
-                    <!-- Category -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Category
-                            </label>
-
-                            <select class="form-control" formControlName="category">
-
-                                <option value="">
-                                    Select
-                                </option>
-
-                                <option value="Market Based Commercial">
-                                    Market Based Commercial
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Sub Category -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Sub category
-                            </label>
-
-                            <select class="form-control" formControlName="subCategory">
-
-                                <option value="">
-                                    Select
-                                </option>
-
-                                <option value="General">
-                                    General
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="row mt-3">
-
-                    <!-- Enterprise Self Manufacturer SKUs -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Enterprise Self Manufacturer SKU's
-                            </label>
-
-                            <input type="radio" formControlName="skuType" value="manufacturer">
-
-                            <br>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Enterprise Self Service SKUs -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Enterprise Self Service SKUs
-                            </label>
-
-                            <input type="radio" formControlName="skuType" value="selfService">
-
-                            <br>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- 3rd Party -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                3rd Party SKUs/Services
-                            </label>
-
-                            <input type="radio" formControlName="skuType" value="thirdParty">
-
-                            <br>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="row mt-2">
-
-                    <!-- Voucher Available on Marketplaces -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Voucher Available on Market places
-                            </label>
-
-                            <input type="checkbox" formControlName="marketplaceAvailable">
-
-                            <br>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Amount Based / Percentage -->
-                    <div class="col-md-5">
-
-                        <div class="card">
-
-                            <div class="card-body">
-
-                                <div class="row">
-
-                                    <!-- Amount Based -->
-                                    <div class="col-md-6">
-
-                                        <div class="form-group">
-
-                                            <label>
-                                                Amount Based
-                                            </label>
-
-                                            <input type="radio" formControlName="valueType" value="amount">
-
-                                            <label class="mt-2">
-                                                Amount
-                                            </label>
-
-                                            <input type="number" class="form-control" formControlName="amount">
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- Percentage Based -->
-                                    <div class="col-md-6">
-
-                                        <div class="form-group">
-
-                                            <label>
-                                                % Based
-                                            </label>
-
-                                            <input type="radio" formControlName="valueType" value="percentage">
-
-                                            <label class="mt-2">
-                                                Percentage Figure
-                                            </label>
-
-                                            <input type="number" class="form-control" formControlName="percentage">
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Currency -->
-                    <div class="col-md-2">
-
-                        <div class="form-group">
-
-                            <label>
-                                Currency
-                            </label>
-
-                            <select class="form-control" formControlName="currency">
-
-                                <option value="">
-                                    Select
-                                </option>
-
-                                <option value="INR">
-                                    INR
-                                </option>
-
-                                <option value="USD">
-                                    USD
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="row mt-3">
-
-                    <!-- Number of Vouchers -->
-                    <div class="col-md-7">
-
-                        <div class="form-group">
-
-                            <label>
-                                Number of Vouchers to be Created for Distribution
-                                in Market (Gift Packs /SP Vouchers)
-                            </label>
-
-                            <input type="number" class="form-control" formControlName="numberOfVouchers">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Voucher Stacking -->
-                    <div class="col-md-2">
-
-                        <div class="form-group">
-
-                            <label>
-                                Voucher Stacking Allowed
-                            </label>
-
-                            <input type="checkbox" formControlName="stackingAllowed">
-
-                            <br>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Select Stacking Rule -->
-                    <div class="col-md-3">
-
-                        <div class="form-group">
-
-                            <label>
-                                Select Stacking Rule
-                            </label>
-
-                            <select class="form-control" formControlName="stackingRule">
-
-                                <option value="">
-                                    Select
-                                </option>
-
-                                <option value="rule1">
-                                    Rule 1
-                                </option>
-
-                                <option value="rule2">
-                                    Rule 2
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="row mt-2">
-
-                    <!-- Own Stores -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Voucher Redemption by Own Stores
-                            </label>
-
-                            <input type="checkbox" formControlName="redemptionByOwnStores">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Gift Pack Vouchers -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Gift Pack Vouchers
-                            </label>
-
-                            <input type="checkbox" formControlName="giftPackVouchers">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Channel Partners -->
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-
-                            <label>
-                                Voucher Redemption by Channel Partners
-                            </label>
-
-                            <input type="checkbox" formControlName="redemptionByChannelPartners">
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="row mt-3">
-
-                    <div class="col-md-12">
-
-                        <div class="card">
-
-                            <div class="card-header text-center">
-
-                                Attach Phygital Voucher
-
-                            </div>
-
-
-                            <div class="card-body">
-
-                                <!-- Added SKU -->
-                                <div class="row">
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-
-                                            <label>Product Line</label>
-
-                                            <select class="form-control" formControlName="productLine"
-                                                (change)="onProductLineChange($event)">
-
-                                                <option value="">Select</option>
-
-                                                <option *ngFor="let productLine of productLineList"
-                                                    [value]="productLine.ProductId">
-
-                                                    {{ productLine.Name }}
-
-                                                </option>
-
-                                            </select>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Category Line -->
-                                    <div class="col-md-4">
-
-                                        <div class="form-group">
-
-                                            <label>
-                                                Category Line
-                                            </label>
-
-                                            <select class="form-control" formControlName="categoryLine"
-                                                (change)="changeCategoryLine($event)">
-
-                                                <option value="">
-                                                    Select
-                                                </option>
-
-                                                <option *ngFor="let category of categoryLineList"
-                                                    [value]="category.CATEGORY_LINE_ID">
-
-                                                    {{ category.CATEGORY_LINE_NM }}
-
-                                                </option>
-
-                                            </select>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- Added SKU -->
-                                    <div class="col-md-4">
-
-                                        <div class="form-group">
-
-                                            <label>
-                                                Added :
-                                            </label>
-
-                                            <span class="ml-2">
-                                                {{ addedSkuId || '-' }}
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- Display Phygital Voucher -->
-                                <div class="row mt-2">
-
-                                    <div class="col-md-12 text-center">
-
-                                        <button type="button" class="btn btn-secondary"
-                                            (click)="displayPhygitalVouchers()">
-
-                                            Display Phygital Voucher
-
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- Phygital Voucher Table -->
-                                <div *ngIf="showPhygitalVoucherFlg" class="card mt-3">
-
-                                    <div class="card-body pa-0">
-
-                                        <div class="table-responsive">
-
-                                            <table class="table campaign-table">
-
-                                                <thead>
-
-                                                    <tr>
-
-                                                        <th>
-                                                            Serial#
-                                                        </th>
-
-                                                        <th>
-                                                            Phygital id
-                                                        </th>
-
-                                                        <th>
-                                                            Main Image
-                                                        </th>
-
-                                                        <th>
-                                                            Supporting Image
-                                                        </th>
-
-                                                        <th>
-                                                            Detail
-                                                        </th>
-
-                                                        <th>
-                                                            Action
-                                                        </th>
-
-                                                    </tr>
-
-                                                </thead>
-
-
-                                                <tbody>
-
-                                                    <tr *ngFor="
-                                                        let voucher of phygitalVoucherList;
-                                                        let i = index
-                                                    ">
-
-                                                        <!-- Serial -->
-                                                        <td>
-                                                            {{ i + 1 | number:'2.0-0' }}
-                                                        </td>
-
-
-                                                        <!-- Phygital ID -->
-                                                        <td>
-                                                            {{ voucher.PHYGITAL_ID }}
-                                                        </td>
-
-
-                                                        <!-- Main Image -->
-                                                        <td>
-
-                                                            <img [src]="voucher.MAIN_IMAGE" alt="Main Image" width="120"
-                                                                height="80">
-
-                                                        </td>
-
-
-                                                        <!-- Supporting Image -->
-                                                        <td>
-
-                                                            <button type="button" class="btn btn-secondary btn-sm"
-                                                                (click)="viewSupportingImage(voucher)">
-
-                                                                View
-
-                                                            </button>
-
-                                                        </td>
-
-
-                                                        <!-- Detail -->
-                                                        <td>
-
-                                                            <button type="button" class="btn btn-dark btn-sm"
-                                                                (click)="viewPhygitalDetail(voucher)">
-
-                                                                Detail
-
-                                                            </button>
-
-                                                        </td>
-
-
-                                                        <!-- Action -->
-                                                        <td>
-
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                (click)="addPhygitalVoucher(voucher)">
-
-                                                                Add
-
-                                                            </button>
-
-
-                                                            <button type="button" class="btn btn-danger btn-sm ml-2"
-                                                                (click)="disablePhygitalVoucher(voucher)">
-
-                                                                Disable
-
-                                                            </button>
-
-                                                        </td>
-
-                                                    </tr>
-
-
-                                                    <!-- No Records -->
-                                                    <tr *ngIf="
-                                                        phygitalVoucherList?.length === 0
-                                                    ">
-
-                                                        <td colspan="6" class="text-center">
-
-                                                            No Phygital Vouchers Found
-
-                                                        </td>
-
-                                                    </tr>
-
-                                                </tbody>
-
-                                            </table>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="row mt-3">
-
-                    <div class="col-md-12 text-center">
-
-                        <button type="submit" class="btn btn-warning">
-
-                            Create Voucher
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </form>
-
-    </ng-template>
-
     <ng-template #addVoucherModal>
 
         <form [formGroup]="addVoucherForm" (ngSubmit)="createVoucher()">
@@ -3569,6 +3057,93 @@
 
                             <div class="card-body">
 
+                                <!-- Select voucher E-commerse store -->
+                                <div class="row mt-3">
+
+                                    <label>
+                                        Associated E-Commerse webstore
+                                    </label>
+
+                                    <div class="col-12" *ngIf="AssociatedEcomStore; else noAssociatedEcomStore">
+
+                                        <div class="table-responsive w-100">
+
+                                            <table class="table campaign-table w-100 mb-0">
+
+                                                <thead>
+
+                                                    <tr>
+
+                                                        <th>
+                                                            DomainId
+                                                        </th>
+
+                                                        <th>
+                                                            AccId
+                                                        </th>
+
+                                                        <th>
+                                                            SubaccId
+                                                        </th>
+
+                                                        <th>
+                                                            StoreId
+                                                        </th>
+
+                                                        <th>
+                                                            Store name
+                                                        </th>
+
+                                                    </tr>
+
+                                                </thead>
+
+
+                                                <tbody>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            {{ AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_DOMNID }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_ACCTID }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_SUBACCTID }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ AssociatedEcomStore.AD_VEND_ASSOCTD_ECOMM_STOREID }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ AssociatedEcomStore.AD_VEND_ASSOCIATED_ECOMM_ORGNAME }}
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+
+                                    <ng-template #noAssociatedEcomStore>
+                                        <div class="col-12">
+                                            <div class="text-center py-3">
+                                                No Associated E-Commerce Store
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                </div>
+
                                 <!-- Product Line / Category Line / Added -->
                                 <div class="row">
 
@@ -3611,8 +3186,8 @@
                                                 Category Line
                                             </label>
 
-                                            <select class="form-control" formControlName="categoryLine"
-                                                (change)="changeCategoryLine($event)">
+                                            <select (change)="onCategoryLineChange($event)" class="form-control"
+                                                formControlName="categoryLine">
 
                                                 <option value="">
                                                     Select
@@ -3795,6 +3370,251 @@
                             Create Voucher
 
                         </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </ng-template>
+
+    <ng-template #addCouponModal>
+
+        <form [formGroup]="addcouponForm" (ngSubmit)="addCouponRule()">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+
+                <h4 class="modal-title">
+                    Add Coupon
+                </h4>
+
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+
+                </button>
+
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body campaign-modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+
+                            <label>
+                                Coupon Name
+                            </label>
+
+                            <select class="form-control" formControlName="couponname"
+                                (change)="onCouponNameChange($event)">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="rule">
+                                    Coupon rule structure body
+                                </option>
+
+                                <option value="value">
+                                    Coupon value
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Coupon Rule Structure Body -->
+                    <div *ngIf="selectedCouponType == 'rule'" class="col-md-12">
+
+                        <div class="coupon-rule-card">
+
+                            <!-- Bulk Sale -->
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+
+                                        <label class="coupon-section-label">
+                                            Bulk sale
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Individual User / Corporate User -->
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div class="form-group">
+
+                                        <div class="coupon-user-options">
+
+                                            <label class="coupon-radio-label ms-2">
+                                                Individual User
+
+                                                <input type="radio" formControlName="userType" value="individual">
+
+                                                <span class="coupon-radio"></span>
+                                            </label>
+
+                                            <span class="coupon-or-label ms-2">
+                                                OR
+                                            </span>
+
+                                            <label class="coupon-radio-label ms-2">
+                                                Corporate User
+
+                                                <input type="radio" formControlName="userType" value="corporate">
+
+                                                <span class="coupon-radio"></span>
+                                            </label>
+
+                                        </div>
+
+                                        <small class="coupon-hint">
+                                            As Registration in D2C System
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Minimum Number in Single Cart -->
+                            <div class="row mt-3">
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group coupon-min-cart-row">
+
+                                        <label>
+                                            Min. Number in Single cart
+                                        </label>
+
+                                        <input type="number" class="form-control coupon-min-cart-input"
+                                            formControlName="minCart" min="1">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Coupon Value -->
+                    <div *ngIf="selectedCouponType == 'value'" class="col-md-12">
+
+                        <div class="coupon-value-card">
+
+                            <div class="row align-items-center">
+
+                                <!-- Amount Based / Percentage Based -->
+                                <div class="col-md-6">
+
+                                    <div class="form-group coupon-value-options">
+
+                                        <label class="coupon-radio-label ms-2">
+                                            Amount Based
+
+                                            <input type="radio" formControlName="valueType" value="amount">
+
+                                            <span class="coupon-radio"></span>
+                                        </label>
+
+                                        <label class="coupon-radio-label ms-2">
+                                            Percentage Based
+
+                                            <input type="radio" formControlName="valueType" value="percentage">
+
+                                            <span class="coupon-radio"></span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Amount Based Fields -->
+                                <div class="col-md-4" *ngIf="couponRuleForm.get('valueType')?.value === 'amount'">
+
+                                    <div class="coupon-value-fields">
+
+                                        <div class="form-group">
+
+                                            <input type="number" class="form-control coupon-amount-input"
+                                                formControlName="amount" placeholder="150.00" min="0" step="0.01">
+
+                                            <label>
+                                                Amount
+                                            </label>
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <select class="form-control coupon-currency-select"
+                                                formControlName="currency">
+
+                                                <option value="INR">₹</option>
+                                                <option value="USD">$</option>
+
+                                            </select>
+
+                                            <label>
+                                                Currency
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Percentage Based Field -->
+                                <div class="col-md-4" *ngIf="couponRuleForm.get('valueType')?.value === 'percentage'">
+
+                                    <div class="coupon-value-fields">
+
+                                        <div class="form-group">
+
+                                            <input type="number" class="form-control coupon-amount-input"
+                                                formControlName="percentage" placeholder="Enter Percentage" min="0"
+                                                max="100" step="0.01">
+
+                                            <label>
+                                                Percentage (%)
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     </div>
 

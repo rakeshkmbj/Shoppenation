@@ -63,6 +63,12 @@
             <div class="row">
                 <div class="col-md-12 text-right mb-3">
 
+                    <button type="button" class="btn mr-2 custom-btn"
+                        (click)="openAccBasedMISAndSummary(accountBasedMisAndSummary)"
+                        [disabled]="!displayCardHolders.get('accId')?.value">
+                        Account Based MIS & Summary
+                    </button>
+
                     <button type="button" class="btn mr-2 custom-btn" (click)="DisplayCardHolders()"
                         [disabled]="!displayCardHolders.get('classId')?.value">
                         Display Acc. Card User
@@ -1258,5 +1264,828 @@
         </tab>
 
     </tabset>
+
+</ng-template>
+
+
+<ng-template #accountBasedMisAndSummary>
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+
+        <h4 class="modal-title pull-left">
+            Account Bsed MIS & Summary
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+
+            <span aria-hidden="true">&times;</span>
+
+        </button>
+
+    </div>
+
+    <tabset #accbasedmisandsummary class="p-3">
+
+        <tab heading="Card creation MIS" id="tab1">
+
+            <!-- Date Selection -->
+            <div class="row pt-3 pb-3">
+
+                <div class="col-md-3 form-group mb-0">
+
+                    <label for="dateFrom">
+                        Date From
+                    </label>
+
+                    <input type="date" id="dateFrom" class="form-control" [(ngModel)]="dateFrom">
+
+                </div>
+
+                <div class="col-md-9 form-group mb-0 float-right">
+                    <button type="button" class="btn custom-btn mr-2 mt-4" (click)="showMIS('tab1')"
+                        [disabled]="!dateFrom">
+                        Display
+                    </button>
+
+                    <button type="button" class="btn custom-btn mt-4" (click)="downloadPDF('tab1')"
+                        [disabled]="!dateFrom">
+                        Download PDF
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="card mt-3">
+
+                <div class="card-header">
+                    <span>Card creation MIS</span>
+                </div>
+
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Serial#</th>
+                                <th>DateTime</th>
+                                <th>Card used UID</th>
+                                <th>Section/Dept</th>
+                                <th>Name</th>
+                                <th>Mob. No.</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr
+                                *ngFor="let item of cardCreationMisArr | paginate: { id: 'cardCreationMis', itemsPerPage: cardCreationMisPageSize, currentPage: cardCreationMisPage }; let i = index">
+
+                                <td>{{ (cardCreationMisPage - 1) * cardCreationMisPageSize + i + 1 | number:'2.0-0' }}
+                                </td>
+
+                                <td>
+                                    {{ item.ADC_VEND_CARDHOLDR_REGISTRD_DATETIME | date:'dd/MM/yyyy h:mm a' }}
+                                </td>
+
+                                <td>
+                                    {{ item.ADC_VEND_MANUFACTR_CARDID }}
+                                </td>
+
+                                <td>
+                                    {{ item.ADC_VEND_CLAS_DEPT_NAME }}
+                                </td>
+
+                                <td>
+                                    {{ item.ADC_VEND_CARDHOLDR_FIRST_NAME }}
+                                    {{ item.ADC_VEND_CARDHOLDR_LAST_NAME }}
+                                </td>
+
+                                <td>
+                                    {{ item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR }}
+                                </td>
+
+                            </tr>
+
+                            <tr *ngIf="!cardCreationMisArr || cardCreationMisArr.length === 0">
+                                <td colspan="6" class="text-center">
+                                    No transactions found
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3"
+                    *ngIf="cardCreationMisArr && cardCreationMisArr.length > cardCreationMisPageSize">
+                    <pagination-controls id="cardCreationMis"
+                        (pageChange)="cardCreationMisPage = $event"></pagination-controls>
+                </div>
+
+            </div>
+
+        </tab>
+
+        <tab heading="Int.Cards transaction" id="tab2">
+
+            <tabset #transaction class="p-3">
+
+                <tab heading="Card Re-fill" id="tab21">
+
+                    <!-- Date Selection -->
+                    <div class="row pt-3 pb-3">
+
+                        <div class="col-md-3 form-group mb-0">
+
+                            <label for="dateFrom">
+                                Date From
+                            </label>
+
+                            <input type="date" id="dateFrom" class="form-control" [(ngModel)]="dateFrom">
+
+                        </div>
+
+                        <div class="col-md-3 form-group mb-0 float-right">
+                            <button type="button" class="btn custom-btn mr-2 mt-4" (click)="showMIS('tab21')"
+                                [disabled]="!dateFrom">
+                                Display
+                            </button>
+
+                            <button type="button" class="btn custom-btn mt-4" (click)="downloadPDF('tab21')"
+                                [disabled]="!dateFrom">
+                                Download PDF
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="card mt-3">
+
+                        <div class="card-header">
+                            <span>Card Re-fill</span>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                            <table class="table mb-0">
+
+                                <thead>
+                                    <tr>
+                                        <th>Serial#</th>
+                                        <th>DateTime</th>
+                                        <th>Card used UID</th>
+                                        <th>Section/Dept</th>
+                                        <th>Name</th>
+                                        <th>Mob. No.</th>
+                                        <th class="text-center">online</th>
+                                        <th class="text-center">Cash</th>
+                                        <th>Amount (INR)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr
+                                        *ngFor="let item of cardTnxRefillArr | paginate: { itemsPerPage: cardTnxRefillPageSize, currentPage: cardTnxRefillPage }; let i = index">
+
+                                        <td>
+                                            {{ (cardTnxRefillPage - 1) * cardTnxRefillPageSize + i + 1 | number:'2.0-0'
+                                            }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.ADC_MEMBER_CREDIT_TRANS_DATETIME | date:'dd/MM/yyyy h:mm a' }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.ADC_VEND_MANUFACTR_CARDID }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.ADC_VEND_CLAS_DEPT_NAME }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.ADC_VEND_CARDHOLDR_FIRST_NAME }}
+                                            {{ item.ADC_VEND_CARDHOLDR_LAST_NAME }}
+                                        </td>
+
+                                        <td>
+                                            {{ item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR ||
+                                            item.ADC_VEND_CARDHOLDR_ALTRNT_MOB_NUMBR || '-' }}
+                                        </td>
+
+
+                                        <!-- Online Payment -->
+                                        <td class="text-center">
+                                            <span class="payment-icon" [ngClass]="item.ADC_MEMBER_CREDIT_AMT === 476.19
+                                            ? 'danger' : 'success'">
+                                                {{ item.ADC_MEMBER_CREDIT_AMT === 476.19 ? '&#10005;' : '&#10003;' }}
+                                            </span>
+                                        </td>
+
+                                        <!-- Cash Payment -->
+                                        <td class="text-center">
+                                            <span class="payment-icon" [ngClass]="item.ADC_MEMBER_CREDIT_AMT === 476.19
+                                            ? 'success' : 'danger'">
+                                                {{ item.ADC_MEMBER_CREDIT_AMT === 476.19 ? '&#10003;' : '&#10005;' }}
+                                            </span>
+                                        </td>
+
+
+                                        <td>
+                                            {{ item.ADC_MEMBER_CREDIT_AMT | number:'1.2-2' }}
+                                        </td>
+
+                                    </tr>
+
+                                    <tr *ngIf="!cardTnxRefillArr || cardTnxRefillArr.length === 0">
+                                        <td colspan="9" class="text-center">
+                                            No transactions found
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-3"
+                            *ngIf="cardTnxRefillArr && cardTnxRefillArr.length > cardTnxRefillPageSize">
+                            <pagination-controls (pageChange)="cardTnxRefillPage = $event"></pagination-controls>
+                        </div>
+
+                    </div>
+
+                </tab>
+
+                <tab heading="Spend on Vends" id="tab22">
+
+                    <!-- Date Selection -->
+                    <div class="row pt-3 pb-3">
+
+                        <div class="col-md-3 form-group mb-0">
+
+                            <label for="dateFrom">
+                                Date From
+                            </label>
+
+                            <input type="date" id="dateFrom" class="form-control" [(ngModel)]="dateFrom">
+
+                        </div>
+
+                        <div class="col-md-3 form-group mb-0 float-right">
+                            <button type="button" class="btn custom-btn mr-2 mt-4" (click)="showMIS('tab22')"
+                                [disabled]="!dateFrom">
+                                Display
+                            </button>
+
+                            <button type="button" class="btn custom-btn mt-4" (click)="downloadPDF('tab22')"
+                                [disabled]="!dateFrom">
+                                Download PDF
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="card mt-3">
+
+                        <div class="card-header">
+                            <span>Spend on Vends</span>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                            <table class="table mb-0">
+
+                                <thead>
+                                    <tr>
+                                        <th>Serial#</th>
+                                        <th>DateTime</th>
+                                        <th>Card used UID</th>
+                                        <th>Section/Dept</th>
+                                        <th>Name</th>
+                                        <th>Mob. No.</th>
+                                        <th>Vend ID</th>
+                                        <th>Product</th>
+                                        <th>Amount (INR)</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngIf="cardTnxSpendArr?.length; else noSpend">
+                                    <tr
+                                        *ngFor="let item of cardTnxSpendArr | paginate: { itemsPerPage: cardTnxSpendPageSize, currentPage: cardTnxSpendPage }; let i = index">
+                                        <td>{{ (cardTnxSpendPage - 1) * cardTnxSpendPageSize + i + 1 | number:'2.0-0' }}
+                                        </td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_TRANS_DATETIME | date:'dd/MM/yyyy h:mm a' }}</td>
+                                        <td>{{ item.ADC_VEND_MANUFACTR_CARDID || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_CLAS_DEPT_NAME || '-' }}</td>
+                                        <td>
+                                            {{ item.ADC_VEND_CARDHOLDR_FIRST_NAME || '-' }}
+                                            {{ item.ADC_VEND_CARDHOLDR_LAST_NAME }}
+                                        </td>
+                                        <td>{{ item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR ||
+                                            item.ADC_VEND_CARDHOLDR_ALTRNT_MOB_NUMBR || '-' }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_TRANS_VENDID || '-' }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_PRODCT_ID || '-' }}</td>
+                                        <td>{{ item.ADC_MEMBER_DEBIT_COST_AMT | number:'1.2-2' }}</td>
+                                    </tr>
+                                </tbody>
+
+                                <ng-template #noSpend>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="9" class="text-center">
+                                                No transactions found
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </ng-template>
+
+                            </table>
+
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-3"
+                            *ngIf="cardTnxSpendArr && cardTnxSpendArr.length > cardTnxSpendPageSize">
+                            <pagination-controls (pageChange)="cardTnxSpendPage = $event">
+                            </pagination-controls>
+                        </div>
+
+                    </div>
+
+                </tab>
+
+            </tabset>
+
+        </tab>
+
+        <tab heading="Settlement Summary" id="tab3">
+
+            <tabset #settlementsummary class="p-3">
+
+                <tab heading="Online txns" id="tab31">
+
+                    <!-- Date Selection -->
+                    <div class="row pt-3 pb-3">
+
+                        <div class="col-md-3 form-group mb-0">
+
+                            <label for="dateFrom">
+                                Date From
+                            </label>
+
+                            <input type="date" id="dateFrom" class="form-control" [(ngModel)]="dateFrom">
+
+                        </div>
+
+                        <div class="col-md-3 form-group mb-0 float-right">
+                            <button type="button" class="btn custom-btn mr-2 mt-4" (click)="showMIS('tab31')"
+                                [disabled]="!dateFrom">
+                                Display
+                            </button>
+
+                            <button type="button" class="btn custom-btn mt-4" (click)="downloadPDF('tab31')"
+                                [disabled]="!dateFrom">
+                                Download PDF
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="card mt-3">
+
+                        <div class="card-header">
+                            <span>Online txns</span>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                            <table class="table mb-0">
+
+                                <thead>
+                                    <tr>
+                                        <th>Serial#</th>
+                                        <th>DateTime</th>
+                                        <th>Card used UID</th>
+                                        <th>Section/Dept</th>
+                                        <th>Name</th>
+                                        <th>Mob. No.</th>
+                                        <th>Credit Amt</th>
+                                        <th>Receivable Amt</th>
+                                        <th>Txn Detail</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngIf="settlementTnxCashArr?.length; else noSettlementCash">
+                                    <tr
+                                        *ngFor="let item of settlementTnxCashArr | paginate: { id: 'settlementCash', itemsPerPage: settlementTnxCashPageSize, currentPage: settlementTnxCashPage }; let i = index">
+                                        <td>{{ (settlementTnxCashPage - 1) * settlementTnxCashPageSize + i + 1 |
+                                            number:'2.0-0' }}</td>
+                                        <td>{{ item.ADC_VEND_TRANS_DATETIME | date:'dd/MM/yyyy h:mm a' }}</td>
+                                        <td>{{item.ADC_VEND_CARTID || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_CLAS_DEPT_NAME || '-' }}</td>
+                                        <td>
+                                            {{ item.ADC_VEND_CARDHOLDR_FIRST_NAME || '-' }}
+                                            {{ item.ADC_VEND_CARDHOLDR_LAST_NAME }}
+                                        </td>
+                                        <td>{{ item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_TRANS_CREDIT_AMT || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_TRANS_SECND_NODE_RECVBL_AMT || '-' }}</td>
+                                        <td>
+                                            <button
+                                                (click)="displayVendTransactionDetailModal(displayVendTransactionDetail, item)"
+                                                type="button" class="btn btn-dark">
+                                                View Detail
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <ng-template #noSettlementCash>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7" class="text-center">
+                                                No transactions found
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </ng-template>
+
+                            </table>
+
+                            <div class="d-flex justify-content-end mt-3"
+                                *ngIf="settlementTnxCashArr && settlementTnxCashArr.length > settlementTnxCashPageSize">
+                                <pagination-controls id="settlementCash" (pageChange)="settlementTnxCashPage = $event">
+                                </pagination-controls>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </tab>
+
+                <tab heading="Cash txns" id="tab32">
+
+                    <!-- Date Selection -->
+                    <div class="row pt-3 pb-3">
+
+                        <div class="col-md-3 form-group mb-0">
+
+                            <label for="dateFrom">
+                                Date From
+                            </label>
+
+                            <input type="date" id="dateFrom" class="form-control" [(ngModel)]="dateFrom">
+
+                        </div>
+
+                        <div class="col-md-3 form-group mb-0 float-right">
+                            <button type="button" class="btn custom-btn mr-2 mt-4" (click)="showMIS('tab32')"
+                                [disabled]="!dateFrom">
+                                Display
+                            </button>
+
+                            <button type="button" class="btn custom-btn mt-4" (click)="downloadPDF('tab32')"
+                                [disabled]="!dateFrom">
+                                Download PDF
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="card mt-3">
+
+                        <div class="card-header">
+                            <span>Offline txns</span>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                            <table class="table mb-0">
+
+                                <thead>
+                                    <tr>
+                                        <th>Serial#</th>
+                                        <th>DateTime</th>
+                                        <th>Card used UID</th>
+                                        <th>Section/Dept</th>
+                                        <th>Name</th>
+                                        <th>Mob. No.</th>
+                                        <th>Credit Amt</th>
+                                        <th>Receivable Amt</th>
+                                        <th>Txn Detail</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngIf="settlementTnxOnlineArr?.length; else noSettlementOnline">
+                                    <tr
+                                        *ngFor="let item of settlementTnxOnlineArr | paginate: { id: 'settlementOnline', itemsPerPage: settlementTnxOnlinePageSize, currentPage: settlementTnxOnlinePage }; let i = index">
+                                        <td>{{ (settlementTnxOnlinePage - 1) * settlementTnxOnlinePageSize + i + 1 |
+                                            number:'2.0-0' }}</td>
+                                        <td>{{ item.ADC_VEND_TRANS_DATETIME | date:'dd/MM/yyyy h:mm a' }}</td>
+                                        <td>{{item.ADC_VEND_CARTID || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_CLAS_DEPT_NAME || '-' }}</td>
+                                        <td>
+                                            {{ item.ADC_VEND_CARDHOLDR_FIRST_NAME || '-' }}
+                                            {{ item.ADC_VEND_CARDHOLDR_LAST_NAME }}
+                                        </td>
+                                        <td>{{ item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_TRANS_CREDIT_AMT || '-' }}</td>
+                                        <td>{{ item.ADC_VEND_TRANS_SECND_NODE_RECVBL_AMT || '-' }}</td>
+                                        <td>
+                                            <button
+                                                (click)="displayVendTransactionDetailModal(displayVendTransactionDetail, item)"
+                                                type="button" class="btn btn-dark">
+                                                View Detail
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <ng-template #noSettlementOnline>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7" class="text-center">
+                                                No transactions found
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </ng-template>
+
+                            </table>
+
+                            <div class="d-flex justify-content-end mt-3"
+                                *ngIf="settlementTnxOnlineArr && settlementTnxOnlineArr.length > settlementTnxOnlinePageSize">
+                                <pagination-controls id="settlementOnline"
+                                    (pageChange)="settlementTnxOnlinePage = $event">
+                                </pagination-controls>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </tab>
+
+            </tabset>
+
+        </tab>
+
+    </tabset>
+
+</ng-template>
+
+
+<ng-template #displayVendTransactionDetail>
+
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Transaction Detail
+        </h4>
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body transaction-body">
+
+        <!-- Cardholder Information -->
+        <div class="section-heading">
+            <span>Cardholder Information</span>
+        </div>
+
+        <div class="info-card">
+            <div class="row">
+                <div class="col-md-6 detail-item">
+                    <label>Cardholder Reg. ID</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_CARD_HOLDR_REGID || 'N/A' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Internal ID</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_ACCOUNT_INTERNL_UID || 'N/A' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Gender</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_CARDHOLDR_MALE_FLG
+                        ? 'Male'
+                        : (vendTransaction.ADC_VEND_CARDHOLDR_FEMALE_FLG
+                        ? 'Female' : 'N/A') }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Class / Department</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_CLAS_DEPT_NAME || 'N/A' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Cardholder Name</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_CARDHOLDR_FIRST_NAME || '' }}
+                        {{ vendTransaction.ADC_VEND_CARDHOLDR_LAST_NAME || '' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Transaction Date</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_TRANS_DATETIME
+                        ? (vendTransaction.ADC_VEND_TRANS_DATETIME
+                        | date:'dd MMM yyyy, hh:mm a')
+                        : 'N/A' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Details -->
+        <div class="section-heading mt-4">
+            <span>Transaction Details</span>
+        </div>
+
+        <div class="info-card">
+            <div class="row">
+                <div class="col-md-6 detail-item">
+                    <label>Transaction Type</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_TRANS_TYPE || 'N/A' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Transaction ID</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_TRANSID || 'N/A' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Cart ID</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.ADC_VEND_CARTID || 'N/A' }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label>Cash Collection at 3rd Node</label>
+                    <div class="detail-value">
+                        {{ vendTransaction.CASH_COLLECTN_AT_THRID_NODE_FLG === null
+                        ? 'N/A'
+                        : (vendTransaction.CASH_COLLECTN_AT_THRID_NODE_FLG
+                        ? 'Yes' : 'No') }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="amount-row">
+                <span>Amount Credited to Cardholder</span>
+                <span>
+                    {{ vendTransaction.ADC_VEND_TRANS_CREDIT_AMT
+                    | number:'1.2-2' }} INR
+                </span>
+            </div>
+
+            <div class="amount-row">
+                <span>Transaction GST Amount</span>
+                <span>
+                    {{ vendTransaction.ADCV_VEND_TRANS_GST_AMT
+                    | number:'1.2-2' }} INR
+                </span>
+            </div>
+
+            <div class="invoice-total">
+                <span>Total Amount Collected</span>
+                <strong>
+                    {{ (+vendTransaction.ADC_VEND_TRANS_CREDIT_AMT
+                    + +vendTransaction.ADCV_VEND_TRANS_GST_AMT)
+                    | number:'1.2-2' }} INR
+                </strong>
+            </div>
+        </div>
+
+        <!-- Settlement Fee -->
+        <div class="section-heading mt-4">
+            <span>AD-Vending Settlement Fee</span>
+        </div>
+
+        <div class="info-card">
+            <div class="amount-row">
+                <span>System Fee Amount</span>
+                <span>
+                    {{ vendTransaction.ADC_VEND_TRANS_SYSFEE_AMT
+                    | number:'1.2-2' }} INR
+                </span>
+            </div>
+
+            <div class="amount-row">
+                <span>System Fee GST</span>
+                <span>
+                    {{ vendTransaction.ADC_VEND_TRANS_SYSFEE_GST_AMT
+                    | number:'1.2-2' }} INR
+                </span>
+            </div>
+
+            <div class="amount-row total-row">
+                <span>Total System Fee (Including GST)</span>
+                <strong>
+                    {{ vendTransaction.ADC_VEND_TRANS_SYSFEE_WID_GST
+                    | number:'1.2-2' }} INR
+                </strong>
+            </div>
+
+            <div class="amount-row">
+                <span>Bank Amount (Including GST)</span>
+                <span>
+                    {{ vendTransaction.ADC_VEND_TRANS_BANK_AMT_WID_GST
+                    | number:'1.2-2' }} INR
+                </span>
+            </div>
+        </div>
+
+        <!-- Invoiced Amount -->
+        <div class="invoice-card mt-4">
+            <div class="invoice-title">
+                Transaction System Invoiced Amount
+            </div>
+
+            <div class="invoice-calculation">
+                <span>System Fee</span>
+                <strong>
+                    {{ vendTransaction.ADC_VEND_TRANS_SYSFEE_WID_GST
+                    | number:'1.2-2' }}
+                </strong>
+
+                <span class="operator">+</span>
+
+                <span>Bank Fee</span>
+                <strong>
+                    {{ vendTransaction.ADC_VEND_TRANS_BANK_AMT_WID_GST
+                    | number:'1.2-2' }}
+                </strong>
+            </div>
+
+            <div class="amount-row total-row">
+                <span>Total Invoiced Amount</span>
+                <strong>
+                    {{ (+vendTransaction.ADC_VEND_TRANS_SYSFEE_WID_GST
+                    + +vendTransaction.ADC_VEND_TRANS_BANK_AMT_WID_GST)
+                    | number:'1.2-2' }} INR
+                </strong>
+            </div>
+        </div>
+
+        <!-- Settlement Status -->
+        <div class="section-heading mt-4">
+            <span>Settlement Status</span>
+        </div>
+
+        <div class="info-card">
+            <div class="amount-row">
+                <span>Receivable Settled</span>
+                <span class="status-badge" [ngClass]="vendTransaction.ADC_VEND_TRANS_SEC_NODE_RECVBL_SETLD_FLG
+                        ? 'status-success' : 'status-pending'">
+
+                    {{ vendTransaction.ADC_VEND_TRANS_SEC_NODE_RECVBL_SETLD_FLG
+                    ? 'Settled' : 'Pending' }}
+                </span>
+            </div>
+
+            <div class="amount-row">
+                <span>GST Settled</span>
+                <span class="status-badge" [ngClass]="vendTransaction.ADC_VEND_TRANS_GST_SETLD_FLG
+                        ? 'status-success' : 'status-pending'">
+
+                    {{ vendTransaction.ADC_VEND_TRANS_GST_SETLD_FLG
+                    ? 'Settled' : 'Pending' }}
+                </span>
+            </div>
+
+            <div class="amount-row">
+                <span>Settlement Date</span>
+                <span>
+                    {{ vendTransaction.ADC_VEND_TRANS_RECVBL_SETLD_DATE
+                    ? (vendTransaction.ADC_VEND_TRANS_RECVBL_SETLD_DATE
+                    | date:'dd MMM yyyy')
+                    : 'N/A' }}
+                </span>
+            </div>
+        </div>
+
+    </div>
 
 </ng-template>

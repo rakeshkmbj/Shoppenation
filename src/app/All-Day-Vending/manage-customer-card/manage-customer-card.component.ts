@@ -9,6 +9,8 @@ import { RazorpayService } from '../../razorpay.service';
 import { PaymentStatusService } from 'src/app/services/payment-status.service';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Subscription, Subject } from 'rxjs';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-manage-customer-card',
@@ -82,6 +84,26 @@ export class ManageCustomerCardComponent implements OnInit {
   showDetails: boolean = false;
   B2BLinkIdForD10: any;
   addBrandCommerceForm: FormGroup;
+  dateFrom: any;
+
+  cardCreationMisArr: any;
+  cardCreationMisPage = 1;
+  readonly cardCreationMisPageSize = 10;
+
+  cardTnxRefillArr: any;
+  cardTnxRefillPage = 1;
+  readonly cardTnxRefillPageSize = 10;
+
+  cardTnxSpendArr: any;
+  cardTnxSpendPage = 1;
+  readonly cardTnxSpendPageSize = 10;
+
+  settlementTnxCashArr: any;
+  settlementTnxCashPage = 1;
+  readonly settlementTnxCashPageSize = 10;
+  settlementTnxOnlineArr: any;
+  settlementTnxOnlinePage = 1;
+  readonly settlementTnxOnlinePageSize = 10;
 
   // Registration
   regId: any;
@@ -331,6 +353,351 @@ export class ManageCustomerCardComponent implements OnInit {
     }
   }
 
+  showMIS(selectedAccBasedMisTab: any) {
+
+    this.cardCreationMisArr = [];
+    this.cardTnxRefillArr = [];
+    this.cardTnxSpendArr = [];
+    this.settlementTnxCashArr = [];
+    this.settlementTnxOnlineArr = [];
+
+    if (selectedAccBasedMisTab === 'tab1') {
+      this.getCardCreationMis();
+    } else if (selectedAccBasedMisTab === 'tab21') {
+      this.getCardTnxMis('refill');
+    } else if (selectedAccBasedMisTab === 'tab22') {
+      this.getCardTnxMis('spend');
+    } else if (selectedAccBasedMisTab === 'tab31') {
+      this.getSettlementMis('cash');
+    } else if (selectedAccBasedMisTab === 'tab32') {
+      this.getSettlementMis('online');
+    }
+  }
+
+  downloadPDF(selectedAccBasedMisTab: any) {
+    let reportTitle: string;
+    let headers: string[];
+    let data: any[];
+    let rows: string[][];
+    let amountField: string | null = null;
+
+    switch (selectedAccBasedMisTab) {
+      case 'tab1':
+        reportTitle = 'Card Creation MIS';
+        headers = ['Serial#', 'DateTime', 'Card used UID', 'Section/Dept', 'Name', 'Mob. No.'];
+        data = this.cardCreationMisArr;
+        rows = (Array.isArray(data) ? data : []).map((item, index) => [
+          this.formatPdfValue(index + 1),
+          this.formatPdfDate(item.ADC_VEND_CARDHOLDR_REGISTRD_DATETIME),
+          this.formatPdfValue(item.ADC_VEND_MANUFACTR_CARDID),
+          this.formatPdfValue(item.ADC_VEND_CLAS_DEPT_NAME),
+          this.formatPdfName(item.ADC_VEND_CARDHOLDR_FIRST_NAME, item.ADC_VEND_CARDHOLDR_LAST_NAME),
+          this.formatPdfValue(item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR)
+        ]);
+        break;
+      case 'tab21':
+        reportTitle = 'Card Re-fill Transactions';
+        amountField = 'ADC_MEMBER_CREDIT_AMT';
+        headers = ['Serial#', 'DateTime', 'Card used UID', 'Section/Dept', 'Name', 'Mob. No.', 'Online', 'Cash', 'Amount (INR)'];
+        data = this.cardTnxRefillArr;
+        rows = (Array.isArray(data) ? data : []).map((item, index) => [
+          this.formatPdfValue(index + 1),
+          this.formatPdfDate(item.ADC_MEMBER_CREDIT_TRANS_DATETIME),
+          this.formatPdfValue(item.ADC_VEND_MANUFACTR_CARDID),
+          this.formatPdfValue(item.ADC_VEND_CLAS_DEPT_NAME),
+          this.formatPdfName(item.ADC_VEND_CARDHOLDR_FIRST_NAME, item.ADC_VEND_CARDHOLDR_LAST_NAME),
+          this.formatPdfValue(item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR || item.ADC_VEND_CARDHOLDR_ALTRNT_MOB_NUMBR),
+          item.ADC_MEMBER_CREDIT_PAYMENT_MODE === 'online' ? 'Yes' : 'No',
+          item.ADC_MEMBER_CREDIT_PAYMENT_MODE === 'cash' ? 'Yes' : 'No',
+          this.formatPdfValue(item.ADC_MEMBER_CREDIT_AMT)
+        ]);
+        break;
+      case 'tab22':
+        reportTitle = 'Spend On Vends Transactions';
+        amountField = 'ADC_MEMBER_DEBIT_COST_AMT';
+        headers = ['Serial#', 'DateTime', 'Card used UID', 'Section/Dept', 'Name', 'Mob. No.', 'Vend ID', 'Product ID', 'Amount (INR)'];
+        data = this.cardTnxSpendArr;
+        rows = (Array.isArray(data) ? data : []).map((item, index) => [
+          this.formatPdfValue(index + 1),
+          this.formatPdfDate(item.ADC_MEMBER_DEBIT_TRANS_DATETIME),
+          this.formatPdfValue(item.ADC_VEND_MANUFACTR_CARDID),
+          this.formatPdfValue(item.ADC_VEND_CLAS_DEPT_NAME),
+          this.formatPdfName(item.ADC_VEND_CARDHOLDR_FIRST_NAME, item.ADC_VEND_CARDHOLDR_LAST_NAME),
+          this.formatPdfValue(item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR || item.ADC_VEND_CARDHOLDR_ALTRNT_MOB_NUMBR),
+          this.formatPdfValue(item.ADC_MEMBER_DEBIT_TRANS_VENDID),
+          this.formatPdfValue(item.ADC_MEMBER_DEBIT_PRODCT_ID),
+          this.formatPdfValue(item.ADC_MEMBER_DEBIT_COST_AMT)
+        ]);
+        break;
+      case 'tab31':
+        reportTitle = 'Online Transactions Settlements';
+        amountField = 'ADC_VEND_TRANS_CREDIT_AMT';
+        headers = ['Serial#', 'DateTime', 'Card used UID', 'Section/Dept', 'Name', 'Mob. No.', 'Receivable Amt'];
+        data = this.settlementTnxCashArr;
+        rows = (Array.isArray(data) ? data : []).map((item, index) => [
+          this.formatPdfValue(index + 1),
+          this.formatPdfDate(item.ADC_VEND_TRANS_DATETIME),
+          '-',
+          this.formatPdfValue(item.ADC_VEND_CLAS_DEPT_NAME),
+          this.formatPdfName(item.ADC_VEND_CARDHOLDR_FIRST_NAME, item.ADC_VEND_CARDHOLDR_LAST_NAME),
+          this.formatPdfValue(item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR),
+          this.formatPdfValue(item.ADC_VEND_TRANS_SECND_NODE_RECVBL_AMT)
+        ]);
+        break;
+      case 'tab32':
+        reportTitle = 'Offline Transactions Settlements';
+        amountField = 'ADC_VEND_TRANS_CREDIT_AMT';
+        headers = ['Serial#', 'DateTime', 'Card used UID', 'Section/Dept', 'Name', 'Mob. No.', 'Receivable Amt'];
+        data = this.settlementTnxOnlineArr;
+        rows = (Array.isArray(data) ? data : []).map((item, index) => [
+          this.formatPdfValue(index + 1),
+          this.formatPdfDate(item.ADC_VEND_TRANS_DATETIME),
+          '-',
+          this.formatPdfValue(item.ADC_VEND_CLAS_DEPT_NAME),
+          this.formatPdfName(item.ADC_VEND_CARDHOLDR_FIRST_NAME, item.ADC_VEND_CARDHOLDR_LAST_NAME),
+          this.formatPdfValue(item.ADC_VEND_CARDHOLDR_PRIM_MOB_NUMBR),
+          this.formatPdfValue(item.ADC_VEND_TRANS_SECND_NODE_RECVBL_AMT)
+        ]);
+        break;
+      default:
+        this.toastr.error('Unable to determine which report to export.');
+        return;
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
+      this.toastr.warning('No report data is available. Display the report before downloading.');
+      return;
+    }
+
+    const account = this.selectedAccountObj || {};
+    const officeName = this.formatPdfValue(account.RETAIL_D2C_SUBACCT_OFFICE_NAME);
+    const orientation = headers.length > 7 ? 'landscape' : 'portrait';
+    const pdf = new jsPDF({ orientation });
+
+    const drawHeader = () => {
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(14);
+      pdf.text(reportTitle, 14, 16);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10);
+      pdf.text(`Office: ${officeName}`, 14, 23);
+      pdf.text(
+        `SubAccount ID: ${this.formatPdfValue(account.THIRD_NODE_ACCT_SUBACCT_ID)}  |  Store ID: ${this.formatPdfValue(account.THIRD_NODE_ACCT_STORE_ID)}  |  Category: ${this.formatPdfValue(account.CategoryName)}`,
+        14,
+        29
+      );
+      pdf.text(`Date From: ${this.formatPdfValue(this.dateFrom)}`, 14, 35);
+    };
+
+    drawHeader();
+    autoTable(pdf, {
+      head: [headers],
+      body: rows,
+      startY: 41,
+      theme: 'grid',
+      styles: { font: 'helvetica', fontSize: 8, cellPadding: 2, overflow: 'linebreak' },
+      headStyles: { fillColor: [107, 16, 20], textColor: 255, fontStyle: 'bold' },
+      margin: { top: 41, right: 14, bottom: 14, left: 14 },
+      didDrawPage: () => drawHeader()
+    });
+
+    if (amountField) {
+      const total = data.reduce((sum, item) => {
+        const amount = Number(item?.[amountField]);
+        return sum + (Number.isFinite(amount) ? amount : 0);
+      }, 0);
+      const finalY = (pdf as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? 41;
+      let totalY = finalY + 9;
+
+      if (totalY > pdf.internal.pageSize.getHeight() - 14) {
+        pdf.addPage();
+        drawHeader();
+        totalY = 43;
+      }
+
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(10);
+      pdf.text(`Total (INR): ${total.toFixed(2)}`, pdf.internal.pageSize.getWidth() - 14, totalY, { align: 'right' });
+    }
+
+    const safeOfficeName = String(account.RETAIL_D2C_SUBACCT_OFFICE_NAME || 'account')
+      .trim()
+      .replace(/[^a-z0-9]+/gi, '_')
+      .replace(/^_+|_+$/g, '');
+    const safeDate = String(this.dateFrom || new Date().toISOString().slice(0, 10)).replace(/[^0-9-]/g, '');
+    pdf.save(`${safeOfficeName}_${selectedAccBasedMisTab}_${safeDate}.pdf`);
+  }
+
+  private formatPdfValue(value: any): string {
+    return value === null || value === undefined || value === '' ? '-' : String(value);
+  }
+
+  private formatPdfDate(value: any): string {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime())
+      ? this.formatPdfValue(value)
+      : date.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+  }
+
+  private formatPdfName(firstName: any, lastName: any): string {
+    return [firstName, lastName].filter(value => value !== null && value !== undefined && value !== '').join(' ') || '-';
+  }
+
+  getCardCreationMis() {
+
+    this.cardCreationMisPage = 1;
+
+    const payload = {
+      "Third_Node_Subacctid": this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      "Third_Node_Storeid": this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
+      "Date_From": this.dateFrom
+    }
+
+    console.log("payload for card creation MIS: ", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/GetAcctCardsReport`, payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message) {
+          this.toastr.success(data.Message);
+        } else {
+          this.cardCreationMisArr = data;
+        }
+
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.Message, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+  }
+
+  getCardTnxMis(type: any) {
+
+    if (type === 'refill') {
+      this.cardTnxRefillPage = 1;
+    } else if (type === 'spend') {
+      this.cardTnxSpendPage = 1;
+    }
+
+    const payload = {
+      "Third_Node_Subacctid": this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      "Third_Node_Storeid": this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
+      "Date_From": this.dateFrom,
+      "Refill_TXN_Flg": type === 'refill' ? true : false,
+      "Spend_TXN_Flg": type === 'spend' ? true : false,
+    }
+
+    console.log("payload for card Trnx MIS: ", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/GetAcctTxnReport`, payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message) {
+          this.toastr.success(data.Message);
+        } else {
+          if (type === 'refill') {
+            this.cardTnxRefillArr = data;
+          } else {
+            this.cardTnxSpendArr = data;
+          }
+        }
+
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.Message, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+  }
+
+  getCardRefillTotal(): number {
+    if (!Array.isArray(this.cardTnxRefillArr)) {
+      return 0;
+    }
+
+    return this.cardTnxRefillArr.reduce((total, item) => {
+      const amount = Number(item?.ADC_MEMBER_CREDIT_AMT);
+      return total + (Number.isFinite(amount) ? amount : 0);
+    }, 0);
+  }
+
+  getSettlementMis(type: any) {
+
+    if (type === 'cash') {
+      this.settlementTnxCashPage = 1;
+    } else {
+      this.settlementTnxOnlinePage = 1;
+    }
+
+    const payload = {
+      "Third_Node_Subacctid": this.selectedAccountObj.THIRD_NODE_ACCT_SUBACCT_ID,
+      "Third_Node_Storeid": this.selectedAccountObj.THIRD_NODE_ACCT_STORE_ID,
+      "Date_From": this.dateFrom,
+      "Cash_Flg": type === 'online' ? true : false,
+      "Online_PB_Flg": type === 'cash' ? true : false,
+    }
+
+    console.log("payload for Settlement MIS: ", payload);
+
+    this.apiService.postCall(`${this.apiService.baseURL}/GetAcctSettlementReport`, payload)
+      .subscribe(data => {
+        console.log(data);
+
+        if (data.Message) {
+          this.toastr.success(data.Message);
+        } else {
+          if (type === 'cash') {
+            this.settlementTnxCashArr = data;
+          } else {
+            this.settlementTnxOnlineArr = data;
+          }
+        }
+
+      },
+        (error) => {
+          console.log(error);
+          this.toastr.error(error.Message, '', {
+            timeOut: 5000,
+          });
+        }
+      );
+
+  }
+
+  getSettlementCashTotal(): number {
+    if (!Array.isArray(this.settlementTnxCashArr)) {
+      return 0;
+    }
+
+    return this.settlementTnxCashArr.reduce((total, item) => {
+      const amount = Number(item?.ADC_VEND_TRANS_CREDIT_AMT);
+      return total + (Number.isFinite(amount) ? amount : 0);
+    }, 0);
+  }
+
+  openAccBasedMISAndSummary(template: any) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-xl' });
+  }
+
   deleteCard() {
 
     this.modalRef.hide();
@@ -502,7 +869,7 @@ export class ManageCustomerCardComponent implements OnInit {
         Pic: this.base64textString
       };
 
-      console.log("Payload for add card holder: ", payload);
+      console.log("Payload for edit card holder: ", payload);
 
       this.apiService.postCall(
         `${this.apiService.baseURL}/EditVend-CardHolder-Credentials`,
@@ -541,6 +908,10 @@ export class ManageCustomerCardComponent implements OnInit {
       this.apiService.postCall(`${this.apiService.baseURL}/ADD_New_CARDHOLDER`, payload)
         .subscribe(data => {
           console.log(data);
+
+          // if(data.Message === '')
+
+
           this.toastr.success(data.Message);
           this.DisplayCardHolders();
           this.modalRef.hide();
@@ -1198,7 +1569,7 @@ export class ManageCustomerCardComponent implements OnInit {
     this.addToCart(this.cartFormPreserve, checkoutModal);
   }
 
-  addBrandCommerceUser(){
+  addBrandCommerceUser() {
 
     const formValue = this.addBrandCommerceForm.getRawValue();
 
@@ -1212,22 +1583,36 @@ export class ManageCustomerCardComponent implements OnInit {
     console.log("Payload for add user: ", payload);
 
     this.apiService.postCall(this.apiService.baseURL + '/AddUserOnBrandCommerce', payload)
-        .subscribe(data => {
-          console.log(data);
+      .subscribe(data => {
+        console.log(data);
 
-          if(data.Message === 'User Type is Not Added to Brand Commerce'){
-            this.toastr.error(data.Message);
-          } else{
-            this.toastr.success(data.Message);
-          }
+        if (data.Message === 'User Type is Not Added to Brand Commerce') {
+          this.toastr.error(data.Message);
+        } else {
+          this.toastr.success(data.Message);
+        }
 
-        },
-          (error) => {
-            console.log('Error: ', error)
-            this.toastr.error(error.error?.Message || error, '', {
-              timeOut: 5000,
-            });
+      },
+        (error) => {
+          console.log('Error: ', error)
+          this.toastr.error(error.error?.Message || error, '', {
+            timeOut: 5000,
           });
+        });
   }
+
+
+  vendTransaction: any = {};
+
+  displayVendTransactionDetailModal(template: any, transaction: any): void {
+    this.vendTransaction = transaction;
+
+    this.modalRef.hide();
+
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-lg'
+    });
+  }
+
 
 }
