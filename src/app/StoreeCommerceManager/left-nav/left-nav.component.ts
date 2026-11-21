@@ -67,6 +67,7 @@ export class LeftNavComponent implements OnInit {
   status16: boolean = false;
   status17: boolean = false;
   status18: boolean = false;
+  status19: boolean = false;
 
   clickEvent1() {
     this.status1 = !this.status1;
@@ -138,6 +139,10 @@ export class LeftNavComponent implements OnInit {
 
   clickEvent18() {
     this.status18 = !this.status18;
+  }
+
+  clickEvent19() {
+    this.status19 = !this.status19;
   }
 
   handleItemSubitemDiscountClick(event: Event) {

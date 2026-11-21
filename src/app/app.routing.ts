@@ -65,6 +65,9 @@ import { DrugManagementComponent } from './DrugMlrManagement/drug-management/dru
 import { DeviceManagementComponent } from './DrugMlrManagement/device-management/device-management.component';
 import { CardAccessAndPosManagementComponent } from './All-Day-Vending/card-access-and-pos-management/card-access-and-pos-management.component';
 import { PosMainComponent } from './pos-system/components/pos-main/pos-main.component';
+import { ManageCampaignsVouchersComponent } from './Voucher-Commerce/manage-campaigns-vouchers/manage-campaigns-vouchers.component';
+import { ManageMarketSkuComponent } from './Voucher-Commerce/manage-market-sku/manage-market-sku.component';
+import { PerformanceManagementComponent } from './Voucher-Commerce/performance-management/performance-management.component';
 
 const appRoutes: Routes = [
   {
@@ -142,7 +145,10 @@ const appRoutes: Routes = [
       { path: 'accountManagement', component: AccountManagementComponent },
       { path: 'deviceDataReview', component: DeviceManagementComponent },
       { path: 'drugDataReview', component: DrugManagementComponent },
-      { path: 'cardAccessAndPosManagement', component: CardAccessAndPosManagementComponent }
+      { path: 'cardAccessAndPosManagement', component: CardAccessAndPosManagementComponent },
+      { path: 'manageCampaignsVouchers', component: ManageCampaignsVouchersComponent },
+      { path: 'manageMarketSKUs', component: ManageMarketSkuComponent },
+      { path: 'performanceManagement', component: PerformanceManagementComponent },
 
     ]
   },

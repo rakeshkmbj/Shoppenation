@@ -1,39 +1,37 @@
 <div class="product-list-container">
-  <div class="search-and-controls">
-    <div class="search-section">
-      <input type="text" 
-             class="search-input" 
-             placeholder="Search by Product / Brand / SKU / Barcode"
-             (keyup)="onSearch($event)">
-      <span class="search-icon">🔍</span>
-    </div>
-
-    <div class="control-buttons">
-      <button class="btn-barcode" title="Barcode Scanner">
-        <span class="icon">📱</span>
-        <span>BARCODE</span>
-      </button>
-      <button class="btn-qr" title="QR Code Scanner">
-        <span class="icon">📷</span>
-        <span>QR SCAN</span>
-      </button>
-      <button class="btn-voice" title="Voice Search">
-        <span class="icon">🎤</span>
-        <span>VOICE SEARCH</span>
-      </button>
-    </div>
-  </div>
 
   <div class="category-tabs">
-    <button class="category-tab active">All Categories</button>
-    <button class="category-tab">Top Products</button>
-    <div class="tab-recent">
-      <span class="recent-label">RECENT</span>
+    <button class="category-tab" [class.active]="activeTab === 'categories'"
+      (click)="selectTab('categories')">Categories</button>
+    <button class="category-tab" [class.active]="activeTab === 'top-in-demand'" (click)="selectTab('top-in-demand')">Top
+      in Demand</button>
+    <button class="category-tab" [class.active]="activeTab === 'all-products'" (click)="selectTab('all-products')">All
+      Products</button>
+  </div>
+
+  <div class="filter-row">
+    <div class="filter-field">
+      <label>Product Lines</label>
+      <select class="custom-select" (change)="onProductLineChange($event.target.value)">
+        <option value="">All lines</option>
+        <option *ngFor="let line of productLines" [value]="line">
+          {{ line }}
+        </option>
+      </select>
+    </div>
+    <div class="filter-field">
+      <label>Item Categories</label>
+      <select class="custom-select" (change)="onItemCategoryChange($event.target.value)">
+        <option value="">All categories</option>
+        <option *ngFor="let category of itemCategories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
     </div>
   </div>
 
-  <div class="products-grid">
-    <div *ngFor="let product of products" class="product-card">
+  <div class="products-grid" *ngIf="filteredProducts && filteredProducts.length > 0">
+    <div *ngFor="let product of filteredProducts" class="product-card">
       <div class="product-image">
         <img [src]="product.image" [alt]="product.name" (error)="onImageError($event)">
         <div class="product-badge">
@@ -52,14 +50,9 @@
         </div>
 
         <div class="product-actions">
-          <input type="number" 
-                 class="qty-input" 
-                 min="1" 
-                 [value]="selectedQuantity[product.id] || 1"
-                 (change)="updateSelectedQty(product.id, $event)">
-          <button class="btn-add" 
-                  (click)="onAddToCart(product)"
-                  [disabled]="product.stock === 0">
+          <input type="number" class="qty-input" min="1" [value]="selectedQuantity[product.id] || 1"
+            (change)="updateSelectedQty(product.id, $event)">
+          <button class="btn-add" (click)="onAddToCart(product)" [disabled]="product.stock === 0">
             ADD TO CART
           </button>
         </div>
@@ -67,7 +60,7 @@
     </div>
   </div>
 
-  <div *ngIf="products && products.length === 0" class="no-products">
+  <div *ngIf="filteredProducts && filteredProducts.length === 0" class="no-products">
     <div class="no-products-icon">📦</div>
     <p>No products found</p>
   </div>

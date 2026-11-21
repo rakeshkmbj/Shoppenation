@@ -1,85 +1,347 @@
-.or-text{
-    font-size:60px;
-    color:#f28c28;
-    font-weight:700;
+/* ==========================================
+   Cards
+========================================== */
+
+.section-header {
+    background: #ffffff;
+    border-bottom: 2px solid #f3f3f3;
+    font-size: 20px;
+    font-weight: 600;
+    color: #f58220;
+    padding: 18px 25px;
 }
 
-.qr-image{
-    width:170px;
-    height:170px;
-    object-fit:contain;
+.card-body {
+    padding: 30px;
 }
 
-.custom-btn{
-    background:#8d1d1d;
-    color:#fff;
-    border:none;
+/* ==========================================
+   Titles
+========================================== */
+
+.sub-title {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 20px;
 }
 
-.custom-btn:hover{
-    color:#fff;
-    background:#6f1111;
+label {
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 6px;
 }
 
-.detail-row{
-    font-size:22px;
+/* ==========================================
+   Input
+========================================== */
+
+.form-control-lg {
+    height: 52px;
+    border-radius: 8px;
+    border: 1px solid #d6d6d6;
+    font-size: 15px;
 }
 
-.card{
-    border-radius:6px;
+.form-control-lg:focus {
+    border-color: #f58220;
+    box-shadow: 0 0 0 0.15rem rgba(245, 130, 32, .25);
 }
 
-.holder-image{
-    width:220px;
-    height:220px;
-    border:2px solid #999;
-    margin:auto;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
+/* ==========================================
+   Buttons
+========================================== */
+
+.custom-btnn {
+    background: #b52817;
+    color: #fff;
+    border: none;
+    height: 48px;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0 25px;
+    transition: .3s;
 }
 
-.holder-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+/* ==========================================
+   OR Divider
+========================================== */
+
+.or-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
-.divider{
+.or-divider span {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #f58220;
+    color: #f58220;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    display:flex;
+/* ==========================================
+   QR
+========================================== */
 
-    align-items:center;
+.qr-box {
+    width: 180px;
+    height: 180px;
+    border: 2px dashed #d9d9d9;
+    border-radius: 12px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+}
 
-    justify-content:center;
+.qr-box img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
 
-    height:100%;
+/*====================================
+    Status Section
+====================================*/
+
+.status-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status-item label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4b5563;
+    margin: 0;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 22px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    min-height: 46px;
+    width: fit-content;
+
+    transition: all .3s ease;
+}
+
+.status-badge i {
+    color: #ffffff;
+}
+
+.status-badge.success {
+    background: #4CAF50;
+    color: #ffffff;
+}
+
+.status-badge.danger {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+.status-badge.warning {
+    background: #f0ad4e;
+    color: #ffffff;
+}
+
+.status-badge.info {
+    background: #0d6efd;
+    color: #ffffff;
+}
+
+.status-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .15);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .status-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .status-item {
+        width: 100%;
+    }
+
+    .status-badge {
+        width: fit-content;
+    }
+}
+
+/* ==========================================
+   Details
+========================================== */
+
+.card-body h6 {
+    margin-top: 5px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* ==========================================
+   Authentication
+========================================== */
+
+.authentication-box {
+    margin-top: 35px;
+    border-top: 1px solid #ececec;
+    padding-top: 25px;
+}
+
+.authentication-box h5 {
+    margin-bottom: 20px;
+    color: #f58220;
+    font-weight: 600;
+}
+
+/* ==========================================
+   OTP
+========================================== */
+
+.otp-box {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.otp-input {
+    width: 55px;
+    height: 55px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: 2px solid #d7d7d7;
+    transition: .3s;
+}
+
+.otp-input:focus {
+    border-color: #f58220;
+    outline: none;
+    box-shadow: 0 0 8px rgba(245, 130, 32, .2);
+}
+
+/* ==========================================
+   Holder Image
+========================================== */
+
+.holder-image {
+    width: 220px;
+    height: 220px;
+    margin: auto;
+    border-radius: 12px;
+    border: 2px solid #ececec;
+    overflow: hidden;
+    background: #fafafa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.holder-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-image {
+    color: #b8b8b8;
+}
+
+/* ==========================================
+   Verified
+========================================== */
+
+.verified-box {
+    margin-top: 20px;
+}
+
+.verified-box .badge {
+    font-size: 15px;
+    padding: 12px 24px;
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width: 991px) {
+
+    .or-divider {
+        margin: 30px 0;
+    }
+
+    .status-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .holder-image {
+        width: 180px;
+        height: 180px;
+    }
+
+    .authentication-box .row>div {
+        margin-bottom: 20px;
+    }
 
 }
 
-.divider span{
+@media (max-width: 576px) {
 
-    width:70px;
+    .heading-title {
+        font-size: 24px;
+    }
 
-    height:70px;
+    .card-body {
+        padding: 20px;
+    }
 
-    border-radius:50%;
+    .otp-box {
+        justify-content: center;
+    }
 
-    background:#fff4ec;
+    .otp-input {
+        width: 45px;
+        height: 45px;
+    }
 
-    color:#E67E22;
-
-    font-size:28px;
-
-    font-weight:700;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border:2px solid #F5CBA7;
+    .holder-image {
+        width: 150px;
+        height: 150px;
+    }
 
 }

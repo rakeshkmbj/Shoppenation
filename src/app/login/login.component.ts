@@ -9,6 +9,8 @@ import { DataService } from '../services/dataservice';
 import { CommonService } from '../services/common.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-bootstrap-spinner";
+import { DeviceAuthService } from '../services/device-auth.service';
+import { ApiService } from '../services/api.service';
 
 declare var $: any;
 
@@ -42,7 +44,9 @@ export class LoginComponent implements OnInit {
     private spinner: NgxSpinnerService,
     public dataservice: DataService,
     public commonservice: CommonService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private deviceAuthService: DeviceAuthService,
+    private apiService: ApiService
   ) {
 
     this.loginForm = new FormGroup({
@@ -85,6 +89,39 @@ export class LoginComponent implements OnInit {
     console.log(this.platformId);
   }
 
+  completeLogin(data: any) {
+
+    this.commonservice.passLoginData(data);
+
+    const expiryTime =
+      new Date().getTime() + (5 * 60 * 60 * 1000);
+
+    data.expiryTime = expiryTime;
+
+    localStorage.removeItem('logindata');
+    localStorage.removeItem('getDomainID');
+
+    localStorage.setItem(
+      'logindata',
+      JSON.stringify(data)
+    );
+
+    localStorage.setItem(
+      'getDomainID',
+      this.domainid
+    );
+
+    this.showloader = false;
+    this.loadingBtn = true;
+
+    this.toastr.success('Login Successfully');
+
+    this.router.navigate(['/dashboard']);
+
+    this.close();
+  }
+
+
   login() {
 
     this.submitted = true;
@@ -110,77 +147,144 @@ export class LoginComponent implements OnInit {
       Distribution_App_Flg: this.platformId == 2 || this.platformId == 4 ? true : false
     };
 
-    console.log(loginData);
+    console.log('Login Data:', loginData);
 
     this.showloader = true;
-
 
     this.registerService.postCallHttp(
       this.baseUrl + '/ShoppenationMDRLogin',
       loginData
-    ).subscribe(
-      (data: any) => {
+    ).subscribe({
 
-        console.log(data);
+      next: (data: any) => {
+
+        console.log("Login Response: ", data);
+
+        // STEP 1: Check login credentials
 
         if (data.Message == "Please enter correct credentials.") {
 
           this.showloader = false;
           this.loadingBtn = true;
+
           this.toastr.error('Please provide correct credentials');
           return;
-
         }
 
-        // Pass login data
-        this.commonservice.passLoginData(data);
+        // STEP 2: STATIC CHALLENGE FOR TESTING
 
-        // ==========================
-        // LOGIN EXPIRY (5 HOURS)
-        // ==========================
-        const expiryTime = new Date().getTime() + (5 * 60 * 60 * 1000);
+        const challenge = {
+          challengeId: data.Challengeid,
+          nonce: data.Nounce
+        };
 
-        // const expiryTime = new Date().getTime() + (1 * 60 * 1000);
+        console.log('STEP 1: Static Challenge:', challenge);
 
-        // Add expiry directly into the login response object
-        data.expiryTime = expiryTime;
+        // STEP 3: Call Chrome Extension only once
 
-        // Remove old session
-        localStorage.removeItem('logindata');
-        localStorage.removeItem('getDomainID');
+        console.log('STEP 2: Calling DeviceAuthService');
 
-        // Save updated login data
-        localStorage.setItem('logindata', JSON.stringify(data));
-        localStorage.setItem('getDomainID', this.domainid);
+        this.deviceAuthService.verifyDevice(
+          challenge.challengeId,
+          challenge.nonce
+        ).then((device: any) => {
 
-        this.showloader = false;
-        this.loadingBtn = true;
+          console.log('STEP 3: Device Response:', device);
 
-        this.toastr.success("Login Successfully");
+          // STEP 4: Prepare device verification payload
 
-        this.router.navigate(['/dashboard']);
+          const verificationPayload = {
+            "Credential_Found": 1,
+            "Member_Validity_Found": data.Member_Validity_Found,
+            "MDR_App_Flg": data.MDR_Connect_APP_Flg,
+            "DISTRIBUTION_App_Flg": data.Distribution_APP_Flg,
+            "POS_App_Flg": 0,
+            "Device_UID": device.uid,
+            "AD_Stamp_Found_Flg": 1,
+            "Access_Terminalid": device.tid,
+            "Hashed_Stamp1": device.stamps["X1.txt"],
+            "Hashed_Stamp2": device.stamps["X2.txt"],
+            "Hashed_Stamp3": device.stamps["X3.txt"],
+            "Hashed_Stamp4": device.stamps["X4.txt"],
+            "LoginResp_UserRoleid1": data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_ROLE_ALCTD,
+            "POS_Terminalid": 0,
+            "Login_Instance_id": data.Login_Instance_id
+          };
 
-        this.close();
+          console.log('STEP 4: Auth Payload:', verificationPayload);
+
+          this.apiService.postCall(
+            `${this.apiService.baseURL}/ValidateTerminalSignaturePostlogin`,
+            verificationPayload
+          ).subscribe(
+            (verificationRes: any) => {
+
+              console.log('Terminal Verification Response:', verificationRes);
+
+              if (verificationRes.Physical_Terminal_Validated_Flag == 0) {
+
+                this.showloader = false;
+                this.loadingBtn = true;
+
+                this.toastr.error(verificationRes.Message);
+
+              } else {
+
+                // STEP 5: Complete Login
+                console.log('STEP 5: Completing Login');
+
+                this.completeLogin(data);
+
+                this.showloader = false;
+                this.loadingBtn = true; 
+
+              }
+
+            },
+            (error) => {
+
+              console.log('Device Authentication Error:', error);
+
+              this.showloader = false;
+              this.loadingBtn = true;
+
+              this.toastr.error(error.error, '', {
+                timeOut: 5000,
+              });
+
+            }
+          );
+
+        }).catch((error: any) => {
+
+          console.error('Device Authentication Error:', error);
+
+          this.showloader = false;
+          this.loadingBtn = true;
+
+          this.toastr.error(
+            error.message || 'Device authentication failed'
+          );
+
+        });
 
       },
-      (error) => {
 
-        console.log(error);
+      error: (error) => {
+
+        console.error('Login API Error:', error);
 
         this.showloader = false;
         this.loadingBtn = true;
 
         this.toastr.error(
-          'Please provide correct credentials',
-          '',
-          {
-            timeOut: 5000
-          }
+          'Please provide correct credentials'
         );
-
       }
-    );
+
+    });
 
   }
+
 
 }

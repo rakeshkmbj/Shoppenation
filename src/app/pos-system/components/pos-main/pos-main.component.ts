@@ -14,6 +14,7 @@ interface StoreInfo {
   name: string;
   terminalId: string;
   location: string;
+  gstin?: string;
 }
 
 @Component({
@@ -34,7 +35,8 @@ export class PosMainComponent implements OnInit {
   storeInfo: StoreInfo = {
     name: 'Raj Medical Store',
     terminalId: 'POS-01',
-    location: 'Main Branch'
+    location: 'Main Branch',
+    gstin: 'ABHgf134666xx'
   };
 
   userName = 'Rajesh Handa';

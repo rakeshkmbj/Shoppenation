@@ -184,7 +184,7 @@ viewProductLine(consoleId){
   .subscribe(data => {
  console.log(data);
 
- if($.isArray(data)) {
+ if(Array.isArray(data)) {
   this.viewProductLineAddedList = data;
 } else {
   this.viewProductLineAddedList = [];
