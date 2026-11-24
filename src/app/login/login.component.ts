@@ -111,6 +111,8 @@ export class LoginComponent implements OnInit {
       this.domainid
     );
 
+    this.apiService.refreshLoginData();
+
     this.showloader = false;
     this.loadingBtn = true;
 
@@ -193,23 +195,29 @@ export class LoginComponent implements OnInit {
 
           // STEP 4: Prepare device verification payload
 
+
           const verificationPayload = {
+
             "Credential_Found": 1,
             "Member_Validity_Found": data.Member_Validity_Found,
             "MDR_App_Flg": data.MDR_Connect_APP_Flg,
             "DISTRIBUTION_App_Flg": data.Distribution_APP_Flg,
             "POS_App_Flg": 0,
-            "Device_UID": device.uid,
+
+            "Device_UID": device.uid || "0",
             "AD_Stamp_Found_Flg": 1,
-            "Access_Terminalid": device.tid,
-            "Hashed_Stamp1": device.stamps["X1.txt"],
-            "Hashed_Stamp2": device.stamps["X2.txt"],
-            "Hashed_Stamp3": device.stamps["X3.txt"],
-            "Hashed_Stamp4": device.stamps["X4.txt"],
+            "Access_Terminalid": device.tid || "0",
+
+            "Hashed_Stamp1": device.stamps?.["X1.txt"] || "0",
+            "Hashed_Stamp2": device.stamps?.["X2.txt"] || "0",
+            "Hashed_Stamp3": device.stamps?.["X3.txt"] || "0",
+            "Hashed_Stamp4": device.stamps?.["X4.txt"] || "0",
+
             "LoginResp_UserRoleid1": data.RETAIL_D2C_ACCT_INTRNL_CUSTMR_ROLE_ALCTD,
             "POS_Terminalid": 0,
             "Login_Instance_id": data.Login_Instance_id
           };
+
 
           console.log('STEP 4: Auth Payload:', verificationPayload);
 
@@ -236,7 +244,7 @@ export class LoginComponent implements OnInit {
                 this.completeLogin(data);
 
                 this.showloader = false;
-                this.loadingBtn = true; 
+                this.loadingBtn = true;
 
               }
 

@@ -39,20 +39,19 @@ export class StoreEcommerceManagerComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
   ) {
-    this.accountid = this.apiService.requiredLoginData.accountid;
-    this.subaccid = this.apiService.requiredLoginData.subaccountid;
-    this.storeid = this.apiService.requiredLoginData.storeid;
-    this.officename = this.apiService.requiredLoginData.storeName;
-    this.domainid = this.apiService.requiredLoginData.domainid;
-    this.address = this.apiService.requiredLoginData.address;
-    this.pincode = this.apiService.requiredLoginData.pincode;
-    this.photo = this.apiService.requiredLoginData.photo;
-    this.username = this.apiService.requiredLoginData.username;
-    this.roleid = this.apiService.requiredLoginData.roleid;
-    this.cartcount = this.apiService.requiredLoginData.cartcount;
-
-    this.getlogindata = localStorage.getItem('logindata');
-    this.getlogindata = JSON.parse(this.getlogindata);
+    const loginData = this.apiService.requiredLoginData || {};
+    this.accountid = loginData.accountid;
+    this.subaccid = loginData.subaccountid;
+    this.storeid = loginData.storeid;
+    this.officename = loginData.storeName;
+    this.domainid = loginData.domainid;
+    this.address = loginData.address;
+    this.pincode = loginData.pincode;
+    this.photo = loginData.photo;
+    this.username = loginData.username;
+    this.roleid = loginData.roleid;
+    this.cartcount = loginData.cartcount;
+    this.getlogindata = this.apiService.getlogindata || {};
   }
 
   changePasswordForm: FormGroup;
@@ -60,8 +59,12 @@ export class StoreEcommerceManagerComponent implements OnInit {
   passwordMismatch = false;
 
   ngOnInit(): void {
-    let loginDAta = JSON.parse(localStorage.getItem("logindata"));
-    this.username = loginDAta.RETAIL_D2C_ACCT_INTRNL_FIRST_NAME + " " + loginDAta.RETAIL_D2C_ACCT_INTRNL_LAST_NAME;
+    if (!this.apiService.requiredLoginData) {
+      this.router.navigate(['/']);
+      return;
+    }
+
+    this.username = this.apiService.requiredLoginData.username;
     this.commonservice.stringSubject.subscribe(loginData => {
       console.log(loginData);
     });

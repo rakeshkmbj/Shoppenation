@@ -408,7 +408,7 @@
             </ul>
         </li>
 
-        <li [ngClass]="status19 ? 'active' : ''" class="nav-item"
+        <li *ngIf="role != 37" [ngClass]="status19 ? 'active' : ''" class="nav-item"
             routerLinkActive="active">
 
             <a (click)="clickEvent19()" style="cursor: pointer;">

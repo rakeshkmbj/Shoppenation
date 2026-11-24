@@ -26,6 +26,10 @@ export class ApiService {
   requiredLoginData: any;
   //requiredLoginData: { domainid: number; accountid: any; subaccountid: any; storeid: any; storeName: any; };
   constructor(private http: HttpClient) {
+    this.refreshLoginData();
+  }
+
+  refreshLoginData(): void {
     try {
       const storedLoginData = localStorage.getItem('logindata');
       this.domainid = localStorage.getItem('getDomainID');
@@ -53,10 +57,12 @@ export class ApiService {
         };
       } else {
         console.warn('No login data found in localStorage.');
+        this.getlogindata = null;
         this.requiredLoginData = null;
       }
     } catch (error) {
       console.error('Error reading login data from localStorage:', error);
+      this.getlogindata = null;
       this.requiredLoginData = null;
     }
   }
