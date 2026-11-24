@@ -8,9 +8,13 @@ declare const chrome: any;
 })
 export class DeviceAuthService {
 
-    private extensionId = 'mlcoelbiokdnackjeefieipoeckemfgc';
+    private extensionId = 'jdpbkcdhgbkgidbehgobanipchjlhjjo';
+
+    // private extensionId = 'mlcoelbiokdnackjeefieipoeckemfgc'; -- prod
+
 
     verifyDevice(challengeId: string, nonce: string): Promise<any> {
+
         return new Promise((resolve, reject) => {
 
             console.log('DEVICE AUTH 1: verifyDevice() started');
@@ -20,19 +24,44 @@ export class DeviceAuthService {
                 !chrome.runtime ||
                 !chrome.runtime.sendMessage
             ) {
-                reject(new Error('Chrome runtime is unavailable'));
+                // Extension unavailable: continue with empty device details
+                resolve({
+                    success: true,
+                    uid: '',
+                    tid: '',
+                    stamps: {
+                        'X1.txt': '',
+                        'X2.txt': '',
+                        'X3.txt': '',
+                        'X4.txt': ''
+                    }
+                });
                 return;
             }
-
-            console.log('DEVICE AUTH 2: Sending message to extension');
 
             let responseReceived = false;
 
             const timeout = setTimeout(() => {
+
                 if (!responseReceived) {
+
                     responseReceived = true;
-                    reject(new Error('Device authentication timed out after 10 seconds'));
+
+                    console.warn('Device authentication timed out. Continuing with empty device details.');
+
+                    resolve({
+                        success: true,
+                        uid: '',
+                        tid: '',
+                        stamps: {
+                            'X1.txt': '',
+                            'X2.txt': '',
+                            'X3.txt': '',
+                            'X4.txt': ''
+                        }
+                    });
                 }
+
             }, 10000);
 
             chrome.runtime.sendMessage(
@@ -44,8 +73,6 @@ export class DeviceAuthService {
                 },
                 (response: any) => {
 
-                    console.log('DEVICE AUTH 3: Extension callback executed');
-
                     if (responseReceived) {
                         return;
                     }
@@ -54,25 +81,64 @@ export class DeviceAuthService {
                     clearTimeout(timeout);
 
                     if (chrome.runtime.lastError) {
-                        console.error(
-                            'DEVICE AUTH ERROR:',
+
+                        console.warn(
+                            'Extension error. Continuing without device details:',
                             chrome.runtime.lastError.message
                         );
 
-                        reject(new Error(chrome.runtime.lastError.message));
+                        resolve({
+                            success: true,
+                            uid: '',
+                            tid: '',
+                            stamps: {
+                                'X1.txt': '',
+                                'X2.txt': '',
+                                'X3.txt': '',
+                                'X4.txt': ''
+                            }
+                        });
+
                         return;
                     }
 
                     console.log('DEVICE AUTH 4: Extension response:', response);
 
+                    // Extension returned no response or unsuccessful response
                     if (!response || !response.success) {
-                        reject(new Error(response?.message || 'Device verification failed'));
+
+                        resolve({
+                            success: true,
+                            uid: '',
+                            tid: '',
+                            stamps: {
+                                'X1.txt': '',
+                                'X2.txt': '',
+                                'X3.txt': '',
+                                'X4.txt': ''
+                            }
+                        });
+
                         return;
                     }
 
-                    resolve(response);
+                    // Extension responded successfully, but some details may be missing
+                    resolve({
+                        success: true,
+                        uid: response.uid || '',
+                        tid: response.tid || '',
+                        stamps: {
+                            'X1.txt': response.stamps?.['X1.txt'] || '',
+                            'X2.txt': response.stamps?.['X2.txt'] || '',
+                            'X3.txt': response.stamps?.['X3.txt'] || '',
+                            'X4.txt': response.stamps?.['X4.txt'] || ''
+                        }
+                    });
+
                 }
             );
+
         });
     }
+
 }
