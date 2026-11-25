@@ -8,9 +8,9 @@ declare const chrome: any;
 })
 export class DeviceAuthService {
 
-    private extensionId = 'jdpbkcdhgbkgidbehgobanipchjlhjjo';
+    // private extensionId = 'jdpbkcdhgbkgidbehgobanipchjlhjjo';
 
-    // private extensionId = 'mlcoelbiokdnackjeefieipoeckemfgc'; -- prod
+    private extensionId = 'mlcoelbiokdnackjeefieipoeckemfgc';
 
 
     verifyDevice(challengeId: string, nonce: string): Promise<any> {
