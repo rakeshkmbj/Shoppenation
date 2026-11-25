@@ -13,6 +13,7 @@ export class DeviceAuthService {
     private extensionId = 'mlcoelbiokdnackjeefieipoeckemfgc';
 
 
+
     verifyDevice(challengeId: string, nonce: string): Promise<any> {
 
         return new Promise((resolve, reject) => {
@@ -140,5 +141,6 @@ export class DeviceAuthService {
 
         });
     }
+
 
 }

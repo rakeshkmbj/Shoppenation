@@ -199,9 +199,9 @@ export class LoginComponent implements OnInit {
           const verificationPayload = {
 
             "Credential_Found": 1,
-            "Member_Validity_Found": data.Member_Validity_Found,
-            "MDR_App_Flg": data.MDR_Connect_APP_Flg,
-            "DISTRIBUTION_App_Flg": data.Distribution_APP_Flg,
+            "Member_Validity_Found": data.MemberValidityFound,
+            "MDR_App_Flg": data.MDR_Connect_App_Flag,
+            "DISTRIBUTION_App_Flg": data.Distribution_App_Flag,
             "POS_App_Flg": 0,
 
             "Device_UID": device.uid || "0",
